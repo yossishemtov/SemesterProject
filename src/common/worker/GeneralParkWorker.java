@@ -1,4 +1,4 @@
-package common;
+package common.worker;
 
 public class GeneralParkWorker {
 	private Integer workerNumber;
