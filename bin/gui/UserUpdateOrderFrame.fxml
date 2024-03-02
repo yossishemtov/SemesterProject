@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="247.0" prefWidth="303.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.UserUpdateController">
+   <children>
+      <Button fx:id="backBtn" layoutX="227.0" layoutY="207.0" mnemonicParsing="false" onAction="#btnBack" prefHeight="26.0" prefWidth="62.0" text="Back" textFill="RED" />
+      <Button fx:id="updateBtn" layoutX="166.0" layoutY="208.0" mnemonicParsing="false" onAction="#updateReservationPhoneAndParkName" text="Update" textFill="#349734" />
+      <Text layoutX="16.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Park Name:" wrappingWidth="62.00001239776611" />
+      <Text layoutX="14.0" layoutY="27.0" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Update park name and telephone number" underline="true">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <TextField fx:id="parkNameText" layoutX="83.0" layoutY="79.0" prefHeight="25.0" prefWidth="85.0" />
+      <Text layoutX="14.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Telephone Number:" />
+      <TextField fx:id="telephoneNumText" layoutX="123.0" layoutY="111.0" prefHeight="25.0" prefWidth="98.0" />
+      <Text layoutX="16.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Id:" />
+      <TextField fx:id="orderId" layoutX="67.0" layoutY="47.0" prefHeight="25.0" prefWidth="55.0" />
+      <Button fx:id="getOrderData" layoutX="152.0" layoutY="47.0" mnemonicParsing="false" onAction="#getReservesion" prefHeight="25.0" prefWidth="105.0" text="Get Order Data" textFill="#2e8a2c" />
+   </children>
+</Pane>
