@@ -21,6 +21,46 @@ public class ChangeParameters {
 		this.parkNumber = parkNumber;
 		Date = date;
 	}
+
+
+	public Integer getOldParameter() {
+		return oldParameter;
+	}
+
+
+	public void setOldParameter(Integer oldParameter) {
+		this.oldParameter = oldParameter;
+	}
+
+
+	public Integer getNewParameter() {
+		return newParameter;
+	}
+
+
+	public void setNewParameter(Integer newParameter) {
+		this.newParameter = newParameter;
+	}
+
+
+	public Integer getParkNumber() {
+		return parkNumber;
+	}
+
+
+	public void setParkNumber(Integer parkNumber) {
+		this.parkNumber = parkNumber;
+	}
+
+
+	public LocalDate getDate() {
+		return Date;
+	}
+
+
+	public void setDate(LocalDate date) {
+		Date = date;
+	}
 	
 	
 }
