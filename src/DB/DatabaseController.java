@@ -24,16 +24,17 @@ public class DatabaseController {
     /**
      * Retrieves specific order data from the database based on the order number.
      *
-     * @param orderNumber The order number to search for.
+     * @param orderId The order number to search for.
      * @return An ArrayList containing the park name and telephone number for the specified order.
      */
-    public ArrayList<String> getSpecificDataFromDB(String orderNumber) {
+    public ArrayList<String> getSpecificDataFromDB(String orderId) {
+    	
         ArrayList<String> orderDataForClient = new ArrayList<>();
         String query = "SELECT * FROM `order` WHERE OrderNumber=?";
 
         try {
             PreparedStatement ps = connectionToDatabase.prepareStatement(query);
-            ps.setString(1, orderNumber);
+            ps.setString(1, orderId);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
