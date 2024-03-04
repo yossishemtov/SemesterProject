@@ -51,7 +51,7 @@ public class BackEndServer extends AbstractServer
           } catch (IOException e) {
               System.out.println("Error sending disconnect message to client: " + e.getMessage());
           }
-          
+         
           status.updateStatus("Disconnected");
           // Update the GUI after any change
           sc.updateConnectionStatusTable(new ArrayList<>(connectedClients.values()));
