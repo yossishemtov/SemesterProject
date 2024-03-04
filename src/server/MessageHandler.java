@@ -12,9 +12,9 @@ import ocsf.server.ConnectionToClient;
 public class MessageHandler {
 
     public static void handleMessage(Object msg, ConnectionToClient client) throws IOException {
-    	//A 
+    	//A class that is intended to handle diffrent messages from the client and response accordingly
     	 BackEndServer backEndServerInstance = BackEndServer.getBackEndServer();
-    	 DatabaseController dbcontroller=backEndServerInstance.DBController;
+    	 DatabaseController dbcontroller = backEndServerInstance.DBController;
     	 
     	 
     	//Checking if message is of type of generic message intended for client and server communication
