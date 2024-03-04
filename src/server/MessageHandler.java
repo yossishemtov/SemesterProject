@@ -12,11 +12,12 @@ import ocsf.server.ConnectionToClient;
 public class MessageHandler {
 
     public static void handleMessage(Object msg, ConnectionToClient client) throws IOException {
-    	 BackEndServer bs = BackEndServer.getBackEndServer();
-    	 DatabaseController dbcontroller=bs.DBController;
+    	//A 
+    	 BackEndServer backEndServerInstance = BackEndServer.getBackEndServer();
+    	 DatabaseController dbcontroller=backEndServerInstance.DBController;
     	 
     	 
-
+    	//Checking if message is of type of generic message intended for client and server communication
         if (!(msg instanceof ClientServerMessage)) {
             try {
                 client.sendToClient(null);
@@ -25,16 +26,21 @@ public class MessageHandler {
             }
             return;
         }
-
+        
+        //Extracting data from the generic message object intended for further parsing
         ClientServerMessage message = (ClientServerMessage) msg;
         String command = message.getCommand();
         Object result;
         Object dataForClient;
         Object orderId;
 
+        
+        //Parsing the command
         switch (command) {
+        
+        	//User sends a disconnect command to the server
             case Operation.Disconnecting:
-                bs.clientDisconnected(client);
+                backEndServerInstance.clientDisconnected(client);
                 try {
                     client.sendToClient("ack_disconnect"); // Send acknowledgment to client
                 } catch (IOException e) {
@@ -45,7 +51,7 @@ public class MessageHandler {
 
                 case Operation.GetAllOrders:
                     // Placeholder for getting all orders from the database
-                	ClientServerMessage responseToclient=new ClientServerMessage(dbcontroller.getOrderDataFromDatabase(),Operation.Responseallorder);
+                	ClientServerMessage responseToclient = new ClientServerMessage(dbcontroller.getOrderDataFromDatabase(),Operation.Responseallorder);
                     client.sendToClient(responseToclient);
                 	break;
 
@@ -85,9 +91,9 @@ public class MessageHandler {
 }
 					catch(IndexOutOfBoundsException e)
 					{
-						Alerts erorAlert = new Alerts(Alerts.AlertType.ERROR, "Data base error", "Error",
+						Alerts errorAlert = new Alerts(Alerts.AlertType.ERROR, "Data base error", "Error",
 								"Error to enter a new group guide to db.");
-						erorAlert.showAndWait();
+						errorAlert.showAndWait();
 					}
 
                 	
