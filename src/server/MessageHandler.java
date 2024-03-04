@@ -1,7 +1,10 @@
 package server;
 
 import common.*;
+
+
 import java.io.IOException;
+import java.util.ArrayList;
 
 import DB.DatabaseController;
 import ocsf.server.ConnectionToClient;
@@ -76,11 +79,36 @@ public class MessageHandler {
 
                 case Operation.PostNewTravlerGuider:
                     // Placeholder for posting a new traveler guide request
+                	ArrayList<GroupGuide> groupGuide=(ArrayList<GroupGuide>)message.getDataTransfered();
+;                	try {
+                	dbcontroller.addNewGroupGuide(groupGuide.get(0));
+}
+					catch(IndexOutOfBoundsException e)
+					{
+						Alerts erorAlert = new Alerts(Alerts.AlertType.ERROR, "Data base error", "Error",
+								"Error to enter a new group guide to db.");
+						erorAlert.showAndWait();
+					}
+
+                	
                     break;
 
                 case Operation.PostTravlerOrder:
                     // Placeholder for posting a new traveler order
-                    break;
+                	
+                	try {
+                		ArrayList travelerorder=(ArrayList) message.getDataTransfered();
+                    	
+                    	dbcontroller.insertTravelerOrder((Travler)travelerorder.get(0),(Order)travelerorder.get(1));
+    }
+    					catch(IndexOutOfBoundsException e)
+    					{
+    						Alerts erorAlert = new Alerts(Alerts.AlertType.ERROR, "Data base error", "Error",
+    								"Error to enter a new traveler order.");
+    						erorAlert.showAndWait();
+    					}
+
+                	break;
 
                 case Operation.PostNewReport:
                     // Placeholder for posting a new report
@@ -96,6 +124,21 @@ public class MessageHandler {
 
                 case Operation.PatchOrderStatus:
                     // Placeholder for patching order status
+                	
+                	try {
+                		ArrayList<Order> travelerorder=(ArrayList<Order>) message.getDataTransfered();
+                    	
+                    	dbcontroller.updateOrderStatus((Order)travelerorder.get(0));
+    }
+    					catch(IndexOutOfBoundsException e)
+    					{
+    						Alerts erorAlert = new Alerts(Alerts.AlertType.ERROR, "Data base error", "Error",
+    								"Error to order status order.");
+    						erorAlert.showAndWait();
+    					}
+                	
+                	
+                	
                     break;
 
                 case Operation.DeleteExistingOrder:
