@@ -8,7 +8,7 @@ import ocsf.server.ConnectionToClient;
 
 public class MessageHandler {
 
-    public static void handleMessage(Object msg, ConnectionToClient client) {
+    public static void handleMessage(Object msg, ConnectionToClient client) throws IOException {
     	 BackEndServer bs = BackEndServer.getBackEndServer();
     	 DatabaseController dbcontroller=bs.DBController;
     	 
@@ -42,7 +42,7 @@ public class MessageHandler {
 
                 case Operation.GetAllOrders:
                     // Placeholder for getting all orders from the database
-                	ClientServerMessage responseToclient=new ClientServerMessage(dbcontroller.getOrderDataFromDatabase(),Operation.Responseallorder)
+                	ClientServerMessage responseToclient=new ClientServerMessage(dbcontroller.getOrderDataFromDatabase(),Operation.Responseallorder);
                     client.sendToClient(responseToclient);
                 	break;
 

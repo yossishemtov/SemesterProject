@@ -133,9 +133,9 @@ public class ServerController {
 		dbUserName = getuserNameOfDB();
 		dbPass = getPasswordOfDB();
 		if (port == null || port < 0 || port > 65535 || dbPass.equals("") || dbUserName.equals("")) {
-			Alerts warningAlert = new Alerts(Alerts.AlertType.WARNING, "Invalid Input", "Warning",
+			Alerts erorAlert = new Alerts(Alerts.AlertType.ERROR, "Invalid Input", "Warning",
 					"The value entered is invalid. Please try again.");
-			warningAlert.showAndWait();
+			erorAlert.showAndWait();
 			return false;
 		}
 		return true;
