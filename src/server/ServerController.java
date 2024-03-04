@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import common.Alerts;
 import entities.ClientConnectionStatus;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -134,23 +135,47 @@ import javafx.stage.Stage;
 		private String getPasswordOfDB() {
 			return PasswordTxt.getText();
 		}
-
+		private boolean isVaiildLogin( ) {
+			Integer port;
+			String dbUserName;
+			String dbPass;
+			port = Integer.parseInt(getPort());
+			
+			dbUserName = getuserNameOfDB();
+			dbPass = getPasswordOfDB();
+			if (port== null || port <0 || port >65535 || dbPass.equals("") || dbUserName.equals(""))
+			{
+				Alerts warningAlert = new Alerts(Alerts.AlertType.WARNING, 
+                        "Invalid Input", 
+                        "Warning", 
+                        "The value entered is invalid. Please try again.");
+                warningAlert.showAndWait();
+                return false;
+			}
+			return true;
+				
+		}
+		
 		
 		// mouse click on start server button
 		@FXML
 		void serveStartAction(ActionEvent event) {
-			int port;
+			Integer port;
 			String dbUserName;
 			String dbPass;
 			try {
-				port = Integer.parseInt(getPort()); // Set port to 5555
+				
+				port = Integer.parseInt(getPort()); // Set port to 555
 				dbUserName = this.getuserNameOfDB();
 				dbPass = this.getPasswordOfDB();
 				
 			} catch (Exception ex) {
 				System.out.println("ERROR - Could not connect!"); 
 				throw ex;}
+			System.out.println("data base:"+isVaiildLogin()); 
+			if (isVaiildLogin()) {
 			sv = new BackEndServer(port, this, dbUserName, dbPass);
+			
 			try {		
 				// Start server
 				sv.listen();
@@ -160,6 +185,7 @@ import javafx.stage.Stage;
 				System.out.println("Server fail.");
 				e.printStackTrace();
 			} 
+			}
 			
 		}
 		
