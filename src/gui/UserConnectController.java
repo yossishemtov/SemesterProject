@@ -50,7 +50,7 @@ public class UserConnectController {
 			
 			try {				
 			ClientUI.clientControllerInstance = new ClientController(IpAddressFieldValue, portAddressFieldValue);
-			Parent root = new FXMLLoader().load(getClass().getResource("UserInterfaceFrame.fxml"));
+			Parent root = new FXMLLoader().load(getClass().getResource("HomePageFrame.fxml"));
 			Stage stage = (Stage)((Node)click.getSource()).getScene().getWindow(); //hiding primary window
 			Scene scene = new Scene(root);	
 			
