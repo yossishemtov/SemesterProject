@@ -6,7 +6,7 @@ import java.time.LocalTime;
 public class Order {
 	private Integer parkNumber;
 	private Integer amountOfVisitors;
-	private Integer orderID;
+	private Integer orderId;
 	private Float price;
 	private enum status{
 		PENDING,
@@ -68,7 +68,7 @@ public class Order {
 	}
 	
 	public Integer getOrderId() {
-		return orderID;
+		return orderId;
 	}
 	
 

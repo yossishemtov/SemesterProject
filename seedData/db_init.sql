@@ -1,12 +1,16 @@
 CREATE TABLE `Order` (
-  `ParkName` VARCHAR(255) NOT NULL,
-  `OrderNumber` INT NOT NULL,
-  `TimeOfVisit` DATETIME NOT NULL,
-  `NumberOfVisitors` INT NOT NULL,
+  `orderId` INT NOT NULL,
+  `parkNumber` INT NOT NULL,
+  `amountOfVisitors` INT NOT NULL,
+  `price` FLOAT NOT NULL,
+  `visitorEmail` VARCHAR(255),
+  `date` DATE NOT NULL,
   `TelephoneNumber` VARCHAR(15),
-  `Email` VARCHAR(255),
-  PRIMARY KEY (`OrderNumber`)
+  `visitTime` TIME NOT NULL,
+  `orderStatus` VARCHAR(255),
+  PRIMARY KEY (`orderId`)
 );
+
 
 CREATE TABLE `Travler` (
     `id` INT PRIMARY KEY,
