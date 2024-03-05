@@ -18,7 +18,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <TextField layoutX="147.0" layoutY="131.0" />
+      <TextField layoutX="147.0" layoutY="131.0" promptText="123456789" />
       <Button fx:id="LoginBtn" layoutX="271.0" layoutY="226.0" mnemonicParsing="false" onAction="#LoginBtn" text="Login" textFill="#2abf3c">
          <font>
             <Font size="13.0" />
