@@ -16,7 +16,8 @@ CREATE TABLE `Travler` (
     `id` INT PRIMARY KEY,
     `firstName` VARCHAR(255),
     `lastName` VARCHAR(255),
-    `email` VARCHAR(255)
+    `email` VARCHAR(255),
+    `phoneNumber` VARCHAR(255)
 );
 
 CREATE TABLE `GeneralParkWorker` (
@@ -67,17 +68,16 @@ CREATE TABLE `WaitingList` (
     FOREIGN KEY (parkNumber) REFERENCES Park(parkNumber)
 );
 
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/waitingListData.txt'
-INTO TABLE project.waitinglist;
+
 
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/dataorder.txt'
 INTO TABLE project.order;
 
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/parkdata.txt'
-INTO TABLE project.Park;
-
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/generalparkworkerdata.txt'
 INTO TABLE project.generalparkworker;
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/parkdata.txt'
+INTO TABLE project.Park;
 
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/travlerdata.txt'
 INTO TABLE project.travler;
@@ -87,3 +87,6 @@ INTO TABLE project.groupguide;
 
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/visitdata.txt'
 INTO TABLE project.visit;
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/waitingListData.txt'
+INTO TABLE project.waitinglist;
