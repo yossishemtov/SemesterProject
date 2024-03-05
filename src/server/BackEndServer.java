@@ -20,7 +20,8 @@ public class BackEndServer extends AbstractServer
 
   final public static int DEFAULT_PORT = 5555;
   private static ServerController sc;
-  private static  DatabaseController DBController;
+  public static  DatabaseController DBController;
+  public static BackEndServer bs;
   private Map<Long, ClientConnectionStatus> connectedClients;
   
   public BackEndServer(int port, ServerController sc, String userName, String password) {
@@ -28,7 +29,13 @@ public class BackEndServer extends AbstractServer
 	    BackEndServer.sc = sc;
 	    BackEndServer.DBController = new DatabaseController(userName, password);
 	    this.connectedClients = new HashMap<>(); // Initialize the map here
+	    bs=this;
 	}
+  
+  public static BackEndServer getBackEndServer() {
+	 
+	return bs;
+  }
   
   @Override
   protected void clientConnected(ConnectionToClient client) {
