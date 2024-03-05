@@ -58,6 +58,18 @@ CREATE TABLE `Visit` (
     FOREIGN KEY (parkName) REFERENCES Park(name)
 );
 
+CREATE TABLE `WaitingList` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `count` INT NOT NULL,
+    `travelerId` INT NOT NULL,
+    `parkNumber` INT NOT NULL,
+    FOREIGN KEY (travelerId) REFERENCES Travler(id),
+    FOREIGN KEY (parkNumber) REFERENCES Park(parkNumber)
+);
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/waitingListData.txt'
+INTO TABLE project.waitinglist;
+
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/dataorder.txt'
 INTO TABLE project.order;
 
