@@ -1,5 +1,6 @@
 CREATE TABLE `Order` (
   `orderId` INT NOT NULL,
+  `travlerId` INT NOT NULL,
   `parkNumber` INT NOT NULL,
   `amountOfVisitors` INT NOT NULL,
   `price` FLOAT NOT NULL,
@@ -8,16 +9,8 @@ CREATE TABLE `Order` (
   `TelephoneNumber` VARCHAR(15),
   `visitTime` TIME NOT NULL,
   `orderStatus` VARCHAR(255),
-  PRIMARY KEY (`orderId`)
-);
-
-
-CREATE TABLE `Travler` (
-    `id` INT PRIMARY KEY,
-    `firstName` VARCHAR(255),
-    `lastName` VARCHAR(255),
-    `email` VARCHAR(255),
-    `phoneNumber` VARCHAR(255)
+  PRIMARY KEY (`orderId`),
+  FOREIGN KEY (travlerId) REFERENCES Travler(id)
 );
 
 CREATE TABLE `GeneralParkWorker` (
@@ -55,8 +48,8 @@ CREATE TABLE `Visit` (
     `visitDate` DATE,
     `enteringTime` TIME,
     `existingTime` TIME,
-    `parkName` VARCHAR(255),
-    FOREIGN KEY (parkName) REFERENCES Park(name)
+    `parkNumber` INT,
+    FOREIGN KEY (parkNumber) REFERENCES park(parkNumber)
 );
 
 CREATE TABLE `WaitingList` (
@@ -68,25 +61,31 @@ CREATE TABLE `WaitingList` (
     FOREIGN KEY (parkNumber) REFERENCES Park(parkNumber)
 );
 
+CREATE TABLE `Travler` (
+    `id` INT PRIMARY KEY,
+    `firstName` VARCHAR(255),
+    `lastName` VARCHAR(255),
+    `email` VARCHAR(255),
+    `phoneNumber` VARCHAR(255)
+);
 
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/waitingListData.txt'
+INTO TABLE project.waitinglist;
 
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/dataorder.txt'
-INTO TABLE project.order;
-
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/generalparkworkerdata.txt'
-INTO TABLE project.generalparkworker;
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/groupguidedata.txt'
+INTO TABLE project.groupguide; 
 
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/parkdata.txt'
 INTO TABLE project.Park;
 
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/generalparkworkerdata.txt'
+INTO TABLE project.generalparkworker;
+
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/travlerdata.txt'
 INTO TABLE project.travler;
 
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/groupguidedata.txt'
-INTO TABLE project.groupguide;
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/dataorder.txt'
+INTO TABLE project.order;
 
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/visitdata.txt'
 INTO TABLE project.visit;
-
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/waitingListData.txt'
-INTO TABLE project.waitinglist;
