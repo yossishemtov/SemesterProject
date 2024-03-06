@@ -11,9 +11,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.fxml.Initializable;
 
+import java.net.InetAddress;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class UserConnectController {
+public class UserConnectController implements Initializable {
 	
 	    @FXML
 	    private TextField IpAddressField;
@@ -27,10 +31,23 @@ public class UserConnectController {
 	    @FXML
 	    private Button exitBtn;
 	    
-	    
+	    @Override
+	    public void initialize(URL location, ResourceBundle resources) {
+	        try {
+	            InetAddress inetAddress = InetAddress.getLocalHost();
+	            String ipAddress = inetAddress.getHostAddress();
+	            IpAddressField.setText(ipAddress);
+	            portAddressField.setText("5555");
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            System.out.println("Could not determine IP address.");
+	        }
+	    }
+
 	    public void start(Stage primaryStage) throws Exception {
 			
 			//Starting the root scene of the userInterface
+	    	
 			try {			
 				Parent root = FXMLLoader.load(getClass().getResource("userConnectingFrame.fxml"));
 				Scene scene = new Scene(root);
