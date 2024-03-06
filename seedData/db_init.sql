@@ -1,0 +1,91 @@
+CREATE TABLE `Order` (
+  `orderId` INT NOT NULL,
+  `travlerId` INT NOT NULL,
+  `parkNumber` INT NOT NULL,
+  `amountOfVisitors` INT NOT NULL,
+  `price` FLOAT NOT NULL,
+  `visitorEmail` VARCHAR(255),
+  `date` DATE NOT NULL,
+  `TelephoneNumber` VARCHAR(15),
+  `visitTime` TIME NOT NULL,
+  `orderStatus` VARCHAR(255),
+  PRIMARY KEY (`orderId`),
+  FOREIGN KEY (travlerId) REFERENCES Travler(id)
+);
+
+CREATE TABLE `GeneralParkWorker` (
+    `workerId` INT PRIMARY KEY,
+    `firstName` VARCHAR(255),
+    `lastName` VARCHAR(255),
+    `email` VARCHAR(255),
+    `role` VARCHAR(255),
+    `userName` VARCHAR(255),
+    `password` VARCHAR(255)
+);
+
+CREATE TABLE `Park` (
+    name VARCHAR(255),
+    `parkNumber` INT PRIMARY KEY,
+    `maxVisitors` INT,
+    `capacity` INT,
+    `currentVisitors` INT,
+    `location` VARCHAR(255),
+    `staytime` INT,
+    `workersAmount` INT,
+    `managerId` INT,
+    `workingTime` INT,
+    FOREIGN KEY (managerId) REFERENCES GeneralParkWorker(workerId)
+);
+
+CREATE TABLE `GroupGuide` (
+    `id` INT PRIMARY KEY,
+    `username` VARCHAR(255),
+    `password` VARCHAR(255),
+    FOREIGN KEY (id) REFERENCES Travler(id)
+);
+
+CREATE TABLE `Visit` (
+    `visitDate` DATE,
+    `enteringTime` TIME,
+    `existingTime` TIME,
+    `parkNumber` INT,
+    FOREIGN KEY (parkNumber) REFERENCES park(parkNumber)
+);
+
+CREATE TABLE `WaitingList` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `count` INT NOT NULL,
+    `travelerId` INT NOT NULL,
+    `parkNumber` INT NOT NULL,
+    FOREIGN KEY (travelerId) REFERENCES Travler(id),
+    FOREIGN KEY (parkNumber) REFERENCES Park(parkNumber)
+);
+
+CREATE TABLE `Travler` (
+    `id` INT PRIMARY KEY,
+    `firstName` VARCHAR(255),
+    `lastName` VARCHAR(255),
+    `email` VARCHAR(255),
+    `phoneNumber` VARCHAR(255)
+);
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/waitingListData.txt'
+INTO TABLE project.waitinglist;
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/groupguidedata.txt'
+INTO TABLE project.groupguide; 
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/parkdata.txt'
+INTO TABLE project.Park;
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/generalparkworkerdata.txt'
+INTO TABLE project.generalparkworker;
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/travlerdata.txt'
+INTO TABLE project.travler;
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/dataorder.txt'
+INTO TABLE project.order;
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/visitdata.txt'
+INTO TABLE project.visit;

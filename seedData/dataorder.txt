@@ -1,0 +1,4 @@
+1 	1214214 	1 	5 	50.00 	visitor1@example.com 	2024-07-04 	555-123-4567 	09:00:00 	PENDING
+2 	2654456 	2 	3 	30.00 	visitor2@example.com 	2024-07-05 	555-234-5678 	14:00:00 	CONFIRMED
+3 	3123123 	3 	6 	60.00 	visitor3@example.com 	2024-07-06 	555-345-6789 	08:00:00 	PENDING
+4 	4643544 	2 	4 	40.00 	visitor4@example.com 	2024-07-07 	555-456-7890 	10:30:00 	CONFIRMED

@@ -2,14 +2,16 @@ package client;
 
 import java.io.*;
 import java.util.ArrayList;
+
+import common.ClientServerMessage;
 import common.DisplayIF;
 import server.BackEndServer;
 
-public class ClientController implements DisplayIF{
+public class ClientController<T> implements DisplayIF{
     
     SystemClient systemClient;
     final public static int DEFAULT_PORT = 5555;
-    public ArrayList<String> data;
+    public ClientServerMessage<T> data;
     
     // Making a new instance of the SystemClient that implements OCSF Abstract client
     public ClientController(String host, int port) 
@@ -49,11 +51,11 @@ public class ClientController implements DisplayIF{
     }
 
 
-    public void setData(ArrayList<String> data) {
+    public void setData(ClientServerMessage<T> data) {
         this.data = data;
     }
 
-    public ArrayList<String> getData() {
+    public ClientServerMessage<T> getData() {
         return this.data;
     }
 }

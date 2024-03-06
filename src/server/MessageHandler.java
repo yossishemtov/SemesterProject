@@ -1,7 +1,10 @@
 package server;
 
 import common.*;
+
+
 import java.io.IOException;
+import java.util.ArrayList;
 
 import DB.DatabaseController;
 import ocsf.server.ConnectionToClient;
@@ -9,11 +12,12 @@ import ocsf.server.ConnectionToClient;
 public class MessageHandler {
 
     public static void handleMessage(Object msg, ConnectionToClient client) throws IOException {
-    	 BackEndServer bs = BackEndServer.getBackEndServer();
-    	 DatabaseController dbcontroller=bs.DBController;
+    	//A class that is intended to handle diffrent messages from the client and response accordingly
+    	 BackEndServer backEndServerInstance = BackEndServer.getBackEndServer();
+    	 DatabaseController dbcontroller = backEndServerInstance.DBController;
     	 
     	 
-
+    	//Checking if message is of type of generic message intended for client and server communication
         if (!(msg instanceof ClientServerMessage)) {
             try {
                 client.sendToClient(null);
@@ -22,16 +26,21 @@ public class MessageHandler {
             }
             return;
         }
-
+        
+        //Extracting data from the generic message object intended for further parsing
         ClientServerMessage message = (ClientServerMessage) msg;
         String command = message.getCommand();
         Object result;
         Object dataForClient;
         Object orderId;
 
+        
+        //Parsing the command
         switch (command) {
+        
+        	//User sends a disconnect command to the server
             case Operation.Disconnecting:
-                bs.clientDisconnected(client);
+                backEndServerInstance.clientDisconnected(client);
                 try {
                     client.sendToClient("ack_disconnect"); // Send acknowledgment to client
                 } catch (IOException e) {
@@ -42,7 +51,7 @@ public class MessageHandler {
 
                 case Operation.GetAllOrders:
                     // Placeholder for getting all orders from the database
-                	ClientServerMessage responseToclient=new ClientServerMessage(dbcontroller.getOrderDataFromDatabase(),Operation.Responseallorder);
+                	ClientServerMessage responseToclient = new ClientServerMessage(dbcontroller.getOrderDataFromDatabase(),Operation.Responseallorder);
                     client.sendToClient(responseToclient);
                 	break;
 
@@ -76,11 +85,36 @@ public class MessageHandler {
 
                 case Operation.PostNewTravlerGuider:
                     // Placeholder for posting a new traveler guide request
+                	ArrayList<GroupGuide> groupGuide=(ArrayList<GroupGuide>)message.getDataTransfered();
+;                	try {
+                	dbcontroller.addNewGroupGuide(groupGuide.get(0));
+}
+					catch(IndexOutOfBoundsException e)
+					{
+						Alerts errorAlert = new Alerts(Alerts.AlertType.ERROR, "Data base error", "Error",
+								"Error to enter a new group guide to db.");
+						errorAlert.showAndWait();
+					}
+
+                	
                     break;
 
                 case Operation.PostTravlerOrder:
                     // Placeholder for posting a new traveler order
-                    break;
+                	
+                	try {
+                		ArrayList travelerorder=(ArrayList) message.getDataTransfered();
+                    	
+                    	dbcontroller.insertTravelerOrder((Travler)travelerorder.get(0),(Order)travelerorder.get(1));
+    }
+    					catch(IndexOutOfBoundsException e)
+    					{
+    						Alerts erorAlert = new Alerts(Alerts.AlertType.ERROR, "Data base error", "Error",
+    								"Error to enter a new traveler order.");
+    						erorAlert.showAndWait();
+    					}
+
+                	break;
 
                 case Operation.PostNewReport:
                     // Placeholder for posting a new report
@@ -96,6 +130,21 @@ public class MessageHandler {
 
                 case Operation.PatchOrderStatus:
                     // Placeholder for patching order status
+                	
+                	try {
+                		ArrayList<Order> travelerorder=(ArrayList<Order>) message.getDataTransfered();
+                    	
+                    	dbcontroller.updateOrderStatus((Order)travelerorder.get(0));
+    }
+    					catch(IndexOutOfBoundsException e)
+    					{
+    						Alerts erorAlert = new Alerts(Alerts.AlertType.ERROR, "Data base error", "Error",
+    								"Error to order status order.");
+    						erorAlert.showAndWait();
+    					}
+                	
+                	
+                	
                     break;
 
                 case Operation.DeleteExistingOrder:
