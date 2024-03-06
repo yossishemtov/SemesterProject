@@ -1,6 +1,6 @@
 package common;
 
-public class GroupGuide extends Travler{
+public class GroupGuide extends Traveler{
 	private String username;
 	private String password;
 	

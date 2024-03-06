@@ -105,7 +105,7 @@ public class MessageHandler {
                 	try {
                 		ArrayList travelerorder=(ArrayList) message.getDataTransfered();
                     	
-                    	dbcontroller.insertTravelerOrder((Travler)travelerorder.get(0),(Order)travelerorder.get(1));
+                    	dbcontroller.insertTravelerOrder((Traveler)travelerorder.get(0),(Order)travelerorder.get(1));
     }
     					catch(IndexOutOfBoundsException e)
     					{

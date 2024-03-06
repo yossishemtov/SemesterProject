@@ -1,12 +1,12 @@
 package common;
 
-public class Travler {
+public class Traveler {
 	private Integer id;
 	private String firstName;
 	private String lastName;
 	private String email;
 	
-	public Travler(Integer id, String firstName, String lastName, String email) {
+	public Traveler(Integer id, String firstName, String lastName, String email) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;

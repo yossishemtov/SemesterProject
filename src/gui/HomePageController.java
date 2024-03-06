@@ -37,7 +37,7 @@ public class HomePageController {
 		//Function for opening a new scene when clicking on the Client Login button
 		try {
 			
-		Parent root = new FXMLLoader().load(getClass().getResource("ClientLoginFrame.fxml"));
+		Parent root = new FXMLLoader().load(getClass().getResource("VisitorLoginFrame.fxml"));
 		Scene scene = new Scene(root);	
 		Stage stage = (Stage)((Node)click.getSource()).getScene().getWindow(); //hiding primary window
 		
