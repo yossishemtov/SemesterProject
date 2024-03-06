@@ -154,7 +154,7 @@ public class DatabaseController {
 	 * @param traveler The traveler making the reservation.
 	 * @param order    The details of the order being made.
 	 */
-	public void insertTravelerOrder(Travler traveler, Order order) {
+	public void insertTravelerOrder(Traveler traveler, Order order) {
 		String query = "INSERT INTO orders (id, firstName, lastName, email,orderID parkNumber, amountOfVisitors, price, visitorEmail, date, visitTime) VALUES (?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
@@ -204,6 +204,19 @@ public class DatabaseController {
 			System.out.println("An error occurred while updating the order status:");
 			e.printStackTrace();
 		}
+	}
+	
+	public void GetTravelerID(Traveler traveler) {
+//		String query = "SELECT * FROM traveler WHERE id=?";
+//		try {
+//			PreparedStatement ps = connectionToDatabase.prepareStatement(query);
+//			ps.setInt(1, traveler.getId());
+//		}catch() {
+//			
+//		}
+		
+//		ClientServerMessage message = new ClientServerMessage(,guery);
+		
 	}
 
 }
