@@ -205,5 +205,18 @@ public class DatabaseController {
 			e.printStackTrace();
 		}
 	}
+	
+	public void GetTravelerID(Traveler traveler) {
+//		String query = "SELECT * FROM traveler WHERE id=?";
+//		try {
+//			PreparedStatement ps = connectionToDatabase.prepareStatement(query);
+//			ps.setInt(1, traveler.getId());
+//		}catch() {
+//			
+//		}
+		
+//		ClientServerMessage message = new ClientServerMessage(,guery);
+		
+	}
 
 }

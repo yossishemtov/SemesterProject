@@ -58,4 +58,5 @@ public class ClientController<T> implements DisplayIF{
     public ClientServerMessage<T> getData() {
         return this.data;
     }
+    
 }

@@ -7,6 +7,7 @@ public class Traveler {
 	private String email;
 	private String phoneNum;
 	
+
 	public Traveler(Integer id, String firstName, String lastName, String email, String phoneNum) {
 		this.id = id;
 		this.firstName = firstName;
