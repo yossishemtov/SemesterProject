@@ -83,7 +83,6 @@ public class UserOrdersController {
 		//The client controller receives the command to pass it further
 		//(It stops the execution flow for the client until answer received)
 			
-		ClientUI.clientControllerInstance.accept(Command);
 		
 		loadOrdersData(ClientUI.clientControllerInstance.getData());
 		}catch(Exception e){

@@ -10,9 +10,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
+import client.ClientUI;
 import client.InputValidation;
 import common.Alerts;
+import common.ClientServerMessage;
+import common.Operation;
+import common.Traveler;
 
 
 public class VisitorLoginController {
@@ -26,8 +29,9 @@ public class VisitorLoginController {
 	public void LoginBtn(ActionEvent click) throws Exception {
 	    String visitorID = VisitorID.getText(); // get the id
 	    Alerts alertID = InputValidation.ValidateVisitorID(visitorID); // get the right alert
+	    Boolean isSuccessful = alertID.getAlertType().toString().equals("INFORMATION");
 
-	    if (alertID.getAlertType().toString().equals("INFORMATION")) { // if entered right ID
+	    if (isSuccessful) { // if entered right ID
 	        try {
 	            // open visitor screen 
 	            Parent root = new FXMLLoader().load(getClass().getResource("VisitorFrame.fxml"));
@@ -46,6 +50,7 @@ public class VisitorLoginController {
 	        // Display the error alert to the user
 	        alertID.showAndWait();
 	    }
+	    
 	}
 	
 	public void BackBtn(ActionEvent click) throws Exception{

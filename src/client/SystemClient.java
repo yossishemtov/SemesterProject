@@ -5,6 +5,8 @@ import server.BackEndServer;
 import java.util.ArrayList;
 
 import clientEntities.Reservation;
+import common.Alerts;
+import common.ClientServerMessage;
 import common.DisplayIF;
 import ocsf.client.AbstractClient;
 
@@ -12,46 +14,37 @@ public class SystemClient extends AbstractClient{
 	
 	//A boolean to indicate waiting for a server response
 	public static boolean awaitResponse = false;
-	private ClientController clientController;
+	private ClientController clientControllerInstance;
 
 	public SystemClient(String host, int port, ClientController clientController) throws IOException{
 		super(host, port);
-		this.clientController = clientController;
+		this.clientControllerInstance = clientController;
 		// TODO Auto-generated constructor stub
 		openConnection();
 	}
 
 
 	//Handle message from the server
-	  public void handleMessageFromServer(Object msg) 
-	  
+	  public void handleMessageFromServer(Object messageFromServer) 
 	  {
 		    // Check for disconnection acknowledgment
-		    if ("ack_disconnect".equals(msg.toString())) {
+		    if ("ack_disconnect".equals(messageFromServer.toString())) {
 		        awaitResponse = false; // Acknowledgment received; stop waiting
 		        return; // Early return to skip further processing
 		    }
 		  
 		  awaitResponse = false;
-		    // Check if the message is the type you expect, in this case, ArrayList<String>
-		    if (msg instanceof ArrayList) {
-		    	String userCommand = ((ArrayList<String>) msg).get(0);
-		    	
-		    	
-		    	System.out.println("in");
-		        ArrayList<String> orderData = (ArrayList<String>) msg;
-		        
-		    //Putting the received data in the ClientController data array using the setData mathod
-		    switch(userCommand) {
-		    }
+		    // Check if the message is of type of the ClientServerMessage
+		    if (messageFromServer instanceof ClientServerMessage) {
+		    	clientControllerInstance.setData((ClientServerMessage)messageFromServer);
 		        
 		    }else{
-		    	clientController.display(msg.toString());
+		    	Alerts alertOfUnknownTypeOfMessage = new Alerts(Alerts.AlertType.ERROR, "Received Data Error", "", "Something went wrong while receiving the data from the server");
 		   }
 	  }
 	  
 	  
-	  public void handleMessageFromClientController(String message)  
+	  public void handleMessageFromClientController(ClientServerMessage messageToServer)  
 	  {
 		  
 		  awaitResponse = true;
@@ -59,7 +52,7 @@ public class SystemClient extends AbstractClient{
 		//Send the message to the server and waiting for a response
 	    try
 		    {
-		    	sendToServer(message);
+		    	sendToServer(messageToServer);
 		    	
 		    	while (awaitResponse) {
 					try {
@@ -71,7 +64,7 @@ public class SystemClient extends AbstractClient{
 		    }
 	    catch(IOException e)
 		    {
-		    	clientController.display
+		    	clientControllerInstance.display
 		        ("Could not send message to server.  Terminating client.");
 		      quit();
 		    }

@@ -32,7 +32,7 @@ public class ClientController<T> implements DisplayIF{
         // Display message logic here
     }
 
-    public void accept(String command) {
+    public void sendMessageToServer(ClientServerMessage command) {
         // Handle message from any controller that is related to the client
         try
         {
