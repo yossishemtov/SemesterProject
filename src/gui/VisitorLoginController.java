@@ -33,33 +33,28 @@ public class VisitorLoginController {
 //		}
 //	}
 	
-//	public void LoginBtn(ActionEvent click) throws Exception {
-//		String visitorID = VisitorID.getText();
-//		 if (isValidID(visitorID)) { // checking if ID is valid
-//				try {
-//					// open visitor screen
-//					Parent root = new FXMLLoader().load(getClass().getResource("HomePageFrame.fxml"));
-//					Stage stage = (Stage)((Node)click.getSource()).getScene().getWindow(); //hiding primary window
-//					Scene scene = new Scene(root);	
-//					
-//					stage.setTitle("Visitor Screen");
-//					
-//					stage.setScene(scene);		
-//					stage.show();
-//					
-//					} catch(Exception e) {
-//						System.out.print("Something went wrong while clicking on visitor login button, check stack trace");
-//						e.printStackTrace();
-//					}
-//		 } else {
-//			 
-//			 System.out.print("visitor ID is not valid");
-//		 }
-//	}
-//	
-	// validate ID of visitor
-	private boolean isValidID(String id) {
-	    return id != null && id.matches("\\d{9}");
+	public void LoginBtn(ActionEvent click) throws Exception {
+		String visitorID = VisitorID.getText();
+		 if (visitorID != null && visitorID.matches("\\d{9}")) { // checking if ID is valid
+				try {
+					// open visitor screen (right now home page for checking)
+					Parent root = new FXMLLoader().load(getClass().getResource("HomePageFrame.fxml"));
+					Stage stage = (Stage)((Node)click.getSource()).getScene().getWindow(); //hiding primary window
+					Scene scene = new Scene(root);	
+					
+					stage.setTitle("Visitor Screen");
+					
+					stage.setScene(scene);		
+					stage.show();
+					
+					} catch(Exception e) {
+						System.out.print("Something went wrong while clicking on visitor login button, check stack trace");
+						e.printStackTrace();
+					}
+		 } else {
+			 
+			 System.out.print("visitor ID is not valid");
+		 }
 	}
 	
 	public void BackBtn(ActionEvent click) throws Exception{
