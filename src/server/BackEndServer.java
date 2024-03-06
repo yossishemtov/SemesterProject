@@ -92,7 +92,7 @@ public class BackEndServer extends AbstractServer
   public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 	  
 	  try {
-		MessageHandler.handleMessage(msg,client);
+		MessageHandlerFromClient.handleMessage(msg,client);
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();

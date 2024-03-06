@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import DB.DatabaseController;
 import ocsf.server.ConnectionToClient;
 
-public class MessageHandler {
+public class MessageHandlerFromClient {
 
     public static void handleMessage(Object msg, ConnectionToClient client) throws IOException {
     	//A class that is intended to handle diffrent messages from the client and response accordingly
