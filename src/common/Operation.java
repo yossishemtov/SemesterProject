@@ -4,9 +4,11 @@ public abstract class Operation {
     // Structure of a command: COMMAND nameOfCommand
     
     // GET COMMANDS
-    public final static String GetAllOrders = "Get all orders";
+    public final static String GetAllOrders = "Get all orders";//1
     public final static String GetTravlerInfo = "Get traveler information";
     public final static String GetTravlerLoginDetails = "Get traveler login details";
+    
+    public final static String GetGeneralParkWorkerDetails = "Get GeneralParkWorker details";
     public final static String GetAllReports = "Get all reports";
     public final static String GetSpecificReport = "Get a specific report";
     public final static String GetMessages = "Get messages";
