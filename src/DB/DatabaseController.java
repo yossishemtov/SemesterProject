@@ -154,7 +154,7 @@ public class DatabaseController {
 	 * @param traveler The traveler making the reservation.
 	 * @param order    The details of the order being made.
 	 */
-	public void insertTravelerOrder(Travler traveler, Order order) {
+	public void insertTravelerOrder(Traveler traveler, Order order) {
 		String query = "INSERT INTO orders (id, firstName, lastName, email,orderID parkNumber, amountOfVisitors, price, visitorEmail, date, visitTime) VALUES (?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
