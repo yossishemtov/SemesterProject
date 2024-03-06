@@ -43,14 +43,6 @@ public class SystemClient extends AbstractClient{
 		        
 		    //Putting the received data in the ClientController data array using the setData mathod
 		    switch(userCommand) {
-			    case "GET ALL":
-			    	orderData.remove(0);
-			    	clientController.setData(orderData);
-			    	break;
-			    
-			    case "GET ORDER":
-			    	orderData.remove(0);
-			    	clientController.setData(orderData);
 		    }
 		        
 		    }else{

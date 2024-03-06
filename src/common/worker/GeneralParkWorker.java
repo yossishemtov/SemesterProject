@@ -1,7 +1,7 @@
 package common.worker;
 
 public class GeneralParkWorker {
-	private Integer workerNumber;
+	private Integer workerId;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -12,7 +12,7 @@ public class GeneralParkWorker {
 	public GeneralParkWorker(Integer workerNumber, String firstName, String lastName, String email, String role,
 			String userName, String password) {
 		super();
-		this.workerNumber = workerNumber;
+		this.workerId = workerNumber;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -22,10 +22,10 @@ public class GeneralParkWorker {
 	}
 	
 	public Integer getWorkerNumber() {
-		return workerNumber;
+		return workerId;
 	}
 	public void setWorkerNumber(Integer workerNumber) {
-		this.workerNumber = workerNumber;
+		this.workerId = workerNumber;
 	}
 	public String getFirstName() {
 		return firstName;
