@@ -40,58 +40,51 @@ public class MessageHandlerFromClient {
 		switch (command) {
 
 		// User sends a disconnect command to the server
-		case Operation.Disconnecting:
+		case Operation.DISCONNECTING:
 			backEndServerInstance.clientDisconnected(client);
 			try {
-				client.sendToClient(Operation.Disconnecting); // Send acknowledgment to client
+				client.sendToClient(Operation.DISCONNECTING); // Send acknowledgment to client
 			} catch (IOException e) {
 				System.out.println("Error sending ack_disconnect to client: " + e.getMessage());
 			}
 			break;
 
 		// get all traveler orders from data base
-		case Operation.GetAllOrders:
+		case Operation.GET_ALL_ORDERS:
 			// Placeholder for getting all orders from the database
 			Traveler dataTraveler = ((ArrayList<Traveler>) message.getDataTransfered()).get(0);
 			message.setDataTransfered(dbcontroller.getOrdersDataFromDatabase(dataTraveler));
 			client.sendToClient(message);
 			break;
 
-		case Operation.GetTravlerInfo:
+		case Operation.GET_TRAVLER_INFO:
 			// Placeholder for getting traveler information
 			break;
 
-		case Operation.GetGeneralParkWorkerDetails:
+		case Operation.GET_GENERAL_PARK_WORKER_DETAILS:
 			ArrayList<GeneralParkWorker> generalParkWorker = (ArrayList<GeneralParkWorker>) message.getDataTransfered();
 			message.setDataTransfered(dbcontroller.getGeneralParkWorkerDetails(generalParkWorker.get(0)));
 			client.sendToClient(message);
 			break;
 
-		case Operation.GetTravlerLoginDetails:
-			// Placeholder for getting traveler login details
-			break;
 
-		case Operation.GetAllReports:
+		case Operation.GET_ALL_REPORTS:
 			// Placeholder for getting all reports
 			break;
 
-		case Operation.GetSpecificReport:
+		case Operation.GET_SPECIFIC_REPORT:
 			// Placeholder for getting a specific report
 			break;
 
-		case Operation.GetMessages:
+		case Operation.GET_MESSAGES:
 			// Placeholder for getting messages
 			break;
 
-		case Operation.GetProfile:
-			// Placeholder for getting a profile
-			break;
-
-		case Operation.GetAmountOfVisitors:
+		case Operation.GET_AMOUNT_OF_VISITORS:
 			// Placeholder for getting the amount of visitors
 			break;
 
-		case Operation.PostNewTravlerGuider:
+		case Operation.POST_NEW_TRAVLER_GUIDER:
 			// Placeholder for posting a new traveler guide request
 			ArrayList<GroupGuide> groupGuide = (ArrayList<GroupGuide>) message.getDataTransfered();
 			;
@@ -109,7 +102,7 @@ public class MessageHandlerFromClient {
 
 			break;
 
-		case Operation.PostTravlerOrder:
+		case Operation.POST_TRAVLER_ORDER:
 			// Placeholder for posting a new traveler order
 
 			try {
@@ -128,19 +121,17 @@ public class MessageHandlerFromClient {
 
 			break;
 
-		case Operation.PostNewReport:
+		case Operation.POST_NEW_REPORT:
 			// Placeholder for posting a new report
 			break;
 
-		case Operation.PatchExistOrder:
-			// Placeholder for patching an existing order
-			break;
+		
 
-		case Operation.PatchParkParameters:
+		case Operation.PATCH_PARK_PARAMETERS:
 			// Placeholder for patching park parameters
 			break;
 
-		case Operation.PatchOrderStatus:
+		case Operation.PATCH_ORDER_STATUS:
 			// Placeholder for patching order status
 
 			ArrayList<Order> travelerorder = (ArrayList<Order>) message.getDataTransfered();
@@ -156,7 +147,7 @@ public class MessageHandlerFromClient {
 
 			break;
 
-		case Operation.DeleteExistingOrder:
+		case Operation.DELETE_EXISTING_ORDER:
 			Order orderToDelete = ((ArrayList<Order>) message.getDataTransfered()).get(0);
 
 			if (dbcontroller.deleteOrder(orderToDelete.getOrderId())) {
