@@ -6,7 +6,7 @@ public class GroupGuide extends Traveler{
 	
 	public GroupGuide(Integer id, String firstName, String lastName, String email, String username,
 			String password) {
-		super(id, firstName, lastName, email);
+		super(id, firstName, lastName, email, password);
 
 		this.username = username;
 		this.password = password;

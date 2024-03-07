@@ -14,12 +14,19 @@ public class Order {
 		CONFIRM,
 		CANCEL
 	}
+	private enum typeOfOrder{
+		SOLO,
+		FAMILY,
+		GUIDEDGROUP
+	}
 	private String visitorEmail;
 	private LocalDate date;
 	private LocalTime visitTime;
 	private status orderStatus;
+	private typeOfOrder orderType;
 
 	
+<<<<<<< HEAD
 	public Order(Integer orderID,Integer visitorId, Integer parkNumber, Integer amountOfVisitors, Float price, String visitorEmail, LocalDate date,
             LocalTime visitTime, String statusStr) { // Renamed the parameter to avoid confusion
    this.parkNumber = parkNumber;
@@ -50,6 +57,20 @@ public void setOrderStatus(String orderStatusStr) {
        this.orderStatus = Order.status.PENDING; // Example default handling
    }
 }
+=======
+	
+	public Order(Integer orderID,Integer parkNumber, Integer amountOfVisitors, Float price, String visitorEmail, LocalDate date,
+			LocalTime visitTime, typeOfOrder orderType) {
+		this.parkNumber = parkNumber;
+		this.amountOfVisitors = amountOfVisitors;
+		this.price = price;
+		this.visitorEmail = visitorEmail;
+		this.date = date;
+		this.visitTime = visitTime;
+		this.orderStatus=status.PENDING;
+		this.orderType = orderType;
+	}
+>>>>>>> ItayBranch
 
 
 

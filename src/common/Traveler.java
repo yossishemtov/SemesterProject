@@ -5,12 +5,15 @@ public class Traveler {
 	private String firstName;
 	private String lastName;
 	private String email;
+	private String phoneNum;
 	
-	public Traveler(Integer id, String firstName, String lastName, String email) {
+
+	public Traveler(Integer id, String firstName, String lastName, String email, String phoneNum) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.phoneNum = phoneNum;
 	}
 
 	public Integer getId() {

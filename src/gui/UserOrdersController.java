@@ -75,6 +75,7 @@ public class UserOrdersController {
 
 	public void showOrdersBtn(ActionEvent click) throws Exception {
 		ClientServerMessage clientServerMessageInstanch = new ClientServerMessage("", "ALLORDERSOFVISITOR");
+<<<<<<< HEAD
 
 		try {
 			// The client controller receives the command to pass it further
@@ -84,6 +85,16 @@ public class UserOrdersController {
 
 			loadOrdersData(ClientUI.clientControllerInstance.getData());
 		} catch (Exception e) {
+=======
+		
+		try {			
+		//The client controller receives the command to pass it further
+		//(It stops the execution flow for the client until answer received)
+			
+		
+		loadOrdersData(ClientUI.clientControllerInstance.getData());
+		}catch(Exception e){
+>>>>>>> ItayBranch
 			e.printStackTrace();
 		}
 
