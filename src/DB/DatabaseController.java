@@ -27,50 +27,53 @@ public class DatabaseController {
 	
 	
 	// Get GeneralParkWorkerDetails
-	// check GetGeneralParkWorker login details and return the data,if not exist return empty ArrayList
+	// check GetGeneralParkWorker login details and return the data,if not exist return empty ArrayList of type generalParkWorker
+	// WorkerId | firstName | lastName | email | role | userName | password | worksAtPark
 	public ArrayList<GeneralParkWorker> getGeneralParkWorkerDetails(GeneralParkWorker worker) {
 		ArrayList<Order> orderDataForClient = new ArrayList<>();
 		String query = "SELECT * FROM `generalparkworker` WHERE userName = ? AND password= ?";
 		ArrayList<GeneralParkWorker> GeneralParkWorkerList = new ArrayList<>();
 
-		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-			ps.setString(1, worker.getUserName());
-			ps.setString(2, worker.getPassword());
-			ResultSet rs = ps.executeQuery();
+		try (PreparedStatement preparedStatementInstance = connectionToDatabase.prepareStatement(query)) {
+			preparedStatementInstance.setString(1, worker.getUserName());
+			preparedStatementInstance.setString(2, worker.getPassword());
+			ResultSet returnedStatement = preparedStatementInstance.executeQuery();
 
-			while (rs.next()) {
+			while (returnedStatement.next()) {
 
-				Integer workerId = rs.getInt(1);
-				String firstName = rs.getString(2);
-				String lastName = rs.getString(3);
-				String email = rs.getString(4);
-				String role = rs.getString(5);
-				String userName = rs.getString(6);
-				String password = rs.getString(7);
+				Integer workerId = returnedStatement.getInt(1);
+				String firstName = returnedStatement.getString(2);
+				String lastName = returnedStatement.getString(3);
+				String email = returnedStatement.getString(4);
+				String role = returnedStatement.getString(5);
+				String userName = returnedStatement.getString(6);
+				String password = returnedStatement.getString(7);
+				Integer worksAtPark = returnedStatement.getInt(8);
 
 				switch (role) {
 
-				case "Department manager":
-
-					DepartmentManager departmentManager = new DepartmentManager(workerId, firstName, lastName, email,
-							role, userName, password);
-					GeneralParkWorkerList.add(departmentManager);
-
-				case "Park manager":
-
-					ParkManager ParkManager = new ParkManager(workerId, firstName, lastName, email, role, userName,
-							password);
-					GeneralParkWorkerList.add(ParkManager);
-
-				case "Worker":
-
-					ParkManager GeneralParkWorker = new ParkManager(workerId, firstName, lastName, email, role,
-							userName, password);
-					GeneralParkWorkerList.add(GeneralParkWorker);
+					case "Department manager":
+						
+						DepartmentManager departmentManager = new DepartmentManager(workerId, firstName, lastName, email,
+								userName, password, worksAtPark);
+						GeneralParkWorkerList.add(departmentManager);
+	
+					case "Park manager":
+	
+						ParkManager ParkManager = new ParkManager(workerId, firstName, lastName, email, userName,
+								password, worksAtPark);
+						GeneralParkWorkerList.add(ParkManager);
+	
+					case "Worker":
+	
+						GeneralParkWorker GeneralParkWorker = new GeneralParkWorker(workerId, firstName, lastName, email, role,
+								userName, password, worksAtPark);
+						GeneralParkWorkerList.add(GeneralParkWorker);
 
 				}
 
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 
