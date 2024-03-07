@@ -154,36 +154,37 @@ public class DatabaseController {
 	     * @param order The details of the order being made.
 	     * @return true if insertion was successful, false otherwise.
 	     */
-		public Boolean insertTravelerOrder(Traveler traveler, Order order) {
-			String query = "INSERT INTO orders (id, firstName, lastName, email,orderID parkNumber, amountOfVisitors, price, visitorEmail, date, visitTime) VALUES (?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		public Boolean insertTravelerOrder(Order order) {
+		    // Assuming the database schema aligns with the fields of the Order class
+		    String query = "INSERT INTO orders (orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date, visitTime, orderStatus, typeOfOrder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-			try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-				ps.setInt(1, traveler.getId());
-				ps.setString(2, traveler.getFirstName());
-				ps.setString(3, traveler.getLastName());
-				ps.setString(4, traveler.getEmail());
-				ps.setInt(5, order.getOrderId());
-				ps.setInt(6, order.getParkNumber());
-				ps.setInt(7, order.getAmountOfVisitors());
-				ps.setFloat(8, order.getPrice());
-				ps.setString(9, order.getVisitorEmail());
-				ps.setDate(10, java.sql.Date.valueOf(order.getDate())); // Convert LocalDate to sql.Date
-				ps.setTime(11, java.sql.Time.valueOf(order.getVisitTime())); // Convert LocalTime to sql.Time
+		    try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+		        // Set parameters based on the Order object fields
+		        ps.setInt(1, order.getOrderId());
+		        ps.setInt(2, order.getVisitorId());
+		        ps.setInt(3, order.getParkNumber());
+		        ps.setInt(4, order.getAmountOfVisitors());
+		        ps.setFloat(5, order.getPrice());
+		        ps.setString(6, order.getVisitorEmail());
+		        ps.setDate(7, java.sql.Date.valueOf(order.getDate()));
+		        ps.setTime(8, java.sql.Time.valueOf(order.getVisitTime()));
+		        ps.setString(9, order.getOrderStatus()); // Directly use the enum's name as the DB value
+		        ps.setString(10, order.getTypeOfOrder()); // Same here
 
-				int affectedRows = ps.executeUpdate();
-				if (affectedRows > 0) {
-				
-					System.out.println("Reservation inserted successfully.");
-					return true;
-				} else {
-					System.out.println("A problem occurred and the reservation was not inserted.");
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			return false;
-
+		        int affectedRows = ps.executeUpdate();
+		        if (affectedRows > 0) {
+		            System.out.println("Reservation inserted successfully.");
+		            return true;
+		        } else {
+		            System.out.println("A problem occurred and the reservation was not inserted.");
+		            return false;
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		        return false;
+		    }
 		}
+
 
 	    /**
 	     * Updates the status of an existing order in the database.
