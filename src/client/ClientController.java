@@ -16,7 +16,7 @@ public class ClientController<T> implements DisplayIF{
     // Making a new instance of the SystemClient that implements OCSF Abstract client
     public ClientController(String host, int port) 
     {
-        try 
+        try  
         {
             systemClient = new SystemClient(host, port, this);
         } 

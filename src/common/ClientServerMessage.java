@@ -11,6 +11,11 @@ public class ClientServerMessage<T> implements Serializable{
 	//A generic class that is meant to handle data and command from server and client in a generic way
 	private Object dataTransfered;
 	private String command;
+	private Boolean flag;
+	
+	
+	
+	
 	
 	public ClientServerMessage(Object dataTransfered, String command) {
 		this.dataTransfered = dataTransfered;
@@ -53,6 +58,19 @@ public class ClientServerMessage<T> implements Serializable{
 	public void setDataTransfered(Object dataTransfered) {
 		this.dataTransfered = dataTransfered;
 	}
+	
+	public void setflagFalse() {
+		this.flag=false;
+	}
+	
+	public void setflagTrue() {
+		this.flag=true;
+	}
+	
+	public Boolean getFlag() {
+		return flag;
+	}
+	
 
 	public String getCommand() {
 		return command;

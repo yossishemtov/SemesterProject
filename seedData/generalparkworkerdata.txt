@@ -1,4 +1,4 @@
-1 	John 	Doe 	johndoe@example.com 	Manager 	johndoe123 	password123
-2	Jane 	Smith 	janesmith@example.com 	Worker 	janesmith456 	password456
-3	Michael 	Johnson 	michaeljohnson@example.com 	Worker 	michaelj 	password789
-4	Emily 	Williams 	emilywilliams@example.com 	Worker 	emilyw 	password123
+1 	John 	Doe 	johndoe@example.com 	Manager 	johndoe123 	password123 	1
+2	Jane 	Smith 	janesmith@example.com 	Manager 	janesmith456 	password456 	2
+3	Michael 	Johnson 	michaeljohnson@example.com 	Worker 	michaelj 	password789 	3
+4	Emily 	Williams 	emilywilliams@example.com 	Worker 	emilyw 	password123 	1
