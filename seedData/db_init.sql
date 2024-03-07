@@ -1,3 +1,5 @@
+SET foreign_key_checks = 0;
+
 CREATE TABLE `Order` (
   `orderId` INT NOT NULL,
   `travlerId` INT NOT NULL,
@@ -10,8 +12,19 @@ CREATE TABLE `Order` (
   `visitTime` TIME NOT NULL,
   `orderStatus` VARCHAR(255),
   PRIMARY KEY (`orderId`),
+  `typeOfOrder` VARCHAR(255),
   FOREIGN KEY (travlerId) REFERENCES Travler(id)
 );
+
+CREATE TABLE `Travler` (
+    `id` INT PRIMARY KEY,
+    `firstName` VARCHAR(255),
+    `lastName` VARCHAR(255),
+    `email` VARCHAR(255),
+    `phoneNumber` VARCHAR(255),
+    `GroupGuide` TINYINT(1) DEFAULT 0
+);
+
 
 CREATE TABLE `GeneralParkWorker` (
     `workerId` INT PRIMARY KEY,
@@ -37,17 +50,10 @@ CREATE TABLE `Park` (
     FOREIGN KEY (managerId) REFERENCES GeneralParkWorker(workerId)
 );
 
-CREATE TABLE `GroupGuide` (
-    `id` INT PRIMARY KEY,
-    `username` VARCHAR(255),
-    `password` VARCHAR(255),
-    FOREIGN KEY (id) REFERENCES Travler(id)
-);
-
 CREATE TABLE `Visit` (
     `visitDate` DATE,
     `enteringTime` TIME,
-    `existingTime` TIME,
+    `exitingTime` TIME,
     `parkNumber` INT,
     FOREIGN KEY (parkNumber) REFERENCES park(parkNumber)
 );
@@ -61,20 +67,7 @@ CREATE TABLE `WaitingList` (
     FOREIGN KEY (parkNumber) REFERENCES Park(parkNumber)
 );
 
-CREATE TABLE `Travler` (
-    `id` INT PRIMARY KEY,
-    `firstName` VARCHAR(255),
-    `lastName` VARCHAR(255),
-    `email` VARCHAR(255),
-    `phoneNumber` VARCHAR(255)
-);
-
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/waitingListData.txt'
-INTO TABLE project.waitinglist;
-
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/groupguidedata.txt'
-INTO TABLE project.groupguide; 
-
+ALTER TABLE `GeneralParkWorker` ADD COLUMN `worksAtPark` INT, ADD FOREIGN KEY (`worksAtPark`) REFERENCES Park(parkNumber);
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/parkdata.txt'
 INTO TABLE project.Park;
 
@@ -89,3 +82,7 @@ INTO TABLE project.order;
 
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/visitdata.txt'
 INTO TABLE project.visit;
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.3/Uploads/waitingListData.txt'
+INTO TABLE project.waitinglist;
+
