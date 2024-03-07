@@ -264,6 +264,77 @@ public class DatabaseController {
 	            return false;
 	        }
 	    }
+	    
+	    
+	    public ArrayList<Park> getAmountOfVisitors(Park park) {
+	        ArrayList<Park> parks = new ArrayList<>();
+	        String query = "SELECT * FROM park WHERE parkNumber=?"; // Corrected FROM clause
+
+	        try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	            ps.setInt(1, park.getParkNumber());
+	            ResultSet rs = ps.executeQuery(); // Use executeQuery for SELECT statements
+
+	            while (rs.next()) {
+	                // Assuming you have a constructor that matches this data extraction pattern.
+	                Park fetchedPark = new Park(
+	                    rs.getString("name"), 
+	                    rs.getInt("parkNumber"), 
+	                    rs.getInt("maxVisitors"), 
+	                    rs.getInt("capacity"), 
+	                    rs.getInt("currentVisitors"), 
+	                    rs.getString("location"), 
+	                    rs.getInt("staytime"), 
+	                    rs.getInt("workersAmount"), 
+	                    null, // For manager, since it's a complex object, you might need a different approach
+	                    rs.getInt("workingTime")
+	                );
+	                parks.add(fetchedPark);
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	        return parks;
+	    }
+	    
+	    public VisitorsReport getTotalNumberOfVisitorsReport() {
+	        String query = "SELECT typeOfOrder, SUM(amountOfVisitors) AS totalVisitors " +
+	                       "FROM orders GROUP BY typeOfOrder";
+
+	        int totalIndividuals = 0;
+	        int totalGroups = 0;
+	        int totalFamilies = 0; // Initialize total for family visitors
+
+	        try (Statement statement = connectionToDatabase.createStatement();
+	             ResultSet resultSet = statement.executeQuery(query)) {
+
+	            while (resultSet.next()) {
+	                String typeOfOrder = resultSet.getString("typeOfOrder");
+	                int totalVisitors = resultSet.getInt("totalVisitors");
+
+	                switch (typeOfOrder) {
+	                    case "SOLO":
+	                        totalIndividuals += totalVisitors;
+	                        break;
+	                    case "GUIDEDGROUP":
+	                        totalGroups += totalVisitors;
+	                        break;
+	                    case "FAMILY": // Handle the new category
+	                        totalFamilies += totalVisitors;
+	                        break;
+	                    default:
+	                        // Handle any unexpected typeOfOrder
+	                        break;
+	                }
+	            }
+	        } catch (SQLException e) {
+	            System.err.println("An error occurred while fetching the total number of visitors report: " + e.getMessage());
+	            e.printStackTrace();
+	        }
+
+	        return new VisitorsReport(totalIndividuals, totalGroups, totalFamilies); // Pass the new total as well
+	    }
+
+	    
 
 
 }

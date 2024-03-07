@@ -10,7 +10,7 @@ public abstract class Operation {
     
     public final static String GET_GENERAL_PARK_WORKER_DETAILS = "Get GeneralParkWorker details";
     public final static String GET_ALL_REPORTS = "Get all reports";
-    public final static String GET_SPECIFIC_REPORT = "Get a specific report";
+    public final static String GET_VISITORS_REPORT = "Get visitors report report";
     public final static String GET_MESSAGES = "Get messages";
     public final static String DISCONNECTING = "Disconnecting from server";
     public final static String GET_PROFILE = "Get user profile";

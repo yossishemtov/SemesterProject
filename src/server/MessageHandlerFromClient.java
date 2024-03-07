@@ -67,13 +67,13 @@ public class MessageHandlerFromClient {
 			client.sendToClient(message);
 			break;
 
-
 		case Operation.GET_ALL_REPORTS:
 			// Placeholder for getting all reports
 			break;
 
-		case Operation.GET_SPECIFIC_REPORT:
-			// Placeholder for getting a specific report
+		case Operation.GET_VISITORS_REPORT:
+			message.setDataTransfered(dbcontroller.getTotalNumberOfVisitorsReport());
+			client.sendToClient(message);
 			break;
 
 		case Operation.GET_MESSAGES:
@@ -82,23 +82,20 @@ public class MessageHandlerFromClient {
 
 		case Operation.GET_AMOUNT_OF_VISITORS:
 			// Placeholder for getting the amount of visitors
+			ArrayList<Park> park_Check_AmountVisitors = (ArrayList<Park>) message.getDataTransfered();
+			message.setDataTransfered(dbcontroller.getAmountOfVisitors(park_Check_AmountVisitors.get(0)));
+			client.sendToClient(message);
 			break;
 
 		case Operation.POST_NEW_TRAVLER_GUIDER:
 			// Placeholder for posting a new traveler guide request
 			ArrayList<GroupGuide> groupGuide = (ArrayList<GroupGuide>) message.getDataTransfered();
-			;
-			try {
-				// send to data base group guide to insert
-				dbcontroller.addNewGroupGuide(groupGuide.get(0));
-				// if the insert success ,send to client true
-				message.setDataTransfered(true);
-				client.sendToClient(message);
-			} catch (IndexOutOfBoundsException e) {
-				Alerts errorAlert = new Alerts(Alerts.AlertType.ERROR, "Data base error", "Error",
-						"Error to enter a new group guide to db.");
-				errorAlert.showAndWait();
-			}
+
+			// send to data base group guide to insert
+			dbcontroller.addNewGroupGuide(groupGuide.get(0));
+			// if the insert success ,send to client true
+			message.setDataTransfered(true);
+			client.sendToClient(message);
 
 			break;
 
@@ -106,9 +103,9 @@ public class MessageHandlerFromClient {
 			// Placeholder for posting a new traveler order
 
 			try {
-				ArrayList travelerOrder = (ArrayList) message.getDataTransfered();
+				ArrayList<Order> travelerOrder = (ArrayList<Order>) message.getDataTransfered();
 
-				if (dbcontroller.insertTravelerOrder((Traveler) travelerOrder.get(0), (Order) travelerOrder.get(1))) {
+				if (dbcontroller.insertTravelerOrder((Order) travelerOrder.get(0))) {
 					message.setflagTrue();
 
 				} else {
@@ -125,10 +122,18 @@ public class MessageHandlerFromClient {
 			// Placeholder for posting a new report
 			break;
 
-		
-
 		case Operation.PATCH_PARK_PARAMETERS:
 			// Placeholder for patching park parameters
+			ArrayList<Park> park = (ArrayList<Park>) message.getDataTransfered();
+			if (dbcontroller.patchParkParameters(park.get(0))) {
+				message.setflagTrue();
+			} else {
+				message.setflagFalse();
+
+			}
+
+			client.sendToClient(message);
+
 			break;
 
 		case Operation.PATCH_ORDER_STATUS:
