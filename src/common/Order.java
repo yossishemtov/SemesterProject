@@ -13,15 +13,21 @@ public class Order {
 		CONFIRM,
 		CANCEL
 	}
+	private enum typeOfOrder{
+		SOLO,
+		FAMILY,
+		GUIDEDGROUP
+	}
 	private String visitorEmail;
 	private LocalDate date;
 	private LocalTime visitTime;
 	private status orderStatus;
+	private typeOfOrder orderType;
 
 	
 	
 	public Order(Integer orderID,Integer parkNumber, Integer amountOfVisitors, Float price, String visitorEmail, LocalDate date,
-			LocalTime visitTime) {
+			LocalTime visitTime, typeOfOrder orderType) {
 		this.parkNumber = parkNumber;
 		this.amountOfVisitors = amountOfVisitors;
 		this.price = price;
@@ -29,6 +35,7 @@ public class Order {
 		this.date = date;
 		this.visitTime = visitTime;
 		this.orderStatus=status.PENDING;
+		this.orderType = orderType;
 	}
 
 

@@ -26,9 +26,6 @@ public abstract class Operation {
     
     // DELETE COMMANDS
     public final static String DeleteExistingOrder = "Delete an existing order";
-    
-    
-    
     public final static String Responseallorder = "server send all order";
     
 }
