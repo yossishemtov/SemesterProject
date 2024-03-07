@@ -9,142 +9,133 @@ public class Order {
 	private Integer orderId;
 	private Integer visitorId;
 	private Float price;
-	private enum status{
-		PENDING,
-		CONFIRM,
-		CANCEL
-	}
-	private enum typeOfOrder{
-		SOLO,
-		FAMILY,
-		GUIDEDGROUP
-	}
 	private String visitorEmail;
 	private LocalDate date;
 	private LocalTime visitTime;
+	private String telephoneNumber; // Added TelephoneNumber field
 	private status orderStatus;
 	private typeOfOrder orderType;
 
-	
-<<<<<<< HEAD
-	public Order(Integer orderID,Integer visitorId, Integer parkNumber, Integer amountOfVisitors, Float price, String visitorEmail, LocalDate date,
-            LocalTime visitTime, String statusStr) { // Renamed the parameter to avoid confusion
-   this.parkNumber = parkNumber;
-   this.visitorId=visitorId;
-   this.amountOfVisitors = amountOfVisitors;
-   this.orderId = orderID;
-   this.price = price;
-   this.visitorEmail = visitorEmail;
-   this.date = date;
-   this.visitTime = visitTime;
+	private enum status {
+		PENDING, CONFIRM, CANCEL
+	}
 
-   // Convert the String status to the enum type status before assigning
-   try {
-       this.orderStatus = Order.status.valueOf(statusStr.toUpperCase());
-   } catch (IllegalArgumentException e) {
-       this.orderStatus = Order.status.PENDING; // Default to PENDING if conversion fails
-       // Log or handle the exception as needed
-   }
-}
+	private enum typeOfOrder {
+		SOLO, FAMILY, GUIDEDGROUP
+	}
 
-//Adjusted to correctly use the enum for setting
-public void setOrderStatus(String orderStatusStr) {
-   try {
-       this.orderStatus = Order.status.valueOf(orderStatusStr.toUpperCase());
-   } catch (IllegalArgumentException e) {
-       // Handle the case where the provided string does not match any enum constants
-       // This could log an error, throw a custom exception, or set a default value
-       this.orderStatus = Order.status.PENDING; // Example default handling
-   }
-}
-=======
-	
-	public Order(Integer orderID,Integer parkNumber, Integer amountOfVisitors, Float price, String visitorEmail, LocalDate date,
-			LocalTime visitTime, typeOfOrder orderType) {
+	// Adjusted constructor to include typeOfOrderStr and telephoneNumber
+	public Order(Integer orderId, Integer visitorId, Integer parkNumber, Integer amountOfVisitors, Float price,
+			String visitorEmail, LocalDate date, LocalTime visitTime, String statusStr, String typeOfOrderStr,
+			String telephoneNumber) {
+		this.orderId = orderId;
+		this.visitorId = visitorId;
 		this.parkNumber = parkNumber;
 		this.amountOfVisitors = amountOfVisitors;
 		this.price = price;
 		this.visitorEmail = visitorEmail;
 		this.date = date;
 		this.visitTime = visitTime;
-		this.orderStatus=status.PENDING;
-		this.orderType = orderType;
+		this.telephoneNumber = telephoneNumber; // Set the telephone number
+
+		// Convert the String status to the enum status
+		try {
+			this.orderStatus = Order.status.valueOf(statusStr.toUpperCase());
+		} catch (IllegalArgumentException e) {
+			this.orderStatus = Order.status.PENDING; // Default to PENDING if conversion fails
+		}
+
+		// Convert the String typeOfOrder to the enum typeOfOrder
+		try {
+			this.orderType = Order.typeOfOrder.valueOf(typeOfOrderStr.toUpperCase());
+		} catch (IllegalArgumentException e) {
+			// Handle the error or default case here
+			// For example, default to SOLO if the conversion fails
+			this.orderType = Order.typeOfOrder.SOLO;
+		}
 	}
->>>>>>> ItayBranch
 
+	public String getTelephoneNumber() {
+		return telephoneNumber;
+	}
 
+	public void setTelephoneNumber(String telephoneNumber) {
+		this.telephoneNumber = telephoneNumber;
+	}
 
-    // Getter for orderStatus that returns a String
-    public String getOrderStatus() {
-        return orderStatus.name(); // Convert the enum to String
-    }
+	public void setOrderType(String orderTypeStr) {
+		try {
+			this.orderType = Order.typeOfOrder.valueOf(orderTypeStr.toUpperCase());
+		} catch (IllegalArgumentException e) {
+			// Handle the case where the provided string does not match any enum constants
+			// For simplicity, defaulting to SOLO here
+			this.orderType = Order.typeOfOrder.SOLO;
+		}
+	}
 
+	public String getTypeOfOrder() {
+		return orderType.name();
+	}
 
+	// Getter for orderStatus that returns a String
+	public String getOrderStatus() {
+		return orderStatus.name(); // Convert the enum to String
+	}
 
 	public Integer getParkNumber() {
 		return parkNumber;
 	}
 
+	public Integer getVisitorId() {
+		return visitorId;
+	}
 
 	public void setParkNumber(Integer parkNumber) {
 		this.parkNumber = parkNumber;
 	}
 
-
 	public Integer getAmountOfVisitors() {
 		return amountOfVisitors;
 	}
-
 
 	public void setAmountOfVisitors(Integer amountOfVisitors) {
 		this.amountOfVisitors = amountOfVisitors;
 	}
 
-
 	public Float getPrice() {
 		return price;
 	}
-	
+
 	public Integer getOrderId() {
 		return orderId;
 	}
-	
-
 
 	public void setPrice(Float price) {
 		this.price = price;
 	}
 
-
 	public String getVisitorEmail() {
 		return visitorEmail;
 	}
-	
-
 
 	public void setVisitorEmail(String visitorEmail) {
 		this.visitorEmail = visitorEmail;
 	}
 
-
 	public LocalDate getDate() {
 		return date;
 	}
-
 
 	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 
-
 	public LocalTime getVisitTime() {
 		return visitTime;
 	}
 
-
 	public void setVisitTime(LocalTime visitTime) {
 		this.visitTime = visitTime;
 	}
-	
-	
+
 }
