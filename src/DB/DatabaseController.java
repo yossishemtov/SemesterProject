@@ -85,34 +85,38 @@ public class DatabaseController {
      * @return An ArrayList of Order objects.
      */
 	public ArrayList<Order> getOrdersDataFromDatabase(Traveler traveler) {
-		ArrayList<Order> orderDataForClient = new ArrayList<>();
-		String query = "SELECT * FROM `order` WHERE travelerId = ?";
+	    ArrayList<Order> orderDataForClient = new ArrayList<>();
+	    // Ensure the query reflects your actual database table and column names
+	    String query = "SELECT orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder FROM orders WHERE travelerId = ?";
 
-		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-			ps.setInt(1, traveler.getId());
-			ResultSet rs = ps.executeQuery();
+	    try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	        ps.setInt(1, traveler.getId());
+	        ResultSet rs = ps.executeQuery();
 
-			while (rs.next()) {
+	        while (rs.next()) {
+	            Integer orderId = rs.getInt("orderId");
+	            // Integer travelerId = rs.getInt("travelerId"); // Not used in the Order constructor directly
+	            Integer parkNumber = rs.getInt("parkNumber");
+	            Integer amountOfVisitors = rs.getInt("amountOfVisitors");
+	            Float price = rs.getFloat("price");
+	            String visitorEmail = rs.getString("visitorEmail");
+	            LocalDate date = rs.getDate("date").toLocalDate();
+	            String telephoneNumber = rs.getString("TelephoneNumber"); // Assuming you have a field to store this in Order
+	            LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
+	            String statusStr = rs.getString("orderStatus");
+	            String typeOfOrderStr = rs.getString("typeOfOrder");
 
-				Integer orderID = rs.getInt(1);
-				Integer parkNumber = rs.getInt(2);
-				Integer amountOfVisitors = rs.getInt(3);
-				Float price = rs.getFloat(4);
-				String visitorEmail = rs.getString(5);
-				LocalDate date = LocalDate.parse(rs.getString(6));
-				LocalTime visitTime = LocalTime.parse(rs.getString(7));
-				String status = rs.getString(9);
-
-				Order order = new Order(orderID, parkNumber, amountOfVisitors, price, visitorEmail, date, visitTime,
-						status);
-				orderDataForClient.add(order);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-
-		}
-		return orderDataForClient; // This will return an empty list if there were no records found
+	            // Assuming Order constructor is updated to accept all the necessary fields including telephoneNumber
+	            Order order = new Order(orderId, traveler.getId(), parkNumber, amountOfVisitors, price, visitorEmail, date, visitTime, statusStr, typeOfOrderStr, telephoneNumber);
+	            orderDataForClient.add(order);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return orderDataForClient; // This will return an empty list if there were no records found or an error occurred
 	}
+
+
 	
 	
 
@@ -155,11 +159,11 @@ public class DatabaseController {
 	     * @return true if insertion was successful, false otherwise.
 	     */
 		public Boolean insertTravelerOrder(Order order) {
-		    // Assuming the database schema aligns with the fields of the Order class
-		    String query = "INSERT INTO orders (orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date, visitTime, orderStatus, typeOfOrder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		    // Adjusting the query to match the database schema order provided
+		    String query = "INSERT INTO orders (orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		    try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-		        // Set parameters based on the Order object fields
+		        // Set parameters based on the Order object fields, in the order specified
 		        ps.setInt(1, order.getOrderId());
 		        ps.setInt(2, order.getVisitorId());
 		        ps.setInt(3, order.getParkNumber());
@@ -167,16 +171,17 @@ public class DatabaseController {
 		        ps.setFloat(5, order.getPrice());
 		        ps.setString(6, order.getVisitorEmail());
 		        ps.setDate(7, java.sql.Date.valueOf(order.getDate()));
-		        ps.setTime(8, java.sql.Time.valueOf(order.getVisitTime()));
-		        ps.setString(9, order.getOrderStatus()); // Directly use the enum's name as the DB value
-		        ps.setString(10, order.getTypeOfOrder()); // Same here
+		        ps.setString(8, order.getTelephoneNumber()); // Assuming getTelephoneNumber() method exists
+		        ps.setTime(9, java.sql.Time.valueOf(order.getVisitTime()));
+		        ps.setString(10, order.getOrderStatus()); // Using the enum's name as the DB value
+		        ps.setString(11, order.getTypeOfOrder()); // Similarly here
 
 		        int affectedRows = ps.executeUpdate();
 		        if (affectedRows > 0) {
-		            System.out.println("Reservation inserted successfully.");
+		            System.out.println("Order inserted successfully.");
 		            return true;
 		        } else {
-		            System.out.println("A problem occurred and the reservation was not inserted.");
+		            System.out.println("A problem occurred and the order was not inserted.");
 		            return false;
 		        }
 		    } catch (SQLException e) {
@@ -184,6 +189,8 @@ public class DatabaseController {
 		        return false;
 		    }
 		}
+
+
 
 
 	    /**
@@ -233,6 +240,31 @@ public class DatabaseController {
 	            return false;
 	        }
 	    }
+	    
+	    
+	    public Boolean patchParkParameters(Park park) {
+	        String query = "UPDATE parks SET name = ?, maxVisitors = ?, capacity = ?, currentVisitors = ?, location = ?, stayTime = ?, workersAmount = ?, managerId = ?, workingTime = ? WHERE parkNumber = ?";
+
+	        try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	            ps.setString(1, park.getName());
+	            ps.setInt(2, park.getMaxVisitors());
+	            ps.setInt(3, park.getCapacity());
+	            ps.setInt(4, park.getCurrentVisitors());
+	            ps.setString(5, park.getLocation());
+	            ps.setInt(6, park.getStaytime());
+	            ps.setInt(7, park.getWorkersAmount());
+	            ps.setInt(8, park.getManager().getWorkerId()); 
+	            ps.setInt(9, park.getWorkingTime());
+	            ps.setInt(10, park.getParkNumber());
+
+	            int affectedRows = ps.executeUpdate();
+	            return affectedRows > 0;
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+
 
 }
 
