@@ -8,6 +8,7 @@ import clientEntities.Reservation;
 import common.Alerts;
 import common.ClientServerMessage;
 import common.DisplayIF;
+import common.Operation;
 import ocsf.client.AbstractClient;
 
 public class SystemClient extends AbstractClient{
@@ -73,7 +74,8 @@ public class SystemClient extends AbstractClient{
 	  public void quit() {
 		    try {
 		        // Notify server of disconnection
-		        sendToServer("disconnecting");
+		    	ClientServerMessage<?> message=new ClientServerMessage(null,Operation.DISCONNECTING);
+		        sendToServer(message);
 		        awaitResponse = true; // Wait for the server to acknowledge disconnection
 
 		        // Wait for acknowledgment
