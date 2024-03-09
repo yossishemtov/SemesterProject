@@ -6,6 +6,7 @@ public abstract class Operation {
     // GET COMMANDS
     public final static String GetAllOrders = "Get all orders";
     public final static String GetTravlerInfo = "Get traveler information";
+    public final static String GetWorkerInfo = "Get worker information";
     public final static String GetTravlerLoginDetails = "Get traveler login details";
     public final static String GetAllReports = "Get all reports";
     public final static String GetSpecificReport = "Get a specific report";
