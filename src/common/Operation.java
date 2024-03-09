@@ -4,7 +4,7 @@ public abstract class Operation {
     // Structure of a command: COMMAND nameOfCommand
     
     // GET COMMANDS
-    public final static String GET_ALL_ORDERS = "Get all orders";//1
+    public final static String GET_ALL_ORDERS = "Get all orders";
     public final static String GET_TRAVLER_INFO = "Get traveler information";
     public final static String GET_TRAVLER_LOGIN_DETAILS = "Get traveler login details";
     
