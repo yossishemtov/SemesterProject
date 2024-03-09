@@ -24,20 +24,6 @@ public class VisitorLoginController {
 	@FXML
     private TextField VisitorID;
 	
-//	public void start(Stage primaryStage) throws Exception {
-//		
-//		//Starting the root scene of the VisitorLogin
-//		try {			
-//			Parent root = FXMLLoader.load(getClass().getResource("VisitorLoginFrame.fxml"));
-//			Scene scene = new Scene(root);
-//			primaryStage.setTitle("Visitor Login");
-//			primaryStage.setScene(scene);
-//			primaryStage.show();
-//			
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}
-//	}
 	
 	public void LoginBtn(ActionEvent click) throws Exception {
 	    String visitorID = VisitorID.getText(); // get the id
@@ -75,9 +61,7 @@ public class VisitorLoginController {
 			            stage.setTitle("order A visit Screen");
 			            stage.setScene(scene);
 			            stage.show();
-		        	}
-		        	
-		        	
+		        	}	
 		        }
 	        } catch (Exception e) {
 	            System.out.print("Something went wrong while clicking on visitor login button, check stack trace");
