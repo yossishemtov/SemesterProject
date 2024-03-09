@@ -6,6 +6,9 @@ import java.util.ResourceBundle;
 
 import client.ClientUI;
 import common.Alerts;
+import common.ClientServerMessage;
+import common.Operation;
+import common.Park;
 import common.worker.ParkWorker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,10 +44,21 @@ public class ParkWorkerController implements Initializable {
     @FXML
     private Button backBtn;
     
+    @FXML
+    private Label availableSpaceLabel;
+    
     public static ParkWorker currentSignedInParkWorker;
     
     
     public void availableSpaceBtnAction(ActionEvent click) throws Exception{
+    	//Receiving information about the park, sending the worker information
+    	ClientServerMessage sendRequestForParkInformation = new ClientServerMessage(ParkWorkerController.currentSignedInParkWorker, Operation.GET_GENERAL_PARK_WORKER_DETAILS);
+    	ClientUI.clientControllerInstance.sendMessageToServer(sendRequestForParkInformation);
+    	
+    	//Park parkInformation = (Park)ClientUI.clientControllerInstance.getData();
+    	
+    	
+    	
     	
     }
     
