@@ -268,6 +268,42 @@ public class DatabaseController {
 	        }
 	    }
 	    
+	    /**
+	     * Gets the amount of visitors in the park where the parkworker works at
+	     * @param parkworker the park worker information
+	     * @return park information if successful and null if not found
+	     */
+	    public Park getAmountOfVisitorsByParkWorker(ParkWorker parkworker) {
+	    	//Querying for the park information with the park number associated with the park worker
+	    	String query = "Select * FROM park WHERE parkNumber = ?";
+	    	Park fetchedPark = null;
+	    	
+	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	            ps.setInt(1, parkworker.getWorksAtPark());
+	            ResultSet rs = ps.executeQuery(); // Use executeQuery for SELECT statements
+
+	            while (rs.next()) {
+	                // Assuming you have a constructor that matches this data extraction pattern.
+	            	    fetchedPark = new Park(
+	                    rs.getString("name"), 
+	                    rs.getInt("parkNumber"), 
+	                    rs.getInt("maxVisitors"), 
+	                    rs.getInt("capacity"), 
+	                    rs.getInt("currentVisitors"), 
+	                    rs.getString("location"), 
+	                    rs.getInt("staytime"), 
+	                    rs.getInt("workersAmount"), 
+	                    null, // For manager, since it's a complex object, you might need a different approach
+	                    rs.getInt("workingTime")
+	                );
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    	
+	        return fetchedPark;
+	    	
+	    }
 	    
 	    public ArrayList<Park> getAmountOfVisitors(Park park) {
 	        ArrayList<Park> parks = new ArrayList<>();
