@@ -67,8 +67,8 @@ public class MessageHandlerFromClient {
 
 		case Operation.GET_GENERAL_PARK_WORKER_DETAILS:
 			System.out.println("in");
-			ArrayList<GeneralParkWorker> generalParkWorker = (ArrayList<GeneralParkWorker>) messageFromClient.getDataTransfered();
-			ClientServerMessage messageForClient =new ClientServerMessage(dbControllerInstance.getGeneralParkWorkerDetails(generalParkWorker.get(0)),Operation.GET_GENERAL_PARK_WORKER_DETAILS);
+			GeneralParkWorker generalParkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
+			ClientServerMessage messageForClient =new ClientServerMessage(dbControllerInstance.getGeneralParkWorkerDetails(generalParkWorker),Operation.GET_GENERAL_PARK_WORKER_DETAILS);
 		    System.out.println("end opertion");
 		    System.out.println(messageForClient.toString());
 

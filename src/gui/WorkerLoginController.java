@@ -23,66 +23,62 @@ import common.worker.GeneralParkWorker; // Make sure this import statement corre
 
 public class WorkerLoginController {
 
-    @FXML
-    private Button LoginBtn;
-    @FXML
-    private Button BackBtn;
-    @FXML
-    private TextField WorkerUsername;
-    @FXML
-    private TextField WorkerPwd;
+	@FXML
+	private Button LoginBtn;
+	@FXML
+	private Button BackBtn;
+	@FXML
+	private TextField WorkerUsername;
+	@FXML
+	private TextField WorkerPwd;
 
-    // Assuming you have a way to store or handle these workers after login
-     
+	// Assuming you have a way to store or handle these workers after login
 
-    @FXML
-    public void WorkerLoginBtn(ActionEvent click) throws IOException {
-    	ArrayList<GeneralParkWorker> workerList = new ArrayList<>();
-        // Simulated login (Note: real authentication should verify credentials)
-        // For demonstration, credentials are not verified and worker information is incomplete
-        GeneralParkWorker worker = new GeneralParkWorker(null, null, null, null, null, WorkerUsername.getText(), WorkerPwd.getText(), null);
-        workerList.add(worker);
-        ClientServerMessage message1 = new ClientServerMessage(null,null);
-        System.out.println("Worker added to list. Worker Username:");
-        ClientServerMessage<?> message = new ClientServerMessage(workerList, Operation.GET_GENERAL_PARK_WORKER_DETAILS);
-        System.out.println("0");
-        ClientUI.clientControllerInstance.sendMessageToServer(message);
-        //ClientController.systemClient.handleMessageFromClientController(message);
-        System.out.println("1");
-        workerList=(ArrayList<GeneralParkWorker>) ClientController.data.getDataTransfered();
-        System.out.println("2");
-        worker=workerList.get(0);
-        
-      
-        
-        Usermanager.setCurrentWorker(worker);
-        System.out.println(worker.toString());
-        String role=worker.getRole();
-        switch(role) {
-        
-        case "Department Manager":
-        	  System.out.println("in Department Manager");
-        	  NavigationManager.openPage("DepartmentManagerScreen.fxml", click, "departmentmenigerScreen", true);
-        }
-        
-        
-        System.out.println("Worker added to list. Worker Username: " + worker.getUserName()); // For debugging purposes
-    }
+	@FXML
+	public void WorkerLoginBtn(ActionEvent click) throws IOException {
+		// Simulated login (Note: real authentication should verify credentials)
+		// For demonstration, credentials are not verified and worker information is
+		
+		GeneralParkWorker workerForServer = new GeneralParkWorker(null, null, null, null, null,
+				WorkerUsername.getText(), WorkerPwd.getText(), null);
 
-    public void BackBtn(ActionEvent click) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("HomePageFrame.fxml"));
-            Stage stage = (Stage) ((Node) click.getSource()).getScene().getWindow(); // hiding primary window
-            Scene scene = new Scene(root);
+		ClientServerMessage<?> messageForServer = new ClientServerMessage(workerForServer,
+				Operation.GET_GENERAL_PARK_WORKER_DETAILS);
+		System.out.println("0");
+		ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
+		// ClientController.systemClient.handleMessageFromClientController(message);
+		System.out.println("1");
+		GeneralParkWorker workerFromServer = (GeneralParkWorker) ClientController.data.getDataTransfered();
+		System.out.println("2");
 
-            stage.setTitle("Home Page");
+		Usermanager.setCurrentWorker(workerFromServer);
+		System.out.println(workerFromServer.toString());
+		String role = workerFromServer.getRole();
+		switch (role) {
 
-            stage.setScene(scene);
-            stage.show();
+		case "Department Manager":
+			System.out.println("in Department Manager");
+			NavigationManager.openPage("DepartmentManagerScreen.fxml", click, "departmentmenigerScreen", true);
+		}
 
-        } catch (Exception e) {
-            System.out.print("Something went wrong while clicking on the back button, check stack trace");
-            e.printStackTrace();
-        }
-    }
+		System.out.println("Worker added to list. Worker Username: " + workerFromServer.getUserName()); // For debugging
+																										// purposes
+	}
+
+	public void BackBtn(ActionEvent click) {
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("HomePageFrame.fxml"));
+			Stage stage = (Stage) ((Node) click.getSource()).getScene().getWindow(); // hiding primary window
+			Scene scene = new Scene(root);
+
+			stage.setTitle("Home Page");
+
+			stage.setScene(scene);
+			stage.show();
+
+		} catch (Exception e) {
+			System.out.print("Something went wrong while clicking on the back button, check stack trace");
+			e.printStackTrace();
+		}
+	}
 }
