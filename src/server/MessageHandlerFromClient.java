@@ -2,6 +2,7 @@ package server;
 
 import common.*;
 import common.worker.GeneralParkWorker;
+import common.worker.ParkWorker;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -86,6 +87,12 @@ public class MessageHandlerFromClient {
 
 		case Operation.GET_MESSAGES:
 			// Placeholder for getting messages
+			break;
+			
+		case Operation.GET_AMOUNT_OF_VISITORS_FOR_PARKWORKER:
+			ParkWorker loggedInParkWorker = (ParkWorker) messageFromClient.getDataTransfered();
+			messageFromClient.setDataTransfered(dbControllerInstance.getAmountOfVisitorsByParkWorker(loggedInParkWorker));
+			client.sendToClient(messageFromClient);
 			break;
 
 		case Operation.GET_AMOUNT_OF_VISITORS:
