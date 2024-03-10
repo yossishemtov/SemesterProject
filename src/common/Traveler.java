@@ -46,6 +46,13 @@ public class Traveler implements Serializable {
 	public String getEmail() {
 		return email;
 	}
+	public String getPhoneNum() {
+		return phoneNum;
+	}
+	
+	public void setPhoneNum(String phoneNumber) {
+		 this.phoneNum=phoneNumber;
+	}
 
 	public void setEmail(String email) {
 		this.email = email;

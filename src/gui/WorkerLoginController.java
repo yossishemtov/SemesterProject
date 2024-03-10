@@ -1,30 +1,28 @@
 package gui;
 
-<<<<<<< HEAD
+
 import client.ClientUI;
 import client.InputValidation;
 import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
 import common.worker.*;
-import common.worker.GeneralParkWorker;
-=======
->>>>>>> emanuelbranch
+
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-<<<<<<< HEAD
+
 import javafx.scene.control.Alert;
-=======
->>>>>>> emanuelbranch
+
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-<<<<<<< HEAD
+
 import java.io.IOException;
 
 import client.ClientController;
@@ -120,30 +118,7 @@ public class WorkerLoginController {
 		}
 	}
 
-	public void BackBtn(ActionEvent click) {
-		try {
-			Parent root = FXMLLoader.load(getClass().getResource("HomePageFrame.fxml"));
-			Stage stage = (Stage) ((Node) click.getSource()).getScene().getWindow(); // hiding primary window
-			Scene scene = new Scene(root);
 
-			stage.setTitle("Home Page");
-
-			stage.setScene(scene);
-			stage.show();
-
-		} catch (Exception e) {
-=======
-public class WorkerLoginController {
-	
-	@FXML
-    private Button LoginBtn;
-	@FXML
-    private Button BackBtn;
-	@FXML
-    private TextField WorkerUsername;
-	@FXML
-    private TextField WorkerPwd;
-	
 	
 //	public void start(Stage primaryStage) throws Exception {
 //		
@@ -175,15 +150,11 @@ public class WorkerLoginController {
 		stage.show();
 		
 		}catch(Exception e) {
->>>>>>> emanuelbranch
+
 			System.out.print("Something went wrong while clicking on the back button, check stack trace");
 			e.printStackTrace();
 		}
 	}
-<<<<<<< HEAD
 
 }
-=======
-}
 
->>>>>>> emanuelbranch

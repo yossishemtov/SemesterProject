@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.mysql.cj.xdevapi.Client;
+
 import DB.DatabaseController;
 import ocsf.server.ConnectionToClient;
 
@@ -64,6 +66,9 @@ public class MessageHandlerFromClient {
 
 		case Operation.GET_TRAVLER_INFO:
 			// Placeholder for getting traveler information
+			Traveler traveler = (Traveler) messageFromClient.getDataTransfered();
+			messageFromClient.setDataTransfered(dbControllerInstance.getTravelerDetails(traveler));
+			client.sendToClient(messageFromClient);			
 			break;
 
 		case Operation.GET_GENERAL_PARK_WORKER_DETAILS:
