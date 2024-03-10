@@ -11,14 +11,12 @@ import java.util.ArrayList;
 import DB.DatabaseController;
 import ocsf.server.ConnectionToClient;
 
-public class MessageHandlerFromClient  implements Serializable {
-
-	private static final long serialVersionUID = 1L; 
+public class MessageHandlerFromClient {
 
 	public static void handleMessage(ClientServerMessage messageFromClient, ConnectionToClient client) throws IOException {
 		// A class that is intended to handle diffrent messages from the client and
 		// response accordingly
-        System.out.println("hm");
+        
     	//client.sendToClient("aaa");
 		BackEndServer backEndServerInstance = BackEndServer.getBackEndServer();
 		DatabaseController dbControllerInstance = BackEndServer.DBController;

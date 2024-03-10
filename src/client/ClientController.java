@@ -19,6 +19,7 @@ import server.BackEndServer;
 public class ClientController<T> implements DisplayIF{
     
     public static SystemClient systemClient;
+    
     final public static int DEFAULT_PORT = 5555;
     public static  ClientServerMessage<?> data;
     
@@ -45,7 +46,7 @@ public class ClientController<T> implements DisplayIF{
 
     public void sendMessageToServer(ClientServerMessage<?> command) {
         // Handle message from any controller that is related to the client
-    	System.out.println("sendtoservrvr");
+    	System.out.println("send to servrvr");
         try
         {
             systemClient.handleMessageFromClientController(command);

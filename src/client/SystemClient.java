@@ -31,23 +31,16 @@ public class SystemClient extends AbstractClient{
 	//Handle message from the server
 	@Override
 	public void handleMessageFromServer(Object messageFromServer) {
-	    System.out.println("back home");
-
+	  
 	    // Log the class type and content of the message for debugging
 	    System.out.println("Message Class: " + messageFromServer.getClass().getName());
 	    System.out.println("Message Content: " + messageFromServer.toString());
 
 	    // Check for disconnection acknowledgment
-	    if ("ack_disconnect".equals(messageFromServer.toString())) {
-	        System.out.println("1");
+	    if (Operation.DISCONNECTING.equals(messageFromServer.toString())) {
+	        
 	        awaitResponse = false; // Acknowledgment received; stop waiting
 	        return; // Early return to skip further processing
-	    }
-
-	    if (messageFromServer instanceof String) {
-	        System.out.println("2");
-	        System.out.println(messageFromServer.toString());
-	        // Assuming you want to do something here or just log it
 	    }
 
 	    // Check if the message is of type ClientServerMessage
@@ -68,6 +61,7 @@ public class SystemClient extends AbstractClient{
 	            alertOfUnknownTypeOfMessage.showAndWait();
 	        });
 	    }
+	    awaitResponse = false;
 	}
 
 	  

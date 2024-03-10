@@ -46,7 +46,8 @@ public class WorkerLoginController {
         System.out.println("Worker added to list. Worker Username:");
         ClientServerMessage<?> message = new ClientServerMessage(workerList, Operation.GET_GENERAL_PARK_WORKER_DETAILS);
         System.out.println("0");
-        ClientController.systemClient.handleMessageFromClientController(message);
+        ClientUI.clientControllerInstance.sendMessageToServer(message);
+        //ClientController.systemClient.handleMessageFromClientController(message);
         System.out.println("1");
         workerList=(ArrayList<GeneralParkWorker>) ClientController.data.getDataTransfered();
         System.out.println("2");
