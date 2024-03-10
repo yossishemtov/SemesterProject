@@ -15,7 +15,7 @@ public abstract class Operation {
     public final static String DISCONNECTING = "Disconnecting from server";
     public final static String GET_PROFILE = "Get user profile";
     public final static String GET_AMOUNT_OF_VISITORS = "Get amount of visitors";
-    
+
     // POST COMMANDS
     public final static String POST_NEW_TRAVLER_GUIDER = "Post new traveler guide request";
     public final static String POST_TRAVLER_ORDER = "Post new traveler order";
