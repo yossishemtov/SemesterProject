@@ -323,43 +323,60 @@ public class DatabaseController {
 	    }
 	    
 	    
-	    public VisitorsReport getTotalNumberOfVisitorsReport() {
-	        String query = "SELECT typeOfOrder, SUM(amountOfVisitors) AS totalVisitors " +
-	                       "FROM orders GROUP BY typeOfOrder";
+	    public VisitorsReport getTotalNumberOfVisitorsReport(GeneralParkWorker worker) {
+	        // Adjusted query to include filtering by park number
+	 
+	        String query = "SELECT typeOfOrder, SUM(amountOfVisitors) AS totalVisitors FROM `order` WHERE parkNumber = ? GROUP BY typeOfOrder";
+	        VisitorsReport report=null;
 
-	        int totalIndividuals = 0;
-	        int totalGroups = 0;
-	        int totalFamilies = 0; // Initialize total for family visitors
+	        Integer totalIndividuals = 0;
+	        Integer totalGroups = 0;
+	        Integer totalFamilies = 0; // Initialize total for family visitors
 
-	        try (Statement statement = connectionToDatabase.createStatement();
-	             ResultSet resultSet = statement.executeQuery(query)) {
+	        try (PreparedStatement statement = connectionToDatabase.prepareStatement(query)) {
+	            // Set the park number in the query
+	            statement.setInt(1, worker.getWorksAtPark());
 
-	            while (resultSet.next()) {
-	                String typeOfOrder = resultSet.getString("typeOfOrder");
-	                int totalVisitors = resultSet.getInt("totalVisitors");
+	            try (ResultSet resultSet = statement.executeQuery()) {
+	                while (resultSet.next()) {
+	                    String typeOfOrder = resultSet.getString("typeOfOrder");
+	                    int totalVisitors = resultSet.getInt("totalVisitors");
+	                    System.out.println("Order Type: " + typeOfOrder + ", Total Visitors: " + totalVisitors);
+	                    System.out.println("Order Type Raw: [" + typeOfOrder + "], Length: " + typeOfOrder.length());
+	                    
+	                    if (typeOfOrder.trim().equalsIgnoreCase("GUIDEDGROUP")) {
+	                        System.out.println("Match found after trimming and case-insensitive check");
+	                    } else {
+	                        System.out.println("No match found");
+	                    }
+	                    typeOfOrder=typeOfOrder.trim();
+	                    switch (typeOfOrder) {
+	                        case "SOLO":
+	                            totalIndividuals += totalVisitors;
+	                            break;
+	                        case "GUIDEDGROUP":
+	    	                    System.out.println("in Order Type: " );
 
-	                switch (typeOfOrder) {
-	                    case "SOLO":
-	                        totalIndividuals += totalVisitors;
-	                        break;
-	                    case "GUIDEDGROUP":
-	                        totalGroups += totalVisitors;
-	                        break;
-	                    case "FAMILY": // Handle the new category
-	                        totalFamilies += totalVisitors;
-	                        break;
-	                    default:
-	                        // Handle any unexpected typeOfOrder
-	                        break;
+	                            totalGroups += totalVisitors;
+	                            break;
+	                        case "FAMILY":
+	                            totalFamilies += totalVisitors;
+	                            break;
+	                        default:
+	                            // Handle any unexpected typeOfOrder
+	                            break;
+	                    }
 	                }
 	            }
 	        } catch (SQLException e) {
 	            System.err.println("An error occurred while fetching the total number of visitors report: " + e.getMessage());
 	            e.printStackTrace();
 	        }
-
-	        return new VisitorsReport(totalIndividuals, totalGroups, totalFamilies); // Pass the new total as well
+	        report=new VisitorsReport(totalIndividuals, totalGroups, totalFamilies,totalIndividuals+ totalGroups+totalFamilies);
+	        System.out.println(report.toString());
+	        return report; // Pass the new total as well
 	    }
+
 
 	    
 

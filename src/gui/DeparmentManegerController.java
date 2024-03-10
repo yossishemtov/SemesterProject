@@ -84,7 +84,7 @@ public class DeparmentManegerController implements Initializable {
 
 		if (ListOfReports.getValue().equals("Total number of visitors report")) {
 
-			NavigationManager.openPage("BforeDepartment.fxml", event, "Choosing page", true);
+			NavigationManager.openPage("VisitorsReport.fxml", event, "Choosing page", true);
 
 		}
 
@@ -112,7 +112,7 @@ public class DeparmentManegerController implements Initializable {
 	void NumberVisitorsFunc(ActionEvent event) {
 		
 
-		ClientServerMessage messege = new ClientServerMessage(departmentManager,
+		ClientServerMessage<?> messege = new ClientServerMessage(departmentManager,
 				Operation.GET_AMOUNT_OF_VISITORS);
 		ClientUI.clientControllerInstance.sendMessageToServer(messege);
 		Integer NumberOfVisitorInt = ((Park)ClientController.data.getDataTransfered()).getCurrentVisitors();

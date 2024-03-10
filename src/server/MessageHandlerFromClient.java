@@ -79,7 +79,8 @@ public class MessageHandlerFromClient {
 			break;
 
 		case Operation.GET_VISITORS_REPORT:
-			messageFromClient.setDataTransfered(dbControllerInstance.getTotalNumberOfVisitorsReport());
+			GeneralParkWorker worker=(GeneralParkWorker) messageFromClient.getDataTransfered();
+			messageFromClient.setDataTransfered(dbControllerInstance.getTotalNumberOfVisitorsReport(worker));
 			client.sendToClient(messageFromClient);
 			break;
 
