@@ -1,3 +1,0 @@
-Olympic 	1 	1000 	1500 	500 	Washington 	4 	20 	1 	8
-Zion 	2 	800 	1200 	300 	Utah 	5 	15 	2 	7
-GrandTeton 	3 	1200 	1800 	600 	Wyoming 	6 	25 	3 	8

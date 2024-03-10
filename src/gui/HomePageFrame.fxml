@@ -23,7 +23,7 @@
             <Font size="15.0" />
          </font>
       </Button>
-      <Button fx:id="ExitBtn" layoutX="507.0" layoutY="349.0" mnemonicParsing="false" onAction="#ExitBtnAction" prefHeight="31.0" prefWidth="53.0" text="Exit" textFill="RED">
+      <Button layoutX="507.0" layoutY="349.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="53.0" text="Exit" textFill="RED">
          <font>
             <Font size="15.0" />
          </font>

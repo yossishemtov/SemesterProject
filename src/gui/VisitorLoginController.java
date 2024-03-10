@@ -1,5 +1,6 @@
 package gui;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 
 import client.ClientUI;
@@ -9,6 +10,10 @@ import common.ClientServerMessage;
 import common.Operation;
 import common.Traveler;
 import javafx.event.ActionEvent;
+=======
+import javafx.event.ActionEvent;
+
+>>>>>>> emanuelbranch
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -17,6 +22,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+<<<<<<< HEAD
+=======
+import client.ClientUI;
+import client.InputValidation;
+import common.Alerts;
+import common.ClientServerMessage;
+import common.Operation;
+import common.Traveler;
+
+>>>>>>> emanuelbranch
 
 public class VisitorLoginController {
 	@FXML
@@ -26,11 +41,15 @@ public class VisitorLoginController {
 	@FXML
     private TextField VisitorID;
 	
+<<<<<<< HEAD
 	
+=======
+>>>>>>> emanuelbranch
 	public void LoginBtn(ActionEvent click) throws Exception {
 	    String visitorID = VisitorID.getText(); // get the id
 	    Alerts alertID = InputValidation.ValidateVisitorID(visitorID); // get the right alert
 	    Boolean isSuccessful = alertID.getAlertType().toString().equals("INFORMATION");
+<<<<<<< HEAD
 	    
 	    if (isSuccessful) { // if entered right ID with 9 digits
 	        try {
@@ -68,11 +87,26 @@ public class VisitorLoginController {
 			            stage.show();
 		        	}	
 		        }
+=======
+
+	    if (isSuccessful) { // if entered right ID
+	        try {
+	            // open visitor screen 
+	            Parent root = new FXMLLoader().load(getClass().getResource("VisitorFrame.fxml"));
+	            Stage stage = (Stage)((Node)click.getSource()).getScene().getWindow(); //hiding primary window
+	            Scene scene = new Scene(root);
+
+	            stage.setTitle("Visitor Screen");
+	            stage.setScene(scene);
+	            stage.show();
+
+>>>>>>> emanuelbranch
 	        } catch (Exception e) {
 	            System.out.print("Something went wrong while clicking on visitor login button, check stack trace");
 	            e.printStackTrace();
 	        }
 	    } else {
+<<<<<<< HEAD
 	    	
 	    	// Display the error alert to the user
 	        alertID.showAndWait();
@@ -81,6 +115,16 @@ public class VisitorLoginController {
 	
 	public void BackBtn(ActionEvent click) throws Exception{
 		//Function for opening a new scene when clicking on the Back Button
+=======
+	        // Display the error alert to the user
+	        alertID.showAndWait();
+	    }
+	    
+	}
+	
+	public void BackBtn(ActionEvent click) throws Exception{
+		// Opening home page scene when clicking on the Back Button from visitor login scene
+>>>>>>> emanuelbranch
 	try {
 		
 		Parent root = new FXMLLoader().load(getClass().getResource("HomePageFrame.fxml"));
