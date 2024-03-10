@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TableView prefHeight="400.0" prefWidth="600.0">
+         <columns>
+            <!-- Column 1: Name -->
+            <TableColumn text="Name">
+               <cellValueFactory>
+                  <PropertyValueFactory property="name"/>
+               </cellValueFactory>
+            </TableColumn>
+
+            <!-- Column 2: Age -->
+            <TableColumn text="Age">
+               <cellValueFactory>
+                  <PropertyValueFactory property="age"/>
+               </cellValueFactory>
+            </TableColumn>
+
+            <!-- Column 3: Price -->
+            <TableColumn text="Price">
+               <cellValueFactory>
+                  <PropertyValueFactory property="price"/>
+               </cellValueFactory>
+            </TableColumn>
+         </columns>
+      </TableView>
+   </children>
+</AnchorPane>

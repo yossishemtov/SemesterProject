@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
- * CustomAlerts is a customize Alerts
+ * Alerts is a customize Alerts
  *
  */
 public class Alerts extends Alert {
@@ -14,6 +14,7 @@ public class Alerts extends Alert {
     final String errorIcon = "/common/images/errorIcon.png";
     final String warningIcon = "/common/images/warningIcon.png";
     final String informationIcon = "/common/images/infoIcon.png";
+    final String confirmationIcon = "/common/images/confirmationIcon.png";
 
     public Alerts(AlertType alertType, String title, String header, String content) {
         super(alertType);
@@ -31,6 +32,8 @@ public class Alerts extends Alert {
             setupWarningIcon();
         else if (alertType.equals("INFORMATION"))
             setupInfoIcon();
+        else if (alertType.equals("CONFIRMATION"))
+        	setupConfirmationIcon();
     }
 
     private void setupErrorIcon() {
@@ -47,4 +50,12 @@ public class Alerts extends Alert {
         DialogPane pane = this.getDialogPane();
         ((Stage) pane.getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream(informationIcon)));
     }
+    
+    private void setupConfirmationIcon() {
+        DialogPane pane = this.getDialogPane();
+        ((Stage) pane.getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream(confirmationIcon)));
+    }
+
+
 }
+
