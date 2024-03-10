@@ -62,6 +62,7 @@ public class WorkerLoginController {
 		 Boolean PasswordValid = alertPwd.getAlertType().toString().equals("INFORMATION");
 		 if( usernameValide && PasswordValid) {
 			 
+			 
 			 try {
 				// creating an instance of general park worker to send to server
 				 GeneralParkWorker workerforcheck = new GeneralParkWorker(null,null,null,null,null,workerUsername,workerPassword,null);
