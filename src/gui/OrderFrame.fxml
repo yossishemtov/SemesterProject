@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="orderDetailsVBox" prefHeight="351.0" prefWidth="351.0" spacing="10" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <Label fx:id="parkNumberLabel" text="Park Number: " />
+    <Label fx:id="amountOfVisitorsLabel" text="Amount of Visitors: " />
+    <Label fx:id="orderIdLabel" text="Order ID: " />
+    <Label fx:id="orderTypeLabel" text="Order Type: " />
+    <Label fx:id="dateLabel" text="Date: " />
+    <Label fx:id="visitTimeLabel" text="Visit Time: " />
+    <Label fx:id="priceLabel" text="Price: " />
+    <Label fx:id="visitorIdLabel" text="Visitor ID: " />
+    <Label fx:id="telephoneNumberLabel" text="Telephone Number: " />
+    <Label fx:id="orderStatusLabel" text="Order Status: " />
+   <Pane prefHeight="71.0" prefWidth="351.0">
+      <children>
+         <Button fx:id="cancelVisitBtn" layoutX="102.0" layoutY="36.0" mnemonicParsing="false" onAction="#cancelVisit" prefHeight="26.0" prefWidth="74.0" text="Cancel" />
+         <Button fx:id="confirmVisitBtn" layoutX="14.0" layoutY="36.0" mnemonicParsing="false" onAction="#confirmVisit" prefHeight="26.0" prefWidth="76.0" text="Confirm" />
+         <Button fx:id="backBtn" layoutX="295.0" layoutY="35.0" mnemonicParsing="false" onAction="#btnBack" prefHeight="26.0" prefWidth="42.0" text="Back" />
+      </children>
+   </Pane>
+</VBox>
