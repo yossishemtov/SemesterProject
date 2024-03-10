@@ -8,7 +8,7 @@ import gui.UserInterfaceController;
 
 public class ClientUI extends Application {
     
-    public static ClientController clientControllerInstance; //only one instance
+    public static ClientController<?> clientControllerInstance; //only one instance
 
     public static void main( String args[] ) throws Exception
        { 

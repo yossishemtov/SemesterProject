@@ -1,6 +1,8 @@
 package server;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.InetAddress;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
@@ -74,6 +77,9 @@ public class ServerController {
 
 	@FXML
 	private TableColumn<ClientConnectionStatus, String> HostCol;
+
+	@FXML
+	private TextArea logTextArea;
 
 	@FXML
 	private TableColumn<ClientConnectionStatus, String> StatusCol;
@@ -171,6 +177,8 @@ public class ServerController {
 
 	@FXML
 	protected void initialize() {
+        //redirectSystemStreams(); // Redirect System.out and System.err
+
 		HostCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getHost()));
 		IPCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getIp()));
 		StatusCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getStatus()));
@@ -180,6 +188,34 @@ public class ServerController {
 		connStatusTable.setItems(connectionStatuses);
 
 	}
+	
+	   // Method to redirect output streams to the TextArea
+    private void redirectSystemStreams() {
+        OutputStream out = new OutputStream() {
+            @Override
+            public void write(int b) throws IOException {
+                appendText(String.valueOf((char) b));
+            }
+
+            @Override
+            public void write(byte[] b, int off, int len) throws IOException {
+                appendText(new String(b, off, len));
+            }
+
+            @Override
+            public void write(byte[] b) throws IOException {
+                write(b, 0, b.length);
+            }
+        };
+
+        System.setOut(new PrintStream(out, true));
+        System.setErr(new PrintStream(out, true));
+    }
+
+    // Method to append text to the TextArea in a thread-safe manner
+    private void appendText(String str) {
+        Platform.runLater(() -> logTextArea.appendText(str));
+    }
 
 	public void closeConnection() {
 		try {

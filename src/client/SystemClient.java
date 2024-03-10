@@ -8,13 +8,15 @@ import clientEntities.Reservation;
 import common.Alerts;
 import common.ClientServerMessage;
 import common.DisplayIF;
+import common.Operation;
+import javafx.application.Platform;
 import ocsf.client.AbstractClient;
 
 public class SystemClient extends AbstractClient{
 	
 	//A boolean to indicate waiting for a server response
 	public static boolean awaitResponse = false;
-	private ClientController clientControllerInstance;
+	private ClientController<?> clientControllerInstance;
 
 	public SystemClient(String host, int port, ClientController clientController) throws IOException{
 		super(host, port);
@@ -24,28 +26,49 @@ public class SystemClient extends AbstractClient{
 	}
 
 
+
+	
 	//Handle message from the server
-	  public void handleMessageFromServer(Object messageFromServer) 
-	  {
-		    // Check for disconnection acknowledgment
-		    if ("ack_disconnect".equals(messageFromServer.toString())) {
-		        awaitResponse = false; // Acknowledgment received; stop waiting
-		        return; // Early return to skip further processing
-		    }
-		  
-		  awaitResponse = false;
-		    // Check if the message is of type of the ClientServerMessage
-		    if (messageFromServer instanceof ClientServerMessage) {
-		    	clientControllerInstance.setData((ClientServerMessage)messageFromServer);
-		        
-		    }else{
-		    	Alerts alertOfUnknownTypeOfMessage = new Alerts(Alerts.AlertType.ERROR, "Received Data Error", "", "Something went wrong while receiving the data from the server");
-		   }
-	  }
+	@Override
+	public void handleMessageFromServer(Object messageFromServer) {
+	  
+	    // Log the class type and content of the message for debugging
+	    System.out.println("Message Class: " + messageFromServer.getClass().getName());
+	    System.out.println("Message Content: " + messageFromServer.toString());
+
+	    // Check for disconnection acknowledgment
+	    if (Operation.DISCONNECTING.equals(messageFromServer.toString())) {
+	        
+	        awaitResponse = false; // Acknowledgment received; stop waiting
+	        return; // Early return to skip further processing
+	    }
+
+	    // Check if the message is of type ClientServerMessage
+	    if (messageFromServer instanceof ClientServerMessage) {
+	        System.out.println("in instanceof");
+	        ClientServerMessage<?> clientServerMessage = (ClientServerMessage<?>) messageFromServer;
+
+	        // Assuming you have some specific handling or logging based on the message content
+	        // For example:
+	        System.out.println("Received ClientServerMessage with command in system client: " + clientServerMessage.toString());
+	        clientControllerInstance.setData(clientServerMessage);
+	        awaitResponse = false;
+	        
+	    } else {
+	        System.out.println("Received message of unknown type");
+	        Platform.runLater(() -> {
+	            Alerts alertOfUnknownTypeOfMessage = new Alerts(Alerts.AlertType.ERROR, "Received Data Error", "", "Something went wrong while receiving the data from the server");
+	            alertOfUnknownTypeOfMessage.showAndWait();
+	        });
+	    }
+	    awaitResponse = false;
+	}
+
 	  
 	  
-	  public void handleMessageFromClientController(ClientServerMessage messageToServer)  
+	  public void handleMessageFromClientController(ClientServerMessage<?> messageToServer)  
 	  {
+		   	System.out.println("handleMessageFromClientController");
 		  
 		  awaitResponse = true;
 		  
@@ -57,6 +80,7 @@ public class SystemClient extends AbstractClient{
 		    	while (awaitResponse) {
 					try {
 						Thread.sleep(100);
+					
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -73,7 +97,8 @@ public class SystemClient extends AbstractClient{
 	  public void quit() {
 		    try {
 		        // Notify server of disconnection
-		        sendToServer("disconnecting");
+		    	ClientServerMessage<?> message=new ClientServerMessage(null,Operation.DISCONNECTING);
+		        sendToServer(message);
 		        awaitResponse = true; // Wait for the server to acknowledge disconnection
 
 		        // Wait for acknowledgment

@@ -30,13 +30,11 @@ public class ClientServerMessage<T> implements Serializable{
 	
 	@Override
 	public String toString() {
-		//Returning a string representation of the command and data stored in dataTranfered object
-		if((String)dataTransfered != null) {
-			return "Operation: " + command.toString() + " Input ArrayList : " + dataTransfered.toString();
-		}
-		
-		return "Operation: " + command.toString() + " Input ArrayList : " + "NULL";
+	    // Check for null directly without casting
+	    String dataString = (dataTransfered != null) ? dataTransfered.toString() : "NULL";
+	    return "Operation: " + command + " | Data: " + dataString;
 	}
+
 	
 	@SafeVarargs
 	public static<T> ArrayList<T> createDataArrayList(T... dataObject){

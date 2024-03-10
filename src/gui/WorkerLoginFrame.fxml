@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
@@ -23,9 +24,11 @@
             <Font size="13.0" />
          </font>
       </Text>
-      <TextField layoutX="157.0" layoutY="130.0" />
-      <TextField layoutX="157.0" layoutY="166.0" />
-      <Button layoutX="320.0" layoutY="232.0" mnemonicParsing="false" text="Login" textFill="#2abf3c">
+      <TextField fx:id="WorkerUsername" layoutX="157.0" layoutY="130.0" />
+
+      <TextField fx:id="WorkerPwd" layoutX="157.0" layoutY="166.0" />
+      <Button layoutX="320.0" layoutY="232.0" mnemonicParsing="false" onAction="#WorkerLoginBtn" text="Login" textFill="#2abf3c">
+
          <font>
             <Font size="13.0" />
          </font>
@@ -35,5 +38,6 @@
             <Font size="13.0" />
          </font>
       </Button>
+      <PasswordField fx:id="WorkerPwd" layoutX="157.0" layoutY="165.0" />
    </children>
 </Pane>

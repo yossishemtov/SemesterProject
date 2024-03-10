@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1100.0"  xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <AnchorPane fx:id="topPane" prefHeight="120.0" prefWidth="1206.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="114.0" fitWidth="203.0" layoutX="42.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/images/LOGO%20(2).png" />
+               </image>
+            </ImageView>
+            <Label fx:id="userLabel" alignment="CENTER" layoutX="436.0" layoutY="31.0" prefHeight="58.0" prefWidth="394.0" text="Department Manager" textAlignment="CENTER" />
+         </children>
+      </AnchorPane>
+   </top>
+   <left>
+      <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox fx:id="vbox" prefHeight="600.0" prefWidth="204.0">
+               <children>
+                  <Button fx:id="profileButton" onMouseClicked="#loadProfile" prefHeight="122.0" prefWidth="204.0" text="Profile" />
+                  <Button fx:id="currentVisitorsButton" layoutX="10.0" layoutY="10.0" onMouseClicked="#loadParkParameters" prefHeight="122.0" prefWidth="204.0" text="Park Parameters" />
+                  <Button fx:id="createReportsButton" layoutX="10.0" layoutY="262.0" onMouseClicked="#loadReports" prefHeight="122.0" prefWidth="204.0" text="Reports" />
+                  <Button fx:id="updateParametersButton" layoutX="10.0" layoutY="370.0" onMouseClicked="#loadViewRequests" prefHeight="122.0" prefWidth="204.0" text="Requests" />
+                  <Button fx:id="logoutBtn" onMouseClicked="#logOut" prefHeight="122.0" prefWidth="204.0" text="Logout" />
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+   </left>
+</BorderPane>

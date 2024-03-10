@@ -27,56 +27,46 @@ public class DatabaseController {
 	
 	
 	// Get GeneralParkWorkerDetails
-	// check GetGeneralParkWorker login details and return the data,if not exist return empty ArrayList
-	public ArrayList<GeneralParkWorker> getGeneralParkWorkerDetails(GeneralParkWorker worker) {
-		ArrayList<Order> orderDataForClient = new ArrayList<>();
-		String query = "SELECT * FROM `generalparkworker` WHERE userName = ? AND password= ?";
-		ArrayList<GeneralParkWorker> GeneralParkWorkerList = new ArrayList<>();
+	// check GetGeneralParkWorker login details and return the data,if not exist return empty ArrayList of type generalParkWorker
+	// WorkerId | firstName | lastName | email | role | userName | password | worksAtPark
+	public GeneralParkWorker getGeneralParkWorkerDetails(GeneralParkWorker worker) {
+	    // Removed unused ArrayList<Order>
+	    System.out.println("in db");
+	    System.out.println(worker.getPassword()+worker.getUserName());
+	    GeneralParkWorker generalParkWorker = null;
 
-		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-			ps.setString(1, worker.getUserName());
-			ps.setString(2, worker.getPassword());
-			ResultSet rs = ps.executeQuery();
+	    String query = "SELECT * FROM `generalparkworker` WHERE userName = ? AND password= ?";
 
-			while (rs.next()) {
+	    try (PreparedStatement preparedStatementInstance = connectionToDatabase.prepareStatement(query)) {
+	        preparedStatementInstance.setString(1, worker.getUserName());
+	        preparedStatementInstance.setString(2, worker.getPassword());
+	        ResultSet returnedStatement = preparedStatementInstance.executeQuery();
 
-				Integer workerId = rs.getInt(1);
-				String firstName = rs.getString(2);
-				String lastName = rs.getString(3);
-				String email = rs.getString(4);
-				String role = rs.getString(5);
-				String userName = rs.getString(6);
-				String password = rs.getString(7);
+	        while (returnedStatement.next()) {
 
-				switch (role) {
+	            Integer workerId = returnedStatement.getInt(1);
+	            String firstName = returnedStatement.getString(2);
+	            String lastName = returnedStatement.getString(3);
+	            String email = returnedStatement.getString(4);
+	            String role = returnedStatement.getString(5);
+	            String userName = returnedStatement.getString(6);
+	            String password = returnedStatement.getString(7);
+	            Integer worksAtPark = returnedStatement.getInt(8);
+	            System.out.println(role);
+	            
+                generalParkWorker = new GeneralParkWorker(workerId, firstName, lastName, email, role, userName, password, worksAtPark);
 
-				case "Department manager":
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return null; // Consider throwing a custom exception
+	    }
+	
+		System.out.println(generalParkWorker.toString());
 
-					DepartmentManager departmentManager = new DepartmentManager(workerId, firstName, lastName, email,
-							role, userName, password);
-					GeneralParkWorkerList.add(departmentManager);
-
-				case "Park manager":
-
-					ParkManager ParkManager = new ParkManager(workerId, firstName, lastName, email, role, userName,
-							password);
-					GeneralParkWorkerList.add(ParkManager);
-
-				case "Worker":
-
-					ParkManager GeneralParkWorker = new ParkManager(workerId, firstName, lastName, email, role,
-							userName, password);
-					GeneralParkWorkerList.add(GeneralParkWorker);
-
-				}
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-
-		}
-		return GeneralParkWorkerList; // This will return an empty list if there were no records found
+	    return generalParkWorker; // This will return an empty list if there were no records found
 	}
+
 	
 	
 	   /**
@@ -265,6 +255,42 @@ public class DatabaseController {
 	        }
 	    }
 	    
+	    /**
+	     * Gets the amount of visitors in the park where the parkworker works at
+	     * @param parkworker the park worker information
+	     * @return park information if successful and null if not found
+	     */
+	    public Park getAmountOfVisitorsByParkWorker(ParkWorker parkworker) {
+	    	//Querying for the park information with the park number associated with the park worker
+	    	String query = "Select * FROM park WHERE parkNumber = ?";
+	    	Park fetchedPark = null;
+	    	
+	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	            ps.setInt(1, parkworker.getWorksAtPark());
+	            ResultSet rs = ps.executeQuery(); // Use executeQuery for SELECT statements
+
+	            while (rs.next()) {
+	                // Assuming you have a constructor that matches this data extraction pattern.
+	            	    fetchedPark = new Park(
+	                    rs.getString("name"), 
+	                    rs.getInt("parkNumber"), 
+	                    rs.getInt("maxVisitors"), 
+	                    rs.getInt("capacity"), 
+	                    rs.getInt("currentVisitors"), 
+	                    rs.getString("location"), 
+	                    rs.getInt("staytime"), 
+	                    rs.getInt("workersAmount"), 
+	                    null, // For manager, since it's a complex object, you might need a different approach
+	                    rs.getInt("workingTime")
+	                );
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    	
+	        return fetchedPark;
+	    	
+	    }
 	    
 	    public ArrayList<Park> getAmountOfVisitors(Park park) {
 	        ArrayList<Park> parks = new ArrayList<>();

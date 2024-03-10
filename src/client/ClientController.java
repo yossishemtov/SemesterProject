@@ -5,13 +5,23 @@ import java.util.ArrayList;
 
 import common.ClientServerMessage;
 import common.DisplayIF;
+import javafx.application.Platform;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import server.BackEndServer;
 
 public class ClientController<T> implements DisplayIF{
     
-    SystemClient systemClient;
+    public static SystemClient systemClient;
+    
     final public static int DEFAULT_PORT = 5555;
-    public ClientServerMessage<T> data;
+    public static  ClientServerMessage<?> data;
     
     // Making a new instance of the SystemClient that implements OCSF Abstract client
     public ClientController(String host, int port) 
@@ -19,9 +29,11 @@ public class ClientController<T> implements DisplayIF{
         try  
         {
             systemClient = new SystemClient(host, port, this);
+            NavigationManager.initialize(systemClient);
         } 
         catch(IOException exception) 
         {
+        	   System.out.println(exception.getMessage());
             System.out.println("Error: Can't setup connection! Terminating client.");
             System.exit(1);
         }
@@ -32,8 +44,9 @@ public class ClientController<T> implements DisplayIF{
         // Display message logic here
     }
 
-    public void sendMessageToServer(ClientServerMessage command) {
+    public void sendMessageToServer(ClientServerMessage<?> command) {
         // Handle message from any controller that is related to the client
+    	System.out.println("send to servrvr");
         try
         {
             systemClient.handleMessageFromClientController(command);
@@ -51,12 +64,15 @@ public class ClientController<T> implements DisplayIF{
     }
 
 
-    public void setData(ClientServerMessage<T> data) {
-        this.data = data;
+    public void setData(ClientServerMessage<?> clientServerMessage) {
+        this.data = (ClientServerMessage<?>) clientServerMessage;
     }
 
-    public ClientServerMessage<T> getData() {
+    public ClientServerMessage<?> getData() {
         return this.data;
     }
+    
+    
+
     
 }
