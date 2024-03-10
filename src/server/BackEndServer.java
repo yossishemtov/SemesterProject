@@ -92,6 +92,7 @@ public class BackEndServer extends AbstractServer
 
 
   public void handleMessageFromClient(Object msg, ConnectionToClient client) {
+      System.out.println("bk");
 	  
 	  try {
 		MessageHandlerFromClient.handleMessage((ClientServerMessage)msg,client);

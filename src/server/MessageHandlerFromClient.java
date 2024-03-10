@@ -4,24 +4,31 @@ import common.*;
 import common.worker.GeneralParkWorker;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import DB.DatabaseController;
 import ocsf.server.ConnectionToClient;
 
-public class MessageHandlerFromClient {
+public class MessageHandlerFromClient  implements Serializable {
+
+	private static final long serialVersionUID = 1L; 
 
 	public static void handleMessage(ClientServerMessage messageFromClient, ConnectionToClient client) throws IOException {
 		// A class that is intended to handle diffrent messages from the client and
 		// response accordingly
+        System.out.println("hm");
+    	//client.sendToClient("aaa");
 		BackEndServer backEndServerInstance = BackEndServer.getBackEndServer();
-		DatabaseController dbControllerInstance = backEndServerInstance.DBController;
+		DatabaseController dbControllerInstance = BackEndServer.DBController;
 
 		// Checking if message is of type of generic message intended for client and
 		// server communication
 		if (!(messageFromClient instanceof ClientServerMessage)) {
 			try {
+		        System.out.println("return null");
+
 				client.sendToClient(null);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -30,17 +37,17 @@ public class MessageHandlerFromClient {
 		}
 
 		// Extracting data from the generic message object intended for further parsing
-		String command = messageFromClient.getCommand();
-		Object result;
-		Object dataForClient;
-		Object orderId;
+		String command = (String)messageFromClient.getCommand();
+		
+        System.out.println("opertion "+command);
 
 		// Parsing the command
 		switch (command) {
-
+		
 		// User sends a disconnect command to the server
 		case Operation.DISCONNECTING:
 			backEndServerInstance.clientDisconnected(client);
+			
 			try {
 				client.sendToClient(Operation.DISCONNECTING); // Send acknowledgment to client
 			} catch (IOException e) {
@@ -61,9 +68,13 @@ public class MessageHandlerFromClient {
 			break;
 
 		case Operation.GET_GENERAL_PARK_WORKER_DETAILS:
+			System.out.println("in");
 			ArrayList<GeneralParkWorker> generalParkWorker = (ArrayList<GeneralParkWorker>) messageFromClient.getDataTransfered();
-			messageFromClient.setDataTransfered(dbControllerInstance.getGeneralParkWorkerDetails(generalParkWorker.get(0)));
-			client.sendToClient(messageFromClient);
+			ClientServerMessage messageForClient =new ClientServerMessage(dbControllerInstance.getGeneralParkWorkerDetails(generalParkWorker.get(0)),Operation.GET_GENERAL_PARK_WORKER_DETAILS);
+		    System.out.println("end opertion");
+		    System.out.println(messageForClient.toString());
+
+			client.sendToClient(messageForClient);
 			break;
 
 		case Operation.GET_ALL_REPORTS:
@@ -166,9 +177,9 @@ public class MessageHandlerFromClient {
 			break;
 
 		default:
-			System.out.println("Received an unknown request: " + command);
+			System.out.println("default");
 			try {
-				client.sendToClient("Unknown request: " + command);
+				client.sendToClient("end");
 			} catch (IOException e) {
 				System.out.println("Error sending unknown request response to client: " + e.getMessage());
 			}

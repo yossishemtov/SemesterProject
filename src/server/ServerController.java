@@ -177,7 +177,7 @@ public class ServerController {
 
 	@FXML
 	protected void initialize() {
-        redirectSystemStreams(); // Redirect System.out and System.err
+        //redirectSystemStreams(); // Redirect System.out and System.err
 
 		HostCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getHost()));
 		IPCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getIp()));

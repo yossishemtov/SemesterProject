@@ -23,9 +23,9 @@
             <Font size="13.0" />
          </font>
       </Text>
-      <TextField layoutX="157.0" layoutY="130.0" />
-      <TextField layoutX="157.0" layoutY="166.0" />
-      <Button layoutX="320.0" layoutY="232.0" mnemonicParsing="false" text="Login" textFill="#2abf3c">
+      <TextField fx:id="WorkerUsername" layoutX="157.0" layoutY="130.0" />
+      <TextField fx:id="WorkerPwd" layoutX="157.0" layoutY="166.0" />
+      <Button layoutX="320.0" layoutY="232.0" mnemonicParsing="false" onAction="#WorkerLoginBtn" text="Login" textFill="#2abf3c">
          <font>
             <Font size="13.0" />
          </font>

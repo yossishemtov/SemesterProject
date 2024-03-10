@@ -30,56 +30,57 @@ public class DatabaseController {
 	// check GetGeneralParkWorker login details and return the data,if not exist return empty ArrayList of type generalParkWorker
 	// WorkerId | firstName | lastName | email | role | userName | password | worksAtPark
 	public ArrayList<GeneralParkWorker> getGeneralParkWorkerDetails(GeneralParkWorker worker) {
-		ArrayList<Order> orderDataForClient = new ArrayList<>();
-		String query = "SELECT * FROM `generalparkworker` WHERE userName = ? AND password= ?";
-		ArrayList<GeneralParkWorker> GeneralParkWorkerList = new ArrayList<>();
+	    // Removed unused ArrayList<Order>
+	    System.out.println("in db");
+	    System.out.println(worker.getPassword()+worker.getUserName());
 
-		try (PreparedStatement preparedStatementInstance = connectionToDatabase.prepareStatement(query)) {
-			preparedStatementInstance.setString(1, worker.getUserName());
-			preparedStatementInstance.setString(2, worker.getPassword());
-			ResultSet returnedStatement = preparedStatementInstance.executeQuery();
+	    String query = "SELECT * FROM `generalparkworker` WHERE userName = ? AND password= ?";
+	    ArrayList<GeneralParkWorker> generalParkWorkerList = new ArrayList<>();
 
-			while (returnedStatement.next()) {
+	    try (PreparedStatement preparedStatementInstance = connectionToDatabase.prepareStatement(query)) {
+	        preparedStatementInstance.setString(1, worker.getUserName());
+	        preparedStatementInstance.setString(2, worker.getPassword());
+	        ResultSet returnedStatement = preparedStatementInstance.executeQuery();
 
-				Integer workerId = returnedStatement.getInt(1);
-				String firstName = returnedStatement.getString(2);
-				String lastName = returnedStatement.getString(3);
-				String email = returnedStatement.getString(4);
-				String role = returnedStatement.getString(5);
-				String userName = returnedStatement.getString(6);
-				String password = returnedStatement.getString(7);
-				Integer worksAtPark = returnedStatement.getInt(8);
+	        while (returnedStatement.next()) {
 
-				switch (role) {
+	            Integer workerId = returnedStatement.getInt(1);
+	            String firstName = returnedStatement.getString(2);
+	            String lastName = returnedStatement.getString(3);
+	            String email = returnedStatement.getString(4);
+	            String role = returnedStatement.getString(5);
+	            String userName = returnedStatement.getString(6);
+	            String password = returnedStatement.getString(7);
+	            Integer worksAtPark = returnedStatement.getInt(8);
+	            System.out.println(role);
+	            switch (role) {
 
-					case "Department manager":
-						
-						DepartmentManager departmentManager = new DepartmentManager(workerId, firstName, lastName, email,
-								userName, password, worksAtPark);
-						GeneralParkWorkerList.add(departmentManager);
-	
-					case "Park manager":
-	
-						ParkManager ParkManager = new ParkManager(workerId, firstName, lastName, email, userName,
-								password, worksAtPark);
-						GeneralParkWorkerList.add(ParkManager);
-	
-					case "Worker":
-	
-						GeneralParkWorker GeneralParkWorker = new GeneralParkWorker(workerId, firstName, lastName, email, role,
-								userName, password, worksAtPark);
-						GeneralParkWorkerList.add(GeneralParkWorker);
+	                case "Department Manager":
+	                	GeneralParkWorker departmentManager = new GeneralParkWorker(workerId, firstName, lastName ,email,"Department Manager", userName, password, worksAtPark);
+	                    generalParkWorkerList.add(departmentManager);
+	                    System.out.println(departmentManager.toString());
+	                    break; // Corrected by adding break
 
-				}
+	                case "Park manager":
+	                	GeneralParkWorker parkManager = new GeneralParkWorker(workerId, firstName, lastName, email,"Park manager", userName, password, worksAtPark);
+	                    generalParkWorkerList.add(parkManager);
+	                    break; // Corrected by adding break
 
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
+	                case "Worker":
+	                    GeneralParkWorker generalParkWorker = new GeneralParkWorker(workerId, firstName, lastName, email, role, userName, password, worksAtPark);
+	                    generalParkWorkerList.add(generalParkWorker);
+	                    break; // Corrected by adding break
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return null; // Consider throwing a custom exception
+	    }
+	    System.out.println(generalParkWorkerList.toString());
 
-		}
-		return GeneralParkWorkerList; // This will return an empty list if there were no records found
+	    return generalParkWorkerList; // This will return an empty list if there were no records found
 	}
+
 	
 	
 	   /**

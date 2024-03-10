@@ -60,7 +60,7 @@ public class HomePageController {
 		Scene scene = new Scene(root);	
 		Stage stage = (Stage)((Node)click.getSource()).getScene().getWindow(); //hiding primary window
 		
-		stage.setTitle("Client Login");
+		stage.setTitle("worker Login");
 		
 		stage.setScene(scene);		
 		stage.show();
