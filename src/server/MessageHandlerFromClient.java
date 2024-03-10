@@ -57,7 +57,7 @@ public class MessageHandlerFromClient {
 		// get all traveler orders from data base
 		case Operation.GET_ALL_ORDERS:
 			// Placeholder for getting all orders from the database
-			Traveler dataTraveler = ((ArrayList<Traveler>) messageFromClient.getDataTransfered()).get(0);
+			Traveler dataTraveler = (Traveler) messageFromClient.getDataTransfered();
 			messageFromClient.setDataTransfered(dbControllerInstance.getOrdersDataFromDatabase(dataTraveler));
 			client.sendToClient(messageFromClient);
 			break;
@@ -67,13 +67,11 @@ public class MessageHandlerFromClient {
 			break;
 
 		case Operation.GET_GENERAL_PARK_WORKER_DETAILS:
-			System.out.println("in");
 			GeneralParkWorker generalParkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
-			ClientServerMessage messageForClient =new ClientServerMessage(dbControllerInstance.getGeneralParkWorkerDetails(generalParkWorker),Operation.GET_GENERAL_PARK_WORKER_DETAILS);
+			messageFromClient.setDataTransfered(dbControllerInstance.getGeneralParkWorkerDetails(generalParkWorker));
 		    System.out.println("end opertion");
-		    System.out.println(messageForClient.toString());
-
-			client.sendToClient(messageForClient);
+		    System.out.println(messageFromClient.toString());
+			client.sendToClient(messageFromClient);
 			break;
 
 		case Operation.GET_ALL_REPORTS:
@@ -97,8 +95,8 @@ public class MessageHandlerFromClient {
 
 		case Operation.GET_AMOUNT_OF_VISITORS:
 			// Placeholder for getting the amount of visitors
-			ArrayList<Park> park_Check_AmountVisitors = (ArrayList<Park>) messageFromClient.getDataTransfered();
-			messageFromClient.setDataTransfered(dbControllerInstance.getAmountOfVisitors(park_Check_AmountVisitors.get(0)));
+			GeneralParkWorker park_Check_AmountVisitors = (GeneralParkWorker) messageFromClient.getDataTransfered();
+			messageFromClient.setDataTransfered(dbControllerInstance.getAmountOfVisitors(park_Check_AmountVisitors));
 			client.sendToClient(messageFromClient);
 			break;
 

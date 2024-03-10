@@ -1,4 +1,9 @@
-1 	John 	Doe 	johndoe@example.com 	Manager 	johndoe123 	password123 	1
-2	Jane 	Smith 	janesmith@example.com 	Manager 	janesmith456 	password456 	2
-3	Michael 	Johnson 	michaeljohnson@example.com 	Worker 	michaelj 	password789 	3
-4	Emily 	Williams 	emilywilliams@example.com 	Worker 	emilyw 	password123 	1
+1 	John 	Doe 	  johndoe@example.com 	Department Manager 	johndoe123 	password123 	1
+2	Jane 	Smith 	  janesmith@example.com Park Manager 	janesmith456 	password456 	2
+3	Michael Johnson   michaeljohnson@example.com 	Worker 	michaelj 	password789 	3
+4	Emily 	Williams  emilywilliams@example.com 	Worker 	emilyw 	password123 	1
+5   Alex    Turner    alexturner@example.com Park Manager alext password234 2
+6 Samantha Brown samanthabrown@example.com Department Manager samanthab password345 3
+7 Lucas Morris lucasmorris@example.com Worker lucasm password456 1
+8 itay mod itay.email@example.com Park Manager yourusername password567 1
+9 emanuel davidov emanuel.email@example.com Department Manager yourusernameD password678 2

@@ -93,7 +93,7 @@ public class DatabaseController {
 	            LocalDate date = rs.getDate("date").toLocalDate();
 	            String telephoneNumber = rs.getString("TelephoneNumber"); // Assuming you have a field to store this in Order
 	            LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
-	            String statusStr = rs.getString("orderStatus");
+	            String statusStr = rs.getString("orderStatus"); 
 	            String typeOfOrderStr = rs.getString("typeOfOrder");
 
 	            // Assuming Order constructor is updated to accept all the necessary fields including telephoneNumber
@@ -243,7 +243,7 @@ public class DatabaseController {
 	            ps.setString(5, park.getLocation());
 	            ps.setInt(6, park.getStaytime());
 	            ps.setInt(7, park.getWorkersAmount());
-	            ps.setInt(8, park.getManager().getWorkerId()); 
+	            ps.setInt(8, park.getManagerid()); 
 	            ps.setInt(9, park.getWorkingTime());
 	            ps.setInt(10, park.getParkNumber());
 
@@ -292,17 +292,17 @@ public class DatabaseController {
 	    	
 	    }
 	    
-	    public ArrayList<Park> getAmountOfVisitors(Park park) {
-	        ArrayList<Park> parks = new ArrayList<>();
+	    public Park getAmountOfVisitors(GeneralParkWorker worker) {
 	        String query = "SELECT * FROM park WHERE parkNumber=?"; // Corrected FROM clause
 
-	        try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-	            ps.setInt(1, park.getParkNumber());
+	        Park park = null;
+			try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	            ps.setInt(1, worker.getWorksAtPark());
 	            ResultSet rs = ps.executeQuery(); // Use executeQuery for SELECT statements
 
 	            while (rs.next()) {
 	                // Assuming you have a constructor that matches this data extraction pattern.
-	                Park fetchedPark = new Park(
+	                park = new Park(
 	                    rs.getString("name"), 
 	                    rs.getInt("parkNumber"), 
 	                    rs.getInt("maxVisitors"), 
@@ -311,16 +311,17 @@ public class DatabaseController {
 	                    rs.getString("location"), 
 	                    rs.getInt("staytime"), 
 	                    rs.getInt("workersAmount"), 
-	                    null, // For manager, since it's a complex object, you might need a different approach
+	                    rs.getInt("managerId"), // For manager, since it's a complex object, you might need a different approach
 	                    rs.getInt("workingTime")
 	                );
-	                parks.add(fetchedPark);
+	               
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        }
-	        return parks;
+	        return park;
 	    }
+	    
 	    
 	    public VisitorsReport getTotalNumberOfVisitorsReport() {
 	        String query = "SELECT typeOfOrder, SUM(amountOfVisitors) AS totalVisitors " +

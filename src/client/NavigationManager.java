@@ -18,15 +18,30 @@ public class NavigationManager {
     }
 
     /**
-     * Method to open pages, adjusted for use with the 'gui' package.
-     * @param nameOfPage The name of the FXML file to load (within the /gui directory).
-     * @param event The event triggering this navigation (used to find the current stage).
+     * Opens a new page and optionally hides the current window.
+     * @param nameOfPage The FXML file name of the page to be opened.
+     * @param event The event that triggered the page opening (can be null if not applicable).
      * @param title The title for the new stage.
-     * @param hideCurrent Whether to hide the current stage.
-     * @throws IOException If an I/O error occurs.
+     * @param hideCurrent Determines whether the current stage should be hidden.
+     * @throws IOException If an error occurs during loading the FXML.
      */
     public static void openPage(String nameOfPage, Event event, String title, boolean hideCurrent) throws IOException {
-  
+        Stage currentStage = null;
+        if (event != null && event.getSource() instanceof Node) {
+            currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        }
+        openPage(nameOfPage, currentStage, title, hideCurrent);
+    }
+
+    /**
+     * Opens a new page and optionally hides the current window.
+     * @param nameOfPage The FXML file name of the page to be opened.
+     * @param currentStage The current Stage that might be hidden (can be null if not applicable).
+     * @param title The title for the new stage.
+     * @param hideCurrent Determines whether the current stage should be hidden.
+     * @throws IOException If an error occurs during loading the FXML.
+     */
+    public static void openPage(String nameOfPage, Stage currentStage, String title, boolean hideCurrent) throws IOException {
         FXMLLoader loader = new FXMLLoader(NavigationManager.class.getResource("/gui/" + nameOfPage));
         Parent pane = loader.load();
         Scene scene = new Scene(pane);
@@ -35,23 +50,18 @@ public class NavigationManager {
         newStage.setScene(scene);
         newStage.setTitle(title);
 
-        // Handle the current stage based on the event source
-        if (event.getSource() instanceof Node) {
-            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            if (hideCurrent) {
-                currentStage.hide(); // Hide the current stage
-            }
-            newStage.show(); // Show the new stage
-        } else {
-            // This block handles cases where the event source is not a Node, potentially logging or throwing an error
-            newStage.show(); // Optionally handle this differently
+        if (currentStage != null && hideCurrent) {
+            currentStage.hide(); // Hide the current stage
         }
+        newStage.show(); // Show the new stage
 
         // Handling the closing of the window
         newStage.setOnCloseRequest(e -> {
+            // Perform any cleanup, including closing connections
             if (systemClient != null) {
                 systemClient.quit();
             }
         });
     }
+
 }

@@ -1,6 +1,4 @@
 
-
-
 package gui;
 
 import java.io.IOException;
@@ -16,7 +14,9 @@ import common.Operation;
 import common.Park;
 import common.Usermanager;
 import common.worker.DepartmentManager;
+import common.worker.GeneralParkWorker;
 import common.worker.ParkManager;
+import client.ClientController;
 import client.ClientUI;
 import client.NavigationManager;
 import javafx.event.ActionEvent;
@@ -71,13 +71,7 @@ public class DeparmentManegerController implements Initializable {
 
 	@FXML
 	private ComboBox<String> ListOfReports;
-	
-	private DepartmentManager departmentManager;
-
-
-
-
-
+	private GeneralParkWorker departmentManager;
 
 	/**
 	 * For choosing a type of report
@@ -87,20 +81,20 @@ public class DeparmentManegerController implements Initializable {
 	 */
 	@FXML
 	void ListOfReportfunc(ActionEvent event) throws IOException {
-	
+
 		if (ListOfReports.getValue().equals("Total number of visitors report")) {
-		
+
 			NavigationManager.openPage("BforeDepartment.fxml", event, "Choosing page", true);
 
 		}
 
 		else {
 			if (ListOfReports.getValue().equals("Usage report")) {
-			
+
 				NavigationManager.openPage("BforeDepartment.fxml", event, "Choosing page", true);
 
 			} else {
-				
+
 				NavigationManager.openPage("BforeDepartment.fxml", event, "Choosing page", true);
 
 			}
@@ -116,19 +110,18 @@ public class DeparmentManegerController implements Initializable {
 	 */
 	@FXML
 	void NumberVisitorsFunc(ActionEvent event) {
-		Park partToChackNumberVisitor=new Park(null, departmentManager.getWorksAtPark() ,null,null,null,null,null,null,null, null);
-		ArrayList<Park> parkList= new ArrayList<Park>();
-		parkList.add(partToChackNumberVisitor);
-		ClientServerMessage<ArrayList<Park>> messege=new ClientServerMessage(parkList,Operation.GET_AMOUNT_OF_VISITORS);
-		Integer NumberOfVisitorInt=((ArrayList<Park>)messege.getDataTransfered()).get(0).getCurrentVisitors();
+		
+
+		ClientServerMessage messege = new ClientServerMessage(departmentManager,
+				Operation.GET_AMOUNT_OF_VISITORS);
+		ClientUI.clientControllerInstance.sendMessageToServer(messege);
+		Integer NumberOfVisitorInt = ((Park)ClientController.data.getDataTransfered()).getCurrentVisitors();
 		String NumberOfVisitor = "The Number of visitors present in the park is: " + NumberOfVisitorInt;
-		Alerts erorAlert = new Alerts(Alerts.AlertType.WARNING, "Information for department maneger", "Number of visitor",
-				NumberOfVisitor);
+		Alerts erorAlert = new Alerts(Alerts.AlertType.INFORMATION, "Information for department maneger",
+				"Number of visitor", NumberOfVisitor);
 		erorAlert.showAndWait();
 
 	}
-
-
 
 	/**
 	 * creating a report with a suitable name of the type of the report, after
@@ -140,12 +133,11 @@ public class DeparmentManegerController implements Initializable {
 	@FXML
 	void CreateReport(ActionEvent event) throws IOException {
 
-
 		if (ReporeCombo.getValue() == null) {
 			Alerts erorAlert = new Alerts(Alerts.AlertType.ERROR, "Invalid Input", "Warning",
 					"The value entered is invalid. Please try again.");
 			erorAlert.showAndWait();
-			
+
 		} else {
 
 			switch (ReporeCombo.getValue()) {
@@ -155,13 +147,13 @@ public class DeparmentManegerController implements Initializable {
 				break;
 
 			case "Visit report - by time of entry":
-			
+
 				NavigationManager.openPage("VisitingReportEnterTime.fxml", event, "Choosing report", false);
 
 				break;
 
 			case "Cancellation report":
-	
+
 				NavigationManager.openPage("BeforeReport.fxml", event, "Choosing report", false);
 
 				break;
@@ -170,7 +162,7 @@ public class DeparmentManegerController implements Initializable {
 	}
 
 	/**
-	 * This function logs out 
+	 * This function logs out
 	 * 
 	 * @param event on mouse click
 	 * @throws Exception CLIENT EXCEPTION
@@ -191,24 +183,19 @@ public class DeparmentManegerController implements Initializable {
 	 * @param location  location
 	 * @param resources resources
 	 */
-	  @Override
-	    public void initialize(URL location, ResourceBundle resources) {
-	        // Cast the current worker to DepartmentManager if possible
-	        Object worker = Usermanager.getCurrentWorker();
-	        if (worker instanceof DepartmentManager) {
-	            this.departmentManager = (DepartmentManager) worker;
-	            idtxt.setText(departmentManager.getUserName());
-	            // Initialize other UI components based on departmentManager details
-	        } else {
-	            // Handle case where the current worker is not a DepartmentManager
-	            System.out.println("Current user is not a Department Manager");
-	        }
-	        
-	        // Populate your ComboBoxes or any other UI elements here
-	        ReporeCombo.getItems().addAll("Cancellation report", "Visit report - by length of stay",
-	                "Visit report - by time of entry");
-	        ListOfReports.getItems().addAll("Total number of visitors report", "Usage report",
-	                "Income report for a specific month");
-	    }
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// Cast the current worker to DepartmentManager if possible
+		departmentManager = Usermanager.getCurrentWorker();
+
+		idtxt.setText(departmentManager.getUserName());
+		// Initialize other UI components based on departmentManager details
+
+		// Populate your ComboBoxes or any other UI elements here
+		ReporeCombo.getItems().addAll("Cancellation report", "Visit report - by length of stay",
+				"Visit report - by time of entry");
+		ListOfReports.getItems().addAll("Total number of visitors report", "Usage report",
+				"Income report for a specific month");
+	}
 
 }

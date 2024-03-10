@@ -86,7 +86,7 @@ public class WorkerLoginController {
 					break;
 				case "Worker":
 					System.out.println("in Worker");
-					NavigationManager.openPage("WorkerScreen.fxml", click, "workerScreen", true);
+					NavigationManager.openPage("parkWorkerFrame.fxml", click, "workerScreen", true);
 					break;
 				default:
 					System.out.println("Role not recognized. Unable to proceed.");

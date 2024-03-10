@@ -1,12 +1,15 @@
 package common;
 
-public class Traveler {
+import java.io.Serializable;
+
+public class Traveler implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String phoneNum;
-	
 
 	public Traveler(Integer id, String firstName, String lastName, String email, String phoneNum) {
 		this.id = id;
@@ -47,5 +50,5 @@ public class Traveler {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 }
