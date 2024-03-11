@@ -6,6 +6,7 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -14,7 +15,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="661.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.ServerController">
    <children>
-      <Label alignment="CENTER" layoutX="1.0" layoutY="21.0" prefHeight="44.0" prefWidth="661.0" text="Server Connection" textAlignment="CENTER">
+      <Label alignment="CENTER" layoutX="1.0" prefHeight="44.0" prefWidth="661.0" text="Server Connection" textAlignment="CENTER">
          <font>
             <Font size="35.0" />
          </font>
@@ -23,7 +24,8 @@
             -fx-font-weight: bold;
          </style>
       </Label>
-      <VBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="104.0" prefHeight="303.0" prefWidth="294.0">
+  
+      <VBox alignment="CENTER_LEFT" layoutX="8.0" layoutY="48.0" prefHeight="262.0" prefWidth="294.0">
          <children>
             <HBox alignment="CENTER" layoutX="10.0" layoutY="166.0" prefHeight="30.0" prefWidth="294.0">
                <children>
@@ -118,10 +120,13 @@
             <!-- Error labels styling can be set directly here if needed -->
          </children>
       </VBox>
-      <Button fx:id="startserverBtn" layoutX="263.0" layoutY="368.0" mnemonicParsing="false" onAction="#serveStartAction" text="Start Server" textFill="#42cb14" />
-      <VBox fx:id="TableViewContainer" layoutX="315.0" layoutY="104.0" prefHeight="200.0" prefWidth="325.0">
+      <Button fx:id="startserverBtn" layoutX="30.0" layoutY="355.0" mnemonicParsing="false" onAction="#serveStartAction" text="Start Server" textFill="#42cb14" />
+      <VBox fx:id="TableViewContainer" layoutX="315.0" layoutY="79.0" prefHeight="200.0" prefWidth="325.0">
+         <style>
+            -fx-background-color: #f4f4f4;
+         </style>
          <children>
-            <TableView fx:id="connStatusTable" opacity="0.81" prefHeight="200.0" prefWidth="200.0">
+            <TableView fx:id="connStatusTable" opacity="0.81" prefHeight="224.0" prefWidth="325.0">
               <columns>
                 <TableColumn fx:id="IPCol" prefWidth="75.0" resizable="false" text="Ip" />
                 <TableColumn fx:id="HostCol" prefWidth="75.0" resizable="false" text="Host" />
@@ -130,11 +135,14 @@
               </columns>
             </TableView>
          </children>
-         <style>
-            -fx-background-color: #f4f4f4;
-         </style>
       </VBox>
-      <Button fx:id="StopserverBtn1" layoutX="400.0" layoutY="368.0" mnemonicParsing="false" onAction="#serveStopAction" text="Stop Server" textFill="#ed2b2b" />
+      <Button fx:id="StopserverBtn1" layoutX="155.0" layoutY="355.0" mnemonicParsing="false" onAction="#serveStopAction" text="Stop Server" textFill="#ed2b2b" />
+      <TextArea fx:id="logTextArea" layoutX="335.0" layoutY="329.0" prefHeight="77.0" prefWidth="270.0" />
+      <Label layoutX="422.0" layoutY="296.0" text="server console">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
    </children>
    <style>
       -fx-background-color: white;

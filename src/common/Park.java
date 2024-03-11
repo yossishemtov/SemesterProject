@@ -1,8 +1,10 @@
 package common;
 
-import common.worker.ParkManager;
+import java.io.Serializable;
 
-public class Park {
+public class Park  implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private Integer parkNumber;
 	private Integer maxVisitors;
@@ -11,11 +13,11 @@ public class Park {
 	private String location;
 	private Integer staytime;
 	private Integer workersAmount;
-	private ParkManager manager;
+	private Integer managerID;
 	private Integer workingTime;
 	
 	public Park(String name, Integer parkNumber, Integer maxVisitors, Integer capacity, Integer currentVisitors,
-			String location, Integer staytime, Integer workersAmount, ParkManager manager, Integer workingTime) {
+			String location, Integer staytime, Integer workersAmount, Integer managerID, Integer workingTime) {
 		super();
 		this.name = name;
 		this.parkNumber = parkNumber;
@@ -25,7 +27,7 @@ public class Park {
 		this.location = location;
 		this.staytime = staytime;
 		this.workersAmount = workersAmount;
-		this.manager = manager;
+		this.managerID = managerID;
 		this.workingTime = workingTime;
 	}
 	
@@ -78,11 +80,11 @@ public class Park {
 	public void setWorkersAmount(Integer workersAmount) {
 		this.workersAmount = workersAmount;
 	}
-	public ParkManager getManager() {
-		return manager;
+	public Integer getManagerid() {
+		return managerID;
 	}
-	public void setManager(ParkManager manager) {
-		this.manager = manager;
+	public void setManagerid(Integer managerid) {
+		this.managerID = managerid;
 	}
 	public Integer getWorkingTime() {
 		return workingTime;

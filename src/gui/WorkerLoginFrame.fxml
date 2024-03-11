@@ -25,7 +25,10 @@
          </font>
       </Text>
       <TextField fx:id="WorkerUsername" layoutX="157.0" layoutY="130.0" />
-      <Button fx:id="LoginBtn" layoutX="320.0" layoutY="232.0" mnemonicParsing="false" onAction="#LoginBtn" text="Login" textFill="#2abf3c">
+
+      <TextField fx:id="WorkerPwd" layoutX="157.0" layoutY="166.0" />
+      <Button layoutX="320.0" layoutY="232.0" mnemonicParsing="false" onAction="#WorkerLoginBtn" text="Login" textFill="#2abf3c">
+
          <font>
             <Font size="13.0" />
          </font>

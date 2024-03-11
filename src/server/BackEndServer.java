@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import entities.ClientConnectionStatus;
 
 import DB.*;
+import common.ClientServerMessage;
 import ocsf.server.*;
 
 
@@ -44,6 +45,7 @@ public class BackEndServer extends AbstractServer
 	 
 	return backEndServerInstance;
   }
+ 
   
   @Override
   protected void clientConnected(ConnectionToClient client) {
@@ -90,9 +92,10 @@ public class BackEndServer extends AbstractServer
 
 
   public void handleMessageFromClient(Object msg, ConnectionToClient client) {
+      System.out.println("bk");
 	  
 	  try {
-		MessageHandler.handleMessage(msg,client);
+		MessageHandlerFromClient.handleMessage((ClientServerMessage)msg,client);
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();

@@ -1,11 +1,16 @@
 package gui;
 
+import java.util.ArrayList;
+
+import client.ClientController;
 import client.ClientUI;
 import client.InputValidation;
+import client.NavigationManager;
 import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
 import common.Traveler;
+import common.Usermanager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,36 +36,27 @@ public class VisitorLoginController {
 	    Boolean isSuccessful = alertID.getAlertType().toString().equals("INFORMATION");
 	    
 	    if (isSuccessful) { // if entered right ID with 9 digits
-	    	
 	        try {
 	        	// creating a traveler instance to send to server controller for validation 
 		    	Traveler TryLoginVistor = new Traveler(Integer.parseInt(visitorID), null, null, null, null);
-		        ClientServerMessage VisitorLoginAttemptInformation = new ClientServerMessage(TryLoginVistor, Operation.GetTravlerInfo);
-		        ClientUI.clientControllerInstance.sendMessageToServer(VisitorLoginAttemptInformation);
+		    	
+		        ClientServerMessage<?> TravelerLoginAttemptInformation = new ClientServerMessage<>(TryLoginVistor, Operation.GET_TRAVLER_INFO);
+		        ClientUI.clientControllerInstance.sendMessageToServer(TravelerLoginAttemptInformation);
 		        // get the data return from server 
-		        ClientServerMessage dataFromServer = ClientUI.clientControllerInstance.getData();
+		        Traveler TravelerFromServer = (Traveler) ClientController.data.getDataTransfered();
+		        // update the current traveler in UserManage
+		        Usermanager.setCurrentTraveler(TravelerFromServer);
 		        // if traveler has an order in the system
-		        if (dataFromServer.getDataTransfered() instanceof Traveler) {
-		        	// open visitor screen 
-		            Parent root = new FXMLLoader().load(getClass().getResource("VisitorFrame.fxml"));
-		            Stage stage = (Stage)((Node)click.getSource()).getScene().getWindow(); //hiding primary window
-		            Scene scene = new Scene(root);
-
-		            stage.setTitle("Visitor Screen");
-		            stage.setScene(scene);
-		            stage.show();
+		       
+		        if(TravelerFromServer instanceof Traveler) {
+	        		// open visitor screen 
+		        	NavigationManager.openPage("VisitorFrame.fxml", click, "Traveler Screen", true);
 		        }
 		        else {
 		        	// if traveler has not an order in the system
-		        	if (dataFromServer.getDataTransfered() == null) {
+		        	if (TravelerFromServer == null) {
 		        		// open order a visit screen 
-			            Parent root = new FXMLLoader().load(getClass().getResource("OrderAvisitFrame.fxml"));
-			            Stage stage = (Stage)((Node)click.getSource()).getScene().getWindow(); //hiding primary window
-			            Scene scene = new Scene(root);
-
-			            stage.setTitle("order A visit Screen");
-			            stage.setScene(scene);
-			            stage.show();
+		        		NavigationManager.openPage("OrdervisitFrame.fxml", click, "order A visit Screen", true);
 		        	}	
 		        }
 	        } catch (Exception e) {
@@ -68,7 +64,6 @@ public class VisitorLoginController {
 	            e.printStackTrace();
 	        }
 	    } else {
-	    	
 	    	// Display the error alert to the user
 	        alertID.showAndWait();
 	    }
@@ -77,17 +72,8 @@ public class VisitorLoginController {
 	public void BackBtn(ActionEvent click) throws Exception{
 		//Function for opening a new scene when clicking on the Back Button
 	try {
-		
-		Parent root = new FXMLLoader().load(getClass().getResource("HomePageFrame.fxml"));
-		Stage stage = (Stage)((Node)click.getSource()).getScene().getWindow(); //hiding primary window
-		Scene scene = new Scene(root);	
-		
-		stage.setTitle("Home Page");
-		
-		stage.setScene(scene);		
-		stage.show();
-		
-		}catch(Exception e) {
+		NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true);
+	} catch(Exception e) {
 			System.out.print("Something went wrong while clicking on the back button, check stack trace");
 			e.printStackTrace();
 		}
