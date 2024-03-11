@@ -1,6 +1,7 @@
 package gui;
 
 import java.util.ArrayList;
+import com.jfoenix.controls.JFXTextField;
 
 import client.ClientController;
 import client.ClientUI;
@@ -21,17 +22,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class VisitorLoginController {
-	@FXML
-    private Button LoginBtn;
-	@FXML
-    private Button BackBtn;
-	@FXML
-    private TextField VisitorID;
+public class TravelerLoginController {
+
+	 @FXML
+	 private Button LoginBtn;
+
+	 @FXML
+	 private Button BackBtn;
+
+	 @FXML
+	 private JFXTextField TravelerID;
 	
 	
 	public void LoginBtn(ActionEvent click) throws Exception {
-	    String visitorID = VisitorID.getText(); // get the id
+	    String visitorID = TravelerID.getText(); // get the id
 	    Alerts alertID = InputValidation.ValidateVisitorID(visitorID); // get the right alert
 	    Boolean isSuccessful = alertID.getAlertType().toString().equals("INFORMATION");
 	    
@@ -50,7 +54,7 @@ public class VisitorLoginController {
 		       
 		        if(TravelerFromServer instanceof Traveler) {
 	        		// open visitor screen 
-		        	NavigationManager.openPage("VisitorFrame.fxml", click, "Traveler Screen", true);
+		        	NavigationManager.openPage("TravelerFrame.fxml", click, "Traveler Screen", true);
 		        }
 		        else {
 		        	// if traveler has not an order in the system
