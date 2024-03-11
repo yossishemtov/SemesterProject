@@ -58,16 +58,13 @@ public class WorkerLoginController {
 			// Send worker object to server and request worker details
 			ClientServerMessage<?> messageForServer = new ClientServerMessage<>(workerForServer,
 					Operation.GET_GENERAL_PARK_WORKER_DETAILS);
-			System.out.println("0");
 			ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
-			System.out.println("1");
 
 			// Retrieve worker details from server
 			GeneralParkWorker workerFromServer = (GeneralParkWorker) ClientController.data.getDataTransfered();
 
 			// Check if the server response is not null
 			if (workerFromServer != null) {
-				System.out.println("2");
 
 				// Update the current worker in UserManager
 				Usermanager.setCurrentWorker(workerFromServer);
@@ -115,15 +112,8 @@ public class WorkerLoginController {
 
 	public void BackBtn(ActionEvent click) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("HomePageFrame.fxml"));
-			Stage stage = (Stage) ((Node) click.getSource()).getScene().getWindow(); // hiding primary window
-			Scene scene = new Scene(root);
-
-			stage.setTitle("Home Page");
-
-			stage.setScene(scene);
-			stage.show();
-
+			NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true);
+			
 		} catch (Exception e) {
 			System.out.print("Something went wrong while clicking on the back button, check stack trace");
 			e.printStackTrace();

@@ -17,7 +17,7 @@ import javafx.scene.control.Label;
 
 public class OrderFrameController {
 	
-	private Order order = new Order(null, null, orderId, null, null, null, null, null, null, null, null);
+	private Order order = new Order(null, null, null, null, null, null, null, null, null, null, null);
 	
 	ClientController clientController = new ClientController(null, 0);
 	

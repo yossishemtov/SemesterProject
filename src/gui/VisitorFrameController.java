@@ -31,10 +31,10 @@ public class VisitorFrameController {
 	
 	    ClientController clientController = new ClientController(null, 0);
 	    
-	    private int visitorID = VisitorLoginController.getvisitorID;
+	   // private int visitorID = VisitorLoginController.getvisitorID;
 
-	    private Traveler traveler = new Traveler(visitorID, null, null, null, null);
-	    usermanager.getcurrenttraveler
+	    private Traveler traveler = new Traveler(null, null, null, null, null);
+	    //usermanager.getcurrenttraveler
 	    
 	    @FXML
 	    private TextArea messagesTextArea;
@@ -63,7 +63,7 @@ public class VisitorFrameController {
 	    public void editOrderBtn(ActionEvent click) throws Exception {
 	    	
 	    	String orderID = OrderID.getText(); // get the order ID
-		    Alerts alertID = InputValidation.ValidateOrderID(orderID); // get the right alert
+		    Alerts alertID = InputValidation.ValidateVisitorID(orderID); // get the right alert
 		    Boolean isSuccessful = alertID.getAlertType().toString().equals("INFORMATION");
 		    
 		    if (isSuccessful) { // if entered the right order ID
@@ -151,7 +151,7 @@ public class VisitorFrameController {
         public void viewMessages(ActionEvent click) throws Exception{
         	 
         	// Fetch messages from the server and set them in the TextArea
-        	ClientServerMessage messageToServer = new ClientServerMessage(traveler , operation."GET_MESSAGES" );
+        	ClientServerMessage messageToServer = new ClientServerMessage(traveler , Operation.GET_MESSAGES );
 			clientController.sendMessageToServer(messageToServer);
             
 			List<String> messages = (List<String>) new ClientServerMessage(traveler , "GET_MESSAGES" );
