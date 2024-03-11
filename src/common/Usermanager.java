@@ -27,4 +27,5 @@ public class Usermanager  implements Serializable {
 	    public static void setCurrentTraveler(Traveler traveler) {
 	    	Usermanager.currentTraveler = traveler;
 	    }
+	    
 	}

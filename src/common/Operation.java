@@ -16,7 +16,7 @@ public abstract class Operation {
     public final static String GET_PROFILE = "Get user profile";
     public final static String GET_AMOUNT_OF_VISITORS = "Get amount of visitors";
 
-    public final static String GET_AMOUNT_OF_VISITORS_FOR_PARKWORKER = "Get amount of visitors for park worker";
+    public final static String GET_AMOUNT_OF_VISITORS_FOR_GENERALPARKWORKER = "Get amount of visitors for park worker";
     
 
     public final static String POST_NEW_TRAVLER_GUIDER = "Post new traveler guide request";

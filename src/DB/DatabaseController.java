@@ -260,7 +260,7 @@ public class DatabaseController {
 	     * @param parkworker the park worker information
 	     * @return park information if successful and null if not found
 	     */
-	    public Park getAmountOfVisitorsByParkWorker(ParkWorker parkworker) {
+	    public Park getAmountOfVisitorsByParkWorker(GeneralParkWorker parkworker) {
 	    	//Querying for the park information with the park number associated with the park worker
 	    	String query = "Select * FROM park WHERE parkNumber = ?";
 	    	Park fetchedPark = null;
@@ -287,7 +287,6 @@ public class DatabaseController {
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        }
-	    	
 	        return fetchedPark;
 	    	
 	    }
