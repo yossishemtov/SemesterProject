@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import common.*;
-import common.worker.*;
+import common.worker.GeneralParkWorker;
 
 /**
  * This class is responsible for managing database operations related to orders.
@@ -113,7 +113,7 @@ public class DatabaseController {
 	            // Integer travelerId = rs.getInt("travelerId"); // Not used in the Order constructor directly
 	            Integer parkNumber = rs.getInt("parkNumber");
 	            Integer amountOfVisitors = rs.getInt("amountOfVisitors");
-	            Float price = rs.getFloat("price");
+	            Double price = rs.getDouble("price");
 	            String visitorEmail = rs.getString("visitorEmail");
 	            LocalDate date = rs.getDate("date").toLocalDate();
 	            String telephoneNumber = rs.getString("TelephoneNumber"); // Assuming you have a field to store this in Order
@@ -150,7 +150,7 @@ public class DatabaseController {
 		        ps.setInt(2, order.getVisitorId());
 		        ps.setInt(3, order.getParkNumber());
 		        ps.setInt(4, order.getAmountOfVisitors());
-		        ps.setFloat(5, order.getPrice());
+		        ps.setDouble(5, order.getPrice());
 		        ps.setString(6, order.getVisitorEmail());
 		        ps.setDate(7, java.sql.Date.valueOf(order.getDate()));
 		        ps.setString(8, order.getTelephoneNumber()); // Assuming getTelephoneNumber() method exists
@@ -247,42 +247,7 @@ public class DatabaseController {
 	        }
 	    }
 	    
-	    /**
-	     * Gets the amount of visitors in the park where the parkworker works at
-	     * @param parkworker the park worker information
-	     * @return park information if successful and null if not found
-	     */
-	    public Park getAmountOfVisitorsByParkWorker(ParkWorker parkworker) {
-	    	//Querying for the park information with the park number associated with the park worker
-	    	String query = "Select * FROM park WHERE parkNumber = ?";
-	    	Park fetchedPark = null;
-	    	
-	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-	            ps.setInt(1, parkworker.getWorksAtPark());
-	            ResultSet rs = ps.executeQuery(); // Use executeQuery for SELECT statements
-
-	            while (rs.next()) {
-	                // Assuming you have a constructor that matches this data extraction pattern.
-	            	    fetchedPark = new Park(
-	                    rs.getString("name"), 
-	                    rs.getInt("parkNumber"), 
-	                    rs.getInt("maxVisitors"), 
-	                    rs.getInt("capacity"), 
-	                    rs.getInt("currentVisitors"), 
-	                    rs.getString("location"), 
-	                    rs.getInt("staytime"), 
-	                    rs.getInt("workersAmount"), 
-	                    null, // For manager, since it's a complex object, you might need a different approach
-	                    rs.getInt("workingTime")
-	                );
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	    	
-	        return fetchedPark;
-	    	
-	    }
+	    
 	    
 	    public Park getAmountOfVisitors(GeneralParkWorker worker) {
 	        String query = "SELECT * FROM park WHERE parkNumber=?"; // Corrected FROM clause
@@ -368,8 +333,37 @@ public class DatabaseController {
 	        System.out.println(report.toString());
 	        return report; // Pass the new total as well
 	    }
+	    
+	    
 
+	    public Order getLastOrderId(){
+	        String query = "SELECT MAX(OrderId) FROM order";
+	        Order lastorder=null;
+	        
+	        try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+		        ResultSet rs = ps.executeQuery();
 
+		        while (rs.next()) {
+		            Integer orderId = rs.getInt("orderId");
+		            Integer travelerId = rs.getInt("travelerId");
+		            Integer parkNumber = rs.getInt("parkNumber");
+		            Integer amountOfVisitors = rs.getInt("amountOfVisitors");
+		            Double price = rs.getDouble("price");
+		            String visitorEmail = rs.getString("visitorEmail");
+		            LocalDate date = rs.getDate("date").toLocalDate();
+		            String telephoneNumber = rs.getString("TelephoneNumber"); 
+		            LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
+		            String statusStr = rs.getString("orderStatus"); 
+		            String typeOfOrderStr = rs.getString("typeOfOrder");
+
+		            Order order = new Order(orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date, visitTime, statusStr, typeOfOrderStr, telephoneNumber);
+		            lastorder = order;
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		    return lastorder; 
+	    }
 	    
 
 

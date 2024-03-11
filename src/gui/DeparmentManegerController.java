@@ -114,8 +114,8 @@ public class DeparmentManegerController implements Initializable {
 
 		ClientServerMessage<?> messege = new ClientServerMessage(departmentManager,
 				Operation.GET_AMOUNT_OF_VISITORS);
-		ClientUI.clientControllerInstance.sendMessageToServer(messege);
-		Integer NumberOfVisitorInt = ((Park)ClientController.data.getDataTransfered()).getCurrentVisitors();
+		ClientUI.clientControllerInstance.sendMessageToServer(messege); //send to server
+		Integer NumberOfVisitorInt = ((Park)ClientController.data.getDataTransfered()).getCurrentVisitors(); //getting the info
 		String NumberOfVisitor = "The Number of visitors present in the park is: " + NumberOfVisitorInt;
 		Alerts erorAlert = new Alerts(Alerts.AlertType.INFORMATION, "Information for department maneger",
 				"Number of visitor", NumberOfVisitor);

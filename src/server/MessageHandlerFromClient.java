@@ -93,11 +93,6 @@ public class MessageHandlerFromClient {
 			// Placeholder for getting messages
 			break;
 			
-		case Operation.GET_AMOUNT_OF_VISITORS_FOR_PARKWORKER:
-			ParkWorker loggedInParkWorker = (ParkWorker) messageFromClient.getDataTransfered();
-			messageFromClient.setDataTransfered(dbControllerInstance.getAmountOfVisitorsByParkWorker(loggedInParkWorker));
-			client.sendToClient(messageFromClient);
-			break;
 
 		case Operation.GET_AMOUNT_OF_VISITORS:
 			// Placeholder for getting the amount of visitors
@@ -111,7 +106,6 @@ public class MessageHandlerFromClient {
 			ArrayList<GroupGuide> groupGuide = (ArrayList<GroupGuide>) messageFromClient.getDataTransfered();
 
 			// send to data base group guide to insert
-			dbControllerInstance.addNewGroupGuide(groupGuide.get(0));
 			// if the insert success ,send to client true
 			messageFromClient.setDataTransfered(true);
 			client.sendToClient(messageFromClient);
@@ -184,6 +178,14 @@ public class MessageHandlerFromClient {
 			client.sendToClient(messageFromClient);
 
 			break;
+			
+		case Operation.GET_LAST_ORDER_ID:
+			Order lastOrder;
+			lastOrder = dbControllerInstance.getLastOrderId();
+			//Create this type of message
+			ClientServerMessage lastOrderMessage = new ClientServerMessage(lastOrder, Operation.GET_LAST_ORDER_ID);
+			client.sendToClient(messageFromClient);
+			break; 
 
 		default:
 			System.out.println("default");

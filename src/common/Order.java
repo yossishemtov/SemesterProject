@@ -5,11 +5,11 @@ import java.time.LocalTime;
 
 public class Order {
 
-	private Integer parkNumber;
+	private String parkNumber; //from Integer to String
 	private Integer amountOfVisitors;
 	private Integer orderId;
 	private Integer visitorId;
-	private Float price;
+	private Double price; //from Float to Double
 	private String visitorEmail;
 	private LocalDate date;
 	private LocalTime visitTime;
@@ -17,16 +17,16 @@ public class Order {
 	private status orderStatus;
 	private typeOfOrder orderType;
 
-	private enum status {
+	public enum status {
 		PENDING, CONFIRM, CANCEL
 	}
 
-	private enum typeOfOrder {
-		SOLO, FAMILY, GUIDEDGROUP
+	public enum typeOfOrder {
+		SINGLE, FAMILY, GROUP
 	}
 
 	// Adjusted constructor to include typeOfOrderStr and telephoneNumber
-	public Order(Integer orderId, Integer visitorId, Integer parkNumber, Integer amountOfVisitors, Float price,
+	public Order(Integer orderId, Integer visitorId, String parkNumber, Integer amountOfVisitors, Double price,
 			String visitorEmail, LocalDate date, LocalTime visitTime, String statusStr, String typeOfOrderStr,
 			String telephoneNumber) {
 		
@@ -40,22 +40,21 @@ public class Order {
 		this.telephoneNumber = telephoneNumber; // Set the telephone number
 
 		// Convert the String status to the enum status
-		try {
-			this.orderStatus = Order.status.valueOf(statusStr.toUpperCase());
-		} catch (IllegalArgumentException e) {
-			this.orderStatus = Order.status.PENDING; // Default to PENDING if conversion fails
-		}
+	    try {
+	        this.orderStatus = (statusStr != null) ? Order.status.valueOf(statusStr.toUpperCase()) : Order.status.PENDING;
+	    } catch (IllegalArgumentException e) {
+	        this.orderStatus = Order.status.PENDING; // Default to PENDING if conversion fails
+	    }
 
-		// Convert the String typeOfOrder to the enum typeOfOrder
-		try {
-			this.orderType = Order.typeOfOrder.valueOf(typeOfOrderStr.toUpperCase());
-		} catch (IllegalArgumentException e) {
-			// Handle the error or default case here
-			// For example, default to SOLO if the conversion fails
-			this.orderType = Order.typeOfOrder.SOLO;
+	    // Convert the String typeOfOrder to the enum typeOfOrder
+	    try {
+	        this.orderType = (typeOfOrderStr != null) ? Order.typeOfOrder.valueOf(typeOfOrderStr.toUpperCase()) : Order.typeOfOrder.SINGLE;
+	    } catch (IllegalArgumentException e) {
+	        this.orderType = Order.typeOfOrder.SINGLE; // Default to SINGLE if conversion fails
+	    }
 
 	}
-		}
+		
 
 	public String getTelephoneNumber() {
 		return telephoneNumber;
@@ -72,7 +71,7 @@ public class Order {
 		} catch (IllegalArgumentException e) {
 			// Handle the case where the provided string does not match any enum constants
 			// For simplicity, defaulting to SOLO here
-			this.orderType = Order.typeOfOrder.SOLO;
+			this.orderType = Order.typeOfOrder.SINGLE;
 		}
 	}
 
@@ -92,7 +91,7 @@ public class Order {
 	}
 
 
-	public void setParkNumber(Integer parkNumber) {
+	public void setParkNumber(String parkNumber) {
 		this.parkNumber = parkNumber;
 	}
 
@@ -104,7 +103,7 @@ public class Order {
 		this.amountOfVisitors = amountOfVisitors;
 	}
 
-	public Float getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
@@ -113,7 +112,7 @@ public class Order {
 		return orderId;
 	}
 
-	public void setPrice(Float price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
@@ -142,7 +141,7 @@ public class Order {
 		this.visitTime = visitTime;
 	}
 
-	public Integer getParkNumber() {
+	public String getParkNumber() {
 		// TODO Auto-generated method stub
 		return parkNumber;
 	}

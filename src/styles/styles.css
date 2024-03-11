@@ -1,0 +1,8 @@
+.custom-button:disabled {
+    -fx-background-color: #8F8F8F; /* Dim color when disabled */
+}
+
+.custom-button {
+    -fx-background-color: #4caf50; /* Original button color */
+    -fx-text-fill: white;
+}
