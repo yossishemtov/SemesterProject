@@ -52,7 +52,7 @@
                      </font>
                   </JFXTextField>
                   <FontAwesomeIconView fx:id="invitingIcon" fill="#a1a1a1" glyphName="ENVELOPE" layoutX="404.0" layoutY="334.0" size="16" />
-                  <JFXTextField fx:id="txtPhone" focusColor="#121920" labelFloat="true" layoutX="159.0" layoutY="254.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Phone Number " styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtPhone" focusColor="#121920" layoutX="159.0" layoutY="254.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Phone Number " styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -62,7 +62,7 @@
                   </JFXTextField>
                   <Label layoutX="167.0" layoutY="544.0" text="Required fields" textFill="#404040" />
                   <Label layoutX="157.0" layoutY="544.0" text="*" textFill="RED" />
-                  <JFXTextField fx:id="txtID" focusColor="#121920" labelFloat="true" layoutX="159.0" layoutY="209.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Enter ID" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtID" focusColor="#121920" layoutX="159.0" layoutY="209.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Enter ID" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -83,7 +83,7 @@
                         <Image url="@../common/images/Go%20Nature.gif" />
                      </image>
                   </ImageView>
-                  <Button layoutX="365.0" layoutY="536.0" mnemonicParsing="false" onAction="#handlePricingButton" prefHeight="30.0" prefWidth="31.0">
+                  <Button layoutX="365.0" layoutY="536.0" mnemonicParsing="false" onAction="#handlePricingButton" prefHeight="30.0" prefWidth="31.0" style="-fx-background-color: transparent;">
                      <graphic>
                         <ImageView fx:id="Pricingbtn" fitHeight="42.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -92,7 +92,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="Back" layoutX="43.0" layoutY="38.0" mnemonicParsing="false" onAction="#BackButton" prefHeight="40.0" prefWidth="50.0">
+                  <Button fx:id="Back" layoutX="43.0" layoutY="38.0" mnemonicParsing="false" onAction="#BackButton" prefHeight="40.0" prefWidth="50.0" style="-fx-background-color: transparent;">
                      <graphic>
                         <ImageView fitHeight="34.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                            <image>
