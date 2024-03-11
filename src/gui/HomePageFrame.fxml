@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -10,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #B2BAB3;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.HomePageController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.HomePageController">
    <children>
       <Button fx:id="ExitBtn" layoutX="24.0" layoutY="532.0" mnemonicParsing="false" onAction="#ExitBtnAction" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: transparent;" textFill="RED">
          <font>
@@ -23,6 +24,9 @@
                </image>
             </ImageView>
          </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
       <Text layoutX="285.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to GoNature" wrappingWidth="330.6171875">
          <font>
@@ -43,6 +47,9 @@
                </stops>
             </LinearGradient>
          </ripplerFill>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </JFXButton>
       <JFXButton fx:id="TravelerLoginBtn" buttonType="RAISED" layoutX="56.0" layoutY="228.0" onAction="#TravelerLoginBtn" text="Traveler Login">
          <font>
@@ -58,23 +65,26 @@
                </stops>
             </LinearGradient>
          </ripplerFill>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </JFXButton>
       <Text layoutX="145.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Discover the beauty of our parks and streamline your visit with our intuitive park management system, making reservations and exploring nature effortlessly!" textAlignment="CENTER" wrappingWidth="610.529296875">
          <font>
             <Font size="17.0" />
          </font>
       </Text>
-      <ImageView fitHeight="262.0" fitWidth="251.0" layoutX="561.0" layoutY="351.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="262.0" fitWidth="251.0" layoutX="593.0" layoutY="351.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../common/images/Yosemite.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="169.0" fitWidth="164.0" layoutX="374.0" layoutY="392.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="169.0" fitWidth="164.0" layoutX="408.0" layoutY="392.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../common/images/YellowStone.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="229.0" fitWidth="340.0" layoutX="47.0" layoutY="363.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="221.0" fitWidth="331.0" layoutX="88.0" layoutY="366.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../common/images/Mount_Rainier.png" />
          </image>

@@ -1,22 +1,23 @@
 package gui;
 
 import client.NavigationManager;
+
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class HomePageController {
 	@FXML
-	private Button TravelerLoginBtn;
-	@FXML
-	private Button WorkerLoginBtn;
-	@FXML
-	private Button ExitBtn;
+    private Button ExitBtn;
+
+    @FXML
+    private JFXButton WorkerLoginBtn;
+
+    @FXML
+    private JFXButton TravelerLoginBtn;
 
 	public void start(Stage primaryStage) throws Exception {
 

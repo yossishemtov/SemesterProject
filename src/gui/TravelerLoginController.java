@@ -1,6 +1,7 @@
 package gui;
 
 import java.util.ArrayList;
+
 import com.jfoenix.controls.JFXTextField;
 
 import client.ClientController;
