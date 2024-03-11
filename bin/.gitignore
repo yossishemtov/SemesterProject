@@ -1,5 +1,4 @@
-/server/
-/DB/
-/client/
-/common/
 /gui/
+/server/
+/common/
+/DB/
