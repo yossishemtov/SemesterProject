@@ -79,7 +79,7 @@ CREATE TABLE `order` (
 
 LOCK TABLES `order` WRITE;
 /*!40000 ALTER TABLE `order` DISABLE KEYS */;
-INSERT INTO `order` VALUES (1,1214214,1,5,50,'alice@example.com','2024-07-04','555-123-4567','09:00:00','PENDING','FAMILY\r'),(2,2654456,2,3,30,'bob@example.com','2024-07-05','555-234-5678','14:00:00','CONFIRMED','FAMILY\r'),(3,3123123,3,6,60,'claire@example.com','2024-07-06','555-345-6789','08:00:00','PENDING','GUIDEDGROUP\r'),(4,4643544,2,4,40,'david@example.com','2024-07-07','555-456-7890','10:30:00','CONFIRMED','FAMILY\r'),(5,4643523,2,1,10,'visitor2@example.com','2024-08-07','555-456-7890','10:30:00','CANCEL','SOLO');
+INSERT INTO `order` VALUES (1,1214214,1,5,50,'alice@example.com','2024-07-04','054-7376231','09:00:00','PENDING','FAMILY\r'),(2,2654456,2,3,30,'bob@example.com','2024-07-05','052-7355231','14:00:00','CONFIRMED','FAMILY\r'),(3,3123123,3,6,60,'claire@example.com','2024-07-06','054-7376431','08:00:00','PENDING','GUIDEDGROUP\r'),(4,4643544,2,4,40,'david@example.com','2024-07-07','054-2136231','10:30:00','CONFIRMED','FAMILY\r'),(5,4643544,2,1,10,'david@example.com','2024-08-07','054-2136231','10:30:00','CANCEL','SOLO'),(6,3847485,1,14,100,'JoeBoden@e.braude.ac.il','2024-08-07','054-2232574','12:00:00','PENDING','GUIDEDGROUP\rGUIDEDGROUP\r'),(7,3847482,3,3,10,'deadpool@e.braude.ac.il','2024-07-15','054-2232594','14:00:00','CONFIRMED','FAMILY'),(8,3847486,2,1,40,'Barakobomo@e.braude.ac.il','2024-07-07','054-2232511','08:00:00','PENDING','SOLO');
 /*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +113,7 @@ CREATE TABLE `park` (
 
 LOCK TABLES `park` WRITE;
 /*!40000 ALTER TABLE `park` DISABLE KEYS */;
-INSERT INTO `park` VALUES ('Olympic',1,1000,1500,500,'Washington',4,20,1,8),('Zion',2,800,1200,300,'Utah',5,15,2,7),('GrandTeton',3,1200,1800,600,'Wyoming',6,25,3,8);
+INSERT INTO `park` VALUES ('Olympic',1,20,30,1,'Washington',4,2,1,8),('Zion',2,57,60,1,'Utah',5,1,2,7),('GrandTeton',3,44,50,1,'Wyoming',6,1,3,8);
 /*!40000 ALTER TABLE `park` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -142,7 +142,7 @@ CREATE TABLE `travler` (
 
 LOCK TABLES `travler` WRITE;
 /*!40000 ALTER TABLE `travler` DISABLE KEYS */;
-INSERT INTO `travler` VALUES (1214214,'Alice','Johnson','alice@example.com','054-7376231',0,0),(2654456,'Bob','Smith','bob@example.com','052-7355231',0,0),(3123123,'Claire','Williams','claire@example.com','054-7376431',1,0),(3847482,'Dead','Pool','deadpool@e.braude.ac.il','054-2232594',0,0),(3847485,'Joe','Buden','JoeBoden@e.braude.ac.il','054-2232574',0,0),(3847486,'Barak','Obomo','Barakobomo@e.braude.ac.il','054-2232511',0,0),(3847487,'Donald','Brump','Donalbrump@e.braude.ac.il','054-2232564',0,0),(3847488,'Vladimir','Butin','vladimirbutin@e.braude.ac.il','054-2232114',0,0),(4643544,'David','Brown','david@example.com','054-2136231 ',0,0),(5634523,'Emanuel','Davidov','emanuel.davidov@e.braude.ac.il','053-3324478',0,0);
+INSERT INTO `travler` VALUES (1214214,'Alice','Johnson','alice@example.com','054-7376231',0,0),(2654456,'Bob','Smith','bob@example.com','052-7355231',0,0),(3123123,'Claire','Williams','claire@example.com','054-7376431',1,0),(3847482,'Dead','Pool','deadpool@e.braude.ac.il','054-2232594',0,0),(3847485,'Joe','Buden','JoeBoden@e.braude.ac.il','054-2232574',1,0),(3847486,'Barak','Obomo','Barakobomo@e.braude.ac.il','054-2232511',0,0),(3847487,'Donald','Brump','Donalbrump@e.braude.ac.il','054-2232564',0,0),(3847488,'Vladimir','Butin','vladimirbutin@e.braude.ac.il','054-2232114',0,0),(4643544,'David','Brown','david@example.com','054-2136231 ',0,0),(5634523,'Emanuel','Davidov','emanuel.davidov@e.braude.ac.il','053-3324478',0,0);
 /*!40000 ALTER TABLE `travler` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -212,4 +212,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-12 11:08:30
+-- Dump completed on 2024-03-12 11:45:48
