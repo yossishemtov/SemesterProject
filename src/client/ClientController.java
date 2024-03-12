@@ -46,7 +46,7 @@ public class ClientController<T> implements DisplayIF{
 
     public void sendMessageToServer(ClientServerMessage<?> command) {
         // Handle message from any controller that is related to the client
-    	System.out.println("send to servrvr");
+    	System.out.println("send to server");
         try
         {
             systemClient.handleMessageFromClientController(command);

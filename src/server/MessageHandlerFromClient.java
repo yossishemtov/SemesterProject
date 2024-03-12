@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import com.mysql.cj.xdevapi.Client;
 
 import DB.DatabaseController;
+import client.ClientUI;
 import ocsf.server.ConnectionToClient;
 
 public class MessageHandlerFromClient {
@@ -116,15 +117,18 @@ public class MessageHandlerFromClient {
 			// Placeholder for posting a new traveler order
 
 			try {
-				ArrayList<Order> travelerOrder = (ArrayList<Order>) messageFromClient.getDataTransfered();
+				Order travelerOrder = (Order) messageFromClient.getDataTransfered();
 
-				if (dbControllerInstance.insertTravelerOrder((Order) travelerOrder.get(0))) {
+				if (dbControllerInstance.insertTravelerOrder(travelerOrder)) {
+					System.out.println("HelloFromMessage");
 					messageFromClient.setflagTrue();
+					System.out.println("HelloFromMessage1");
 
 				} else {
 					messageFromClient.setflagFalse();
-
 				}
+				client.sendToClient(messageFromClient);
+				
 			} catch (IndexOutOfBoundsException e) {
 
 			}
@@ -180,12 +184,15 @@ public class MessageHandlerFromClient {
 			break;
 			
 		case Operation.GET_LAST_ORDER_ID:
-			Order lastOrder;
-			lastOrder = dbControllerInstance.getLastOrderId();
-			//Create this type of message
-			ClientServerMessage lastOrderMessage = new ClientServerMessage(lastOrder, Operation.GET_LAST_ORDER_ID);
-			client.sendToClient(messageFromClient);
-			break; 
+		    Integer lastOrder = dbControllerInstance.getLastOrderId();
+		    
+		    // Create a message to send to the client
+		    ClientServerMessage<?> lastOrderMessage = new ClientServerMessage<>(lastOrder, Operation.GET_LAST_ORDER_ID);
+		    
+		    // Send the message to the client
+		    client.sendToClient(lastOrderMessage);
+		    break;
+
 
 		default:
 			System.out.println("default");

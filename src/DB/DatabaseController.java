@@ -111,7 +111,7 @@ public class DatabaseController {
 	        while (rs.next()) {
 	            Integer orderId = rs.getInt("orderId");
 	            // Integer travelerId = rs.getInt("travelerId"); // Not used in the Order constructor directly
-	            Integer parkNumber = rs.getInt("parkNumber");
+	            String parkNumber = rs.getString("parkNumber");
 	            Integer amountOfVisitors = rs.getInt("amountOfVisitors");
 	            Double price = rs.getDouble("price");
 	            String visitorEmail = rs.getString("visitorEmail");
@@ -142,22 +142,33 @@ public class DatabaseController {
 	     */
 		public Boolean insertTravelerOrder(Order order) {
 		    // Adjusting the query to match the database schema order provided
-		    String query = "INSERT INTO orders (orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		    String query = "INSERT INTO `order` (orderId, travlerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+		    System.out.println(order.toString());
 		    try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 		        // Set parameters based on the Order object fields, in the order specified
 		        ps.setInt(1, order.getOrderId());
+		        System.out.println(order.getOrderId());
 		        ps.setInt(2, order.getVisitorId());
-		        ps.setInt(3, order.getParkNumber());
+		        System.out.println(order.getVisitorId());
+		        ps.setString(3, order.getParkNumber());
+		        System.out.println(order.getParkNumber());
 		        ps.setInt(4, order.getAmountOfVisitors());
+		        System.out.println(order.getAmountOfVisitors());
 		        ps.setDouble(5, order.getPrice());
+		        System.out.println(order.getPrice());
 		        ps.setString(6, order.getVisitorEmail());
+		        System.out.println(order.getVisitorEmail());
 		        ps.setDate(7, java.sql.Date.valueOf(order.getDate()));
+		        System.out.println(java.sql.Date.valueOf(order.getDate()));
 		        ps.setString(8, order.getTelephoneNumber()); // Assuming getTelephoneNumber() method exists
+		        System.out.println(order.getTelephoneNumber());		
 		        ps.setTime(9, java.sql.Time.valueOf(order.getVisitTime()));
+		        System.out.println(java.sql.Time.valueOf(order.getVisitTime()));
 		        ps.setString(10, order.getOrderStatus()); // Using the enum's name as the DB value
+		        System.out.println(order.getOrderStatus());
 		        ps.setString(11, order.getTypeOfOrder()); // Similarly here
-
+		        System.out.println(order.getTypeOfOrder());
 		        int affectedRows = ps.executeUpdate();
 		        if (affectedRows > 0) {
 		            System.out.println("Order inserted successfully.");
@@ -336,35 +347,23 @@ public class DatabaseController {
 	    
 	    
 
-	    public Order getLastOrderId(){
-	        String query = "SELECT MAX(OrderId) FROM order";
-	        Order lastorder=null;
-	        
-	        try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-		        ResultSet rs = ps.executeQuery();
-
-		        while (rs.next()) {
-		            Integer orderId = rs.getInt("orderId");
-		            Integer travelerId = rs.getInt("travelerId");
-		            Integer parkNumber = rs.getInt("parkNumber");
-		            Integer amountOfVisitors = rs.getInt("amountOfVisitors");
-		            Double price = rs.getDouble("price");
-		            String visitorEmail = rs.getString("visitorEmail");
-		            LocalDate date = rs.getDate("date").toLocalDate();
-		            String telephoneNumber = rs.getString("TelephoneNumber"); 
-		            LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
-		            String statusStr = rs.getString("orderStatus"); 
-		            String typeOfOrderStr = rs.getString("typeOfOrder");
-
-		            Order order = new Order(orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date, visitTime, statusStr, typeOfOrderStr, telephoneNumber);
-		            lastorder = order;
-		        }
-		    } catch (SQLException e) {
-		        e.printStackTrace();
-		    }
-		    return lastorder; 
-	    }
 	    
+	    public Integer getLastOrderId() {
+	        System.out.println("HelloDatabase");
+	        String query = "SELECT MAX(OrderId) FROM `order`";  // Use backticks for reserved keywords
+	        Integer lastOrder = null;
+
+	        try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	            ResultSet rs = ps.executeQuery();
+
+	            while (rs.next()) {
+	                lastOrder=rs.getInt(1);
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	        return lastOrder;
+	    }
 
 
 }

@@ -36,6 +36,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import common.Order;
+import common.Order.status;
 import common.Traveler;
 import common.Usermanager;
 import javafx.fxml.Initializable;
@@ -131,7 +132,9 @@ public class OrderAVisitController implements Initializable {
 
 	private Order order;
 	private static boolean DBFail = true;
-	private Usermanager traveler;
+	private Usermanager NewTraveler;
+	private boolean isNewOrder;
+	private Traveler traveler;
 	
 	//Pattern to prevent incorrect info when ordering
 	public static final Pattern MailCheck = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
@@ -160,17 +163,44 @@ public class OrderAVisitController implements Initializable {
 	private void SubmitOrderButton(ActionEvent event) throws IOException {
 		// We will continue to summary only if the input is valid
 		if (isValidInput()) {
-			order = new Order(1, Integer.valueOf(txtID.getText()), ParkComboBox.getValue().toString(), 
-					Integer.valueOf(txtVisitorsNum.getText()), CalculatePrice() ,txtEmail.getText(),
+			order = new Order(getLastNumber(), Integer.valueOf(txtID.getText()), ParkComboBox.getValue().toString(), 
+					Integer.valueOf(txtVisitorsNum.getText()), null ,txtEmail.getText(),
 					LocalDate.parse(txtDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))),
 					LocalTime.parse(TimeComboBox.getValue().toString().split("-")[0]), 
-					null, OrderComboBox.getValue() , txtPhone.getText());
-					
+					"PENDING", OrderComboBox.getValue() , txtPhone.getText());
+			order.setPrice(CalculatePrice());
 
 			if (btnSubmit == event.getSource()) { //if we pushed Submit order
-				//ClientServerMessage OrderAttempt = new ClientServerMessage(NewOrderMsg, Operation.)
-				//SystemClient.handleMessageFromClient(NewOrderMsg); //צריך לברר
-				traveler.getCurrentTraveler();
+				
+				//(NewTraveler.getCurrentTraveler()==null)
+					//Traveler
+//				String[] travelerName = txtName.getText().split(" ");
+//				String travelerFirstName = travelerName[0];
+//				String travelerLastName = travelerName.length == 1 ? "" : travelerName[1];
+//				traveler = new Traveler(order.getVisitorId(), travelerFirstName, travelerLastName, 
+//						order.getVisitorEmail(), order.getTelephoneNumber());
+				
+				//ClientServerMessage<?> AddTraveler = new ClientServerMessage<>(order, Operation.POST_TRAVLER_ORDER);
+				//ClientUI.clientControllerInstance.sendMessageToServer(AddTraveler);
+
+				ClientServerMessage<?> OrderAttempt = new ClientServerMessage<>(order, Operation.POST_TRAVLER_ORDER);
+			    System.out.println("HelloOrder");
+				ClientUI.clientControllerInstance.sendMessageToServer(OrderAttempt);
+			    System.out.println("HelloOrder2");
+				// Receive the response from the server
+			    ClientServerMessage<?> isNewOrderMsg = ClientUI.clientControllerInstance.getData();
+			    System.out.println("HelloOrder3");
+			    // Check if the received message is of the correct type
+			    if (isNewOrderMsg.getCommand().equals(Operation.POST_TRAVLER_ORDER)) {
+			        // Extract the data from the message
+			    	isNewOrder = (Boolean) isNewOrderMsg.getFlag();
+			    	System.out.println(isNewOrder);
+			        if (!isNewOrder) {
+						new Alerts(AlertType.ERROR, "Has Order", "Has Order ", "You already have an order on this day").showAndWait();
+			        }
+			    }
+
+				
 				if (order.getOrderStatus().equals("WAITING")) { // need to enter waiting list
 					PaneOrder.setDisable(true);
 					Stage stage = new Stage();
@@ -199,8 +229,7 @@ public class OrderAVisitController implements Initializable {
 					this.summaryTime.setText(order.getVisitTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 					this.summaryType.setText(order.getTypeOfOrder());
 					this.summaryStatus.setText(order.getOrderStatus());
-					Double value=CalculatePrice();
-					this.summaryPrice.setText(String.format("%.1f", value) + " ₪");
+					this.summaryPrice.setText(String.format("%.1f", order.getPrice()) + " ₪");
 					this.summaryNum.setText(String.valueOf(order.getOrderId()));
 					PaneConfirmation.setVisible(true);
 				}
@@ -246,6 +275,7 @@ public class OrderAVisitController implements Initializable {
         stage.show();
     }
 	
+
 	private void ComboBoxCheck() { //adding info to combo box
 		ParkComboBox.getItems().clear();
 		OrderComboBox.getItems().clear();
@@ -309,43 +339,41 @@ public class OrderAVisitController implements Initializable {
 			if(TimeComboBox.getValue() != null)
 				Time = TimeComboBox.getValue().toString();
 
-		if (visitorsNumber.isEmpty() || email.isEmpty() || parkName.isEmpty() || TravelerId.isEmpty()
-				|| Phone.isEmpty() || txtDate.getValue()==null || Time.isEmpty()) {
-			new Alerts(AlertType.ERROR, "Bad Input", "Bad Input", "Please all the required fields").showAndWait();
-		} 
-		else if (!checkCurrentTime())
-			new Alerts(AlertType.ERROR, "Bad Input", "Bad Date Input", "Please select future date").showAndWait();
-		else if(TravelerId.length() != 9)
-			new Alerts(AlertType.ERROR, "Bad Input", "Bad ID Input", "ID must be 9 digits").showAndWait();
-		else if (Integer.parseInt(visitorsNumber) > 15
-				&& Order.typeOfOrder.GROUP.toString().equals(OrderComboBox.getValue().toString())) {
-			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
-					"Group order cannot exceed 15 visitors").showAndWait();
-		}
-		else if (Integer.parseInt(visitorsNumber) < 1) {
-			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
-					"Visitor's number must be positive number and atleast 1. ").showAndWait();
-		}
-		else if (checkTooLate()) {
-			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Date",
-					"You can't order for more than a year in advance ").showAndWait();
-		}
-		else if (!validInput("Email", email)) {
-			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Email",
-					"Insert a valid Email please").showAndWait();
-		}
-		else if (!validInput("Phone", Phone)) {
-			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Phone",
-					"Insert a valid Phone number please").showAndWait();
-		}
-		else if (!validInput("AmountVisitor", txtVisitorsNum.getText())) {
-			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Visitors amount",
-					"Insert a valid visitors amount please").showAndWait();
-		} else {
+//		if (visitorsNumber.isEmpty() || email.isEmpty() || parkName.isEmpty() || TravelerId.isEmpty()
+//				|| Phone.isEmpty() || txtDate.getValue()==null || Time.isEmpty()) {
+//			new Alerts(AlertType.ERROR, "Bad Input", "Bad Input", "Please all the required fields").showAndWait();
+//		} 
+//		else if (!checkCurrentTime())
+//			new Alerts(AlertType.ERROR, "Bad Input", "Bad Date Input", "Please select future date").showAndWait();
+//		else if(TravelerId.length() != 9)
+//			new Alerts(AlertType.ERROR, "Bad Input", "Bad ID Input", "ID must be 9 digits").showAndWait();
+//		else if (Integer.parseInt(visitorsNumber) > 15
+//				&& Order.typeOfOrder.GROUP.toString().equals(OrderComboBox.getValue().toString())) {
+//			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
+//					"Group order cannot exceed 15 visitors").showAndWait();
+//		}
+//		else if (Integer.parseInt(visitorsNumber) < 1) {
+//			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
+//					"Visitor's number must be positive number and atleast 1. ").showAndWait();
+//		}
+//		else if (checkTooLate()) {
+//			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Date",
+//					"You can't order for more than a year in advance ").showAndWait();
+//		}
+//		else if (!validInput("Email", email)) {
+//			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Email",
+//					"Insert a valid Email please").showAndWait();
+//		}
+//		else if (!validInput("Phone", Phone)) {
+//			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Phone",
+//					"Insert a valid Phone number please").showAndWait();
+//		}
+//		else if (!validInput("AmountVisitor", txtVisitorsNum.getText())) {
+//			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Visitors amount",
+//					"Insert a valid visitors amount please").showAndWait();
+//		} else 
 			return true;
-		}
-		
-		return false;
+	
 	}
 
 	//This function check if the date,time entered is valid
@@ -389,7 +417,6 @@ public class OrderAVisitController implements Initializable {
 	} 
 
 	//This function calculates the price of order
-	@SuppressWarnings("unlikely-arg-type")
 	private Double CalculatePrice() {
 			double discountprice;
 			// Solo/family pre-order 
@@ -409,17 +436,33 @@ public class OrderAVisitController implements Initializable {
 			
 	}
 	
-//	private Integer getLastNumber() { 
-//		Order lastorder=null;
-//		Integer newOrderid;
-//		ClientServerMessage getLastOrderID = new ClientServerMessage(null, Operation.GET_LAST_ORDER_ID);
-//		
-//		ClientUI.clientControllerInstance.sendMessageToServer(getLastOrderID);
-//		ClientServerMessage receivedLastOrder = ClientUI.clientControllerInstance.getData();
-//		
-//		lastorder = (Order)receivedLastOrder.getDataTransfered();
-//		newOrderid = lastorder.getOrderId() + 1;
-//		return newOrderid;
-//	}
+	private Integer getLastNumber() {
+	    Integer lastOrder = null;
+	    Integer newOrderId = 1;
+
+	    // Create a message to request the last order ID
+	    ClientServerMessage<?> getLastOrderID = new ClientServerMessage<>(null, Operation.GET_LAST_ORDER_ID);
+
+	    // Send the message to the server
+	    ClientUI.clientControllerInstance.sendMessageToServer(getLastOrderID);
+
+	    // Receive the response from the server
+	    ClientServerMessage<?> receivedLastOrderMessage = ClientUI.clientControllerInstance.getData();
+
+	    // Check if the received message is of the correct type
+	    if (receivedLastOrderMessage.getCommand().equals(Operation.GET_LAST_ORDER_ID)) {
+	        // Extract the data from the message
+	        lastOrder = (Integer) receivedLastOrderMessage.getDataTransfered();
+
+	        // Check if the data is not null and extract the new order ID
+	        if (lastOrder != null) {
+	            newOrderId = lastOrder + 1;
+	        }
+	    }
+
+	    return newOrderId;
+	}
+
+
 	
 }

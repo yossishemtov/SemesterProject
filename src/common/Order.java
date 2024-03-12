@@ -1,9 +1,12 @@
 package common;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Order {
+public class Order implements Serializable  {
+	
+    private static final long serialVersionUID = 1L;
 
 	private String parkNumber; //from Integer to String
 	private Integer amountOfVisitors;
@@ -17,11 +20,11 @@ public class Order {
 	private status orderStatus;
 	private typeOfOrder orderType;
 
-	public enum status {
+	public static enum status {
 		PENDING, CONFIRM, CANCEL
 	}
 
-	public enum typeOfOrder {
+	public static enum typeOfOrder {
 		SINGLE, FAMILY, GROUP
 	}
 
