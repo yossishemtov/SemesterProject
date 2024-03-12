@@ -1,8 +1,6 @@
 package gui;
 
 import client.ClientUI;
-
-import com.jfoenix.controls.JFXTextField;
 import client.InputValidation;
 import common.Alerts;
 import common.ClientServerMessage;
@@ -19,17 +17,15 @@ import client.NavigationManager;
 import common.*;
 
 public class WorkerLoginController {
+
 	@FXML
-    private Button LoginBtn;
-
-    @FXML
-    private Button BackBtn;
-
-    @FXML
-    private JFXTextField WorkerUsername;
-
-    @FXML
-    private JFXTextField WorkerPwd;
+	private Button LoginBtn;
+	@FXML
+	private Button BackBtn;
+	@FXML
+	private TextField WorkerUsername;
+	@FXML
+	private TextField WorkerPwd;
 
 	@FXML
 	public void WorkerLoginBtn(ActionEvent click) throws IOException {

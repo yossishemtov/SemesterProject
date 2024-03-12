@@ -1,23 +1,22 @@
 package gui;
 
 import client.NavigationManager;
-
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class HomePageController {
 	@FXML
-    private Button ExitBtn;
-
-    @FXML
-    private JFXButton WorkerLoginBtn;
-
-    @FXML
-    private JFXButton TravelerLoginBtn;
+	private Button ClientLoginBtn;
+	@FXML
+	private Button WorkerLoginBtn;
+	@FXML
+	private Button ExitBtn;
 
 	public void start(Stage primaryStage) throws Exception {
 
@@ -30,14 +29,14 @@ public class HomePageController {
 		}
 	}
 
-	public void TravelerLoginBtn(ActionEvent click) throws Exception {
+	public void ClientLoginBtn(ActionEvent click) throws Exception {
 		// Function for opening a new scene when clicking on the Client Login button
 		try {
 
-			NavigationManager.openPage("TravelerLoginFrame.fxml", click, "Traveler Login", true);
+			NavigationManager.openPage("VisitorLoginFrame.fxml", click, "Client Login", true);
 
 		} catch (Exception e) {
-			System.out.print("Something went wrong while clicking on the Traveler login button, check stack trace");
+			System.out.print("Something went wrong while clicking on the Client login button, check stack trace");
 			e.printStackTrace();
 		}
 	}

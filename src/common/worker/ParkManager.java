@@ -1,10 +1,12 @@
 package common.worker;
 
+import java.io.Serializable;
+
 /**
  * ParkManager class extends the GeneralParkWorker class to include specific functionalities
  * related to park management such as creating reports and handling change requests.
  */
-public class ParkManager extends GeneralParkWorker {
+public class ParkManager extends GeneralParkWorker implements Serializable {
     private static final String ROLE = "Park Manager";
 
     /**
@@ -18,8 +20,7 @@ public class ParkManager extends GeneralParkWorker {
      * @param password    Worker's password for system access.
      * @param worksAtPark ID of the park where the worker is employed.
      */
-    public ParkManager(Integer workerId, String firstName, String lastName, String email,
-                       String userName, String password, Integer worksAtPark) {
+    public ParkManager(Integer workerId, String firstName, String lastName, String email,String userName, String password, Integer worksAtPark) {
         super(workerId, firstName, lastName, email, ROLE, userName, password, worksAtPark);
     }
 

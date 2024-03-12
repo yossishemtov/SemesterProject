@@ -25,7 +25,11 @@ public class InputValidation {
         }
     }
 	
-
+	// NEED TO IMPLEMENT
+	public static Alerts validateEmail(String email) {
+		 return new Alerts(Alerts.AlertType.INFORMATION, "ID Validation", "", "Valid ID");
+	}
+	
 	// function for validate worker password
 	 public static Alerts validatePassword(String password) {
 	        // Check if password is empty

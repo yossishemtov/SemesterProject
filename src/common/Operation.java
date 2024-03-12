@@ -1,7 +1,6 @@
 package common;
 
 public abstract class Operation {
-	
     // Structure of a command: COMMAND nameOfCommand
     
     // GET COMMANDS

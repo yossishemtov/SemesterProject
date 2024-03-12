@@ -1,93 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.paint.LinearGradient?>
-<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.HomePageController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #92CFF7;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.HomePageController">
    <children>
-      <Button fx:id="ExitBtn" layoutX="24.0" layoutY="532.0" mnemonicParsing="false" onAction="#ExitBtnAction" prefHeight="31.0" prefWidth="53.0" style="-fx-background-color: transparent;" textFill="RED">
+      <Button fx:id="ClientLoginBtn" layoutX="241.0" layoutY="177.0" mnemonicParsing="false" onAction="#ClientLoginBtn" prefHeight="31.0" prefWidth="119.0" text="Client Login">
          <font>
             <Font size="15.0" />
          </font>
-         <graphic>
-            <ImageView fitHeight="44.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../common/images/ExitButton.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
       </Button>
-      <Text layoutX="285.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to GoNature" wrappingWidth="330.6171875">
+      <ButtonBar layoutX="-264.0" layoutY="157.0" prefHeight="40.0" prefWidth="200.0">
+        <buttons>
+          <Button mnemonicParsing="false" text="Button" />
+        </buttons>
+      </ButtonBar>
+      <Button fx:id="WorkerLoginBtn" layoutX="241.0" layoutY="219.0" mnemonicParsing="false" onAction="#WorkerLoginBtn" prefHeight="31.0" prefWidth="119.0" text="Worker Login">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+      <Button fx:id="ExitBtn" layoutX="507.0" layoutY="349.0" mnemonicParsing="false" onAction="#ExitBtnAction" prefHeight="31.0" prefWidth="53.0" text="Exit" textFill="RED">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+      <Text fill="#4933ab" layoutX="215.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home Page" wrappingWidth="171.6171875">
          <font>
             <Font size="33.0" />
          </font>
       </Text>
-      <JFXButton fx:id="WorkerLoginBtn" buttonType="RAISED" layoutX="58.0" layoutY="300.0" onAction="#WorkerLoginBtn" text="Worker Login">
-         <font>
-            <Font size="20.0" />
-         </font>
-         <ripplerFill>
-            <LinearGradient endX="1.0" endY="1.0">
-               <stops>
-                  <Stop color="#4ab54a" />
-                  <Stop color="#291c1c00" offset="0.19931271477663232" />
-                  <Stop color="#49b249" offset="0.7849666232176008" />
-                  <Stop color="#4cc34c" offset="1.0" />
-               </stops>
-            </LinearGradient>
-         </ripplerFill>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </JFXButton>
-      <JFXButton fx:id="TravelerLoginBtn" buttonType="RAISED" layoutX="56.0" layoutY="228.0" onAction="#TravelerLoginBtn" text="Traveler Login">
-         <font>
-            <Font size="20.0" />
-         </font>
-         <ripplerFill>
-            <LinearGradient endX="1.0" endY="1.0">
-               <stops>
-                  <Stop color="#4ab54a" />
-                  <Stop color="#291c1c00" offset="0.19931271477663232" />
-                  <Stop color="#49b249" offset="0.7849666232176008" />
-                  <Stop color="#4bbc4b" offset="1.0" />
-               </stops>
-            </LinearGradient>
-         </ripplerFill>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </JFXButton>
-      <Text layoutX="145.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Discover the beauty of our parks and streamline your visit with our intuitive park management system, making reservations and exploring nature effortlessly!" textAlignment="CENTER" wrappingWidth="610.529296875">
-         <font>
-            <Font size="17.0" />
-         </font>
-      </Text>
-      <ImageView fitHeight="262.0" fitWidth="251.0" layoutX="593.0" layoutY="351.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../common/images/Yosemite.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="169.0" fitWidth="164.0" layoutX="408.0" layoutY="392.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../common/images/YellowStone.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="221.0" fitWidth="331.0" layoutX="88.0" layoutY="366.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../common/images/Mount_Rainier.png" />
-         </image>
-      </ImageView>
    </children>
 </Pane>
