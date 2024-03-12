@@ -1,19 +1,23 @@
 package gui;
+import javafx.event.ActionEvent;
 
-import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 
 import client.ClientController;
 import client.ClientUI;
+import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
 import common.Usermanager;
 import common.worker.GeneralParkWorker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -34,6 +38,9 @@ public class ParkParametersController {
 
     @FXML
     private Label currentvistorLabel;
+    
+    @FXML
+    private JFXButton getDatabth;
 
     @FXML
     private Label maxvisitorLabel;
@@ -46,8 +53,7 @@ public class ParkParametersController {
 
     @FXML
     private Label parkNameLabel;
-    @FXML
-    private Button getDatabth;
+   
 
     @FXML
     private TextField parkNumberFiled;
@@ -60,25 +66,29 @@ public class ParkParametersController {
     
     private Park parkData;
     private GeneralParkWorker departmentManager;
-
     @FXML
-    void getPark(MouseEvent event) {
-
-
+    void Getparkparameters(ActionEvent event) {
         String parkNumberStr = parkNumberFiled.getText();
         if (parkNumberStr != null && !parkNumberStr.isEmpty()) {
             try {
                 int parkNumber = Integer.parseInt(parkNumberStr);
                 fetchParkDetails(parkNumber);
             } catch (NumberFormatException e) {
-                System.out.println("Park number must be a valid number");
+            	Alerts nullResponseAlert = new Alerts(Alert.AlertType.ERROR, "Error",
+    					"Error to load park parameters.", "Park number must be a valid number.");
+    			nullResponseAlert.showAndWait();
                 // Show an error message to the user
             }
         } else {
-            System.out.println("Park number cannot be empty");
+            Alerts nullResponseAlert = new Alerts(Alert.AlertType.ERROR, "Error",
+					"Error to load park parameters.", "Park number cannot be empty.");
+			nullResponseAlert.showAndWait();
             // Show an error message to the user
         }
+
     }
+
+
     private void fetchParkDetails(Integer parkNumber) {
         // Construct and send a message to the server to fetch park details for the given park number
         ClientServerMessage<?> messageForServer = new ClientServerMessage<>(parkNumber, Operation.GET_PARK_DETAILS);
@@ -89,6 +99,11 @@ public class ParkParametersController {
         System.out.println(parkData.toString());
         // Update UI labels with park data
         updateLabels(parkData);
+        }
+        else {
+        	Alerts nullResponseAlert = new Alerts(Alert.AlertType.ERROR, "Error",
+					"Error to load park parameters.", "Not have park for this park number.");
+			nullResponseAlert.showAndWait();
         }
     }
 
