@@ -111,6 +111,41 @@ public class MessageHandlerFromClient {
 			client.sendToClient(messageFromClient);
 
 			break;
+		 
+		case Operation.GET_GENERALPARKWORKER_SIGNED:
+			//Get the status of isloggedin of generalparkworker
+			GeneralParkWorker checkStatusOfParkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
+			
+			if(dbControllerInstance.getSignedinStatusOfGeneralParkWorker(checkStatusOfParkWorker)) {
+				messageFromClient.setflagTrue();
+			}else {
+				messageFromClient.setflagFalse();
+			}
+			
+			client.sendToClient(messageFromClient);
+			
+			break;
+			
+		case Operation.PATCH_GENERALPARKWORKER_SIGNEDIN:
+			//Change a worker to signedin status
+				
+			try {
+				GeneralParkWorker changeStatusOfParkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
+				
+				if(dbControllerInstance.changeSingedInOfGeneralParkWorker(changeStatusOfParkWorker)) {
+					//If changing the status of worker was successful sets the flag of the message back to the client to true
+					messageFromClient.setflagTrue();
+				}
+				else {
+					messageFromClient.setflagFalse();
+				}
+				
+				client.sendToClient(messageFromClient);
+				
+			}catch (IndexOutOfBoundsException e) {
+				e.printStackTrace();
+			}
+			break;
 
 		case Operation.POST_TRAVLER_ORDER:
 			// Placeholder for posting a new traveler order
@@ -126,7 +161,7 @@ public class MessageHandlerFromClient {
 
 				}
 			} catch (IndexOutOfBoundsException e) {
-
+				e.printStackTrace();
 			}
 
 			break;

@@ -256,6 +256,62 @@ public class DatabaseController {
 	    }
 	    
 	    /**
+	     * Updates the status of generalparkworker to signedin
+	     * @param GeneralParkWorker to sign
+	     * @return true if the signedin was successful, false otherwise.
+	     */
+	    public Boolean changeSingedInOfGeneralParkWorker(GeneralParkWorker signedParkWorker) {
+	    	String query = "UPDATE generalparkworker SET isloggedin = 1 WHERE workerid = ?";
+	    	
+	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
+	    		ps.setInt(1, signedParkWorker.getWorkerId());
+	    		int affectedRows = ps.executeUpdate();
+	    		
+	    		return affectedRows > 0;
+	    		
+	    	}catch(SQLException e) {
+	    		e.printStackTrace();
+	    		return false;
+	    	}
+	    	
+	    }
+	    
+	    /**
+	     * Gets the status of loggedin of generalparkworker
+	     * @param GeneralParkWorker
+	     * @return isloggedin of generalparkworker
+	     */
+	    public Boolean getSignedinStatusOfGeneralParkWorker(GeneralParkWorker signedParkWorker) {
+	    	//Return the status of isloggedin of generalparkworker
+	    	String query = "SELECT isloggedin FROM generalparkworker WHERE workerid = ?";
+	     
+	    	
+	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
+	    		ps.setInt(1, signedParkWorker.getWorkerId());
+	    		ResultSet rs = ps.executeQuery();
+	    		
+	    		if (rs.next()) {
+	                // Retrieve the value of isloggedin from the ResultSet
+	                int isLoggedIn = rs.getInt("isloggedin");
+	                System.out.print(isLoggedIn);
+	                 if(isLoggedIn == 0)
+	                	 return false;
+	                 
+	                 return true;
+	            } else {
+	                // No rows returned, worker not found or not signed in
+	                return true;
+	            }
+	    		
+	    	}catch(SQLException e) {
+	    		e.printStackTrace();
+	    		return false;
+	    	}
+	    	
+	    	
+	    }
+	    
+	    /**
 	     * Gets the amount of visitors in the park where the parkworker works at
 	     * @param parkworker the park worker information
 	     * @return park information if successful and null if not found

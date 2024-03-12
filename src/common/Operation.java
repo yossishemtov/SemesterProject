@@ -15,7 +15,7 @@ public abstract class Operation {
     public final static String DISCONNECTING = "Disconnecting from server";
     public final static String GET_PROFILE = "Get user profile";
     public final static String GET_AMOUNT_OF_VISITORS = "Get amount of visitors";
-
+    public final static String GET_GENERALPARKWORKER_SIGNED = "Get status of signed in or out of generalparkworker";
     public final static String GET_AMOUNT_OF_VISITORS_FOR_GENERALPARKWORKER = "Get amount of visitors for park worker";
     
 
@@ -27,6 +27,7 @@ public abstract class Operation {
     public final static String PATCH_EXIST_ORDER = "Patch existing order";
     public final static String PATCH_PARK_PARAMETERS = "Patch park parameters";
     public final static String PATCH_ORDER_STATUS = "Patch order status";
+    public final static String PATCH_GENERALPARKWORKER_SIGNEDIN = "Patch generalparkworker to signed in";
     
     // DELETE COMMANDS
     public final static String DELETE_EXISTING_ORDER = "Delete an existing order";
