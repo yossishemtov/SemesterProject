@@ -24,7 +24,41 @@ public class DatabaseController {
 		this.connector = new MySqlConnector(username, password);
 		connectionToDatabase = this.connector.getDbConnection();
 	}
+	  // Method to get a Park object by parkNumber
+    public Park getParkDetails(int parkNumber) {
+        Park park = null;
+        String query = "SELECT * FROM `park` WHERE parkNumber = ?";
+        
+        try (
+
+             PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
+            
+            preparedStatement.setInt(1, parkNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if (resultSet.next()) {
+                String name = resultSet.getString("name");
+                Integer maxVisitors = resultSet.getInt("maxVisitors");
+                Integer capacity = resultSet.getInt("capacity");
+                Integer currentVisitors = resultSet.getInt("currentVisitors");
+                String location = resultSet.getString("location");
+                Integer staytime = resultSet.getInt("staytime");
+                Integer workersAmount = resultSet.getInt("workersAmount");
+                Integer managerID = resultSet.getInt("managerId");
+                Integer workingTime = resultSet.getInt("workingTime");
+                
+                park = new Park(name, parkNumber, maxVisitors, capacity, currentVisitors, location, staytime, workersAmount, managerID, workingTime);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println(park.toString());
+        return park;
+    }
 	
+	
+	
+
 	
 	public Traveler getTravelerDetails(Traveler travelerFromClient) {
 	    String query = "SELECT first_name, last_name, email, phone_num FROM travelers WHERE id = ?";

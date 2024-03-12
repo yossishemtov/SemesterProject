@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParkParametersController">
+   <children>
+      <Label fx:id="headerLabel" layoutX="350.0" layoutY="50.0" text="Park Parameters" AnchorPane.leftAnchor="347.0" AnchorPane.rightAnchor="347.0">
+         <font>
+            <Font size="24.0" />
+         </font></Label>
+      <Label layoutX="385.0" layoutY="155.0" text="Current Visitors:" />
+      <Label fx:id="currentvistorLabel" layoutX="508.0" layoutY="155.0" text="0" />
+      <Label layoutX="385.0" layoutY="205.0" text="Max Visitors:" />
+      <Label fx:id="maxvisitorLabel" layoutX="508.0" layoutY="205.0" text="0" />
+      <Label layoutX="385.0" layoutY="255.0" text="Allowed Gap" />
+      <Label fx:id="allowedGapLabel" layoutX="508.0" layoutY="255.0" text="0" />
+      <Label layoutX="385.0" layoutY="305.0" text="Capacity" />
+      <Label fx:id="CapacityLabel" layoutX="508.0" layoutY="305.0" text="0" />
+      <Label layoutX="386.0" layoutY="114.0" text="Park name" />
+      <Label fx:id="parkNameLabel" layoutX="508.0" layoutY="115.0" text="0" />
+      <Label layoutX="385.0" layoutY="347.0" text="Stay time" />
+      <Label fx:id="StayTimeLabel" layoutX="508.0" layoutY="347.0" text="0" />
+      <Label layoutX="388.0" layoutY="387.0" text="location" />
+      <Label fx:id="locationLabel" layoutX="508.0" layoutY="389.0" text="0" />
+      <TextField fx:id="parkNumberFiled" layoutX="441.0" layoutY="450.0" text="Enter park number" />
+      <Label layoutX="347.0" layoutY="454.0" onMouseClicked="#getPark" text="gat data" />
+   </children>
+</AnchorPane>

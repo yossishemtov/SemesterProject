@@ -8,14 +8,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import client.SystemClient;
-import common.Alerts;
-import common.ClientServerMessage;
-import common.Operation;
-import common.Park;
-import common.Usermanager;
-import common.worker.DepartmentManager;
-import common.worker.GeneralParkWorker;
-import common.worker.ParkManager;
+import common.*;
+import common.worker.*;
+
 import client.ClientController;
 import client.ClientUI;
 import client.NavigationManager;
@@ -24,151 +19,84 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.*;
+
 
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-/**
- * Department manager controller
- *
- */
+import com.jfoenix.controls.JFXButton;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+
 public class DeparmentManegerController implements Initializable {
+	@FXML
+	private BorderPane borderPane;
 
 	@FXML
-	private Label idtxt;
+	private AnchorPane topPane;
 
 	@FXML
-	private ComboBox<String> ReporeCombo;
+	private Label userLabel;
 
 	@FXML
-	private ImageView ContactUsBtn;
+	private VBox vbox;
 
 	@FXML
-	private Label LogoutBtn;
+	private JFXButton profileButton;
 
 	@FXML
-	private Button CreateReportBtn;
+	private JFXButton ParkParametersBth;
 
 	@FXML
-	private TextArea Reminder;
+	private JFXButton createReportsButton;
 
 	@FXML
-	private Button NumberVisitors;
+	private JFXButton updateParametersButton;
 
 	@FXML
-	private Label DepDiscount;
+	private JFXButton logoutBtn;
+	
+	GeneralParkWorker departmentManager;
 
 	@FXML
-	private Button DiscountCombo;
+	void loadParkParameters(MouseEvent event) throws IOException {
+		NavigationManager.openPageInCenter(borderPane,"ParkParameters.fxml");
 
-	@FXML
-	private Label ConfirmationOParameters;
-
-	@FXML
-	private ComboBox<String> ListOfReports;
-	private GeneralParkWorker departmentManager;
-
-	/**
-	 * For choosing a type of report
-	 * 
-	 * @param event on action
-	 * @throws IOException CLIENT EXCEPTION
-	 */
-	@FXML
-	void ListOfReportfunc(ActionEvent event) throws IOException {
-
-		if (ListOfReports.getValue().equals("Total number of visitors report")) {
-
-			NavigationManager.openPage("VisitorsReport.fxml", event, "Choosing page", true);
-
-		}
-
-		else {
-			if (ListOfReports.getValue().equals("Usage report")) {
-
-				NavigationManager.openPage("BforeDepartment.fxml", event, "Choosing page", true);
-
-			} else {
-
-				NavigationManager.openPage("BforeDepartment.fxml", event, "Choosing page", true);
-
-			}
-		}
+	
 
 	}
 
-	/**
-	 * send message from client to server about the current number of the visitors
-	 * in the park
-	 * 
-	 * @param event on action
-	 */
 	@FXML
-	void NumberVisitorsFunc(ActionEvent event) {
-		
-
-		ClientServerMessage<?> messege = new ClientServerMessage(departmentManager,
-				Operation.GET_AMOUNT_OF_VISITORS);
-		ClientUI.clientControllerInstance.sendMessageToServer(messege);
-		Integer NumberOfVisitorInt = ((Park)ClientController.data.getDataTransfered()).getCurrentVisitors();
-		String NumberOfVisitor = "The Number of visitors present in the park is: " + NumberOfVisitorInt;
-		Alerts erorAlert = new Alerts(Alerts.AlertType.INFORMATION, "Information for department maneger",
-				"Number of visitor", NumberOfVisitor);
-		erorAlert.showAndWait();
+	void loadProfile(MouseEvent event) throws IOException {
+		NavigationManager.openPage("Profile.fxml", event, "Profile screen", true);
 
 	}
 
-	/**
-	 * creating a report with a suitable name of the type of the report, after
-	 * checking the input existing.
-	 * 
-	 * @param event on action
-	 * @throws IOException CLIENT EXCEPTION
-	 */
 	@FXML
-	void CreateReport(ActionEvent event) throws IOException {
+	void loadReports(MouseEvent event) {
 
-		if (ReporeCombo.getValue() == null) {
-			Alerts erorAlert = new Alerts(Alerts.AlertType.ERROR, "Invalid Input", "Warning",
-					"The value entered is invalid. Please try again.");
-			erorAlert.showAndWait();
-
-		} else {
-
-			switch (ReporeCombo.getValue()) {
-			case "Visit report - by length of stay":
-				NavigationManager.openPage("VisitingTimeStayTime.fxml", event, "Choosing report", false);
-
-				break;
-
-			case "Visit report - by time of entry":
-
-				NavigationManager.openPage("VisitingReportEnterTime.fxml", event, "Choosing report", false);
-
-				break;
-
-			case "Cancellation report":
-
-				NavigationManager.openPage("BeforeReport.fxml", event, "Choosing report", false);
-
-				break;
-			}
-		}
 	}
 
-	/**
-	 * This function logs out
-	 * 
-	 * @param event on mouse click
-	 * @throws Exception CLIENT EXCEPTION
-	 */
 	@FXML
-	void LogoutFunc(MouseEvent event) {
+	void loadViewRequests(MouseEvent event) {
+
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// Cast the current worker to DepartmentManager if possible
+		departmentManager = Usermanager.getCurrentWorker();
+
+
+	}
+
+	@FXML
+	void logOut(MouseEvent event) {
 		try {
 			ClientUI.clientControllerInstance.closeConnection();
 		} catch (IOException e) {
@@ -177,25 +105,19 @@ public class DeparmentManegerController implements Initializable {
 		}
 	}
 
-	/**
-	 * initialize the the parameters and the reminder text
-	 * 
-	 * @param location  location
-	 * @param resources resources
-	 */
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// Cast the current worker to DepartmentManager if possible
-		departmentManager = Usermanager.getCurrentWorker();
+	
 
-		idtxt.setText(departmentManager.getUserName());
-		// Initialize other UI components based on departmentManager details
+	@FXML
+	void NumberVisitorsFunc(ActionEvent event) {
 
-		// Populate your ComboBoxes or any other UI elements here
-		ReporeCombo.getItems().addAll("Cancellation report", "Visit report - by length of stay",
-				"Visit report - by time of entry");
-		ListOfReports.getItems().addAll("Total number of visitors report", "Usage report",
-				"Income report for a specific month");
+		ClientServerMessage<?> messege = new ClientServerMessage(departmentManager, Operation.GET_AMOUNT_OF_VISITORS);
+		ClientUI.clientControllerInstance.sendMessageToServer(messege);
+		Integer NumberOfVisitorInt = ((Park) ClientController.data.getDataTransfered()).getCurrentVisitors();
+		String NumberOfVisitor = "The Number of visitors present in the park is: " + NumberOfVisitorInt;
+		Alerts erorAlert = new Alerts(Alerts.AlertType.INFORMATION, "Information for department maneger",
+				"Number of visitor", NumberOfVisitor);
+		erorAlert.showAndWait();
+
 	}
 
 }
