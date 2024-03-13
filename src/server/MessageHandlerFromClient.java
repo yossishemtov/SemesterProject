@@ -93,8 +93,8 @@ public class MessageHandlerFromClient {
 		case Operation.GET_GENERAL_PARK_WORKER_DETAILS:
 			GeneralParkWorker generalParkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
 			messageFromClient.setDataTransfered(dbControllerInstance.getGeneralParkWorkerDetails(generalParkWorker));
-			System.out.println("end opertion");
-			System.out.println(messageFromClient.toString());
+
+			
 			client.sendToClient(messageFromClient);
 			break;
 
@@ -112,10 +112,10 @@ public class MessageHandlerFromClient {
 			// Placeholder for getting messages
 			break;
 
-		case Operation.GET_AMOUNT_OF_VISITORS_FOR_PARKWORKER:
-			ParkWorker loggedInParkWorker = (ParkWorker) messageFromClient.getDataTransfered();
-			messageFromClient
-					.setDataTransfered(dbControllerInstance.getAmountOfVisitorsByParkWorker(loggedInParkWorker));
+			
+		case Operation.GET_AMOUNT_OF_VISITORS_FOR_GENERALPARKWORKER:
+			GeneralParkWorker loggedInParkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
+			messageFromClient.setDataTransfered(dbControllerInstance.getAmountOfVisitorsByParkWorker(loggedInParkWorker));
 			client.sendToClient(messageFromClient);
 			break;
 
@@ -142,6 +142,63 @@ public class MessageHandlerFromClient {
 			client.sendToClient(messageFromClient);
 
 			break;
+
+		 
+		case Operation.GET_GENERALPARKWORKER_SIGNED:
+			//Get the status of isloggedin of generalparkworker
+			GeneralParkWorker checkStatusOfParkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
+			
+			if(dbControllerInstance.getSignedinStatusOfGeneralParkWorker(checkStatusOfParkWorker)) {
+				messageFromClient.setflagTrue();
+			}else {
+				messageFromClient.setflagFalse();
+			}
+			
+			client.sendToClient(messageFromClient);
+			
+			break;
+			
+		case Operation.PATCH_GENERALPARKWORKER_SIGNEDOUT:
+			//Signing out a GeneralParkWorker
+			GeneralParkWorker parkWorkerToSignOut = (GeneralParkWorker) messageFromClient.getDataTransfered();
+			
+			try {
+				
+				if(dbControllerInstance.changeSignedOutOfGeneralParkWorker(parkWorkerToSignOut)) {
+					messageFromClient.setflagTrue();
+				}else {
+					messageFromClient.setflagFalse();
+				}
+				
+				client.sendToClient(messageFromClient);
+				
+			}catch (IndexOutOfBoundsException e) {
+				e.printStackTrace();
+			}
+			
+			break;
+			
+		case Operation.PATCH_GENERALPARKWORKER_SIGNEDIN:
+			//Signing in a GeneralParkWorker
+				
+			try {
+				GeneralParkWorker parkWorkerToSignIn = (GeneralParkWorker) messageFromClient.getDataTransfered();
+				
+				if(dbControllerInstance.changeSingedInOfGeneralParkWorker(parkWorkerToSignIn)) {
+					//If changing the status of worker was successful sets the flag of the message back to the client to true
+					messageFromClient.setflagTrue();
+				}
+				else {
+					messageFromClient.setflagFalse();
+				}
+				
+				client.sendToClient(messageFromClient);
+				
+			}catch (IndexOutOfBoundsException e) {
+				e.printStackTrace();
+			}
+			break;
+
 		case Operation.POST_EXISTS_TRAVLER_GUIDER:
 			// Placeholder for posting a new traveler guide request
 			Traveler ExistsgroupGuide = (Traveler) messageFromClient.getDataTransfered();
@@ -161,7 +218,7 @@ public class MessageHandlerFromClient {
 			
 		case Operation.POST_TRAVLER_ORDER:
 			// Placeholder for posting a new traveler order
-
+			
 			try {
 				ArrayList<Order> travelerOrder = (ArrayList<Order>) messageFromClient.getDataTransfered();
 
@@ -173,7 +230,7 @@ public class MessageHandlerFromClient {
 
 				}
 			} catch (IndexOutOfBoundsException e) {
-
+				e.printStackTrace();
 			}
 
 			break;

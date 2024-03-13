@@ -126,6 +126,7 @@ public class DatabaseController {
         try (PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
             preparedStatement.setInt(1, travelerFromClient.getId());
 
+
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     // Instantiate a new Traveler object with the retrieved details
@@ -342,19 +343,99 @@ public class DatabaseController {
 	    }
 	    
 	    /**
+	     * Updates the status of generalparkworker to signedin
+	     * @param GeneralParkWorker to sign
+	     * @return true if the signedin was successful, false otherwise.
+	     */
+	    public Boolean changeSingedInOfGeneralParkWorker(GeneralParkWorker signedParkWorker) {
+	    	String query = "UPDATE generalparkworker SET isloggedin = 1 WHERE workerid = ?";
+	    	
+	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
+	    		ps.setInt(1, signedParkWorker.getWorkerId());
+	    		int affectedRows = ps.executeUpdate();
+	    		
+	    		return affectedRows > 0;
+	    		
+	    	}catch(SQLException e) {
+	    		e.printStackTrace();
+	    		return false;
+	    	}
+	    	
+	    }
+	    
+	    /**
+	     * Updates the status of generalparkworker to signedout
+	     * @param GeneralParkWorker to sign
+	     * @return true if the signed out was successful, false otherwise.
+	     */
+	    public Boolean changeSignedOutOfGeneralParkWorker(GeneralParkWorker signedParkWorker) {
+	    	String query = "UPDATE generalparkworker SET isloggedin = 0 WHERE workerid = ?";
+	    	
+	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
+	    		ps.setInt(1, signedParkWorker.getWorkerId());
+	    		int affectedRows = ps.executeUpdate();
+	    		
+	    		return affectedRows > 0;
+	    		
+	    	}catch(SQLException e) {
+	    		e.printStackTrace();
+	    		return false;
+	    	}
+	    	
+	    }
+	    
+	    /**
+	     * Gets the status of loggedin of generalparkworker
+	     * @param GeneralParkWorker
+	     * @return isloggedin of generalparkworker
+	     */
+	    public Boolean getSignedinStatusOfGeneralParkWorker(GeneralParkWorker signedParkWorker) {
+	    	//Return the status of isloggedin of generalparkworker
+	    	String query = "SELECT isloggedin FROM generalparkworker WHERE workerid = ?";
+	     
+	    	
+	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
+	    		ps.setInt(1, signedParkWorker.getWorkerId());
+	    		ResultSet rs = ps.executeQuery();
+	    		
+	    		if (rs.next()) {
+	                // Retrieve the value of isloggedin from the ResultSet
+	                int isLoggedIn = rs.getInt("isloggedin");
+	                System.out.print(isLoggedIn);
+	                 if(isLoggedIn == 0)
+	                	 return false;
+	                 
+	                 return true;
+	            } else {
+	                // No rows returned, worker not found or not signed in
+	                return true;
+	            }
+	    		
+	    	}catch(SQLException e) {
+	    		e.printStackTrace();
+	    		return false;
+	    	}
+	    	
+	    	
+	    }
+	    
+	    /**
 	     * Gets the amount of visitors in the park where the parkworker works at
 	     * @param parkworker the park worker information
 	     * @return park information if successful and null if not found
 	     */
-	    public Park getAmountOfVisitorsByParkWorker(ParkWorker parkworker) {
-	        // Querying for the park information with the park number associated with the park worker
-	        String query = "SELECT * FROM `park` WHERE parkNumber = ?";
-	        Park fetchedPark = null;
 
-	        try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	    public Park getAmountOfVisitorsByParkWorker(GeneralParkWorker parkworker) {
+	    	//Querying for the park information with the park number associated with the park worker
+	    	String query = "Select * FROM park WHERE parkNumber = ?";
+	    	Park fetchedPark = null;
+	    	
+	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 	            ps.setInt(1, parkworker.getWorksAtPark());
-	            try (ResultSet rs = ps.executeQuery()) { // Use try-with-resources to ensure ResultSet is closed
+	            ResultSet rs = ps.executeQuery(); // Use executeQuery for SELECT statements
 
+
+	  
 	                if (rs.next()) { // Use if instead of while if you expect or require a single result
 	                    fetchedPark = new Park(
 	                        rs.getString("name"), 
@@ -371,7 +452,7 @@ public class DatabaseController {
 	                    );
 	                }
 	            }
-	        } catch (SQLException e) {
+	         catch (SQLException e) {
 	            e.printStackTrace();
 	            // Consider logging this exception or handling it more gracefully
 	        }
@@ -470,88 +551,4 @@ public class DatabaseController {
 
 }
 
-	/**
-	 * Retrieves specific order data from the database based on the order number.
-	 *
-	 * @param orderId The order number to search for.
-	 * @return An ArrayList containing the park name and telephone number for the
-	 *         specified order.
-	 */
-	/*
-	public ArrayList<String> getSpecificDataFromDB(String orderId) {
 
-		ArrayList<String> orderDataForClient = new ArrayList<>();
-		String query = "SELECT * FROM `order` WHERE OrderNumber=?";
-
-		try {
-			PreparedStatement ps = connectionToDatabase.prepareStatement(query);
-			ps.setString(1, orderId);
-			ResultSet rs = ps.executeQuery();
-
-			if (rs.next()) {
-				String parkName = rs.getString("ParkName");
-				String telephoneNumber = rs.getString("TelephoneNumber");
-
-				orderDataForClient.add(parkName);
-				orderDataForClient.add(telephoneNumber);
-			}
-
-			rs.close();
-			ps.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return orderDataForClient;
-	}
-	*/
-
-
-
-
-	/**
-	 * Updates the telephone number and park name for a specific order in the
-	 * database.
-	 *
-	 * @param orderId                 The ID of the order to update.
-	 * @param parkNameToChange        The new park name.
-	 * @param telephoneNumberToChange The new telephone number.
-	 */
-	/*
-	public void setOrderDataOnDatabase_TelphoneParkNameChange(String orderId, String parkNameToChange,
-			String telephoneNumberToChange) {
-		String updateQuery = "UPDATE `order` SET TelephoneNumber=?, ParkName=? WHERE OrderNumber=?";
-
-		try {
-			PreparedStatement ps = connectionToDatabase.prepareStatement(updateQuery);
-
-			ps.setString(1, telephoneNumberToChange);
-			ps.setString(2, parkNameToChange);
-			ps.setString(3, orderId);
-			ps.executeUpdate();
-			ps.close();
-			System.out.println("Order data updated successfully.");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	
-}
-/*
-	public void GetTravelerID(Traveler traveler) {
-//		String query = "SELECT * FROM traveler WHERE id=?";
-//		try {
-//			PreparedStatement ps = connectionToDatabase.prepareStatement(query);
-//			ps.setInt(1, traveler.getId());
-//		}catch() {
-//			
-//		}
-
-//		ClientServerMessage message = new ClientServerMessage(,guery);
-
-	}
-
-}
-
-*/

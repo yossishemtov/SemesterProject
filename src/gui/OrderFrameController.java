@@ -22,6 +22,9 @@ import gui.UserOrdersController;
 
 public class OrderFrameController {
 	
+	private Order order = new Order(null, null, null, null, null, null, null, null, null, null, null);
+	
+	ClientController clientController = new ClientController(null, 0);
 	@FXML
     private Button cancelVisitBtn;
     

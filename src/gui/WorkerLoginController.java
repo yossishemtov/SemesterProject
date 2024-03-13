@@ -53,40 +53,60 @@ public class WorkerLoginController {
 			// Send worker object to server and request worker details
 			ClientServerMessage<?> messageForServer = new ClientServerMessage<>(workerForServer,
 					Operation.GET_GENERAL_PARK_WORKER_DETAILS);
-//			System.out.println("0");
+			
 			ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
-//			System.out.println("1");
-
+			ClientServerMessage retrieveInformationIfLoggedIn;
 			// Retrieve worker details from server
 			GeneralParkWorker workerFromServer = (GeneralParkWorker) ClientController.data.getDataTransfered();
 
 			// Check if the server response is not null
 			if (workerFromServer != null) {
-				System.out.println("2");
 
 				// Update the current worker in UserManager
 				Usermanager.setCurrentWorker(workerFromServer);
 				System.out.println(workerFromServer.toString());
-
-				// Navigate based on the worker's role
-				String role = workerFromServer.getRole();
-				switch (role) {
-				case "Department Manager":
-					System.out.println("in Department Manager");
-					NavigationManager.openPage("DepartmentManagerScreen.fxml", click, "departmentManagerScreen", true);
-					break;
-				case "Park Manager":
-					System.out.println("in Park Manager");
-					NavigationManager.openPage("ParkManagerScreen.fxml", click, "parkManagerScreen", true);
-					break;
-				case "Worker":
-					System.out.println("in Worker");
-					NavigationManager.openPage("parkWorkerFrame.fxml", click, "workerScreen", true);
-					break;
-				default:
-					System.out.println("Role not recognized. Unable to proceed.");
-					// Optionally, display an error message or alert to the user here
-					break;
+			 
+				retrieveInformationIfLoggedIn = new ClientServerMessage(workerFromServer, Operation.GET_GENERALPARKWORKER_SIGNED);
+				ClientUI.clientControllerInstance.sendMessageToServer(retrieveInformationIfLoggedIn);
+				
+				//Checks if worker is not loggedin
+				
+				Boolean isLoggedIn = ClientController.data.getFlag();
+				
+				if(!isLoggedIn) {
+					
+					//Logging in the user
+					ClientServerMessage requestToLoginTheWorker = new ClientServerMessage(workerFromServer, Operation.PATCH_GENERALPARKWORKER_SIGNEDIN);
+					ClientUI.clientControllerInstance.sendMessageToServer(requestToLoginTheWorker);
+					
+					
+					
+					// Navigate based on the worker's role
+					String role = workerFromServer.getRole();
+					switch (role) {
+					case "Department Manager":
+						System.out.println("in Department Manager");
+						NavigationManager.openPage("DepartmentManagerScreen.fxml", click, "departmentManagerScreen", true);
+						break;
+					case "Park Manager":
+						System.out.println("in Park Manager");
+						NavigationManager.openPage("ParkManagerScreen.fxml", click, "parkManagerScreen", true);
+						break;
+					case "Worker":
+						System.out.println("in Worker");
+						
+						
+						NavigationManager.openPage("parkWorkerFrame.fxml", click, "workerScreen", true);
+						break;
+					default:
+						System.out.println("Role not recognized. Unable to proceed.");
+						// Optionally, display an error message or alert to the user here
+						break;
+					}
+				}else {
+					Alerts nullResponseAlert = new Alerts(Alert.AlertType.ERROR, "Already Logged In",
+							"Worker already logged in!", "Worker already logged in!");
+					nullResponseAlert.showAndWait();
 				}
 
 				System.out.println("Worker added to list. Worker Username: " + workerFromServer.getUserName());
@@ -111,6 +131,7 @@ public class WorkerLoginController {
 	public void BackBtn(ActionEvent click) {
 		try {
 			NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true);
+
 		} catch (Exception e) {
 			System.out.print("Something went wrong while clicking on the back button, check stack trace");
 			e.printStackTrace();

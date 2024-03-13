@@ -45,7 +45,9 @@ public class RegisterNewGuideController {
 		 try {
 			 if (validID && validEmail) {
 				 
+
 				 Traveler GroupGuideAttempt = new Traveler(Integer.parseInt(TravelerID), null, null, null, null, 1, 0);
+
 				 // send to server in order to check if traveler exists in the system
 				 ClientServerMessage<?> RegistrationAttempt = new ClientServerMessage<>(GroupGuideAttempt, Operation.GET_TRAVLER_INFO);
 			     ClientUI.clientControllerInstance.sendMessageToServer(RegistrationAttempt);

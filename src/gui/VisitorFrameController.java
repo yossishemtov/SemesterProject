@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.TextField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,26 +20,56 @@ import client.NavigationManager;
 import common.Message;
 
 public class VisitorFrameController {
+	
+	    ClientController clientController = new ClientController(null, 0);
+	    
+	   // private int visitorID = VisitorLoginController.getvisitorID;
 
-	Traveler currentTraveler = Usermanager.getCurrentTraveler();
+	    private Traveler traveler = new Traveler(null, null, null, null, null, null);
+	    //usermanager.getcurrenttraveler
+	    
+	    @FXML
+	    private TextArea messagesTextArea;
+	    
+	    @FXML
+	    private TextField OrderID;
+	    
+	    @FXML
+	    private Button editOrderBtn;
+	    
+	    @FXML
+	    private Button orderVisitBtn;
+	    
+	    @FXML
+	    private Button viewOrdersBtn;
+	    
+	    @FXML
+	    private Button viewWaitingListBtn;
+	    
+	    @FXML
+	    private Button viewMessagesBtn;
+	    
+	    @FXML
+	    private Button exitBtn;
+	    
+	    Traveler currentTraveler = Usermanager.getCurrentTraveler();
+	    
+	    
+//	    public void editOrderBtn(ActionEvent click) throws Exception {
+//	    	
+//	    	
+//	    	String orderID = OrderID.getText(); // get the order ID
+//		    Alerts alertID = InputValidation.ValidateVisitorID(orderID); // get the right alert
+//		    Boolean isSuccessful = alertID.getAlertType().toString().equals("INFORMATION");
+//		    
+//		    if (isSuccessful) { // if entered the right order ID
+//		        try {
+//		            NavigationManager.openPage("OrderFrame.fxml", click, "test", true);
+//		        }
+//		    }
+//	    }
 
-	@FXML
-	private TextArea messagesTextArea;
 
-	@FXML
-	private Button orderVisitBtn;
-
-	@FXML
-	private Button viewOrdersBtn;
-
-	@FXML
-	private Button viewWaitingListBtn;
-
-	@FXML
-	private Button viewMessagesBtn;
-
-	@FXML
-	private Button exitBtn;
 
 	public void orderVisit(ActionEvent click) throws Exception {
 
