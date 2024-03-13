@@ -126,13 +126,33 @@ public class MessageHandlerFromClient {
 			
 			break;
 			
+		case Operation.PATCH_GENERALPARKWORKER_SIGNEDOUT:
+			//Signing out a GeneralParkWorker
+			GeneralParkWorker parkWorkerToSignOut = (GeneralParkWorker) messageFromClient.getDataTransfered();
+			
+			try {
+				
+				if(dbControllerInstance.changeSignedOutOfGeneralParkWorker(parkWorkerToSignOut)) {
+					messageFromClient.setflagTrue();
+				}else {
+					messageFromClient.setflagFalse();
+				}
+				
+				client.sendToClient(messageFromClient);
+				
+			}catch (IndexOutOfBoundsException e) {
+				e.printStackTrace();
+			}
+			
+			break;
+			
 		case Operation.PATCH_GENERALPARKWORKER_SIGNEDIN:
-			//Change a worker to signedin status
+			//Signing in a GeneralParkWorker
 				
 			try {
-				GeneralParkWorker changeStatusOfParkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
+				GeneralParkWorker parkWorkerToSignIn = (GeneralParkWorker) messageFromClient.getDataTransfered();
 				
-				if(dbControllerInstance.changeSingedInOfGeneralParkWorker(changeStatusOfParkWorker)) {
+				if(dbControllerInstance.changeSingedInOfGeneralParkWorker(parkWorkerToSignIn)) {
 					//If changing the status of worker was successful sets the flag of the message back to the client to true
 					messageFromClient.setflagTrue();
 				}

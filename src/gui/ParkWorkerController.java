@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import client.ClientUI;
+import client.NavigationManager;
 import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
@@ -87,19 +88,18 @@ public class ParkWorkerController implements Initializable {
     public void backBtnAction(ActionEvent click) throws Exception{
     		//Loading main login screen when clicking on the back button
     	try {
-    		
-    		Parent root = new FXMLLoader().load(getClass().getResource("HomePageFrame.fxml"));
-    		Stage stage = (Stage)((Node)click.getSource()).getScene().getWindow(); //hiding primary window
-    		Scene scene = new Scene(root);	
-    		
-    		stage.setTitle("Home Page");
-    		
-    		stage.setScene(scene);
-    		stage.show();
+	    		if(Usermanager.getCurrentWorker() != null) {
+	    			ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentWorker(), Operation.PATCH_GENERALPARKWORKER_SIGNEDOUT);
+	    			ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
+	    			
+	    		}
+	    		
+	    		//Changing page back to main menu
+	    		NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true);
     		
     		}catch(Exception e) {
-    			System.out.print("Something went wrong while clicking on the back button, check stack trace");
-    			e.printStackTrace();
+    			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when trying to return to main menu");
+    			somethingWentWrong.showAndWait();
     		}
     }
 

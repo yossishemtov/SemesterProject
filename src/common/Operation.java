@@ -28,6 +28,8 @@ public abstract class Operation {
     public final static String PATCH_PARK_PARAMETERS = "Patch park parameters";
     public final static String PATCH_ORDER_STATUS = "Patch order status";
     public final static String PATCH_GENERALPARKWORKER_SIGNEDIN = "Patch generalparkworker to signed in";
+    public final static String PATCH_GENERALPARKWORKER_SIGNEDOUT = "Patch generalparkworker to signed out";
+
     
     // DELETE COMMANDS
     public final static String DELETE_EXISTING_ORDER = "Delete an existing order";

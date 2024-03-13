@@ -9,6 +9,7 @@ import common.Alerts;
 import common.ClientServerMessage;
 import common.DisplayIF;
 import common.Operation;
+import common.Usermanager;
 import javafx.application.Platform;
 import ocsf.client.AbstractClient;
 
@@ -95,11 +96,41 @@ public class SystemClient extends AbstractClient{
 	  }
 	  
 	  public void quit() {
-		    try {
+		  
+		  
+		  //Check if worker is logged in (if the user exited from worker signin page) and sign him off
+		  if(Usermanager.getCurrentWorker() != null) {
+				ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentWorker(), Operation.PATCH_GENERALPARKWORKER_SIGNEDOUT);
+				
+				try {
+			        sendToServer(requestToLogout);
+			        awaitResponse = true; // Wait for the server to acknowledge disconnection
+
+			        // Wait for acknowledgment
+			        while (awaitResponse) {
+			            try {
+			                Thread.sleep(100); // Check for the acknowledgment every 100 milliseconds
+			            } catch (InterruptedException e) {
+			                Thread.currentThread().interrupt(); // Restore interrupted status
+			                System.err.println("Interrupted while waiting for disconnection acknowledgment.");
+			                break;
+			            }
+			        }
+				
+					}catch(IOException e) {
+				        // Handle exception
+				        e.printStackTrace();
+					}
+			  }
+		    
+		    	
+		    	
+		    	try {
+		    	
 		        // Notify server of disconnection
 		    	ClientServerMessage<?> message=new ClientServerMessage(null,Operation.DISCONNECTING);
 		        sendToServer(message);
-		        awaitResponse = true; // Wait for the server to acknowledge disconnection
+		        awaitResponse = true; // Wsait for the server to acknowledge disconnection
 
 		        // Wait for acknowledgment
 		        while (awaitResponse) {

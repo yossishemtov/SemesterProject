@@ -277,6 +277,27 @@ public class DatabaseController {
 	    }
 	    
 	    /**
+	     * Updates the status of generalparkworker to signedout
+	     * @param GeneralParkWorker to sign
+	     * @return true if the signed out was successful, false otherwise.
+	     */
+	    public Boolean changeSignedOutOfGeneralParkWorker(GeneralParkWorker signedParkWorker) {
+	    	String query = "UPDATE generalparkworker SET isloggedin = 0 WHERE workerid = ?";
+	    	
+	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
+	    		ps.setInt(1, signedParkWorker.getWorkerId());
+	    		int affectedRows = ps.executeUpdate();
+	    		
+	    		return affectedRows > 0;
+	    		
+	    	}catch(SQLException e) {
+	    		e.printStackTrace();
+	    		return false;
+	    	}
+	    	
+	    }
+	    
+	    /**
 	     * Gets the status of loggedin of generalparkworker
 	     * @param GeneralParkWorker
 	     * @return isloggedin of generalparkworker
