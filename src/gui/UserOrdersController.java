@@ -1,162 +1,170 @@
 package gui;
 
+import java.net.URL;
 import java.util.ArrayList;
-import javafx.scene.control.TableView;
+import java.util.HashMap;
+import java.util.ResourceBundle;
 
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import client.ClientUI;
-import clientEntities.Reservation;
+import client.NavigationManager;
+import common.Alerts;
 import common.ClientServerMessage;
+import common.Operation;
+import common.Order;
+import common.Traveler;
+import common.Usermanager;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
-import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 
-public class UserOrdersController {
-	private String Command;
+public class UserOrdersController implements Initializable {
 
 	@FXML
-	private TableView<Reservation> reservationsTable;
+	private TableView<Order> OrdersTable;
+
+	@FXML
+	private TextField OrderID;
+
+	@FXML
+	private Button editOrderBtn;
 
 	@FXML
 	private Button backbtn;
 
 	@FXML
-	private TableColumn<Reservation, String> ParkNameCol;
+	private TableColumn<Order, String> orderIdCol;
 
 	@FXML
-	private TableColumn<Reservation, String> OrderNumberCol;
+	private TableColumn<Order, String> parkNumberCol;
 
 	@FXML
-	private TableColumn<Reservation, String> TimeOfVisitCol;
+	private TableColumn<Order, String> amountOfVisitorsCol;
 
 	@FXML
-	private TableColumn<Reservation, String> NumberOfVistiorsCol;
+	private TableColumn<Order, String> priceCol;
 
 	@FXML
-	private TableColumn<Reservation, String> TelephoneNumberCol;
+	private TableColumn<Order, String> dateCol;
 
 	@FXML
-	private TableColumn<Reservation, String> EmailAddressCol;
+	private TableColumn<Order, String> visitTimeCol;
 
 	@FXML
-	private Button showOrdersBtn;
+	private TableColumn<Order, String> orderStatusCol;
 
-	public void btnBack(ActionEvent click) throws Exception {
-		// Function for opening a new scene when clicking on the Update Reservation
-		// Button
+	@FXML
+	private TableColumn<Order, String> orderTypeCol;
 
-		try {
+	static HashMap<Integer, Order> orderHashMap = new HashMap<>();
 
-			new FXMLLoader();
-			Parent root = FXMLLoader.load(getClass().getResource("UserInterfaceFrame.fxml"));
-			Stage stage = (Stage) ((Node) click.getSource()).getScene().getWindow(); // hiding primary window
-			Scene scene = new Scene(root);
-
-			stage.setTitle("User Menu");
-
-			stage.setScene(scene);
-			stage.show();
-
-		} catch (Exception e) {
-			System.out.print("Something went wrong while clicking on the back button, check stack trace");
-			e.printStackTrace();
-		}
-
+	private Order orderToOpen;
+	
+	Traveler currentTraveler = Usermanager.getCurrentTraveler();
+	
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// Load orders data from the database and initialize the table
+		loadOrdersFromDatabase();
 	}
 
-	public void showOrdersBtn(ActionEvent click) throws Exception {
-		ClientServerMessage clientServerMessageInstanch = new ClientServerMessage("", "ALLORDERSOFVISITOR");
-
+	private void loadOrdersFromDatabase() {
+		ClientServerMessage<?> clientServerMessage = new ClientServerMessage<>(currentTraveler,
+				Operation.GET_ALL_ORDERS);
+		ClientUI.clientControllerInstance.sendMessageToServer(clientServerMessage);
 
 		try {
 			// The client controller receives the command to pass it further
-			// (It stops the execution flow for the client until answer received)
-
-			//ClientUI.clientControllerInstance.accept(Command);
-
+			// (It stops the execution flow for the client until the answer is received)
 			loadOrdersData(ClientUI.clientControllerInstance.getData());
 		} catch (Exception e) {
-
 			e.printStackTrace();
 		}
-
 	}
 
-	public <T> void loadOrdersData(ClientServerMessage<T> allReservations) {
-		// Login for handling the specific reservations of a user
-		String concatenatedString = "ParkName1 OrderNumber1 TimeOfVisit1 NumberOfVisitors1 TelephoneNumber1 Email1";
-		ArrayList<Reservation> reservationsObjs = new ArrayList<Reservation>();
+	public <T> void loadOrdersData(ClientServerMessage<T> allOrders) throws Exception {
 
-		// Setting up javafx columns
-		ParkNameCol.setCellValueFactory(cellData -> cellData.getValue().parkNameProperty());
-		OrderNumberCol.setCellValueFactory(cellData -> cellData.getValue().orderNumberProperty());
-		TimeOfVisitCol.setCellValueFactory(cellData -> cellData.getValue().timeOfVisitProperty());
-		NumberOfVistiorsCol.setCellValueFactory(cellData -> cellData.getValue().numberOfVisitorsProperty());
-		TelephoneNumberCol.setCellValueFactory(cellData -> cellData.getValue().telphoneNumberProperty());
-		EmailAddressCol.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
+		ArrayList<Order> ordersList = (ArrayList<Order>) allOrders.convertDataToArrayList();
+
+		// Clear the existing HashMap
+		orderHashMap.clear();
 
 		try {
-
-			// Iterating through the string template to extract it to a Reservation object
-			for (T reservation : allReservations.convertDataToArrayList()) {
-
-				System.out.println(reservation);
-				String[] fields = ((String) reservation).split(" ");
-				String parkName;
-				String orderNumber;
-				String timeOfVisit;
-				String numberOfVisitors;
-				String telphoneNumber;
-				String email;
-
-				if (isNumeric(fields[1])) {
-					parkName = fields[0];
-					orderNumber = fields[1];
-					timeOfVisit = fields[2] + " " + fields[3];
-					numberOfVisitors = fields[4];
-					telphoneNumber = fields[5];
-					email = fields[6];
-					orderNumber = fields[1];
-				} else {
-					parkName = fields[0] + fields[1];
-					orderNumber = fields[2];
-					timeOfVisit = fields[3] + " " + fields[4];
-					numberOfVisitors = fields[5];
-					telphoneNumber = fields[6];
-					email = fields[7];
-				}
-
-				Reservation receivedRez = new Reservation(parkName, orderNumber, timeOfVisit, numberOfVisitors,
-						telphoneNumber, email);
-				reservationsObjs.add(receivedRez);
-
+			// Iterating through the list of orders and adding them to the HashMap
+			for (Order order : ordersList) {
+				orderHashMap.put(order.getOrderId(), order);
 			}
 
+			orderIdCol.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getOrderId())));
+			parkNumberCol.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getParkNumber())));
+			amountOfVisitorsCol.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getAmountOfVisitors())));
+			priceCol.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getPrice())));
+			dateCol.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getDate())));
+			visitTimeCol.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getVisitTime())));
+			orderStatusCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getOrderStatus()));
+			orderTypeCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTypeOfOrder()));
+
+			// Populate the TableView with data
+			ObservableList<Order> ordersObservableList = FXCollections.observableArrayList(ordersList);
+			OrdersTable.setItems(ordersObservableList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		ObservableList<Reservation> reservationsObservableList = FXCollections.observableArrayList(reservationsObjs);
-		reservationsTable.setItems(reservationsObservableList);
-
 	}
 
-	public static boolean isNumeric(String str) {
-		try {
-			Double.parseDouble(str);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
+	public Order getOrderById(Integer orderId) {
+		return orderHashMap.get(orderId);
+	}
+
+	public void editOrderBtn(ActionEvent click) throws Exception {
+
+		String orderID = OrderID.getText(); // get the order ID
+
+		if (orderID != null) {
+			// find the right order to open
+			orderToOpen = getOrderById(Integer.parseInt(orderID));
+
 		}
+
+		else {
+			// Display the error alert for missing order ID
+	        Alerts alertID = new Alerts(AlertType.ERROR, "Error", "Missing Order ID", "Please enter the order ID.");
+	        alertID.showAndWait();
+	        return;
+		}
+
+		if (orderToOpen != null) {
+			// if entered the right order ID
+			OrderFrameController orderFrameController = new OrderFrameController(orderToOpen);
+			NavigationManager.openPage("OrderFrame.fxml", click, "Order", true);
+
+		}
+
+		else {
+			// Display the error alert for order not found
+	        Alerts alertNotFound = new Alerts(AlertType.ERROR, "Error", "Order Not Found", "The entered order ID was not found.");
+	        alertNotFound.showAndWait();
+		}
+
 	}
+
+	public void btnBack(ActionEvent click) throws Exception {
+
+		NavigationManager.openPage("VisitorFrame.fxml", click, "Visitor frame", true);
+
+	}
+
+	
+	
+	
+
 
 }

@@ -1,40 +1,35 @@
 package gui;
 
 import client.ClientUI;
+
+import com.jfoenix.controls.JFXTextField;
 import client.InputValidation;
 import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
-import common.worker.*;
 import common.worker.GeneralParkWorker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-
 import java.io.IOException;
-
 import client.ClientController;
-import client.ClientUI;
 import client.NavigationManager;
 import common.*;
 
 public class WorkerLoginController {
+	@FXML
+    private Button LoginBtn;
 
-	@FXML
-	private Button LoginBtn;
-	@FXML
-	private Button BackBtn;
-	@FXML
-	private TextField WorkerUsername;
-	@FXML
-	private TextField WorkerPwd;
+    @FXML
+    private Button BackBtn;
+
+    @FXML
+    private JFXTextField WorkerUsername;
+
+    @FXML
+    private JFXTextField WorkerPwd;
 
 	@FXML
 	public void WorkerLoginBtn(ActionEvent click) throws IOException {
@@ -58,6 +53,7 @@ public class WorkerLoginController {
 			// Send worker object to server and request worker details
 			ClientServerMessage<?> messageForServer = new ClientServerMessage<>(workerForServer,
 					Operation.GET_GENERAL_PARK_WORKER_DETAILS);
+			
 			ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
 			ClientServerMessage retrieveInformationIfLoggedIn;
 			// Retrieve worker details from server
@@ -135,7 +131,7 @@ public class WorkerLoginController {
 	public void BackBtn(ActionEvent click) {
 		try {
 			NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true);
-			
+
 		} catch (Exception e) {
 			System.out.print("Something went wrong while clicking on the back button, check stack trace");
 			e.printStackTrace();

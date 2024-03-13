@@ -9,16 +9,19 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.mysql.cj.xdevapi.Client;
+
 import DB.DatabaseController;
 import ocsf.server.ConnectionToClient;
 
 public class MessageHandlerFromClient {
 
-	public static void handleMessage(ClientServerMessage messageFromClient, ConnectionToClient client) throws IOException {
+	public static void handleMessage(ClientServerMessage messageFromClient, ConnectionToClient client)
+			throws IOException {
 		// A class that is intended to handle diffrent messages from the client and
 		// response accordingly
-        
-    	//client.sendToClient("aaa");
+
+		// client.sendToClient("aaa");
 		BackEndServer backEndServerInstance = BackEndServer.getBackEndServer();
 		DatabaseController dbControllerInstance = BackEndServer.DBController;
 
@@ -26,7 +29,7 @@ public class MessageHandlerFromClient {
 		// server communication
 		if (!(messageFromClient instanceof ClientServerMessage)) {
 			try {
-		        System.out.println("return null");
+				System.out.println("return null");
 
 				client.sendToClient(null);
 			} catch (IOException e) {
@@ -36,22 +39,40 @@ public class MessageHandlerFromClient {
 		}
 
 		// Extracting data from the generic message object intended for further parsing
-		String command = (String)messageFromClient.getCommand();
-		
-        System.out.println("opertion "+command);
+		String command = (String) messageFromClient.getCommand();
+
+		System.out.println("opertion " + command);
 
 		// Parsing the command
 		switch (command) {
-		
+
 		// User sends a disconnect command to the server
 		case Operation.DISCONNECTING:
 			backEndServerInstance.clientDisconnected(client);
-			
+
 			try {
 				client.sendToClient(Operation.DISCONNECTING); // Send acknowledgment to client
 			} catch (IOException e) {
 				System.out.println("Error sending ack_disconnect to client: " + e.getMessage());
 			}
+			break;
+
+		case Operation.GET_PARK_DETAILS:
+			// Placeholder for getting all orders from the database
+			Integer parkId = (Integer) messageFromClient.getDataTransfered();
+			Park parkDetails = dbControllerInstance.getParkDetails(parkId);
+
+			if (parkDetails == null) {
+				// Handle the case where no park was found with the provided ID
+				// You could set the data transferred to a specific value or an error message
+				// indicating the park was not found
+				messageFromClient.setflagFalse(); // Assuming you have a way to indicate success/failure
+			} else {
+				// Park was found, proceed as normal
+				messageFromClient.setDataTransfered(parkDetails);
+				messageFromClient.setflagTrue(); // Again, assuming success/failure indication
+			}
+			client.sendToClient(messageFromClient);
 			break;
 
 		// get all traveler orders from data base
@@ -64,12 +85,16 @@ public class MessageHandlerFromClient {
 
 		case Operation.GET_TRAVLER_INFO:
 			// Placeholder for getting traveler information
+			Traveler traveler = (Traveler) messageFromClient.getDataTransfered();
+			messageFromClient.setDataTransfered(dbControllerInstance.getTravelerDetails(traveler));
+			client.sendToClient(messageFromClient);
 			break;
 
 		case Operation.GET_GENERAL_PARK_WORKER_DETAILS:
 			GeneralParkWorker generalParkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
 			messageFromClient.setDataTransfered(dbControllerInstance.getGeneralParkWorkerDetails(generalParkWorker));
-		    System.out.println(messageFromClient.toString());
+
+			
 			client.sendToClient(messageFromClient);
 			break;
 
@@ -78,7 +103,7 @@ public class MessageHandlerFromClient {
 			break;
 
 		case Operation.GET_VISITORS_REPORT:
-			GeneralParkWorker worker=(GeneralParkWorker) messageFromClient.getDataTransfered();
+			GeneralParkWorker worker = (GeneralParkWorker) messageFromClient.getDataTransfered();
 			messageFromClient.setDataTransfered(dbControllerInstance.getTotalNumberOfVisitorsReport(worker));
 			client.sendToClient(messageFromClient);
 			break;
@@ -86,6 +111,7 @@ public class MessageHandlerFromClient {
 		case Operation.GET_MESSAGES:
 			// Placeholder for getting messages
 			break;
+
 			
 		case Operation.GET_AMOUNT_OF_VISITORS_FOR_GENERALPARKWORKER:
 			GeneralParkWorker loggedInParkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
@@ -102,15 +128,21 @@ public class MessageHandlerFromClient {
 
 		case Operation.POST_NEW_TRAVLER_GUIDER:
 			// Placeholder for posting a new traveler guide request
-			ArrayList<GroupGuide> groupGuide = (ArrayList<GroupGuide>) messageFromClient.getDataTransfered();
+			Traveler groupGuide = (Traveler) messageFromClient.getDataTransfered();
 
 			// send to data base group guide to insert
-			dbControllerInstance.addNewGroupGuide(groupGuide.get(0));
-			// if the insert success ,send to client true
-			messageFromClient.setDataTransfered(true);
+			if (dbControllerInstance.insertNewGroupGuide(groupGuide)) {
+				messageFromClient.setflagTrue();
+
+			} else {
+				messageFromClient.setflagFalse();
+
+			}
+		
 			client.sendToClient(messageFromClient);
 
 			break;
+
 		 
 		case Operation.GET_GENERALPARKWORKER_SIGNED:
 			//Get the status of isloggedin of generalparkworker
@@ -167,6 +199,23 @@ public class MessageHandlerFromClient {
 			}
 			break;
 
+		case Operation.POST_EXISTS_TRAVLER_GUIDER:
+			// Placeholder for posting a new traveler guide request
+			Traveler ExistsgroupGuide = (Traveler) messageFromClient.getDataTransfered();
+
+			// send to data base group guide to insert
+			if (dbControllerInstance.ChangeTravelerToGuide(ExistsgroupGuide)) {
+				messageFromClient.setflagTrue();
+
+			} else {
+				messageFromClient.setflagFalse();
+
+			}
+		
+			client.sendToClient(messageFromClient);
+
+			break;
+			
 		case Operation.POST_TRAVLER_ORDER:
 			// Placeholder for posting a new traveler order
 			

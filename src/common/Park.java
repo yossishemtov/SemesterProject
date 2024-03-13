@@ -93,4 +93,20 @@ public class Park  implements Serializable {
 		this.workingTime = workingTime;
 	}
 	
+	  @Override
+	    public String toString() {
+	        return "Park{" +
+	                "name='" + name + '\'' +
+	                ", parkNumber=" + parkNumber +
+	                ", maxVisitors=" + maxVisitors +
+	                ", capacity=" + capacity +
+	                ", currentVisitors=" + currentVisitors +
+	                ", location='" + location + '\'' +
+	                ", staytime=" + staytime +
+	                ", workersAmount=" + workersAmount +
+	                ", managerID=" + managerID +
+	                ", workingTime=" + workingTime +
+	                '}';
+	    }
+	
 }

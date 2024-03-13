@@ -1,31 +1,44 @@
 package common;
-import common.worker.GeneralParkWorker;
 
 import java.io.Serializable;
+import common.worker.GeneralParkWorker;
 
-import common.Traveler;
+public class Usermanager implements Serializable {
 
-public class Usermanager  implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+    private static GeneralParkWorker currentWorker;
+    private static Traveler currentTraveler;
+    // Flags to indicate whether a worker or traveler is connected
+    private static boolean isWorkerConnected = false;
+    private static boolean isTravelerConnected = false;
 
-	  private static GeneralParkWorker currentWorker;
-	    private static Traveler currentTraveler;
+    public static GeneralParkWorker getCurrentWorker() {
+        return currentWorker;
+    }
 
-	    public static GeneralParkWorker getCurrentWorker() {
-	        return currentWorker;
-	    }
+    public static void setCurrentWorker(GeneralParkWorker worker) {
+        Usermanager.currentWorker = worker;
+        // Set the worker connected flag based on whether the worker is null
+        Usermanager.isWorkerConnected = (worker != null);
+    }
 
-	    public static void setCurrentWorker(GeneralParkWorker worker) {
-	    	Usermanager.currentWorker = worker;
-	    }
+    public static Traveler getCurrentTraveler() {
+        return currentTraveler;
+    }
 
-	    public static Traveler getCurrentTraveler() {
-	        return currentTraveler;
-	    }
+    public static void setCurrentTraveler(Traveler traveler) {
+        Usermanager.currentTraveler = traveler;
+        // Set the traveler connected flag based on whether the traveler is null
+        Usermanager.isTravelerConnected = (traveler != null);
+    }
 
-	    public static void setCurrentTraveler(Traveler traveler) {
-	    	Usermanager.currentTraveler = traveler;
-	    }
-	    
-	}
+    // Methods to check if a worker or traveler is connected
+    public static boolean isWorkerConnected() {
+        return isWorkerConnected;
+    }
+
+    public static boolean isTravelerConnected() {
+        return isTravelerConnected;
+    }
+}

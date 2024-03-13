@@ -26,6 +26,125 @@ public class DatabaseController {
 	}
 	
 	
+	
+	/**
+     * Updates a traveler's record to mark them as a guide.
+     *
+     * @param travelerId the ID of the traveler to be updated.
+     * @return true if the update is successful, false otherwise.
+     */
+    public boolean ChangeTravelerToGuide(Traveler traveler) {
+     
+
+        String query = "UPDATE `travler` SET GroupGuide = 1 WHERE id = ?";
+
+        try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
+            pstmt.setInt(1, traveler.getId());
+
+            int affectedRows = pstmt.executeUpdate();
+
+            // Check if the update was successful
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.err.println("SQLException: " + e.getMessage());
+            return false;
+        } 
+    }
+
+	
+	 public boolean insertNewGroupGuide(Traveler traveler) {
+	        // Assuming you have a method getConnection() that returns a Connection object.
+	     
+
+	        String query = "INSERT INTO `travler` (id, firstName, lastName, email, phoneNumber, GroupGuide, isloggedin) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+	        try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
+	            pstmt.setInt(1, traveler.getId());
+	            pstmt.setString(2, traveler.getFirstName());
+	            pstmt.setString(3, traveler.getLastName());
+	            pstmt.setString(4, traveler.getEmail());
+	            pstmt.setString(5, traveler.getPhoneNum());
+	            pstmt.setInt(6, traveler.getIsGrupGuide()); // Assuming 1 for guide, 0 for not a guide.
+	            pstmt.setInt(7, 0); // Assuming isloggedin default to 0.
+
+	            int affectedRows = pstmt.executeUpdate();
+
+	            // Check if the insert was successful
+	            if (affectedRows > 0) {
+	                return true;
+	            }
+	        } catch (SQLException e) {
+	            System.err.println("SQLException: " + e.getMessage());
+	        } 
+
+	        return false;
+	    }
+	
+	
+	  // Method to get a Park object by parkNumber
+    public Park getParkDetails(int parkNumber) {
+        Park park = null;
+        String query = "SELECT * FROM `park` WHERE parkNumber = ?";
+        
+        try (
+
+             PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
+            
+            preparedStatement.setInt(1, parkNumber);
+            
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if (resultSet.next()) {
+	            System.out.println("in");
+
+                String name = resultSet.getString("name");
+                Integer maxVisitors = resultSet.getInt("maxVisitors");
+                Integer capacity = resultSet.getInt("capacity");
+                Integer currentVisitors = resultSet.getInt("currentVisitors");
+                String location = resultSet.getString("location");
+                Integer staytime = resultSet.getInt("staytime");
+                Integer workersAmount = resultSet.getInt("workersAmount");
+                Integer managerID = resultSet.getInt("managerId");
+                Integer workingTime = resultSet.getInt("workingTime");
+                
+                park = new Park(name, parkNumber, maxVisitors, capacity, currentVisitors, location, staytime, workersAmount, managerID, workingTime);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        //System.out.println(park.toString());
+        return park;
+    }
+	
+	
+	
+
+	
+	public Traveler getTravelerDetails(Traveler travelerFromClient) {
+	    String query = "SELECT first_name, last_name, email, phone_num FROM travelers WHERE id = ?";
+	    Traveler traveler = null; // Initialize to null
+
+	    try (PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
+	        preparedStatement.setInt(1, travelerFromClient.getId());
+
+	        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+	            if (resultSet.next()) {
+	                // Instantiate a new Traveler object with the retrieved details
+	                String firstName = resultSet.getString("first_name");
+	                String lastName = resultSet.getString("last_name");
+	                String email = resultSet.getString("email");
+	                String phoneNum = resultSet.getString("phone_num");
+
+	                traveler = new Traveler(travelerFromClient.getId(), firstName, lastName, email, phoneNum, 0);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        // Consider better exception handling
+	    }
+	    return traveler; // Returns the new Traveler object or null if not found
+	}
+
 	// Get GeneralParkWorkerDetails
 	// check GetGeneralParkWorker login details and return the data,if not exist return empty ArrayList of type generalParkWorker
 	// WorkerId | firstName | lastName | email | role | userName | password | worksAtPark
@@ -108,39 +227,6 @@ public class DatabaseController {
 
 
 	
-	
-
-
-		/**
-		 * Adds a new group guide to the database.
-		 *
-		 * @param groupGuide The GroupGuide object to add to the database.
-		 */
-		
-		public void addNewGroupGuide(GroupGuide groupGuide) {
-			String query = "INSERT INTO GroupGuides (id, firstName, lastName, email, username, password) VALUES (?, ?, ?, ?, ?, ?)";
-
-			try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-				// Set parameters for the prepared statement based on the GroupGuide object
-				ps.setInt(1, groupGuide.getId());
-				ps.setString(2, groupGuide.getFirstName());
-				ps.setString(3, groupGuide.getLastName());
-				ps.setString(4, groupGuide.getEmail());
-				ps.setString(5, groupGuide.getUsername());
-				ps.setString(6, groupGuide.getPassword());
-
-				// Execute the update
-				int rowsAffected = ps.executeUpdate();
-				if (rowsAffected > 0) {
-					System.out.println("A new group guide was added successfully!");
-				} else {
-					System.out.println("A problem occurred and the group guide was not added.");
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				System.out.println("SQL Exception: Could not add the group guide to the database.");
-			}
-		}
 
 		 /**
 	     * Inserts a new reservation (order) into the database.

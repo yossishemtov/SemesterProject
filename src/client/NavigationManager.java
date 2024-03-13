@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -62,6 +63,18 @@ public class NavigationManager {
                 systemClient.quit();
             }
         });
+    }
+
+    /**
+     * Opens a new page in the center of the given BorderPane.
+     * @param borderPane The BorderPane where the page should be opened in the center.
+     * @param pageFXML The FXML file name of the page to be opened.
+     * @throws IOException If an error occurs during loading the FXML.
+     */
+    public static void openPageInCenter(BorderPane borderPane, String pageFXML) throws IOException {
+        FXMLLoader loader = new FXMLLoader(NavigationManager.class.getResource("/gui/" + pageFXML));
+        Node page = loader.load(); // Load the page
+        borderPane.setCenter(page); // Set the loaded page in the center of the BorderPane
     }
 
 }

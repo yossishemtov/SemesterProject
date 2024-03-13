@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="orderDetailsVBox" prefHeight="351.0" prefWidth="351.0" spacing="10" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="orderDetailsVBox" prefHeight="351.0" prefWidth="353.0" spacing="10" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <Label fx:id="parkNumberLabel" text="Park Number: " />
     <Label fx:id="amountOfVisitorsLabel" text="Amount of Visitors: " />
     <Label fx:id="orderIdLabel" text="Order ID: " />
@@ -20,7 +20,7 @@
       <children>
          <Button fx:id="cancelVisitBtn" layoutX="102.0" layoutY="36.0" mnemonicParsing="false" onAction="#cancelVisit" prefHeight="26.0" prefWidth="74.0" text="Cancel" />
          <Button fx:id="confirmVisitBtn" layoutX="14.0" layoutY="36.0" mnemonicParsing="false" onAction="#confirmVisit" prefHeight="26.0" prefWidth="76.0" text="Confirm" />
-         <Button fx:id="backBtn" layoutX="295.0" layoutY="35.0" mnemonicParsing="false" onAction="#btnBack" prefHeight="26.0" prefWidth="42.0" text="Back" />
+         <Button fx:id="backBtn" layoutX="295.0" layoutY="36.0" mnemonicParsing="false" onAction="#btnBack" prefHeight="26.0" prefWidth="42.0" text="Back" />
       </children>
-   </Pane>
+   </Pane>
 </VBox>

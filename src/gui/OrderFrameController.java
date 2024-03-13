@@ -1,7 +1,11 @@
 package gui;
 
 import client.ClientController;
+import client.ClientUI;
+import client.SystemClient;
+import client.NavigationManager;
 import common.ClientServerMessage;
+import common.Operation;
 import common.Order;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,13 +18,13 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import gui.UserOrdersController;
 
 public class OrderFrameController {
 	
 	private Order order = new Order(null, null, null, null, null, null, null, null, null, null, null);
 	
 	ClientController clientController = new ClientController(null, 0);
-	
 	@FXML
     private Button cancelVisitBtn;
     
@@ -41,7 +45,7 @@ public class OrderFrameController {
 
     @FXML
     private Label orderTypeLabel;
-
+    
     @FXML
     private Label dateLabel;
 
@@ -59,6 +63,12 @@ public class OrderFrameController {
 
     @FXML
     private Label orderStatusLabel;
+    
+    private Order orderToOpen;
+
+    public OrderFrameController(Order order) {
+        this.orderToOpen = order;
+    }
     
 	public void setOrderDetails(Order order) {
 		// sets the order detailes
@@ -78,8 +88,8 @@ public class OrderFrameController {
 	public void cancelVisit(ActionEvent click) throws Exception {
 		// sends a request to the server to delete the order from the DB
 		
-		ClientServerMessage messageToServer = new ClientServerMessage(order , "DELETE_EXISTING_ORDER" );
-		clientController.sendMessageToServer(messageToServer);
+		ClientServerMessage<?> messageToServer = new ClientServerMessage(orderToOpen , Operation.DELETE_EXISTING_ORDER );
+		ClientUI.clientControllerInstance.sendMessageToServer(messageToServer);
 		// Display a confirmation dialog
 		showOrderCanceledDialog();
 		
@@ -99,8 +109,8 @@ public class OrderFrameController {
     	// sends a request to the server to change the order status in the DB
     	
     	//order.setStatus("CONFIRM");
-    	ClientServerMessage messageToServer = new ClientServerMessage(order , "CHANGE_ORDER_STATUS_CONFIRM" );
-		clientController.sendMessageToServer(messageToServer);
+    	ClientServerMessage<?> messageToServer = new ClientServerMessage(orderToOpen , Operation.PATCH_ORDER_STATUS );
+    	ClientUI.clientControllerInstance.sendMessageToServer(messageToServer);
 		// Display a confirmation dialog
 	    showConfirmationDialog();
     	
@@ -117,25 +127,8 @@ public class OrderFrameController {
 	}
     
     public void btnBack(ActionEvent click) throws Exception {
-		// Function for opening a new scene when clicking on the Update Reservation
-		// Button
-
-		try {
-
-			new FXMLLoader();
-			Parent root = FXMLLoader.load(getClass().getResource("VisitorFrame.fxml"));
-			Stage stage = (Stage) ((Node) click.getSource()).getScene().getWindow(); // hiding primary window
-			Scene scene = new Scene(root);
-
-			stage.setTitle("Visitor screen");
-
-			stage.setScene(scene);
-			stage.show();
-
-		} catch (Exception e) {
-			System.out.print("Something went wrong while clicking on the back button, check stack trace");
-			e.printStackTrace();
-		}
+		
+    	NavigationManager.openPage("VisitorFrame.fxml", click, "Visitor frame", true);
 
 	}
     

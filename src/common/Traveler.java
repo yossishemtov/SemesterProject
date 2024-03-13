@@ -10,13 +10,21 @@ public class Traveler implements Serializable {
 	private String lastName;
 	private String email;
 	private String phoneNum;
-
-	public Traveler(Integer id, String firstName, String lastName, String email, String phoneNum) {
+	private Integer isGrupGuide;
+	public Traveler(Integer id, String firstName, String lastName, String email, String phoneNum,Integer isGrupGuide) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.phoneNum = phoneNum;
+		this.isGrupGuide=isGrupGuide;
+	}
+	public Integer getIsGrupGuide() {
+		return isGrupGuide;
+	}
+
+	public void setIsGrupGuide(Integer isGrupGuide) {
+		this.isGrupGuide = isGrupGuide;
 	}
 
 	public Integer getId() {
@@ -45,6 +53,13 @@ public class Traveler implements Serializable {
 
 	public String getEmail() {
 		return email;
+	}
+	public String getPhoneNum() {
+		return phoneNum;
+	}
+	
+	public void setPhoneNum(String phoneNumber) {
+		 this.phoneNum=phoneNumber;
 	}
 
 	public void setEmail(String email) {
