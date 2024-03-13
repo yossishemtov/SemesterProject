@@ -126,18 +126,39 @@ public class MessageHandlerFromClient {
 			client.sendToClient(messageFromClient);
 			break;
 
-//		case Operation.POST_NEW_TRAVLER_GUIDER:
-//			// Placeholder for posting a new traveler guide request
-//			ArrayList<GroupGuide> groupGuide = (ArrayList<GroupGuide>) messageFromClient.getDataTransfered();
-//
-//			// send to data base group guide to insert
-//			dbControllerInstance.addNewGroupGuide(groupGuide.get(0));
-//			// if the insert success ,send to client true
-//			messageFromClient.setDataTransfered(true);
-//			client.sendToClient(messageFromClient);
-//
-//			break;
+		case Operation.POST_NEW_TRAVLER_GUIDER:
+			// Placeholder for posting a new traveler guide request
+			Traveler groupGuide = (Traveler) messageFromClient.getDataTransfered();
 
+			// send to data base group guide to insert
+			if (dbControllerInstance.insertNewGroupGuide(groupGuide)) {
+				messageFromClient.setflagTrue();
+
+			} else {
+				messageFromClient.setflagFalse();
+
+			}
+		
+			client.sendToClient(messageFromClient);
+
+			break;
+		case Operation.POST_EXISTS_TRAVLER_GUIDER:
+			// Placeholder for posting a new traveler guide request
+			Traveler ExistsgroupGuide = (Traveler) messageFromClient.getDataTransfered();
+
+			// send to data base group guide to insert
+			if (dbControllerInstance.ChangeTravelerToGuide(ExistsgroupGuide)) {
+				messageFromClient.setflagTrue();
+
+			} else {
+				messageFromClient.setflagFalse();
+
+			}
+		
+			client.sendToClient(messageFromClient);
+
+			break;
+			
 		case Operation.POST_TRAVLER_ORDER:
 			// Placeholder for posting a new traveler order
 

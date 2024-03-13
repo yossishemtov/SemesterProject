@@ -22,6 +22,8 @@ public abstract class Operation {
     
 
     public final static String POST_NEW_TRAVLER_GUIDER = "Post new traveler guide request";
+    public final static String POST_EXISTS_TRAVLER_GUIDER = "Post exists traveler guide request";
+
     public final static String POST_TRAVLER_ORDER = "Post new traveler order";
     public final static String POST_NEW_REPORT = "Post a new report";
     

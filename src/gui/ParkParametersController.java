@@ -1,4 +1,4 @@
-package gui;
+tpackage gui;
 import javafx.event.ActionEvent;
 
 import java.net.URL;
