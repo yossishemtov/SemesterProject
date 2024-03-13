@@ -115,7 +115,6 @@ public class MessageHandlerFromClient {
 		
 		case Operation.GET_TRAVELER_SIGNED:
 			//Get status if traveler is already signedin
-			
 			Traveler checkStatusOfTraveler = (Traveler) messageFromClient.getDataTransfered();
 			
 			if(dbControllerInstance.getSignedinStatusOfTraveler(checkStatusOfTraveler)) {
@@ -125,6 +124,7 @@ public class MessageHandlerFromClient {
 			}
 			
 			client.sendToClient(messageFromClient);
+			
 			
 			break;
 

@@ -20,12 +20,6 @@ import client.NavigationManager;
 import common.Message;
 
 public class TravelerFrameController {
-	
-	    ClientController clientController = new ClientController(null, 0);
-	    
-	   // private int visitorID = VisitorLoginController.getvisitorID;
-
-	    private Traveler traveler = new Traveler(null, null, null, null, null, null);
 	    //usermanager.getcurrenttraveler
 	    
 	    @FXML
@@ -113,7 +107,23 @@ public class TravelerFrameController {
 	}
 
 	public void exit(ActionEvent click) throws Exception {
-		System.exit(1);
+		//Exit button, logs out the traveler without going to main menu
+		try {
+			
+			if(Usermanager.getCurrentTraveler() != null) {
+				ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentTraveler(), Operation.PATCH_TRAVELER_SIGNEDOUT);
+				ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
+				
+			}
+			NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true);
+			
+		}catch(Exception e) {
+			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when trying to return to main menu");
+			somethingWentWrong.showAndWait();
+		}
+		
 	}
+		
+	
 
 }

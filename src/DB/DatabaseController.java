@@ -121,7 +121,7 @@ public class DatabaseController {
 
 	
 	public Traveler getTravelerDetails(Traveler travelerFromClient) {
-	    String query = "SELECT first_name, last_name, email, phone_num FROM travelers WHERE id = ?";
+	    String query = "SELECT firstName, lastName, email, phoneNumber FROM travler WHERE id = ?";
 	    Traveler traveler = null; // Initialize to null
 
 	    try (PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
@@ -130,10 +130,10 @@ public class DatabaseController {
 	        try (ResultSet resultSet = preparedStatement.executeQuery()) {
 	            if (resultSet.next()) {
 	                // Instantiate a new Traveler object with the retrieved details
-	                String firstName = resultSet.getString("first_name");
-	                String lastName = resultSet.getString("last_name");
+	                String firstName = resultSet.getString("firstName");
+	                String lastName = resultSet.getString("lastName");
 	                String email = resultSet.getString("email");
-	                String phoneNum = resultSet.getString("phone_num");
+	                String phoneNum = resultSet.getString("phoneNumber");
 
 	                traveler = new Traveler(travelerFromClient.getId(), firstName, lastName, email, phoneNum, 0);
 	            }
