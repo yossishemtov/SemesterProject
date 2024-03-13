@@ -2,8 +2,10 @@ package common.worker;
 
 import java.io.Serializable;
 
-public class GeneralParkWorker implements Serializable{
-    private Integer workerId;
+public class GeneralParkWorker  implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	private Integer workerId;
     private String firstName;
     private String lastName;
     private String email;
@@ -23,6 +25,15 @@ public class GeneralParkWorker implements Serializable{
         this.userName = userName;
         this.password = password;
         this.worksAtPark = worksAtPark;
+    }
+    
+    @Override
+    public String toString() {
+        return "Worker ID: " + workerId +
+               ", Name: " + firstName + " " + lastName +",Role: "+role+
+               ", Username: " + userName +"Password : "+ password+
+               // Generally, you shouldn't include password in toString for security reasons
+               ", Works at Park ID: " + worksAtPark;
     }
     
     // Getters and setters
