@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Order {
+
 	private Integer parkNumber;
 	private Integer amountOfVisitors;
 	private Integer orderId;
@@ -28,11 +29,11 @@ public class Order {
 	public Order(Integer orderId, Integer visitorId, Integer parkNumber, Integer amountOfVisitors, Float price,
 			String visitorEmail, LocalDate date, LocalTime visitTime, String statusStr, String typeOfOrderStr,
 			String telephoneNumber) {
+		
 		this.orderId = orderId;
 		this.visitorId = visitorId;
 		this.parkNumber = parkNumber;
 		this.amountOfVisitors = amountOfVisitors;
-		this.price = price;
 		this.visitorEmail = visitorEmail;
 		this.date = date;
 		this.visitTime = visitTime;
@@ -52,8 +53,9 @@ public class Order {
 			// Handle the error or default case here
 			// For example, default to SOLO if the conversion fails
 			this.orderType = Order.typeOfOrder.SOLO;
-		}
+
 	}
+		}
 
 	public String getTelephoneNumber() {
 		return telephoneNumber;
@@ -62,6 +64,7 @@ public class Order {
 	public void setTelephoneNumber(String telephoneNumber) {
 		this.telephoneNumber = telephoneNumber;
 	}
+
 
 	public void setOrderType(String orderTypeStr) {
 		try {
@@ -82,13 +85,12 @@ public class Order {
 		return orderStatus.name(); // Convert the enum to String
 	}
 
-	public Integer getParkNumber() {
-		return parkNumber;
-	}
+
 
 	public Integer getVisitorId() {
 		return visitorId;
 	}
+
 
 	public void setParkNumber(Integer parkNumber) {
 		this.parkNumber = parkNumber;
@@ -107,6 +109,7 @@ public class Order {
 	}
 
 	public Integer getOrderId() {
+
 		return orderId;
 	}
 
@@ -122,6 +125,7 @@ public class Order {
 		this.visitorEmail = visitorEmail;
 	}
 
+
 	public LocalDate getDate() {
 		return date;
 	}
@@ -136,6 +140,11 @@ public class Order {
 
 	public void setVisitTime(LocalTime visitTime) {
 		this.visitTime = visitTime;
+	}
+
+	public Integer getParkNumber() {
+		// TODO Auto-generated method stub
+		return parkNumber;
 	}
 
 }

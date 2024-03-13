@@ -1,39 +1,63 @@
 package common;
 
-public class VisitorsReport {
-    private int totalIndividualVisitors;
-    private int totalGroupVisitors;
-    private int totalFamilyVisitors; // New field for family visitors
+import java.io.Serializable;
+
+public class VisitorsReport implements Serializable {
+    private static final long serialVersionUID = 6529685098267757690L; // Unique version identifier
+    private Integer totalIndividualVisitors;
+    private Integer totalGroupVisitors;
+    private Integer totalFamilyVisitors; // New field for family visitors
+    private Integer totalVisitors; // Field for total visitors
 
     // Updated constructor
-    public VisitorsReport(int totalIndividualVisitors, int totalGroupVisitors, int totalFamilyVisitors) {
+    public VisitorsReport(Integer totalIndividualVisitors, Integer totalGroupVisitors, Integer totalFamilyVisitors, Integer totalVisitors) {
         this.totalIndividualVisitors = totalIndividualVisitors;
         this.totalGroupVisitors = totalGroupVisitors;
         this.totalFamilyVisitors = totalFamilyVisitors; // Initialize the new field
+        this.totalVisitors = totalVisitors; // Initialize total visitors
     }
 
     // Getters and Setters
-    public int getTotalIndividualVisitors() {
+    public Integer getTotalIndividualVisitors() {
         return totalIndividualVisitors;
     }
 
-    public void setTotalIndividualVisitors(int totalIndividualVisitors) {
+    public void setTotalIndividualVisitors(Integer totalIndividualVisitors) {
         this.totalIndividualVisitors = totalIndividualVisitors;
     }
 
-    public int getTotalGroupVisitors() {
+    public Integer getTotalGroupVisitors() {
         return totalGroupVisitors;
     }
 
-    public void setTotalGroupVisitors(int totalGroupVisitors) {
+    public void setTotalGroupVisitors(Integer totalGroupVisitors) {
         this.totalGroupVisitors = totalGroupVisitors;
     }
 
-    public int getTotalFamilyVisitors() { // Getter for the new field
+    public Integer getTotalFamilyVisitors() { // Getter for the new field
         return totalFamilyVisitors;
     }
 
-    public void setTotalFamilyVisitors(int totalFamilyVisitors) { // Setter for the new field
+    public void setTotalFamilyVisitors(Integer totalFamilyVisitors) { // Setter for the new field
         this.totalFamilyVisitors = totalFamilyVisitors;
+    }
+
+    public Integer getTotalVisitors() { // Getter for total visitors
+        return totalVisitors;
+    }
+
+    public void setTotalVisitors(Integer totalVisitors) { // Setter for total visitors
+        this.totalVisitors = totalVisitors;
+    }
+
+    // ToString method
+    @Override
+    public String toString() {
+        return "VisitorsReport{" +
+                "totalIndividualVisitors=" + totalIndividualVisitors +
+                ", totalGroupVisitors=" + totalGroupVisitors +
+                ", totalFamilyVisitors=" + totalFamilyVisitors +
+                ", totalVisitors=" + totalVisitors +
+                '}';
     }
 }

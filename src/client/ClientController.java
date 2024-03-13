@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import common.ClientServerMessage;
 import common.DisplayIF;
+import common.Operation;
+import common.Usermanager;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -46,7 +48,7 @@ public class ClientController<T> implements DisplayIF{
 
     public void sendMessageToServer(ClientServerMessage<?> command) {
         // Handle message from any controller that is related to the client
-    	System.out.println("send to servrvr");
+    	System.out.println("send to server");
         try
         {
             systemClient.handleMessageFromClientController(command);
@@ -59,6 +61,13 @@ public class ClientController<T> implements DisplayIF{
 
     // Method to close the connection
     public void closeConnection() throws IOException {
+    	    	
+    	//Check if user was connected as worker before quitting and signing out its account
+    	if(Usermanager.getCurrentWorker() != null) {
+			ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentWorker(), Operation.PATCH_GENERALPARKWORKER_SIGNEDOUT);
+			this.sendMessageToServer(requestToLogout);
+			
+		}		
     	
         systemClient.quit();
     }

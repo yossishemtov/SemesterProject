@@ -1,40 +1,35 @@
 package gui;
 
 import client.ClientUI;
+
+import com.jfoenix.controls.JFXTextField;
 import client.InputValidation;
 import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
-import common.worker.*;
 import common.worker.GeneralParkWorker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-
 import java.io.IOException;
-
 import client.ClientController;
-import client.ClientUI;
 import client.NavigationManager;
 import common.*;
 
 public class WorkerLoginController {
+	@FXML
+    private Button LoginBtn;
 
-	@FXML
-	private Button LoginBtn;
-	@FXML
-	private Button BackBtn;
-	@FXML
-	private TextField WorkerUsername;
-	@FXML
-	private TextField WorkerPwd;
+    @FXML
+    private Button BackBtn;
+
+    @FXML
+    private JFXTextField WorkerUsername;
+
+    @FXML
+    private JFXTextField WorkerPwd;
 
 	@FXML
 	public void WorkerLoginBtn(ActionEvent click) throws IOException {
@@ -58,40 +53,60 @@ public class WorkerLoginController {
 			// Send worker object to server and request worker details
 			ClientServerMessage<?> messageForServer = new ClientServerMessage<>(workerForServer,
 					Operation.GET_GENERAL_PARK_WORKER_DETAILS);
-			System.out.println("0");
+			
 			ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
-			System.out.println("1");
-
+			ClientServerMessage retrieveInformationIfLoggedIn;
 			// Retrieve worker details from server
 			GeneralParkWorker workerFromServer = (GeneralParkWorker) ClientController.data.getDataTransfered();
 
 			// Check if the server response is not null
 			if (workerFromServer != null) {
-				System.out.println("2");
 
 				// Update the current worker in UserManager
 				Usermanager.setCurrentWorker(workerFromServer);
 				System.out.println(workerFromServer.toString());
-
-				// Navigate based on the worker's role
-				String role = workerFromServer.getRole();
-				switch (role) {
-				case "Department Manager":
-					System.out.println("in Department Manager");
-					NavigationManager.openPage("DepartmentManagerScreen.fxml", click, "departmentManagerScreen", true);
-					break;
-				case "Park Manager":
-					System.out.println("in Park Manager");
-					NavigationManager.openPage("ParkManagerScreen.fxml", click, "parkManagerScreen", true);
-					break;
-				case "Worker":
-					System.out.println("in Worker");
-					NavigationManager.openPage("WorkerScreen.fxml", click, "workerScreen", true);
-					break;
-				default:
-					System.out.println("Role not recognized. Unable to proceed.");
-					// Optionally, display an error message or alert to the user here
-					break;
+			 
+				retrieveInformationIfLoggedIn = new ClientServerMessage(workerFromServer, Operation.GET_GENERALPARKWORKER_SIGNED);
+				ClientUI.clientControllerInstance.sendMessageToServer(retrieveInformationIfLoggedIn);
+				
+				//Checks if worker is not loggedin
+				
+				Boolean isLoggedIn = ClientController.data.getFlag();
+				
+				if(!isLoggedIn) {
+					
+					//Logging in the user
+					ClientServerMessage requestToLoginTheWorker = new ClientServerMessage(workerFromServer, Operation.PATCH_GENERALPARKWORKER_SIGNEDIN);
+					ClientUI.clientControllerInstance.sendMessageToServer(requestToLoginTheWorker);
+					
+					
+					
+					// Navigate based on the worker's role
+					String role = workerFromServer.getRole();
+					switch (role) {
+					case "Department Manager":
+						System.out.println("in Department Manager");
+						NavigationManager.openPage("DepartmentManagerScreen.fxml", click, "departmentManagerScreen", true);
+						break;
+					case "Park Manager":
+						System.out.println("in Park Manager");
+						NavigationManager.openPage("ParkManagerScreen.fxml", click, "parkManagerScreen", true);
+						break;
+					case "Worker":
+						System.out.println("in Worker");
+						
+						
+						NavigationManager.openPage("parkWorkerFrame.fxml", click, "workerScreen", true);
+						break;
+					default:
+						System.out.println("Role not recognized. Unable to proceed.");
+						// Optionally, display an error message or alert to the user here
+						break;
+					}
+				}else {
+					Alerts nullResponseAlert = new Alerts(Alert.AlertType.ERROR, "Already Logged In",
+							"Worker already logged in!", "Worker already logged in!");
+					nullResponseAlert.showAndWait();
 				}
 
 				System.out.println("Worker added to list. Worker Username: " + workerFromServer.getUserName());
@@ -115,14 +130,7 @@ public class WorkerLoginController {
 
 	public void BackBtn(ActionEvent click) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("HomePageFrame.fxml"));
-			Stage stage = (Stage) ((Node) click.getSource()).getScene().getWindow(); // hiding primary window
-			Scene scene = new Scene(root);
-
-			stage.setTitle("Home Page");
-
-			stage.setScene(scene);
-			stage.show();
+			NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true);
 
 		} catch (Exception e) {
 			System.out.print("Something went wrong while clicking on the back button, check stack trace");

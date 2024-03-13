@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import client.ClientUI;
+import client.NavigationManager;
 import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
 import common.Park;
+import common.Usermanager;
+import common.worker.GeneralParkWorker;
 import common.worker.ParkWorker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -47,16 +50,30 @@ public class ParkWorkerController implements Initializable {
     @FXML
     private Label availableSpaceLabel;
     
-    public static ParkWorker currentSignedInParkWorker;
     
     
     public void availableSpaceBtnAction(ActionEvent click) throws Exception{
     	//Receiving information about the park, sending the worker information
-    	ClientServerMessage sendRequestForParkInformation = new ClientServerMessage(ParkWorkerController.currentSignedInParkWorker, Operation.GET_GENERAL_PARK_WORKER_DETAILS);
+    	
+    	try {
+    	
+    	GeneralParkWorker loggedInWorker = Usermanager.getCurrentWorker();
+    	
+    	//Send the worker with command to retrieve information about the park the worker works at.
+    	ClientServerMessage sendRequestForParkInformation = new ClientServerMessage(loggedInWorker, Operation.GET_AMOUNT_OF_VISITORS_FOR_GENERALPARKWORKER);
     	ClientUI.clientControllerInstance.sendMessageToServer(sendRequestForParkInformation);
     	
-    	//Park parkInformation = (Park)ClientUI.clientControllerInstance.getData();
     	
+    	Park parkInformation = (Park)(ClientUI.clientControllerInstance.getData()).getDataTransfered();
+    	
+    	String showNumberOfVisitorsAndCapacity = Integer.toString(parkInformation.getCurrentVisitors()) + "/" + Integer.toString(parkInformation.getCapacity());
+    	
+    	availableSpaceLabel.setText(showNumberOfVisitorsAndCapacity);
+    	
+    	}catch (Exception e){
+    		Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when receiving park current amount of visitors");
+			somethingWentWrong.showAndWait();
+    	}
     	
     	
     	
@@ -71,19 +88,18 @@ public class ParkWorkerController implements Initializable {
     public void backBtnAction(ActionEvent click) throws Exception{
     		//Loading main login screen when clicking on the back button
     	try {
-    		
-    		Parent root = new FXMLLoader().load(getClass().getResource("HomePageFrame.fxml"));
-    		Stage stage = (Stage)((Node)click.getSource()).getScene().getWindow(); //hiding primary window
-    		Scene scene = new Scene(root);	
-    		
-    		stage.setTitle("Home Page");
-    		
-    		stage.setScene(scene);		
-    		stage.show();
+	    		if(Usermanager.getCurrentWorker() != null) {
+	    			ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentWorker(), Operation.PATCH_GENERALPARKWORKER_SIGNEDOUT);
+	    			ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
+	    			
+	    		}
+	    		
+	    		//Changing page back to main menu
+	    		NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true);
     		
     		}catch(Exception e) {
-    			System.out.print("Something went wrong while clicking on the back button, check stack trace");
-    			e.printStackTrace();
+    			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when trying to return to main menu");
+    			somethingWentWrong.showAndWait();
     		}
     }
 
@@ -93,10 +109,12 @@ public class ParkWorkerController implements Initializable {
 		//Render user information when coming to the parkWorkerFrame screen
 		
 		try {
+			//Parsing worker information to the screen
+			GeneralParkWorker loggedInWorker = Usermanager.getCurrentWorker();
 			
-			String firstNameLoggedInUser = ParkWorkerController.currentSignedInParkWorker.getFirstName();
-			String lastNameLoggedInUser = ParkWorkerController.currentSignedInParkWorker.getLastName();
-			String roleLoggedInUser = ParkWorkerController.currentSignedInParkWorker.getRole();
+			String firstNameLoggedInUser = loggedInWorker.getFirstName();
+			String lastNameLoggedInUser = loggedInWorker.getLastName();
+			String roleLoggedInUser = loggedInWorker.getRole();
 			
 			nametextlabel.setText(firstNameLoggedInUser);
 			lastnametextlabel.setText(lastNameLoggedInUser);

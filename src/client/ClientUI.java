@@ -4,6 +4,9 @@ import gui.UserConnectController;
 import javafx.stage.Stage;
 import java.util.Vector;
 import client.ClientController;
+import common.ClientServerMessage;
+import common.Operation;
+import common.Usermanager;
 import gui.UserInterfaceController;
 
 public class ClientUI extends Application {
