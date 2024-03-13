@@ -369,7 +369,7 @@ public class DatabaseController {
 	     * @return true if the signed out was successful, false otherwise.
 	     */
 	    public Boolean changeSignedOutOfGeneralParkWorker(GeneralParkWorker signedParkWorker) {
-	    	String query = "UPDATE generalparkworker SET isloggedin = 0 WHERE workerid = ?";
+	    	String query = "UPDATE `generalparkworker` SET isloggedin = 0 WHERE workerid = ?";
 	    	
 	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
 	    		ps.setInt(1, signedParkWorker.getWorkerId());

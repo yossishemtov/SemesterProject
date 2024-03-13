@@ -25,7 +25,7 @@ public class VisitorFrameController {
 	    
 	   // private int visitorID = VisitorLoginController.getvisitorID;
 
-	    private Traveler traveler = new Traveler(null, null, null, null, null, null);
+	    private Traveler traveler = new Traveler(null, null, null, null, null, null,null);
 	    //usermanager.getcurrenttraveler
 	    
 	    @FXML
