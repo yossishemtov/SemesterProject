@@ -57,18 +57,18 @@ public class ParkWorkerController implements Initializable {
     	
     	try {
     	
-    	GeneralParkWorker loggedInWorker = Usermanager.getCurrentWorker();
-    	
-    	//Send the worker with command to retrieve information about the park the worker works at.
-    	ClientServerMessage sendRequestForParkInformation = new ClientServerMessage(loggedInWorker, Operation.GET_AMOUNT_OF_VISITORS_FOR_GENERALPARKWORKER);
-    	ClientUI.clientControllerInstance.sendMessageToServer(sendRequestForParkInformation);
-    	
-    	
-    	Park parkInformation = (Park)(ClientUI.clientControllerInstance.getData()).getDataTransfered();
-    	
-    	String showNumberOfVisitorsAndCapacity = Integer.toString(parkInformation.getCurrentVisitors()) + "/" + Integer.toString(parkInformation.getCapacity());
-    	
-    	availableSpaceLabel.setText(showNumberOfVisitorsAndCapacity);
+	    	GeneralParkWorker loggedInWorker = Usermanager.getCurrentWorker();
+	    	
+	    	//Send the worker with command to retrieve information about the park the worker works at.
+	    	ClientServerMessage sendRequestForParkInformation = new ClientServerMessage(loggedInWorker, Operation.GET_AMOUNT_OF_VISITORS_FOR_GENERALPARKWORKER);
+	    	ClientUI.clientControllerInstance.sendMessageToServer(sendRequestForParkInformation);
+	    	
+	    	
+	    	Park parkInformation = (Park)(ClientUI.clientControllerInstance.getData()).getDataTransfered();
+	    	
+	    	String showNumberOfVisitorsAndCapacity = Integer.toString(parkInformation.getCurrentVisitors()) + "/" + Integer.toString(parkInformation.getCapacity());
+	    	
+	    	availableSpaceLabel.setText(showNumberOfVisitorsAndCapacity);
     	
     	}catch (Exception e){
     		Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when receiving park current amount of visitors");

@@ -10,7 +10,12 @@ import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import java.net.URL;
+
+import client.ClientUI;
 import client.NavigationManager;
+import common.Alerts;
+import common.ClientServerMessage;
+import common.Operation;
 import common.Usermanager;
 import common.worker.GeneralParkWorker;
 import javafx.event.ActionEvent;
@@ -55,11 +60,18 @@ public class ServiceWorkerController implements Initializable {
 	 public void LogoutBtn(ActionEvent click) throws Exception{
 			//Function for opening a new scene when clicking on the Back Button
 		try {
-			NavigationManager.openPage("WorkerLoginFrame.fxml", click, "Worker Login", true);
+			
+			if(Usermanager.getCurrentWorker() != null) {
+    			ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentWorker(), Operation.PATCH_GENERALPARKWORKER_SIGNEDOUT);
+    			ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
+    			
+    		}
+			
+			NavigationManager.openPage("HomePageFrame.fxml", click, "User Menu", true);
 		} catch(Exception e) {
-				System.out.print("Something went wrong while clicking on the back button, check stack trace");
 				e.printStackTrace();
-				
+    			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when trying to return to main menu");
+    			somethingWentWrong.showAndWait();
 			}
 		}
 	 
