@@ -34,9 +34,12 @@ public class DatabaseController {
              PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
             
             preparedStatement.setInt(1, parkNumber);
+            
             ResultSet resultSet = preparedStatement.executeQuery();
             
             if (resultSet.next()) {
+	            System.out.println("in");
+
                 String name = resultSet.getString("name");
                 Integer maxVisitors = resultSet.getInt("maxVisitors");
                 Integer capacity = resultSet.getInt("capacity");
@@ -52,7 +55,7 @@ public class DatabaseController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println(park.toString());
+        //System.out.println(park.toString());
         return park;
     }
 	

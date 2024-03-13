@@ -66,7 +66,6 @@ public class MessageHandlerFromClient {
 				// Handle the case where no park was found with the provided ID
 				// You could set the data transferred to a specific value or an error message
 				// indicating the park was not found
-				messageFromClient.setDataTransfered(null); // Or some error message
 				messageFromClient.setflagFalse(); // Assuming you have a way to indicate success/failure
 			} else {
 				// Park was found, proceed as normal

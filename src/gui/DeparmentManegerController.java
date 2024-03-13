@@ -73,7 +73,7 @@ public class DeparmentManegerController implements Initializable {
 
 	@FXML
 	void loadProfile(MouseEvent event) throws IOException {
-		NavigationManager.openPage("Profile.fxml", event, "Profile screen", true);
+		NavigationManager.openPageInCenter(borderPane,"Profile.fxml");
 
 	}
 
@@ -98,7 +98,7 @@ public class DeparmentManegerController implements Initializable {
 	@FXML
 	void logOut(MouseEvent event) {
 		try {
-			ClientUI.clientControllerInstance.closeConnection();
+			NavigationManager.openPage("HomePageFrame.fxml", event, "User Menu", true);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
