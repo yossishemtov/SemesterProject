@@ -64,7 +64,7 @@ public class DatabaseController {
 	            pstmt.setString(3, traveler.getLastName());
 	            pstmt.setString(4, traveler.getEmail());
 	            pstmt.setString(5, traveler.getPhoneNum());
-	            pstmt.setInt(6, traveler.getIsGrupGuide()); // Assuming 1 for guide, 0 for not a guide.
+	            pstmt.setInt(6, traveler.getIsGroupGuide()); // Assuming 1 for guide, 0 for not a guide.
 	            pstmt.setInt(7, 0); // Assuming isloggedin default to 0.
 
 	            int affectedRows = pstmt.executeUpdate();
@@ -107,7 +107,7 @@ public class DatabaseController {
                 Integer managerID = resultSet.getInt("managerId");
                 Integer workingTime = resultSet.getInt("workingTime");
                 
-                park = new Park(name, parkNumber, maxVisitors, capacity, currentVisitors, location, staytime, workersAmount, managerID, workingTime);
+                park = new Park(name, parkNumber, maxVisitors, capacity, currentVisitors, location, staytime, workersAmount, null, managerID, workingTime);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -119,31 +119,31 @@ public class DatabaseController {
 	
 	
 
-	
-	public Traveler getTravelerDetails(Traveler travelerFromClient) {
-	    String query = "SELECT first_name, last_name, email, phone_num FROM travelers WHERE id = ?";
-	    Traveler traveler = null; // Initialize to null
+    public Traveler getTravelerDetails(Traveler travelerFromClient) {
+        String query = "SELECT firstName, lastName, email, phoneNumber, GroupGuide, isloggedin FROM `travler` WHERE id = ?";
+        Traveler traveler = null; // Initialize to null
 
-	    try (PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
-	        preparedStatement.setInt(1, travelerFromClient.getId());
+        try (PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
+            preparedStatement.setInt(1, travelerFromClient.getId());
 
-	        try (ResultSet resultSet = preparedStatement.executeQuery()) {
-	            if (resultSet.next()) {
-	                // Instantiate a new Traveler object with the retrieved details
-	                String firstName = resultSet.getString("first_name");
-	                String lastName = resultSet.getString("last_name");
-	                String email = resultSet.getString("email");
-	                String phoneNum = resultSet.getString("phone_num");
-
-	                traveler = new Traveler(travelerFromClient.getId(), firstName, lastName, email, phoneNum);
-	            }
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        // Consider better exception handling
-	    }
-	    return traveler; // Returns the new Traveler object or null if not found
-	}
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    // Instantiate a new Traveler object with the retrieved details
+                    String firstName = resultSet.getString("firstName");
+                    String lastName = resultSet.getString("lastName");
+                    String email = resultSet.getString("email");
+                    String phoneNum = resultSet.getString("phoneNumber");
+                    Integer isGrupGuide = resultSet.getInt("GroupGuide");
+                    Integer isloggedin = resultSet.getInt("isloggedin"); // Fetch isloggedin status
+                    traveler = new Traveler(travelerFromClient.getId(), firstName, lastName, email, phoneNum, isGrupGuide, isloggedin);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Consider better exception handling
+        }
+        return traveler; // Returns the new Traveler object or null if not found
+    }
 
 	// Get GeneralParkWorkerDetails
 	// check GetGeneralParkWorker login details and return the data,if not exist return empty ArrayList of type generalParkWorker
@@ -236,7 +236,7 @@ public class DatabaseController {
 	     */
 		public Boolean insertTravelerOrder(Order order) {
 		    // Adjusting the query to match the database schema order provided
-		    String query = "INSERT INTO orders (orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		    String query = "INSERT INTO `order` (orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		    try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 		        // Set parameters based on the Order object fields, in the order specified
@@ -347,63 +347,64 @@ public class DatabaseController {
 	     * @return park information if successful and null if not found
 	     */
 	    public Park getAmountOfVisitorsByParkWorker(ParkWorker parkworker) {
-	    	//Querying for the park information with the park number associated with the park worker
-	    	String query = "Select * FROM park WHERE parkNumber = ?";
-	    	Park fetchedPark = null;
-	    	
-	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-	            ps.setInt(1, parkworker.getWorksAtPark());
-	            ResultSet rs = ps.executeQuery(); // Use executeQuery for SELECT statements
+	        // Querying for the park information with the park number associated with the park worker
+	        String query = "SELECT * FROM `park` WHERE parkNumber = ?";
+	        Park fetchedPark = null;
 
-	            while (rs.next()) {
-	                // Assuming you have a constructor that matches this data extraction pattern.
-	            	    fetchedPark = new Park(
-	                    rs.getString("name"), 
-	                    rs.getInt("parkNumber"), 
-	                    rs.getInt("maxVisitors"), 
-	                    rs.getInt("capacity"), 
-	                    rs.getInt("currentVisitors"), 
-	                    rs.getString("location"), 
-	                    rs.getInt("staytime"), 
-	                    rs.getInt("workersAmount"), 
-	                    null, // For manager, since it's a complex object, you might need a different approach
-	                    rs.getInt("workingTime")
-	                );
+	        try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	            ps.setInt(1, parkworker.getWorksAtPark());
+	            try (ResultSet rs = ps.executeQuery()) { // Use try-with-resources to ensure ResultSet is closed
+
+	                if (rs.next()) { // Use if instead of while if you expect or require a single result
+	                    fetchedPark = new Park(
+	                        rs.getString("name"), 
+	                        rs.getInt("parkNumber"), 
+	                        rs.getInt("maxVisitors"), 
+	                        rs.getInt("capacity"), 
+	                        rs.getInt("currentVisitors"), 
+	                        rs.getString("location"), 
+	                        rs.getInt("staytime"), 
+	                        rs.getInt("workersAmount"), 
+	                        rs.getDouble("gap"), // Assuming you have a column for gap in your DB
+	                        rs.getInt("managerID"), // Assuming managerID is stored directly as an integer
+	                        rs.getInt("workingTime")
+	                    );
+	                }
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();
+	            // Consider logging this exception or handling it more gracefully
 	        }
-	    	
+
 	        return fetchedPark;
-	    	
 	    }
 	    
 	    public Park getAmountOfVisitors(GeneralParkWorker worker) {
-	        String query = "SELECT * FROM park WHERE parkNumber=?"; // Corrected FROM clause
+	        String query = "SELECT * FROM park WHERE parkNumber = ?"; 
 
 	        Park park = null;
-			try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	        try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 	            ps.setInt(1, worker.getWorksAtPark());
-	            ResultSet rs = ps.executeQuery(); // Use executeQuery for SELECT statements
+	            try (ResultSet rs = ps.executeQuery()) { 
 
-	            while (rs.next()) {
-	                // Assuming you have a constructor that matches this data extraction pattern.
-	                park = new Park(
-	                    rs.getString("name"), 
-	                    rs.getInt("parkNumber"), 
-	                    rs.getInt("maxVisitors"), 
-	                    rs.getInt("capacity"), 
-	                    rs.getInt("currentVisitors"), 
-	                    rs.getString("location"), 
-	                    rs.getInt("staytime"), 
-	                    rs.getInt("workersAmount"), 
-	                    rs.getInt("managerId"), // For manager, since it's a complex object, you might need a different approach
-	                    rs.getInt("workingTime")
-	                );
-	               
+	                if (rs.next()) { 
+	                    park = new Park(
+	                        rs.getString("name"), 
+	                        rs.getInt("parkNumber"), 
+	                        rs.getInt("maxVisitors"), 
+	                        rs.getInt("capacity"), 
+	                        rs.getInt("currentVisitors"), 
+	                        rs.getString("location"), 
+	                        rs.getInt("staytime"), 
+	                        rs.getInt("workersAmount"),
+	                        rs.getDouble("gap"), 
+	                        rs.getInt("managerID"), 
+	                        rs.getInt("workingTime")
+	                    );
+	                }
 	            }
 	        } catch (SQLException e) {
-	            e.printStackTrace();
+	            e.printStackTrace(); 
 	        }
 	        return park;
 	    }

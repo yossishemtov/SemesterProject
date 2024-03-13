@@ -107,17 +107,6 @@ public class DeparmentManegerController implements Initializable {
 
 	
 
-	@FXML
-	void NumberVisitorsFunc(ActionEvent event) {
 
-		ClientServerMessage<?> messege = new ClientServerMessage(departmentManager, Operation.GET_AMOUNT_OF_VISITORS);
-		ClientUI.clientControllerInstance.sendMessageToServer(messege);
-		Integer NumberOfVisitorInt = ((Park) ClientController.data.getDataTransfered()).getCurrentVisitors();
-		String NumberOfVisitor = "The Number of visitors present in the park is: " + NumberOfVisitorInt;
-		Alerts erorAlert = new Alerts(Alerts.AlertType.INFORMATION, "Information for department maneger",
-				"Number of visitor", NumberOfVisitor);
-		erorAlert.showAndWait();
-
-	}
 
 }

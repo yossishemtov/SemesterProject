@@ -60,7 +60,7 @@ public class ProfileController implements Initializable {
             profileParkLabel.setText("Park Name Placeholder"); // Replace with actual method call
             profileAccountTypeLabel.setText(worker.getRole());
             // Assuming role determination logic for visibility
-            if("Department Manager".equals(worker.getRole()) || "SERVICE".equals(worker.getRole())) {
+            if("Department Manager".equals(worker.getRole()) || "Park Manager".equals(worker.getRole())) {
                 profileParkLabel.setVisible(false);
                 parkLabel.setVisible(false);
                 line.setVisible(false);

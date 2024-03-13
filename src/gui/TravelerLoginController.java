@@ -43,7 +43,7 @@ public class TravelerLoginController {
 	    if (isSuccessful) { // if entered right ID with 9 digits
 	        try {
 	        	// creating a traveler instance to send to server controller for validation 
-		    	Traveler TryLoginVistor = new Traveler(Integer.parseInt(visitorID), null, null, null, null);
+		    	Traveler TryLoginVistor = new Traveler(Integer.parseInt(visitorID), null, null, null, null, null,null);
 		    	
 		        ClientServerMessage<?> TravelerLoginAttemptInformation = new ClientServerMessage<>(TryLoginVistor, Operation.GET_TRAVLER_INFO);
 		        ClientUI.clientControllerInstance.sendMessageToServer(TravelerLoginAttemptInformation);
