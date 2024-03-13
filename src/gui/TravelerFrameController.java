@@ -19,7 +19,7 @@ import common.Usermanager;
 import client.NavigationManager;
 import common.Message;
 
-public class VisitorFrameController {
+public class TravelerFrameController {
 	
 	    ClientController clientController = new ClientController(null, 0);
 	    

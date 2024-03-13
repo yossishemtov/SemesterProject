@@ -111,6 +111,22 @@ public class MessageHandlerFromClient {
 		case Operation.GET_MESSAGES:
 			// Placeholder for getting messages
 			break;
+			
+		
+		case Operation.GET_TRAVELER_SIGNED:
+			//Get status if traveler is already signedin
+			
+			Traveler checkStatusOfTraveler = (Traveler) messageFromClient.getDataTransfered();
+			
+			if(dbControllerInstance.getSignedinStatusOfTraveler(checkStatusOfTraveler)) {
+				messageFromClient.setflagTrue();
+			}else {
+				messageFromClient.setflagFalse();
+			}
+			
+			client.sendToClient(messageFromClient);
+			
+			break;
 
 			
 		case Operation.GET_AMOUNT_OF_VISITORS_FOR_GENERALPARKWORKER:
@@ -198,6 +214,7 @@ public class MessageHandlerFromClient {
 				e.printStackTrace();
 			}
 			break;
+			
 
 		case Operation.POST_EXISTS_TRAVLER_GUIDER:
 			// Placeholder for posting a new traveler guide request
@@ -214,6 +231,47 @@ public class MessageHandlerFromClient {
 		
 			client.sendToClient(messageFromClient);
 
+			break;
+		
+		case Operation.PATCH_TRAVELER_SIGNEDIN:
+			//Changing state of traveler to signedin
+			
+			try {
+				Traveler travelerToSignIn = (Traveler) messageFromClient.getDataTransfered();
+				
+				if(dbControllerInstance.changedSignedInOfTraveler(travelerToSignIn)) {
+					//If changing the status of traveler was successful sets the flag of the message back to the client to true
+					messageFromClient.setflagTrue();
+				}
+				else {
+					messageFromClient.setflagFalse();
+				}
+				
+				client.sendToClient(messageFromClient);
+				
+			}catch (IndexOutOfBoundsException e) {
+				e.printStackTrace();
+			}
+			break;
+			
+		case Operation.PATCH_TRAVELER_SIGNEDOUT:
+			//Signing out a GeneralParkWorker
+			Traveler travelerToSignOut = (Traveler) messageFromClient.getDataTransfered();
+			
+			try {
+				
+				if(dbControllerInstance.changedSignedOutOfTraveler(travelerToSignOut)) {
+					messageFromClient.setflagTrue();
+				}else {
+					messageFromClient.setflagFalse();
+				}
+				
+				client.sendToClient(messageFromClient);
+				
+			}catch (IndexOutOfBoundsException e) {
+				e.printStackTrace();
+			}
+			
 			break;
 			
 		case Operation.POST_TRAVLER_ORDER:
@@ -282,6 +340,7 @@ public class MessageHandlerFromClient {
 			client.sendToClient(messageFromClient);
 
 			break;
+			
 
 		default:
 			System.out.println("default");

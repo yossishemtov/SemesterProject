@@ -384,9 +384,50 @@ public class DatabaseController {
 	    }
 	    
 	    /**
+	     * Updates the status of Traveler to signedin
+	     * @param Traveler to signin
+	     * @return true if the signedin was successful, false otherwise.
+	     */
+	    public Boolean changedSignedInOfTraveler(Traveler signedTraveler) {
+	    	String query = "UPDATE travler SET isloggedin = 1 WHERE id = ?";
+	    	
+	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
+	    		ps.setInt(1, signedTraveler.getId());
+	    		int affectedRows = ps.executeUpdate();
+	    		
+	    		return affectedRows > 0;
+	    		
+	    	}catch(SQLException e) {
+	    		e.printStackTrace();
+	    		return false;
+	    	}
+	    }
+	    
+	    
+	    /**
+	     * Updates the status of Traveler to signout
+	     * @param Traveler to signout
+	     * @return true if the signedout was successful, false otherwise.
+	     */
+	    public Boolean changedSignedOutOfTraveler(Traveler signedTraveler) {
+	    	String query = "UPDATE travler SET isloggedin = 0 WHERE id = ?";
+	    	
+	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
+	    		ps.setInt(1, signedTraveler.getId());
+	    		int affectedRows = ps.executeUpdate();
+	    		
+	    		return affectedRows > 0;
+	    		
+	    	}catch(SQLException e) {
+	    		e.printStackTrace();
+	    		return false;
+	    	}
+	    }
+	    
+	    /**
 	     * Gets the status of loggedin of generalparkworker
 	     * @param GeneralParkWorker
-	     * @return isloggedin of generalparkworker
+	     * @return Boolean isloggedin of generalparkworker
 	     */
 	    public Boolean getSignedinStatusOfGeneralParkWorker(GeneralParkWorker signedParkWorker) {
 	    	//Return the status of isloggedin of generalparkworker
@@ -400,7 +441,41 @@ public class DatabaseController {
 	    		if (rs.next()) {
 	                // Retrieve the value of isloggedin from the ResultSet
 	                int isLoggedIn = rs.getInt("isloggedin");
-	                System.out.print(isLoggedIn);
+
+	                 if(isLoggedIn == 0)
+	                	 return false;
+	                 
+	                 return true;
+	            } else {
+	                // No rows returned, worker not found or not signed in
+	                return true;
+	            }
+	    		
+	    	}catch(SQLException e) {
+	    		e.printStackTrace();
+	    		return false;
+	    	}
+	    }
+	    
+	    
+	    /**
+	     * Gets the status of loggedin of Traveler
+	     * @param GeneralParkWorker
+	     * @return Boolean isloggedin of Traveler
+	     */  	
+	    public Boolean getSignedinStatusOfTraveler(Traveler signedTraveler) {
+	    	//Return the status of isloggedin of Traveler
+	    	String query = "SELECT isloggedin FROM travler WHERE id = ?";
+	     
+	    	
+	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
+	    		ps.setInt(1, signedTraveler.getId());
+	    		ResultSet rs = ps.executeQuery();
+	    		
+	    		if (rs.next()) {
+	                // Retrieve the value of isloggedin from the ResultSet
+	                int isLoggedIn = rs.getInt("isloggedin");
+	                
 	                 if(isLoggedIn == 0)
 	                	 return false;
 	                 
@@ -417,6 +492,9 @@ public class DatabaseController {
 	    	
 	    	
 	    }
+	    	
+	    	
+	    
 	    
 	    /**
 	     * Gets the amount of visitors in the park where the parkworker works at

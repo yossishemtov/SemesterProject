@@ -11,7 +11,7 @@ import common.Operation;
 import common.Usermanager;
 import common.VisitorsReport;
 
-public class VisitorsReportController {
+public class TravelerReportController {
 
     @FXML
     private PieChart visitorsChart;
