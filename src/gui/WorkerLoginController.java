@@ -2,6 +2,7 @@ package gui;
 
 import client.ClientUI;
 
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import client.InputValidation;
 import common.Alerts;
@@ -29,7 +30,8 @@ public class WorkerLoginController {
     private JFXTextField WorkerUsername;
 
     @FXML
-    private JFXTextField WorkerPwd;
+    private JFXPasswordField WorkerPwd;
+
 
 	@FXML
 	public void WorkerLoginBtn(ActionEvent click) throws IOException {
@@ -98,6 +100,11 @@ public class WorkerLoginController {
 						
 						NavigationManager.openPage("parkWorkerFrame.fxml", click, "workerScreen", true);
 						break;
+						
+					case "Service Worker":
+						NavigationManager.openPage("ServiceWorkerFrame.fxml", click, "workerScreen", true);
+						break;
+						
 					default:
 						System.out.println("Role not recognized. Unable to proceed.");
 						// Optionally, display an error message or alert to the user here
