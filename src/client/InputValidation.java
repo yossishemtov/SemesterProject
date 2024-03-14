@@ -16,8 +16,8 @@ public class InputValidation {
         }
 
         // Check if the visitor ID does not contain 9 digits
-        else if (!visitorID.matches("\\d{9}")) {
-            return new Alerts(Alerts.AlertType.ERROR, "Invalid ID", "", "Your ID must contain 9 digits");
+        else if (!visitorID.matches("\\d{7}")) {
+            return new Alerts(Alerts.AlertType.ERROR, "Invalid ID", "", "Your ID must contain 7 digits");
         }
         // ID is valid
         else {
