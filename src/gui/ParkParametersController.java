@@ -115,9 +115,8 @@ public class ParkParametersController {
             CapacityLabel.setText(String.valueOf(parkData.getCapacity()));
             currentvistorLabel.setText(String.valueOf(parkData.getCurrentVisitors()));
             StayTimeLabel.setText(String.valueOf(parkData.getStaytime()) + " hours");
-            // Note: If 'allowedGapLabel' is meant to display data like a visitor gap or similar, ensure it is correctly set based on your parkData structure.
-            // For example: allowedGapLabel.setText(String.valueOf(parkData.getAllowedGap()));
-            // Since 'allowedGap' isn't a field in the provided 'Park' class, you'll need to adjust according to your actual data structure.
+            allowedGapLabel.setText(String.valueOf(parkData.getGap()));
+            
         }
 	
 

@@ -147,6 +147,23 @@ public class ViewRequestsForChangesController implements Initializable {
      */
     @FXML
     private void confirmRequestBtn(ActionEvent event) {
+    	ChangeRequest selectedRequest = parametersTable.getSelectionModel().getSelectedItem();
+        if (selectedRequest != null) {
+        	 ClientServerMessage<ChangeRequest> messageForServer = new ClientServerMessage<>(selectedRequest, Operation.PATCH_PARK_PARAMETERS);
+             ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
+             if (ClientController.data.getFlag()) {
+            		Alerts infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
+							"A change request was successfully executed on database");
+            		infoalert.showAndWait();
+            		
+             }
+             else {
+            	 Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
+							"A change request was not successfully executed on database");
+					somethingWentWrong.showAndWait();
+             }
+        }
+        
         handleRequestChange(ChangeRequest.ApprovalStatus.APPROVAL.toString());
     }
 

@@ -242,10 +242,14 @@ public class MessageHandlerFromClient {
 
 		case Operation.PATCH_PARK_PARAMETERS:
 			// Placeholder for patching park parameters
-			ArrayList<Park> park = (ArrayList<Park>) messageFromClient.getDataTransfered();
-			if (dbControllerInstance.patchParkParameters(park.get(0))) {
+			ChangeRequest request = (ChangeRequest) messageFromClient.getDataTransfered();
+			if (dbControllerInstance.patchParkParameters(request)) {
+				System.out.println("set true");
+
 				messageFromClient.setflagTrue();
 			} else {
+				System.out.println("set flase");
+
 				messageFromClient.setflagFalse();
 
 			}
@@ -284,17 +288,7 @@ public class MessageHandlerFromClient {
 
 			break;
 			
-		case Operation.GET_MAX_CHANGE_REQUEST_ID:
-		    // Placeholder for getting the maximum change request ID
-		    int maxChangeRequestId = dbControllerInstance.getMaxChangeRequestId();
-		    if (maxChangeRequestId != -1) {
-		        messageFromClient.setDataTransfered(maxChangeRequestId);
-		    } else {
-		        messageFromClient.setflagFalse(); // Indicate failure to retrieve max ID
-		    }
-		    client.sendToClient(messageFromClient);
-		    break;
-
+	
 		case Operation.POST_NEW_CHANGE_REQUEST:
 		    // Placeholder for posting a new change request
             System.out.println("in POST_NEW_CHANGE_REQUEST");

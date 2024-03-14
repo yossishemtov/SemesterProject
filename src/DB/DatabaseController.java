@@ -28,21 +28,7 @@ public class DatabaseController {
 	}
 	
 	
-	public int getMaxChangeRequestId() {
-	    String query = "SELECT MAX(id) AS maxId FROM `changerequests`";
-	    try (
-	         PreparedStatement ps = connectionToDatabase.prepareStatement(query);
-	         ResultSet rs = ps.executeQuery()) {
-	        
-	        if (rs.next()) {
-	            return rs.getInt("maxId");
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return -1; // Indicate an error or empty table
-	}
-	
+
 	public boolean insertChangeRequest(ChangeRequest request) {
 	    String query = "INSERT INTO `changerequests` (parkName, parkNumber, maxVisitors, gap, staytime, approved) VALUES (?, ?, ?, ?, ?, ?)";
 	    try (
@@ -415,20 +401,18 @@ public class DatabaseController {
 	    }
 	    
 	    
-	    public Boolean patchParkParameters(Park park) {
-	        String query = "UPDATE parks SET name = ?, maxVisitors = ?, capacity = ?, currentVisitors = ?, location = ?, stayTime = ?, workersAmount = ?, managerId = ?, workingTime = ? WHERE parkNumber = ?";
+	    public Boolean patchParkParameters(ChangeRequest changeRequest) {
+	        // Assuming capacity is a column in your database that should be updated based on gap
+	        // Calculate the new capacity based on the provided gap and maxVisitors
+	        
+	        // Update only the fields that are affected by a change request
+	        String query = "UPDATE `park` SET maxVisitors = ?, stayTime = ?, gap = ? WHERE parkNumber = ?";
 
 	        try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-	            ps.setString(1, park.getName());
-	            ps.setInt(2, park.getMaxVisitors());
-	            ps.setInt(3, park.getCapacity());
-	            ps.setInt(4, park.getCurrentVisitors());
-	            ps.setString(5, park.getLocation());
-	            ps.setInt(6, park.getStaytime());
-	            ps.setInt(7, park.getWorkersAmount());
-	            ps.setInt(8, park.getManagerid()); 
-	            ps.setInt(9, park.getWorkingTime());
-	            ps.setInt(10, park.getParkNumber());
+	            ps.setInt(1, changeRequest.getMaxVisitors());
+	            ps.setInt(2, changeRequest.getStaytime());
+	            ps.setInt(3, changeRequest.getGap());
+	            ps.setInt(4, changeRequest.getParkNumber());
 
 	            int affectedRows = ps.executeUpdate();
 	            return affectedRows > 0;
@@ -437,6 +421,7 @@ public class DatabaseController {
 	            return false;
 	        }
 	    }
+
 	    
 	    /**
 	     * Updates the status of generalparkworker to signedin
