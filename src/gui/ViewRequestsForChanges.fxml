@@ -10,13 +10,14 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ViewRequestsForChangesController">
    <children>
-      <TableView fx:id="parametersTable" layoutX="119.0" layoutY="133.0" onMousePressed="#requestTableClicked" prefHeight="318.0" prefWidth="720.0">
+      <TableView fx:id="parametersTable" layoutX="119.0" layoutY="133.0" prefHeight="318.0" prefWidth="720.0">
         <columns>
             <TableColumn fx:id="RequestIDCol" prefWidth="47.5" text="ID" />
             <TableColumn fx:id="parkIDCol" prefWidth="112.5" text="Park ID" />
-          <TableColumn fx:id="NewMaxVisitorscol" prefWidth="65.5" text="New Max Visitors" />
-          <TableColumn fx:id="Newstaytimecol" prefWidth="94.5" text="New stay time" />
-            <TableColumn fx:id="Newgapcol" prefWidth="84.0" text="New gap" />
+          <TableColumn fx:id="NewMaxVisitorsCol" prefWidth="65.5" text="New Max Visitors" />
+	<TableColumn fx:id="NewStayTimeCol" prefWidth="94.5" text="New stay time" />
+	<TableColumn fx:id="NewGapCol" prefWidth="84.0" text="New gap" />
+
             <TableColumn fx:id="StatusCol" prefWidth="75.0" text="Status" />
         </columns>
          <columnResizePolicy>
@@ -31,8 +32,9 @@
          <font>
             <Font size="18.0" />
          </font></Label>
-      <Button fx:id="confirmRequestBtn" layoutX="472.0" layoutY="540.0" mnemonicParsing="false" onAction="#confirmRequestBtn" onMouseClicked="#confirmRequestBtn" prefHeight="39.0" prefWidth="196.0" text="   Confirm Request" />
-      <Button fx:id="cancelRequestBtn" accessibleRole="IMAGE_VIEW" layoutX="264.0" layoutY="540.0" mnemonicParsing="false" onAction="#cancelRequestBtn" prefHeight="39.0" prefWidth="188.0" text="   Cancel Request" />
+      <Button fx:id="confirmRequestBtn" layoutX="472.0" layoutY="540.0" mnemonicParsing="false" onAction="#confirmRequestBtn" prefHeight="39.0" prefWidth="196.0" text="Confirm Request" />
+<Button fx:id="cancelRequestBtn" layoutX="264.0" layoutY="540.0" mnemonicParsing="false" onAction="#cancelRequestBtn" prefHeight="39.0" prefWidth="188.0" text="Cancel Request" />
+
       <Label layoutX="413.0" layoutY="492.0" text="Selected Request:" underline="true" />
       <FontAwesomeIconView glyphName="CLOSE" layoutX="283.0" layoutY="557.0" size="15" />
       <FontAwesomeIconView glyphName="CHECK" layoutX="487.0" layoutY="557.0" size="15" />

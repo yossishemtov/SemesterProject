@@ -312,7 +312,9 @@ public class MessageHandlerFromClient {
 		    // Placeholder for getting change requests waiting for approval
 		    int parkNumber = (Integer) messageFromClient.getDataTransfered();
 		    ArrayList<ChangeRequest> waitingForApprovalRequests = dbControllerInstance.getChangeRequestsWaitingForApproval(parkNumber);
+		    System.out.println(waitingForApprovalRequests);
 		    if (waitingForApprovalRequests != null) {
+		    	 messageFromClient.setflagTrue();
 		        messageFromClient.setDataTransfered(waitingForApprovalRequests);
 		    } else {
 		        messageFromClient.setflagFalse(); // Indicate no requests found or an error occurred

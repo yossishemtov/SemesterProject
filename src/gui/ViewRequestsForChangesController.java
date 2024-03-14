@@ -27,6 +27,7 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.Alert.AlertType;
@@ -69,7 +70,7 @@ public class ViewRequestsForChangesController implements Initializable {
     private TableColumn<ChangeRequest, Integer> NewStayTimeCol;
 
     @FXML
-    private TableColumn<ChangeRequest, Double> NewGapCol;
+    private TableColumn<ChangeRequest, Integer> NewGapCol;
 
     @FXML
     private TableColumn<ChangeRequest, String> StatusCol;
@@ -90,13 +91,31 @@ public class ViewRequestsForChangesController implements Initializable {
     }
 
     private void setupTableColumns() {
-        RequestIDCol.setCellValueFactory(new PropertyValueFactory<>("requestId"));
-        parkIDCol.setCellValueFactory(new PropertyValueFactory<>("parkId"));
-        NewMaxVisitorsCol.setCellValueFactory(new PropertyValueFactory<>("newMaxVisitors"));
-        NewStayTimeCol.setCellValueFactory(new PropertyValueFactory<>("newStayTime"));
-        NewGapCol.setCellValueFactory(new PropertyValueFactory<>("newGap"));
-        StatusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+        RequestIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        parkIDCol.setCellValueFactory(new PropertyValueFactory<>("parkNumber"));
+        NewMaxVisitorsCol.setCellValueFactory(new PropertyValueFactory<>("maxVisitors"));
+        NewStayTimeCol.setCellValueFactory(new PropertyValueFactory<>("staytime"));
+
+        // Use a custom cell factory for NewGapCol to handle the conversion to Double
+        NewGapCol.setCellFactory(column -> new TableCell<ChangeRequest, Integer>() {
+            @Override
+            protected void updateItem(Integer item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (item == null || empty) {
+                    setText(null);
+                } else {
+                    // Convert the integer to a double and then set the text
+                    // Assuming you want to simply display the integer value as a double without modification
+                    setText(String.format("%.2f", item.doubleValue()));
+                }
+            }
+        });
+        NewGapCol.setCellValueFactory(new PropertyValueFactory<>("gap"));
+
+        StatusCol.setCellValueFactory(new PropertyValueFactory<>("approved"));
     }
+
 
     private void fetchChangeRequestsWaitingForApproval(int parkId) {
         // This method will send a request to the server to get change requests waiting for approval
@@ -110,14 +129,20 @@ public class ViewRequestsForChangesController implements Initializable {
     private void waitForServerResponse() {
         // This is a simplistic way to wait for a response. In a real application, consider using more sophisticated concurrency handling mechanisms.
         new Thread(() -> {
-            try {
-                Thread.sleep(2000); // Wait for 2 seconds for the server to respond. Adjust the timing as necessary.
-                List<ChangeRequest> changeRequests = (List<ChangeRequest>) ClientUI.clientControllerInstance.getData().getDataTransfered();
+            try { 
+                
+            	Thread.sleep(2000); // Wait for 2 seconds for the server to respond. Adjust the timing as necessary.
+                ClientServerMessage<?> servermsg=ClientUI.clientControllerInstance.getData();
+                if (servermsg.getFlag()) {
+            	List<ChangeRequest> changeRequests = (List<ChangeRequest>) ClientUI.clientControllerInstance.getData().getDataTransfered();
+            	System.out.println("Fetched change requests: " + changeRequests);
+
                 // Now update the UI with the received data. Must be run on the JavaFX application thread.
                 javafx.application.Platform.runLater(() -> {
                     changeRequestsData.setAll(changeRequests);
                     parametersTable.setItems(changeRequestsData);
                 });
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -125,7 +150,7 @@ public class ViewRequestsForChangesController implements Initializable {
     }
 
     @FXML
-    private void onConfirmRequestAction() {
+    private void confirmRequestBtn(ActionEvent event){
         ChangeRequest selectedRequest = parametersTable.getSelectionModel().getSelectedItem();
         if (selectedRequest != null) {
             // Send confirmation to the server
@@ -135,7 +160,7 @@ public class ViewRequestsForChangesController implements Initializable {
     }
 
     @FXML
-    private void onCancelRequestAction() {
+    private void cancelRequestBtn(ActionEvent event) {
         ChangeRequest selectedRequest = parametersTable.getSelectionModel().getSelectedItem();
         if (selectedRequest != null) {
             // Send cancellation to the server

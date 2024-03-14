@@ -75,7 +75,7 @@ public class UpdateParametersController implements Initializable {
 		loadInfo();
 	}
 
-	private void loadInfo() {
+	private void loadInfo() { 
 
 		Integer parkNumber = Usermanager.getCurrentWorker().getWorksAtPark();
 
