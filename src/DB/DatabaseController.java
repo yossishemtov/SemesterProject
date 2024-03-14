@@ -4,6 +4,8 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
+
 import common.*;
 import common.worker.*;
 
@@ -26,7 +28,90 @@ public class DatabaseController {
 	}
 	
 	
+
+	public boolean insertChangeRequest(ChangeRequest request) {
+	    String query = "INSERT INTO `changerequests` (parkName, parkNumber, maxVisitors, gap, staytime, approved) VALUES (?, ?, ?, ?, ?, ?)";
+	    try (
+	         PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	        
+	        ps.setString(1, request.getParkName());
+	        ps.setInt(2, request.getParkNumber());
+	        ps.setInt(3, request.getMaxVisitors());
+	        ps.setDouble(4, request.getGap());
+	        ps.setInt(5, request.getStaytime());
+	        ps.setString(6, request.getApproved()); // Assuming you handle the enum to string conversion
+	        
+	        int rowsAffected = ps.executeUpdate();
+	        return rowsAffected > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+	public ArrayList<ChangeRequest> getChangeRequestsWaitingForApproval(GeneralParkWorker worker) {
+		ArrayList<ChangeRequest> requests = new ArrayList<>();
+	    String query = "SELECT * FROM `changerequests` WHERE parkNumber = ? AND approved = 'WAITING_FOR_APPROVAL'";
+	    
+		// Determine the query based on the worker's role
+	    if ("Department Manager".equals(worker.getRole())) {
+	        // For department managers: fetch requests waiting for approval for a specific park
+	        query = "SELECT * FROM `changerequests` WHERE parkNumber = ? AND approved = 'WAITING_FOR_APPROVAL'";
+	    } else if ("Park Manager".equals(worker.getRole())) {
+	        // For park managers: fetch all requests, regardless of approval status
+	        query = "SELECT * FROM `changerequests` WHERE parkNumber = ?";
+	    } 
+	    System.out.println(query);
+	    try (
+	         PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	        
+	        ps.setInt(1, worker.getWorksAtPark());
+	        try (ResultSet rs = ps.executeQuery()) {
+	            while (rs.next()) {
+	                ChangeRequest request = new ChangeRequest(
+	                        rs.getInt("id"),
+	                        rs.getString("parkName"),
+	                        rs.getInt("parkNumber"),
+	                        rs.getInt("maxVisitors"),
+	                        rs.getInt("gap"),
+	                        rs.getInt("staytime"),
+	                        rs.getString("approved"));
+	                requests.add(request);
+	            }
+	        }
+	    }  catch (SQLException e) {
+	        System.out.println("SQLException occurred");
+	        e.printStackTrace();
+	    } catch (Exception e) {
+	        System.out.println("General exception occurred");
+	        e.printStackTrace();
+	    }
+	    
+	    System.out.println("not error in");
+
+	    return requests.isEmpty() ? null : requests; // Return null if the list is empty
+	}
 	
+	
+	public boolean updateChangeRequestStatus(ChangeRequest request) {
+	    String query = "UPDATE `changerequests` SET approved = ? WHERE id = ?";
+	    try (
+	         PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	        
+	        ps.setString(1, request.getApproved()); // Use the request's approved status
+	        ps.setInt(2, request.getId()); // Use the request's id
+	        
+	        int rowsAffected = ps.executeUpdate();
+	        return rowsAffected > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+
+
+
+
+
 	/**
      * Updates a traveler's record to mark them as a guide.
      *
@@ -81,41 +166,38 @@ public class DatabaseController {
 	    }
 	
 	
-	  // Method to get a Park object by parkNumber
-    public Park getParkDetails(int parkNumber) {
-        Park park = null;
-        String query = "SELECT * FROM `park` WHERE parkNumber = ?";
-        
-        try (
+	// Method to get a Park object by parkNumber
+	 public Park getParkDetails(int parkNumber) {
+	     Park park = null;
+	     String query = "SELECT * FROM `park` WHERE parkNumber = ?";
 
-             PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
-            
-            preparedStatement.setInt(1, parkNumber);
-            
-            ResultSet resultSet = preparedStatement.executeQuery();
-            
-            if (resultSet.next()) {
-	            System.out.println("in");
+	     try (PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
+	         preparedStatement.setInt(1, parkNumber);
 
-                String name = resultSet.getString("name");
-                Integer maxVisitors = resultSet.getInt("maxVisitors");
-                Integer capacity = resultSet.getInt("capacity");
-                Integer currentVisitors = resultSet.getInt("currentVisitors");
-                String location = resultSet.getString("location");
-                Integer staytime = resultSet.getInt("staytime");
-                Integer workersAmount = resultSet.getInt("workersAmount");
-                Integer managerID = resultSet.getInt("managerId");
-                Integer workingTime = resultSet.getInt("workingTime");
-                
-                park = new Park(name, parkNumber, maxVisitors, capacity, currentVisitors, location, staytime, workersAmount, null, managerID, workingTime);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        //System.out.println(park.toString());
-        return park;
-    }
-	
+	         ResultSet resultSet = preparedStatement.executeQuery();
+
+	         if (resultSet.next()) {
+	             System.out.println("in");
+
+	             String name = resultSet.getString("name");
+	             Integer maxVisitors = resultSet.getInt("maxVisitors");
+	             Integer capacity = resultSet.getInt("capacity");
+	             Integer currentVisitors = resultSet.getInt("currentVisitors");
+	             String location = resultSet.getString("location");
+	             Integer staytime = resultSet.getInt("staytime");
+	             Integer workersAmount = resultSet.getInt("workersAmount");
+	             Integer managerID = resultSet.getInt("managerId");
+	             Integer workingTime = resultSet.getInt("workingTime");
+	             Integer gap = resultSet.getInt("gap"); // Retrieve gap from resultSet
+
+	             park = new Park(name, parkNumber, maxVisitors, capacity, currentVisitors, location, staytime, workersAmount, gap, managerID, workingTime);
+	         }
+	     } catch (SQLException e) {
+	         e.printStackTrace();
+	     }
+	     return park;
+	 }
+
 	
 	
 
@@ -319,20 +401,18 @@ public class DatabaseController {
 	    }
 	    
 	    
-	    public Boolean patchParkParameters(Park park) {
-	        String query = "UPDATE parks SET name = ?, maxVisitors = ?, capacity = ?, currentVisitors = ?, location = ?, stayTime = ?, workersAmount = ?, managerId = ?, workingTime = ? WHERE parkNumber = ?";
+	    public Boolean patchParkParameters(ChangeRequest changeRequest) {
+	        // Assuming capacity is a column in your database that should be updated based on gap
+	        // Calculate the new capacity based on the provided gap and maxVisitors
+	        
+	        // Update only the fields that are affected by a change request
+	        String query = "UPDATE `park` SET maxVisitors = ?, stayTime = ?, gap = ? WHERE parkNumber = ?";
 
 	        try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-	            ps.setString(1, park.getName());
-	            ps.setInt(2, park.getMaxVisitors());
-	            ps.setInt(3, park.getCapacity());
-	            ps.setInt(4, park.getCurrentVisitors());
-	            ps.setString(5, park.getLocation());
-	            ps.setInt(6, park.getStaytime());
-	            ps.setInt(7, park.getWorkersAmount());
-	            ps.setInt(8, park.getManagerid()); 
-	            ps.setInt(9, park.getWorkingTime());
-	            ps.setInt(10, park.getParkNumber());
+	            ps.setInt(1, changeRequest.getMaxVisitors());
+	            ps.setInt(2, changeRequest.getStaytime());
+	            ps.setInt(3, changeRequest.getGap());
+	            ps.setInt(4, changeRequest.getParkNumber());
 
 	            int affectedRows = ps.executeUpdate();
 	            return affectedRows > 0;
@@ -341,6 +421,7 @@ public class DatabaseController {
 	            return false;
 	        }
 	    }
+
 	    
 	    /**
 	     * Updates the status of generalparkworker to signedin
@@ -446,7 +527,7 @@ public class DatabaseController {
 	                        rs.getString("location"), 
 	                        rs.getInt("staytime"), 
 	                        rs.getInt("workersAmount"), 
-	                        rs.getDouble("gap"), // Assuming you have a column for gap in your DB
+	                        rs.getInt("gap"), // Assuming you have a column for gap in your DB
 	                        rs.getInt("managerID"), // Assuming managerID is stored directly as an integer
 	                        rs.getInt("workingTime")
 	                    );
@@ -478,7 +559,7 @@ public class DatabaseController {
 	                        rs.getString("location"), 
 	                        rs.getInt("staytime"), 
 	                        rs.getInt("workersAmount"),
-	                        rs.getDouble("gap"), 
+	                        rs.getInt("gap"), 
 	                        rs.getInt("managerID"), 
 	                        rs.getInt("workingTime")
 	                    );

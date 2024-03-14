@@ -9,6 +9,9 @@ import com.jfoenix.controls.JFXButton;
 
 import client.ClientUI;
 import client.NavigationManager;
+import common.ClientServerMessage;
+import common.Operation;
+import common.Usermanager;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -58,20 +61,35 @@ public class ParkManagerController  {
 	@FXML
 	private JFXButton updateParametersButton;
 
+    @FXML
+    private JFXButton RequeststatusBth;
 
 
 
 
 
-//
-//	@FXML
-//	private void loadCreateReports() {
-//		Pane view = loader.loadPaneToBorderPaneWithController("/gui/CreateReports.fxml", "createReport");
-//		borderPane.setCenter(view);
-//	}
+    @FXML
+    void loadRequeststatus(MouseEvent event) throws IOException {
+    	
+    	NavigationManager.openPageInCenter(borderPane,"ViewRequestsForChanges.fxml");
+
+
+    }
+
+
+
+	@FXML
+	private void loadCreateReports() {
+
+	}
+	@FXML
+	void loadParkParameters(MouseEvent event) throws IOException {
+		NavigationManager.openPageInCenter(borderPane,"ParkParameters.fxml");
+
+	}
 	@FXML
 	void loadUpdateParameters(MouseEvent event) throws IOException {
-		NavigationManager.openPageInCenter(borderPane,"UpdateParameters.fxml");
+		NavigationManager.openPageInCenter(borderPane,"UpdateParkParameters.fxml");
 
 	
 
@@ -87,6 +105,12 @@ public class ParkManagerController  {
 	@FXML
 	void logOut(MouseEvent event) {
 		try {
+			if(Usermanager.getCurrentWorker() != null) {
+    			ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentWorker(), Operation.PATCH_GENERALPARKWORKER_SIGNEDOUT);
+    			ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
+    			
+    		}
+    		
 			NavigationManager.openPage("HomePageFrame.fxml", event, "User Menu", true);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

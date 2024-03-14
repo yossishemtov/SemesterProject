@@ -39,4 +39,12 @@ public abstract class Operation {
     public final static String DELETE_EXISTING_ORDER = "Delete an existing order";
     public final static String RESPONSE_ALL_ORDER = "server send all order";
     
+    
+    // Operations related to Change Requests
+    public final static String GET_MAX_CHANGE_REQUEST_ID = "Get max change request ID";
+    public final static String POST_NEW_CHANGE_REQUEST = "Post new change request";
+    public final static String GET_CHANGE_REQUESTS = "Get change requests ";
+    public final static String PATCH_CHANGE_REQUEST_STATUS = "Patch change request status";
+    
+    
 }

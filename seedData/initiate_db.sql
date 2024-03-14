@@ -18,6 +18,16 @@
 --
 -- Table structure for table `generalparkworker`
 --
+CREATE TABLE ChangeRequests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    parkName VARCHAR(255) NOT NULL,
+    parkNumber INT NOT NULL,
+    maxVisitors INT NOT NULL,
+    gap DOUBLE NOT NULL,
+    staytime INT NOT NULL,
+    approved ENUM('REJECTED', 'APPROVAL', 'WAITING_FOR_APPROVAL') NOT NULL
+);
+
 
 DROP TABLE IF EXISTS `generalparkworker`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -44,7 +54,7 @@ CREATE TABLE `generalparkworker` (
 
 LOCK TABLES `generalparkworker` WRITE;
 /*!40000 ALTER TABLE `generalparkworker` DISABLE KEYS */;
-INSERT INTO `generalparkworker` VALUES (1,'John','Doe','johndoe@example.com','Manager','johndoe123','password123',1,0),(2,'Jane','Smith','janesmith@example.com','Manager','janesmith456','password456',2,0),(3,'Michael','Johnson','michaeljohnson@example.com','Manager','michaelj','password789',3,0),(4,'Emily ','Williams','emilywilliams@example.com','Worker','emilyw','password123',1,0);
+INSERT INTO `generalparkworker` VALUES (1,'John','Doe','johndoe@example.com','Park Manager','johndoe123','password123',1,0),(2,'Jane','Smith','janesmith@example.com','Park Manager','janesmith456','password456',2,0),(3,'Michael','Johnson','michaeljohnson@example.com','Park Manager','michaelj','password789',3,0),(4,'Emily ','Williams','emilywilliams@example.com','Worker','emilyw','password123',1,0),(5,'Chavi','Alonso','ChaviAlonso@e.braude.ac.il','Worker','userchavi','123456a',2,0),(6,'Yossi','Hanoder','Yossihanoder@e.braude.ac.il','Worker','yossinoder','123456a',3,0),(7,'Emanuel','Braude','emanuelbraude@e.braude.ac.il','Department Manager','emanuelb','123456a',1,0),(8,'lil','bullet','lilbullet@e.braude.ac.il','Department Manager','lilbullet','123456a',2,0),(9,'Rosh','Tirosh','roshtirosh@e.braude.ac.il','Department Manager','roshtirosh','123456a',3,0);
 /*!40000 ALTER TABLE `generalparkworker` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,6 +93,17 @@ INSERT INTO `order` VALUES (1,1214214,1,5,50,'alice@example.com','2024-07-04','0
 /*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
 
+DROP TABLE IF EXISTS `ChangeRequests`;
+CREATE TABLE ChangeRequests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    parkName VARCHAR(255) NOT NULL,
+    parkNumber INT NOT NULL,
+    maxVisitors INT NOT NULL,
+    gap DOUBLE NOT NULL,
+    staytime INT NOT NULL,
+    approved ENUM('REJECTED', 'APPROVAL', 'WAITING_FOR_APPROVAL') NOT NULL
+);
+
 --
 -- Table structure for table `park`
 --
@@ -113,7 +134,7 @@ CREATE TABLE `park` (
 
 LOCK TABLES `park` WRITE;
 /*!40000 ALTER TABLE `park` DISABLE KEYS */;
-INSERT INTO `park` VALUES ('Olympic',1,20,30,1,'Washington',4,2,1,8),('Zion',2,57,60,1,'Utah',5,1,2,7),('GrandTeton',3,44,50,1,'Wyoming',6,1,3,8);
+INSERT INTO `park` VALUES ('Mount Rainier',1,20,30,1,'Washington',4,2,1,8),('Yellowstone',2,57,60,1,'Utah',5,1,2,7),('Yosemite',3,44,50,1,'Wyoming',6,1,3,8);
 /*!40000 ALTER TABLE `park` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -212,4 +233,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-12 11:45:48
+-- Dump completed on 2024-03-13 18:13:54

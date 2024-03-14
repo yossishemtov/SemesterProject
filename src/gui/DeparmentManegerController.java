@@ -83,7 +83,9 @@ public class DeparmentManegerController implements Initializable {
 	}
 
 	@FXML
-	void loadViewRequests(MouseEvent event) {
+	void loadViewRequests(MouseEvent event) throws IOException {
+		NavigationManager.openPageInCenter(borderPane,"ViewRequestsForChanges.fxml");
+
 
 	}
 
@@ -98,10 +100,19 @@ public class DeparmentManegerController implements Initializable {
 	@FXML
 	void logOut(MouseEvent event) {
 		try {
+			
+			if(Usermanager.getCurrentWorker() != null) {
+    			ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentWorker(), Operation.PATCH_GENERALPARKWORKER_SIGNEDOUT);
+    			ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
+    			
+    		}
+			
 			NavigationManager.openPage("HomePageFrame.fxml", event, "User Menu", true);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when trying to return to main menu");
+			somethingWentWrong.showAndWait();
 		}
 	}
 
