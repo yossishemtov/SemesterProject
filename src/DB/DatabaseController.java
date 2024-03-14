@@ -4,6 +4,8 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
+
 import common.*;
 import common.worker.*;
 
@@ -26,7 +28,88 @@ public class DatabaseController {
 	}
 	
 	
+	public int getMaxChangeRequestId() {
+	    String query = "SELECT MAX(id) AS maxId FROM `changerequests`";
+	    try (
+	         PreparedStatement ps = connectionToDatabase.prepareStatement(query);
+	         ResultSet rs = ps.executeQuery()) {
+	        
+	        if (rs.next()) {
+	            return rs.getInt("maxId");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return -1; // Indicate an error or empty table
+	}
 	
+	public boolean insertChangeRequest(ChangeRequest request) {
+	    String query = "INSERT INTO `changerequests` (parkName, parkNumber, maxVisitors, gap, staytime, approved) VALUES (?, ?, ?, ?, ?, ?)";
+	    try (
+	         PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	        
+	        ps.setString(1, request.getParkName());
+	        ps.setInt(2, request.getParkNumber());
+	        ps.setInt(3, request.getMaxVisitors());
+	        ps.setDouble(4, request.getGap());
+	        ps.setInt(5, request.getStaytime());
+	        ps.setString(6, request.getApproved()); // Assuming you handle the enum to string conversion
+	        
+	        int rowsAffected = ps.executeUpdate();
+	        return rowsAffected > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+	public ArrayList<ChangeRequest> getChangeRequestsWaitingForApproval(int parkNumber) {
+		ArrayList<ChangeRequest> requests = new ArrayList<>();
+	    String query = "SELECT * FROM `changerequests` WHERE parkNumber = ? AND approved = 'WAITING_FOR_APPROVAL'";
+	    try (
+	         PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	        
+	        ps.setInt(1, parkNumber);
+	        try (ResultSet rs = ps.executeQuery()) {
+	            while (rs.next()) {
+	                ChangeRequest request = new ChangeRequest(
+	                        rs.getInt("id"),
+	                        rs.getString("parkName"),
+	                        rs.getInt("parkNumber"),
+	                        rs.getInt("maxVisitors"),
+	                        rs.getInt("gap"),
+	                        rs.getInt("staytime"),
+	                        rs.getString("approved"));
+	                requests.add(request);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return null; // Return null if an SQLException occurs
+	    }
+	    return requests.isEmpty() ? null : requests; // Return null if the list is empty
+	}
+	
+	
+	public boolean updateChangeRequestStatus(ChangeRequest request) {
+	    String query = "UPDATE `changerequests` SET approved = ? WHERE id = ?";
+	    try (
+	         PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	        
+	        ps.setString(1, request.getApproved()); // Use the request's approved status
+	        ps.setInt(2, request.getId()); // Use the request's id
+	        
+	        int rowsAffected = ps.executeUpdate();
+	        return rowsAffected > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+
+
+
+
+
 	/**
      * Updates a traveler's record to mark them as a guide.
      *
@@ -81,41 +164,38 @@ public class DatabaseController {
 	    }
 	
 	
-	  // Method to get a Park object by parkNumber
-    public Park getParkDetails(int parkNumber) {
-        Park park = null;
-        String query = "SELECT * FROM `park` WHERE parkNumber = ?";
-        
-        try (
+	// Method to get a Park object by parkNumber
+	 public Park getParkDetails(int parkNumber) {
+	     Park park = null;
+	     String query = "SELECT * FROM `park` WHERE parkNumber = ?";
 
-             PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
-            
-            preparedStatement.setInt(1, parkNumber);
-            
-            ResultSet resultSet = preparedStatement.executeQuery();
-            
-            if (resultSet.next()) {
-	            System.out.println("in");
+	     try (PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
+	         preparedStatement.setInt(1, parkNumber);
 
-                String name = resultSet.getString("name");
-                Integer maxVisitors = resultSet.getInt("maxVisitors");
-                Integer capacity = resultSet.getInt("capacity");
-                Integer currentVisitors = resultSet.getInt("currentVisitors");
-                String location = resultSet.getString("location");
-                Integer staytime = resultSet.getInt("staytime");
-                Integer workersAmount = resultSet.getInt("workersAmount");
-                Integer managerID = resultSet.getInt("managerId");
-                Integer workingTime = resultSet.getInt("workingTime");
-                
-                park = new Park(name, parkNumber, maxVisitors, capacity, currentVisitors, location, staytime, workersAmount, null, managerID, workingTime);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        //System.out.println(park.toString());
-        return park;
-    }
-	
+	         ResultSet resultSet = preparedStatement.executeQuery();
+
+	         if (resultSet.next()) {
+	             System.out.println("in");
+
+	             String name = resultSet.getString("name");
+	             Integer maxVisitors = resultSet.getInt("maxVisitors");
+	             Integer capacity = resultSet.getInt("capacity");
+	             Integer currentVisitors = resultSet.getInt("currentVisitors");
+	             String location = resultSet.getString("location");
+	             Integer staytime = resultSet.getInt("staytime");
+	             Integer workersAmount = resultSet.getInt("workersAmount");
+	             Integer managerID = resultSet.getInt("managerId");
+	             Integer workingTime = resultSet.getInt("workingTime");
+	             Integer gap = resultSet.getInt("gap"); // Retrieve gap from resultSet
+
+	             park = new Park(name, parkNumber, maxVisitors, capacity, currentVisitors, location, staytime, workersAmount, gap, managerID, workingTime);
+	         }
+	     } catch (SQLException e) {
+	         e.printStackTrace();
+	     }
+	     return park;
+	 }
+
 	
 	
 
@@ -446,7 +526,7 @@ public class DatabaseController {
 	                        rs.getString("location"), 
 	                        rs.getInt("staytime"), 
 	                        rs.getInt("workersAmount"), 
-	                        rs.getDouble("gap"), // Assuming you have a column for gap in your DB
+	                        rs.getInt("gap"), // Assuming you have a column for gap in your DB
 	                        rs.getInt("managerID"), // Assuming managerID is stored directly as an integer
 	                        rs.getInt("workingTime")
 	                    );
@@ -478,7 +558,7 @@ public class DatabaseController {
 	                        rs.getString("location"), 
 	                        rs.getInt("staytime"), 
 	                        rs.getInt("workersAmount"),
-	                        rs.getDouble("gap"), 
+	                        rs.getInt("gap"), 
 	                        rs.getInt("managerID"), 
 	                        rs.getInt("workingTime")
 	                    );

@@ -1,6 +1,7 @@
 package server;
 
 import common.*;
+import common.worker.ChangeRequest;
 import common.worker.GeneralParkWorker;
 import common.worker.ParkWorker;
 
@@ -282,6 +283,53 @@ public class MessageHandlerFromClient {
 			client.sendToClient(messageFromClient);
 
 			break;
+			
+		case Operation.GET_MAX_CHANGE_REQUEST_ID:
+		    // Placeholder for getting the maximum change request ID
+		    int maxChangeRequestId = dbControllerInstance.getMaxChangeRequestId();
+		    if (maxChangeRequestId != -1) {
+		        messageFromClient.setDataTransfered(maxChangeRequestId);
+		    } else {
+		        messageFromClient.setflagFalse(); // Indicate failure to retrieve max ID
+		    }
+		    client.sendToClient(messageFromClient);
+		    break;
+
+		case Operation.POST_NEW_CHANGE_REQUEST:
+		    // Placeholder for posting a new change request
+            System.out.println("in POST_NEW_CHANGE_REQUEST");
+
+		    ChangeRequest newChangeRequest = (ChangeRequest) messageFromClient.getDataTransfered();
+		    if (dbControllerInstance.insertChangeRequest(newChangeRequest)) {
+		        messageFromClient.setflagTrue();
+		    } else {
+		        messageFromClient.setflagFalse();
+		    }
+		    client.sendToClient(messageFromClient);
+		    break;
+
+		case Operation.GET_CHANGE_REQUESTS_WAITING_FOR_APPROVAL:
+		    // Placeholder for getting change requests waiting for approval
+		    int parkNumber = (Integer) messageFromClient.getDataTransfered();
+		    ArrayList<ChangeRequest> waitingForApprovalRequests = dbControllerInstance.getChangeRequestsWaitingForApproval(parkNumber);
+		    if (waitingForApprovalRequests != null) {
+		        messageFromClient.setDataTransfered(waitingForApprovalRequests);
+		    } else {
+		        messageFromClient.setflagFalse(); // Indicate no requests found or an error occurred
+		    }
+		    client.sendToClient(messageFromClient);
+		    break;
+
+		case Operation.PATCH_CHANGE_REQUEST_STATUS:
+		    // Placeholder for updating the status of a change request
+		    ChangeRequest changeRequestToUpdate = (ChangeRequest) messageFromClient.getDataTransfered();
+		    if (dbControllerInstance.updateChangeRequestStatus(changeRequestToUpdate)) {
+		        messageFromClient.setflagTrue();
+		    } else {
+		        messageFromClient.setflagFalse();
+		    }
+		    client.sendToClient(messageFromClient);
+		    break;
 
 		default:
 			System.out.println("default");

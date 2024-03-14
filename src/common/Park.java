@@ -14,11 +14,11 @@ public class Park  implements Serializable {
 	private Integer staytime;
 	private Integer workersAmount;
 	private Integer managerID;
-	private Double gap;
+	private Integer gap;
 	private Integer workingTime;
 	
 	public Park(String name, Integer parkNumber, Integer maxVisitors, Integer capacity, Integer currentVisitors,
-			String location, Integer staytime, Integer workersAmount,Double gap, Integer managerID, Integer workingTime) {
+			String location, Integer staytime, Integer workersAmount,Integer gap, Integer managerID, Integer workingTime) {
 		super();
 		this.name = name;
 		this.parkNumber = parkNumber;
@@ -33,11 +33,11 @@ public class Park  implements Serializable {
 		this.workingTime = workingTime;
 	}
 	
-    public Double getGap() {
+    public Integer getGap() {
         return gap;
     }
 
-    public void setGap(Double gap) {
+    public void setGap(Integer gap) {
         this.gap = gap;
     }
 	

@@ -63,15 +63,19 @@ public class ParkManagerController  {
 
 
 
-//
-//	@FXML
-//	private void loadCreateReports() {
-//		Pane view = loader.loadPaneToBorderPaneWithController("/gui/CreateReports.fxml", "createReport");
-//		borderPane.setCenter(view);
-//	}
+
+	@FXML
+	private void loadCreateReports() {
+
+	}
+	@FXML
+	void loadParkParameters(MouseEvent event) throws IOException {
+		NavigationManager.openPageInCenter(borderPane,"ParkParameters.fxml");
+
+	}
 	@FXML
 	void loadUpdateParameters(MouseEvent event) throws IOException {
-		NavigationManager.openPageInCenter(borderPane,"UpdateParameters.fxml");
+		NavigationManager.openPageInCenter(borderPane,"UpdateParkParameters.fxml");
 
 	
 
