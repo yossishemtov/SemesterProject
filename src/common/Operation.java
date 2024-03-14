@@ -43,7 +43,7 @@ public abstract class Operation {
     // Operations related to Change Requests
     public final static String GET_MAX_CHANGE_REQUEST_ID = "Get max change request ID";
     public final static String POST_NEW_CHANGE_REQUEST = "Post new change request";
-    public final static String GET_CHANGE_REQUESTS_WAITING_FOR_APPROVAL = "Get change requests waiting for approval";
+    public final static String GET_CHANGE_REQUESTS = "Get change requests ";
     public final static String PATCH_CHANGE_REQUEST_STATUS = "Patch change request status";
     
     

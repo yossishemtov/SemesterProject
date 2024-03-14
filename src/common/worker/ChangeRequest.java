@@ -17,30 +17,30 @@ public class ChangeRequest implements Serializable {
     public enum ApprovalStatus {
         REJECTED, APPROVAL, WAITING_FOR_APPROVAL;
 
-        // Convert a string to an ApprovalStatus enum
-        public static ApprovalStatus fromString(String status) {
-            switch (status.toUpperCase()) {
-                case "REJECTED":
-                    return REJECTED;
-                case "APPROVAL":
-                    return APPROVAL;
-                case "WAITING_FOR_APPROVAL":
-                    return WAITING_FOR_APPROVAL;
-                default:
-                    throw new IllegalArgumentException("Unknown approval status: " + status);
-            }
-        }
+    	public static ApprovalStatus fromString(String status) {
+    	    String normalizedStatus = status.toUpperCase().replace(" ", "_");
+    	    switch (normalizedStatus) {
+    	        case "REJECTED":
+    	            return REJECTED;
+    	        case "APPROVAL":
+    	            return APPROVAL;
+    	        case "WAITING_FOR_APPROVAL":
+    	            return WAITING_FOR_APPROVAL;
+    	        default:
+    	            throw new IllegalArgumentException("Unknown approval status: " + status);
+    	    }
+    	}
 
         // Convert an ApprovalStatus enum to a string
         @Override
         public String toString() {
             switch (this) {
                 case REJECTED:
-                    return "Rejected";
+                    return "REJECTED";
                 case APPROVAL:
-                    return "Approval";
+                    return "APPROVAL";
                 case WAITING_FOR_APPROVAL:
-                    return "Waiting for Approval";
+                    return "WAITING_FOR_APPROVAL";
                 default:
                     throw new IllegalArgumentException("Unknown approval status");
             }

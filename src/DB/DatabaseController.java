@@ -62,13 +62,23 @@ public class DatabaseController {
 	    }
 	    return false;
 	}
-	public ArrayList<ChangeRequest> getChangeRequestsWaitingForApproval(int parkNumber) {
+	public ArrayList<ChangeRequest> getChangeRequestsWaitingForApproval(GeneralParkWorker worker) {
 		ArrayList<ChangeRequest> requests = new ArrayList<>();
 	    String query = "SELECT * FROM `changerequests` WHERE parkNumber = ? AND approved = 'WAITING_FOR_APPROVAL'";
+	    
+		// Determine the query based on the worker's role
+	    if ("Department Manager".equals(worker.getRole())) {
+	        // For department managers: fetch requests waiting for approval for a specific park
+	        query = "SELECT * FROM `changerequests` WHERE parkNumber = ? AND approved = 'WAITING_FOR_APPROVAL'";
+	    } else if ("Park Manager".equals(worker.getRole())) {
+	        // For park managers: fetch all requests, regardless of approval status
+	        query = "SELECT * FROM `changerequests` WHERE parkNumber = ?";
+	    } 
+	    System.out.println(query);
 	    try (
 	         PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 	        
-	        ps.setInt(1, parkNumber);
+	        ps.setInt(1, worker.getWorksAtPark());
 	        try (ResultSet rs = ps.executeQuery()) {
 	            while (rs.next()) {
 	                ChangeRequest request = new ChangeRequest(
@@ -82,10 +92,16 @@ public class DatabaseController {
 	                requests.add(request);
 	            }
 	        }
-	    } catch (SQLException e) {
+	    }  catch (SQLException e) {
+	        System.out.println("SQLException occurred");
 	        e.printStackTrace();
-	        return null; // Return null if an SQLException occurs
+	    } catch (Exception e) {
+	        System.out.println("General exception occurred");
+	        e.printStackTrace();
 	    }
+	    
+	    System.out.println("not error in");
+
 	    return requests.isEmpty() ? null : requests; // Return null if the list is empty
 	}
 	

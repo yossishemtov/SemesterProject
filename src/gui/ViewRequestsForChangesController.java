@@ -18,6 +18,7 @@ import common.Operation;
 import common.Park;
 import common.Usermanager;
 import common.worker.ChangeRequest;
+import common.worker.GeneralParkWorker;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -61,6 +62,8 @@ public class ViewRequestsForChangesController implements Initializable {
     private Button confirmRequestBtn, cancelRequestBtn;
     @FXML
     private Label headerLabel;
+    
+    private  GeneralParkWorker CurWorker;
 
     // List to hold and display change requests in the table view
     private ObservableList<ChangeRequest> changeRequestsData = FXCollections.observableArrayList();
@@ -71,8 +74,28 @@ public class ViewRequestsForChangesController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setupTableColumns();
-        int parkId = Usermanager.getCurrentWorker().getWorksAtPark(); // Fetch the park ID for the current worker
-        fetchChangeRequestsWaitingForApproval(parkId);
+        CurWorker = Usermanager.getCurrentWorker();
+        adjustUIForRole(CurWorker);
+
+        fetchChangeRequestsWaitingForApproval(CurWorker);
+    }
+    
+    /**
+     * Adjusts the UI elements based on the worker's role.
+     */
+    private void adjustUIForRole(GeneralParkWorker worker) {
+        // Assuming getRole() returns a String indicating the worker's role
+        String role = worker.getRole();
+
+        if ("Park Manager".equals(role)) {
+            // Hide confirm and cancel buttons for park managers
+            confirmRequestBtn.setVisible(false);
+            cancelRequestBtn.setVisible(false);
+        } else {
+            // Show buttons for department managers or any other roles if needed
+            confirmRequestBtn.setVisible(true);
+            cancelRequestBtn.setVisible(true);
+        }
     }
  
     /**
@@ -91,8 +114,8 @@ public class ViewRequestsForChangesController implements Initializable {
     /**
      * Sends a request to the server to fetch change requests awaiting approval.
      */
-    private void fetchChangeRequestsWaitingForApproval(int parkId) {
-        ClientServerMessage<?> messageForServer = new ClientServerMessage<>(parkId, Operation.GET_CHANGE_REQUESTS_WAITING_FOR_APPROVAL);
+    private void fetchChangeRequestsWaitingForApproval(GeneralParkWorker CurWorker) {
+        ClientServerMessage<?> messageForServer = new ClientServerMessage<>(CurWorker, Operation.GET_CHANGE_REQUESTS);
         ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
         waitForServerResponse();
     }
@@ -134,6 +157,7 @@ public class ViewRequestsForChangesController implements Initializable {
     private void cancelRequestBtn(ActionEvent event) {
         handleRequestChange(ChangeRequest.ApprovalStatus.REJECTED.toString());
     }
+    
 
     /**
      * Common method to handle both confirm and cancel operations for change requests.
@@ -144,6 +168,8 @@ public class ViewRequestsForChangesController implements Initializable {
             selectedRequest.setApproved(status);
             ClientServerMessage<ChangeRequest> messageForServer = new ClientServerMessage<>(selectedRequest, Operation.PATCH_CHANGE_REQUEST_STATUS);
             ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
+            changeRequestsData.remove(selectedRequest);
+            parametersTable.refresh();
             refreshChangeRequests(); // Refresh table to reflect changes
         } else {
             System.out.println("No request selected.");
@@ -154,7 +180,6 @@ public class ViewRequestsForChangesController implements Initializable {
      * Refreshes the list of change requests by fetching updated data from the server.
      */
     private void refreshChangeRequests() {
-        int parkId = Usermanager.getCurrentWorker().getWorksAtPark(); // Fetch updated requests for the current park
-        fetchChangeRequestsWaitingForApproval(parkId);
+        fetchChangeRequestsWaitingForApproval(CurWorker);
     }
 }

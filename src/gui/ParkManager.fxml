@@ -46,6 +46,11 @@
                         <FontAwesomeIconView glyphName="FLOPPY_ALT" size="20" />
                      </graphic>
                   </JFXButton>
+                  <JFXButton fx:id="RequeststatusBth" onMouseClicked="#loadRequeststatus" prefHeight="122.0" prefWidth="204.0" text="Request status">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="CHECK" size="20" />
+                     </graphic>
+                  </JFXButton>
                   <JFXButton fx:id="logoutBtn" onMouseClicked="#logOut" prefHeight="122.0" prefWidth="204.0" text="Logout">
                      <graphic>
                         <FontAwesomeIconView glyphName="SIGN_OUT" size="20" />

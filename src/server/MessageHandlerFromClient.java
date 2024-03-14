@@ -308,12 +308,18 @@ public class MessageHandlerFromClient {
 		    client.sendToClient(messageFromClient);
 		    break; 
 
-		case Operation.GET_CHANGE_REQUESTS_WAITING_FOR_APPROVAL:
+		case Operation.GET_CHANGE_REQUESTS:
 		    // Placeholder for getting change requests waiting for approval
-		    int parkNumber = (Integer) messageFromClient.getDataTransfered();
-		    ArrayList<ChangeRequest> waitingForApprovalRequests = dbControllerInstance.getChangeRequestsWaitingForApproval(parkNumber);
-		    System.out.println(waitingForApprovalRequests);
-		    if (waitingForApprovalRequests != null) {
+			System.out.println("in " + command);
+
+		    GeneralParkWorker parkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
+		    ArrayList<ChangeRequest> waitingForApprovalRequests = dbControllerInstance.getChangeRequestsWaitingForApproval(parkWorker);
+		    //System.out.println(waitingForApprovalRequests);
+		    System.out.println("out " + command);
+		    if (waitingForApprovalRequests != null) 
+		    {
+		        System.out.println(waitingForApprovalRequests.get(0));
+
 		    	 messageFromClient.setflagTrue();
 		        messageFromClient.setDataTransfered(waitingForApprovalRequests);
 		    } else {
