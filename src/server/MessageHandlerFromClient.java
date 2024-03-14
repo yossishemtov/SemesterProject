@@ -306,7 +306,7 @@ public class MessageHandlerFromClient {
 		        messageFromClient.setflagFalse();
 		    }
 		    client.sendToClient(messageFromClient);
-		    break;
+		    break; 
 
 		case Operation.GET_CHANGE_REQUESTS_WAITING_FOR_APPROVAL:
 		    // Placeholder for getting change requests waiting for approval

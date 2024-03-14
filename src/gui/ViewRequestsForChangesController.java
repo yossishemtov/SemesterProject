@@ -18,20 +18,15 @@ import common.Operation;
 import common.Park;
 import common.Usermanager;
 import common.worker.ChangeRequest;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.Alert;
-import javafx.scene.control.DateCell;
+
 import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.AnchorPane;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -52,96 +47,71 @@ import common.Operation;
 import common.Usermanager;
 import common.worker.ChangeRequest;
 
+
 public class ViewRequestsForChangesController implements Initializable {
 
+    // FXML components bound to the view
     @FXML
     private TableView<ChangeRequest> parametersTable;
-
     @FXML
-    private TableColumn<ChangeRequest, Integer> RequestIDCol;
-
-    @FXML
-    private TableColumn<ChangeRequest, Integer> parkIDCol;
-
-    @FXML
-    private TableColumn<ChangeRequest, Integer> NewMaxVisitorsCol;
-
-    @FXML
-    private TableColumn<ChangeRequest, Integer> NewStayTimeCol;
-
-    @FXML
-    private TableColumn<ChangeRequest, Integer> NewGapCol;
-
+    private TableColumn<ChangeRequest, Integer> RequestIDCol, parkIDCol, NewMaxVisitorsCol, NewStayTimeCol, NewGapCol;
     @FXML
     private TableColumn<ChangeRequest, String> StatusCol;
-
     @FXML
     private Button confirmRequestBtn, cancelRequestBtn;
-
     @FXML
     private Label headerLabel;
 
+    // List to hold and display change requests in the table view
     private ObservableList<ChangeRequest> changeRequestsData = FXCollections.observableArrayList();
 
+    /**
+     * Initialize the controller and fetch initial data for the table.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setupTableColumns();
-        int parkId = Usermanager.getCurrentWorker().getWorksAtPark(); // Assumes you have this method to get the current worker's park ID
+        int parkId = Usermanager.getCurrentWorker().getWorksAtPark(); // Fetch the park ID for the current worker
         fetchChangeRequestsWaitingForApproval(parkId);
     }
-
+ 
+    /**
+     * Sets up the table columns with the corresponding properties from the ChangeRequest class.
+     */
     private void setupTableColumns() {
+        // Binding table columns to ChangeRequest properties
         RequestIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         parkIDCol.setCellValueFactory(new PropertyValueFactory<>("parkNumber"));
         NewMaxVisitorsCol.setCellValueFactory(new PropertyValueFactory<>("maxVisitors"));
         NewStayTimeCol.setCellValueFactory(new PropertyValueFactory<>("staytime"));
-
-        // Use a custom cell factory for NewGapCol to handle the conversion to Double
-        NewGapCol.setCellFactory(column -> new TableCell<ChangeRequest, Integer>() {
-            @Override
-            protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (item == null || empty) {
-                    setText(null);
-                } else {
-                    // Convert the integer to a double and then set the text
-                    // Assuming you want to simply display the integer value as a double without modification
-                    setText(String.format("%.2f", item.doubleValue()));
-                }
-            }
-        });
         NewGapCol.setCellValueFactory(new PropertyValueFactory<>("gap"));
-
         StatusCol.setCellValueFactory(new PropertyValueFactory<>("approved"));
     }
 
-
+    /**
+     * Sends a request to the server to fetch change requests awaiting approval.
+     */
     private void fetchChangeRequestsWaitingForApproval(int parkId) {
-        // This method will send a request to the server to get change requests waiting for approval
         ClientServerMessage<?> messageForServer = new ClientServerMessage<>(parkId, Operation.GET_CHANGE_REQUESTS_WAITING_FOR_APPROVAL);
         ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
-
-        // Wait for the response asynchronously
         waitForServerResponse();
     }
 
+    /**
+     * Waits for a server response asynchronously and updates the UI with the fetched data.
+     */
     private void waitForServerResponse() {
-        // This is a simplistic way to wait for a response. In a real application, consider using more sophisticated concurrency handling mechanisms.
         new Thread(() -> {
-            try { 
-                
-            	Thread.sleep(2000); // Wait for 2 seconds for the server to respond. Adjust the timing as necessary.
-                ClientServerMessage<?> servermsg=ClientUI.clientControllerInstance.getData();
+            try {
+                Thread.sleep(10); // Simulated wait for server response
+                // Check server response and update UI accordingly
+                ClientServerMessage<?> servermsg = ClientUI.clientControllerInstance.getData();
                 if (servermsg.getFlag()) {
-            	List<ChangeRequest> changeRequests = (List<ChangeRequest>) ClientUI.clientControllerInstance.getData().getDataTransfered();
-            	System.out.println("Fetched change requests: " + changeRequests);
-
-                // Now update the UI with the received data. Must be run on the JavaFX application thread.
-                javafx.application.Platform.runLater(() -> {
-                    changeRequestsData.setAll(changeRequests);
-                    parametersTable.setItems(changeRequestsData);
-                });
+                    List<ChangeRequest> changeRequests = (List<ChangeRequest>) servermsg.getDataTransfered();
+                    Platform.runLater(() -> {
+                        changeRequestsData.setAll(changeRequests);
+                        parametersTable.setItems(changeRequestsData);
+                    });
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -149,23 +119,42 @@ public class ViewRequestsForChangesController implements Initializable {
         }).start();
     }
 
+    /**
+     * Handles the confirmation of a change request.
+     */
     @FXML
-    private void confirmRequestBtn(ActionEvent event){
+    private void confirmRequestBtn(ActionEvent event) {
+        handleRequestChange(ChangeRequest.ApprovalStatus.APPROVAL.toString());
+    }
+
+    /**
+     * Handles the cancellation of a change request.
+     */
+    @FXML
+    private void cancelRequestBtn(ActionEvent event) {
+        handleRequestChange(ChangeRequest.ApprovalStatus.REJECTED.toString());
+    }
+
+    /**
+     * Common method to handle both confirm and cancel operations for change requests.
+     */
+    private void handleRequestChange(String status) {
         ChangeRequest selectedRequest = parametersTable.getSelectionModel().getSelectedItem();
         if (selectedRequest != null) {
-            // Send confirmation to the server
-            System.out.println("Confirm Request: " + selectedRequest.getId());
-            // Implement server communication here
+            selectedRequest.setApproved(status);
+            ClientServerMessage<ChangeRequest> messageForServer = new ClientServerMessage<>(selectedRequest, Operation.PATCH_CHANGE_REQUEST_STATUS);
+            ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
+            refreshChangeRequests(); // Refresh table to reflect changes
+        } else {
+            System.out.println("No request selected.");
         }
     }
 
-    @FXML
-    private void cancelRequestBtn(ActionEvent event) {
-        ChangeRequest selectedRequest = parametersTable.getSelectionModel().getSelectedItem();
-        if (selectedRequest != null) {
-            // Send cancellation to the server
-            System.out.println("Cancel Request: " + selectedRequest.getId());
-            // Implement server communication here
-        }
+    /**
+     * Refreshes the list of change requests by fetching updated data from the server.
+     */
+    private void refreshChangeRequests() {
+        int parkId = Usermanager.getCurrentWorker().getWorksAtPark(); // Fetch updated requests for the current park
+        fetchChangeRequestsWaitingForApproval(parkId);
     }
 }
