@@ -51,6 +51,7 @@ public class TravelerLoginController {
 		        ClientUI.clientControllerInstance.sendMessageToServer(TravelerLoginAttemptInformation);
 		        // get the data return from server 
 		        Traveler TravelerFromServer = (Traveler) ClientController.data.getDataTransfered();
+//		        System.out.println(TravelerFromServer.getId());
 		        // update the current traveler in UserManage
 		        Usermanager.setCurrentTraveler(TravelerFromServer);
 		        // if traveler has an order in the system
@@ -63,7 +64,7 @@ public class TravelerLoginController {
 		        	// if traveler has not an order in the system
 		        	if (TravelerFromServer == null) {
 		        		// open order a visit screen 
-		        		NavigationManager.openPage("OrdervisitFrame.fxml", click, "order A visit Screen", true);
+		        		NavigationManager.openPage("OrderVisit.fxml", click, "order A visit Screen", true);
 		        	}	
 		        }
 	        } catch (Exception e) {
