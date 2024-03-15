@@ -96,9 +96,7 @@ public class WorkerLoginController {
 						break;
 					case "Worker":
 						System.out.println("in Worker");
-						
-						
-						NavigationManager.openPage("parkWorkerFrame.fxml", click, "workerScreen", true);
+						NavigationManager.openPage("ParkWorkerFrame.fxml", click, "workerScreen", true);
 						break;
 						
 					case "Service Worker":
@@ -119,6 +117,7 @@ public class WorkerLoginController {
 				System.out.println("Worker added to list. Worker Username: " + workerFromServer.getUserName());
 			} else {
 				// Handle null response from server (worker details not found or error occurred)
+				
 				System.out.println("Failed to retrieve worker details from server.");
 				Alerts nullResponseAlert = new Alerts(Alert.AlertType.ERROR, "Login Error",
 						"Failed to retrieve worker details.", "Please try again or contact the system administrator.");

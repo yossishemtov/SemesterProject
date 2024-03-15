@@ -112,7 +112,17 @@ public class MessageHandlerFromClient {
 		case Operation.GET_MESSAGES:
 			// Placeholder for getting messages
 			break;
+		
+		case Operation.GET_ORDER_BY_ID:
+			//Get order information by orderId
+			Order orderInformation = (Order) messageFromClient.getDataTransfered();
+			Order receivedOrderInformationFromDb = dbControllerInstance.getOrderInformationByOrderId(orderInformation);
 			
+			messageFromClient.setDataTransfered(receivedOrderInformationFromDb);
+			
+			client.sendToClient(messageFromClient);
+			
+			break;
 		
 		case Operation.GET_TRAVELER_SIGNED:
 			//Get status if traveler is already signedin
@@ -274,6 +284,7 @@ public class MessageHandlerFromClient {
 			}
 			
 			break;
+			
 			
 		case Operation.POST_TRAVLER_ORDER:
 			// Placeholder for posting a new traveler order

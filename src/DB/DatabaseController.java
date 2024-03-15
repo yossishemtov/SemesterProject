@@ -573,7 +573,50 @@ public class DatabaseController {
 	    	
 	    }
 	    	
+	    /**
+	     * Get order information based on the orderId provided
+	     * @param Order object that contains a valid orderId
+	     * @return Order object containing all the information about the order
+	     */	
+	    public Order getOrderInformationByOrderId(Order receivedOrderId) {
+	    	String query = "SELECT * FROM `order` WHERE orderId = ?";
+	    	Order orderInformation = null;
 	    	
+	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	    		ps.setInt(1, receivedOrderId.getOrderId());
+	            ResultSet rs = ps.executeQuery(); // Use executeQuery for SELECT statements
+	            
+	            
+	  
+	                if (rs.next()) { // Use if instead of while if you expect or require a single result
+	                	
+	                	//Parsing special object such of type localDate and LocalTime
+	    	            LocalDate orderDate = rs.getObject("date", LocalDate.class);
+	    	            LocalTime visitTime = rs.getObject("visitTime", LocalTime.class);
+	    	            float price = rs.getFloat("price");
+	    	            
+	                	orderInformation = new Order(
+	                        rs.getInt("orderId"), 
+	                        rs.getInt("travlerId"), 
+	                        rs.getInt("parkNumber"), 
+	                        rs.getInt("amountOfVisitors"), 
+	                        price, 
+	                        rs.getString("visitorEmail"), 
+	                        orderDate, 
+	                        visitTime, // Assuming you have a column for gap in your DB
+	                        rs.getString("orderStatus"), // Assuming managerID is stored directly as an integer
+	                        rs.getString("typeOfOrder"),
+	                        rs.getString("TelephoneNumber")
+	                    );
+	                }
+	            }
+	         catch (SQLException e) {
+	            e.printStackTrace();
+	            // Consider logging this exception or handling it more gracefully
+	        }
+	    	
+	    	return orderInformation;
+	    }
 	    
 	    
 	    /**
@@ -581,7 +624,6 @@ public class DatabaseController {
 	     * @param parkworker the park worker information
 	     * @return park information if successful and null if not found
 	     */
-
 	    public Park getAmountOfVisitorsByParkWorker(GeneralParkWorker parkworker) {
 	    	//Querying for the park information with the park number associated with the park worker
 	    	String query = "Select * FROM park WHERE parkNumber = ?";
