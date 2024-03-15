@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.36, for macos14 (arm64)
+-- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
 -- Host: localhost    Database: project
 -- ------------------------------------------------------
@@ -16,18 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `changerequests`
+--
+
+DROP TABLE IF EXISTS `changerequests`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `changerequests` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `parkName` varchar(255) NOT NULL,
+  `parkNumber` int NOT NULL,
+  `maxVisitors` int NOT NULL,
+  `gap` double NOT NULL,
+  `staytime` int NOT NULL,
+  `approved` enum('REJECTED','APPROVAL','WAITING_FOR_APPROVAL') NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `changerequests`
+--
+
+LOCK TABLES `changerequests` WRITE;
+/*!40000 ALTER TABLE `changerequests` DISABLE KEYS */;
+/*!40000 ALTER TABLE `changerequests` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `generalparkworker`
 --
-CREATE TABLE ChangeRequests (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    parkName VARCHAR(255) NOT NULL,
-    parkNumber INT NOT NULL,
-    maxVisitors INT NOT NULL,
-    gap DOUBLE NOT NULL,
-    staytime INT NOT NULL,
-    approved ENUM('REJECTED', 'APPROVAL', 'WAITING_FOR_APPROVAL') NOT NULL
-);
-
 
 DROP TABLE IF EXISTS `generalparkworker`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -54,7 +72,7 @@ CREATE TABLE `generalparkworker` (
 
 LOCK TABLES `generalparkworker` WRITE;
 /*!40000 ALTER TABLE `generalparkworker` DISABLE KEYS */;
-INSERT INTO `generalparkworker` VALUES (1,'John','Doe','johndoe@example.com','Park Manager','johndoe123','password123',1,0),(2,'Jane','Smith','janesmith@example.com','Park Manager','janesmith456','password456',2,0),(3,'Michael','Johnson','michaeljohnson@example.com','Park Manager','michaelj','password789',3,0),(4,'Emily ','Williams','emilywilliams@example.com','Worker','emilyw','password123',1,0),(5,'Chavi','Alonso','ChaviAlonso@e.braude.ac.il','Worker','userchavi','123456a',2,0),(6,'Yossi','Hanoder','Yossihanoder@e.braude.ac.il','Worker','yossinoder','123456a',3,0),(7,'Emanuel','Braude','emanuelbraude@e.braude.ac.il','Department Manager','emanuelb','123456a',1,0),(8,'lil','bullet','lilbullet@e.braude.ac.il','Department Manager','lilbullet','123456a',2,0),(9,'Rosh','Tirosh','roshtirosh@e.braude.ac.il','Department Manager','roshtirosh','123456a',3,0);
+INSERT INTO `generalparkworker` VALUES (1,'John','Doe','johndoe@example.com','Park Manager','johndoe123','password123',1,0),(2,'Jane','Smith','janesmith@example.com','Park Manager','janesmith456','password456',2,0),(3,'Michael','Johnson','michaeljohnson@example.com','Park Manager','michaelj','password789',3,0),(4,'Emily ','Williams','emilywilliams@example.com','Worker','emilyw','password123',1,0),(5,'Chavi','Alonso','ChaviAlonso@e.braude.ac.il','Worker','userchavi','123456a',2,0),(6,'Yossi','Hanoder','Yossihanoder@e.braude.ac.il','Worker','yossinoder','123456a',3,0),(7,'Emanuel','Braude','emanuelbraude@e.braude.ac.il','Department Manager','emanuelb','123456a',1,0),(8,'lil','bullet','lilbullet@e.braude.ac.il','Department Manager','lilbullet','123456a',2,0),(9,'Rosh','Tirosh','roshtirosh@e.braude.ac.il','Department Manager','roshtirosh','123456a',3,0),(10,'El','Salvador','elsalvador@e.braude.ac.il','Service Worker','salvador','123456a',1,0);
 /*!40000 ALTER TABLE `generalparkworker` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -93,17 +111,6 @@ INSERT INTO `order` VALUES (1,1214214,1,5,50,'alice@example.com','2024-07-04','0
 /*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
 
-DROP TABLE IF EXISTS `ChangeRequests`;
-CREATE TABLE ChangeRequests (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    parkName VARCHAR(255) NOT NULL,
-    parkNumber INT NOT NULL,
-    maxVisitors INT NOT NULL,
-    gap DOUBLE NOT NULL,
-    staytime INT NOT NULL,
-    approved ENUM('REJECTED', 'APPROVAL', 'WAITING_FOR_APPROVAL') NOT NULL
-);
-
 --
 -- Table structure for table `park`
 --
@@ -122,6 +129,7 @@ CREATE TABLE `park` (
   `workersAmount` int DEFAULT NULL,
   `managerId` int DEFAULT NULL,
   `workingTime` int DEFAULT NULL,
+  `gap` int DEFAULT NULL,
   PRIMARY KEY (`parkNumber`),
   KEY `managerId` (`managerId`),
   CONSTRAINT `park_ibfk_1` FOREIGN KEY (`managerId`) REFERENCES `generalparkworker` (`workerId`)
@@ -134,7 +142,7 @@ CREATE TABLE `park` (
 
 LOCK TABLES `park` WRITE;
 /*!40000 ALTER TABLE `park` DISABLE KEYS */;
-INSERT INTO `park` VALUES ('Mount Rainier',1,20,30,1,'Washington',4,2,1,8),('Yellowstone',2,57,60,1,'Utah',5,1,2,7),('Yosemite',3,44,50,1,'Wyoming',6,1,3,8);
+INSERT INTO `park` VALUES ('Mount Rainier',1,20,30,1,'Washington',4,2,1,8,0),('Yellowstone',2,57,60,1,'Utah',5,1,2,7,0),('Yosemite',3,44,50,1,'Wyoming',6,1,3,8,0);
 /*!40000 ALTER TABLE `park` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,9 +187,12 @@ CREATE TABLE `visit` (
   `enteringTime` time DEFAULT NULL,
   `exitingTime` time DEFAULT NULL,
   `parkNumber` int DEFAULT NULL,
+  `orderId` int NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`orderId`),
   KEY `parkNumber` (`parkNumber`),
+  CONSTRAINT `fk_visit_orderId` FOREIGN KEY (`orderId`) REFERENCES `order` (`orderId`),
   CONSTRAINT `visit_ibfk_1` FOREIGN KEY (`parkNumber`) REFERENCES `park` (`parkNumber`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -190,7 +201,7 @@ CREATE TABLE `visit` (
 
 LOCK TABLES `visit` WRITE;
 /*!40000 ALTER TABLE `visit` DISABLE KEYS */;
-INSERT INTO `visit` VALUES ('2024-07-04','09:00:00','12:00:00',1),('2024-07-05','14:00:00','17:00:00',2),('2024-07-06','08:00:00','11:00:00',1),('2024-07-07','10:30:00','13:30:00',3);
+INSERT INTO `visit` VALUES ('2024-07-04','09:00:00','12:00:00',1,1),('2024-07-05','14:00:00','17:00:00',2,2),('2024-07-06','08:00:00','11:00:00',1,3),('2024-07-07','10:30:00','13:30:00',3,4);
 /*!40000 ALTER TABLE `visit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -233,4 +244,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-13 18:13:54
+-- Dump completed on 2024-03-16  0:18:58

@@ -30,14 +30,15 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></JFXButton>
-                  <JFXButton fx:id="availableSpaceBtn" alignment="CENTER" contentDisplay="CENTER" onAction="#availableSpaceBtnAction" prefHeight="181.0" prefWidth="205.0" text="Check Available Space" textAlignment="CENTER">
+                  <JFXButton fx:id="availableSpaceBtn" alignment="CENTER" contentDisplay="CENTER" onAction="#availableSpaceBtnAction" prefHeight="162.0" prefWidth="253.0" text="Check Available Space" textAlignment="CENTER">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></JFXButton>
-                  <JFXButton fx:id="entrenceControlBtn" alignment="CENTER" contentDisplay="CENTER" onAction="#entrenceControlAction" prefHeight="184.0" prefWidth="212.0" text="Entrence Control" textAlignment="CENTER">
+                  <JFXButton fx:id="entrenceControlBtn" alignment="CENTER" contentDisplay="CENTER" onAction="#entrenceControlAction" prefHeight="163.0" prefWidth="229.0" text="Entrence Control" textAlignment="CENTER">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></JFXButton>
+                  <JFXButton fx:id="unorderedVisitAction" prefHeight="169.0" prefWidth="224.0" text="Unordered Visit" />
                   <JFXButton fx:id="backBtn" alignment="CENTER" contentDisplay="CENTER" onAction="#backBtnAction" prefHeight="160.0" prefWidth="210.0" text="Logout" textAlignment="CENTER">
                      <cursor>
                         <Cursor fx:constant="HAND" />
