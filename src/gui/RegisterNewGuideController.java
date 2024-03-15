@@ -68,21 +68,11 @@ public class RegisterNewGuideController {
 	    
 	    // If all validations pass, proceed with registration logic
 	    try {
-	    	Traveler GroupGuideAttempt = new Traveler(Integer.parseInt(TravelerID), null, null, null, null, 1, 0);
+	    	Traveler GroupGuideAttempt = new Traveler(Integer.parseInt(TravelerID), TravelerFirstName, TravelerLastName, TravelerEmail, TravelerPhoneNumber, 1, 0);
 
-			// send to server in order to check if traveler exists in the system
-			ClientServerMessage<?> RegistrationAttempt = new ClientServerMessage<>(GroupGuideAttempt, Operation.GET_TRAVLER_INFO);
+			// send to server in order to register new group guide
+			ClientServerMessage<?> RegistrationAttempt = new ClientServerMessage<>(GroupGuideAttempt, Operation.POST_NEW_TRAVLER_GUIDER);
 		    ClientUI.clientControllerInstance.sendMessageToServer(RegistrationAttempt);
-		    // get the data return from server 
-		    Traveler TravelerFromServer = (Traveler) ClientController.data.getDataTransfered();
-		    // if traveler not exist in the system, register as a new group guide
-		    if (TravelerFromServer == null) {
-		    	ClientServerMessage<?> RegistrateGroupGuide = new ClientServerMessage<>(GroupGuideAttempt, Operation.POST_NEW_TRAVLER_GUIDER);
-		     } 
-		    else {
-		    	 // traveler exists therefore we changed him to be group guide
-		    	 ClientServerMessage<?> RegistrateGroupGuide = new ClientServerMessage<>(GroupGuideAttempt, Operation.POST_EXISTS_TRAVLER_GUIDER);
-		     }
 	    } catch (Exception e) {
 	        System.out.print("Something went wrong while clicking on submit button, trying to register new group guide, check stack trace");
 	        e.printStackTrace();
