@@ -13,7 +13,7 @@ public abstract class Operation {
     public final static String GET_PARK_DETAILS = "Get Park details";
     public final static String GET_ALL_REPORTS = "Get all reports";
     public final static String GET_VISITORS_REPORT = "Get visitors report report";
-    public final static String GET_MESSAGES = "Get messages";
+    public final static String GET_MESSAGES = "Get traveler messages from the system";
     public final static String DISCONNECTING = "Disconnecting from server";
     public final static String GET_PROFILE = "Get user profile";
     public final static String GET_AMOUNT_OF_VISITORS = "Get amount of visitors";
@@ -23,6 +23,7 @@ public abstract class Operation {
 
     public final static String POST_NEW_TRAVLER_GUIDER = "Post new traveler guide request";
     public final static String POST_EXISTS_TRAVLER_GUIDER = "Post exists traveler guide request";
+
 
     public final static String POST_TRAVLER_ORDER = "Post new traveler order";
     public final static String POST_NEW_REPORT = "Post a new report";
