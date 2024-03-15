@@ -24,10 +24,22 @@ public class InputValidation {
         	 return new Alerts(Alerts.AlertType.INFORMATION, "ID Validation", "", "Valid ID");
         }
     }
-	
-	// NEED TO IMPLEMENT
+	// function for chacking validation of an email
 	public static Alerts validateEmail(String email) {
-		 return new Alerts(Alerts.AlertType.INFORMATION, "ID Validation", "", "Valid ID");
+	    // Check if the email is empty
+	    if (email.isEmpty()) {
+	        return new Alerts(Alerts.AlertType.ERROR, "Invalid Email", "", "Email cannot be empty");
+	    }
+	    
+	    // Check if the email matches the expected format
+	    else if (!email.matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$")) {
+	        return new Alerts(Alerts.AlertType.ERROR, "Invalid Email", "", "Invalid email format");
+	    }
+
+	    // Email is valid
+	    else {
+	        return new Alerts(Alerts.AlertType.INFORMATION, "Valid Email", "", "Valid Email");
+	    }
 	}
 	
 	// function for validate worker password

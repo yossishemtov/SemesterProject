@@ -233,8 +233,9 @@ public class DatabaseController {
 	// WorkerId | firstName | lastName | email | role | userName | password | worksAtPark
 	public GeneralParkWorker getGeneralParkWorkerDetails(GeneralParkWorker worker) {
 	    // Removed unused ArrayList<Order>
+		System.out.println("worker username: " + worker.getUserName() + "worker password: " + worker.getPassword());
 	    System.out.println("in db");
-	    System.out.println(worker.getPassword()+worker.getUserName());
+	    
 	    GeneralParkWorker generalParkWorker = null;
 
 	    String query = "SELECT * FROM `generalparkworker` WHERE userName = ? AND password= ?";
@@ -264,7 +265,7 @@ public class DatabaseController {
 	        return null; // Consider throwing a custom exception
 	    }
 	
-		System.out.println(generalParkWorker.toString());
+//		System.out.println(generalParkWorker.toString());
 
 	    return generalParkWorker; // This will return an empty list if there were no records found
 	}
