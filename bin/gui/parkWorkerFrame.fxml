@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParkWorkerController">
+   <children>
+      <Label layoutX="137.0" layoutY="184.0" text="Name:" />
+      <Label layoutX="137.0" layoutY="212.0" text="LastName:" />
+      <Label layoutX="137.0" layoutY="239.0" text="Role:" />
+      <Button fx:id="availableSpaceBtn" layoutX="312.0" layoutY="207.0" mnemonicParsing="false" onAction="#availableSpaceBtnAction" text="Update Available Space" />
+      <Button fx:id="PresentABillBtn" layoutX="312.0" layoutY="275.0" mnemonicParsing="false" onAction="#presentBillBtnAction" text="Present A Bill" />
+      <Label fx:id="nametextlabel" layoutX="181.0" layoutY="184.0" text="Nametext" />
+      <Label fx:id="lastnametextlabel" layoutX="207.0" layoutY="212.0" text="LastNameTest" />
+      <Label fx:id="roletextlabel" layoutX="173.0" layoutY="239.0" text="RoleText" />
+      <Label layoutX="136.0" layoutY="266.0" text="Park:" />
+      <Label fx:id="parktextlabel" layoutX="173.0" layoutY="266.0" text="ParkText" />
+      <Button fx:id="backBtn" layoutX="592.0" layoutY="485.0" mnemonicParsing="false" onAction="#backBtnAction" text="back" textFill="RED" />
+      <Label layoutX="312.0" layoutY="184.0" prefHeight="17.0" prefWidth="138.0" text="Available Space:" />
+      <Label fx:id="availableSpaceLabel" layoutX="426.0" layoutY="184.0" />
+      <StackPane prefHeight="150.0" prefWidth="200.0" />
+   </children>
+</Pane>
