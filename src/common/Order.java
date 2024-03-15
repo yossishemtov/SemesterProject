@@ -74,7 +74,7 @@ public class Order {
 			// For simplicity, defaulting to SOLO here
 			this.orderType = Order.typeOfOrder.SOLO;
 		}
-	}
+	} 
 
 	public String getTypeOfOrder() {
 		return orderType.name();

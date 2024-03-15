@@ -12,7 +12,6 @@ public abstract class Operation {
     public final static String GET_GENERAL_PARK_WORKER_DETAILS = "Get GeneralParkWorker details";
     public final static String GET_PARK_DETAILS = "Get Park details";
     public final static String GET_ALL_REPORTS = "Get all reports";
-    public final static String GET_VISITORS_REPORT = "Get visitors report report";
     public final static String GET_MESSAGES = "Get messages";
     public final static String DISCONNECTING = "Disconnecting from server";
     public final static String GET_PROFILE = "Get user profile";
@@ -39,6 +38,13 @@ public abstract class Operation {
     public final static String DELETE_EXISTING_ORDER = "Delete an existing order";
     public final static String RESPONSE_ALL_ORDER = "server send all order";
     
+    //report
+    public final static String GET_HOURLY_VISIT_DATA_FOR_PARK = "Get hourly visit data for park";
+    public final static String POST_VISITORS_REPORT = "post visitor report and general report from park maneger";
+    public final static String GET_NEW_VISITORS_REPORT = "Get new visitors report report";
+    public final static String GET_EXISTS_VISITORS_REPORT = "Get exists visitors  report";
+    public final static String GET_GENERAL_REPORT = "Get exists general report ";
+
     
     // Operations related to Change Requests
     public final static String GET_MAX_CHANGE_REQUEST_ID = "Get max change request ID";

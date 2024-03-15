@@ -93,15 +93,41 @@ INSERT INTO `order` VALUES (1,1214214,1,5,50,'alice@example.com','2024-07-04','0
 /*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
 
-DROP TABLE IF EXISTS `ChangeRequests`;
-CREATE TABLE ChangeRequests (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    parkName VARCHAR(255) NOT NULL,
+INSERT INTO `order` (orderId, travlerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder) VALUES
+(1, 101, 1, 5, 100.00, 'email1@example.com', '2024-03-12', '1234567890', '09:00:00', 'CONFIRMED', 'FAMILY'),
+(2, 102, 1, 3, 60.00, 'email2@example.com', '2024-03-13', '1234567891', '10:00:00', 'CONFIRMED', 'SOLO'),
+(3, 103, 1, 2, 40.00, 'email3@example.com', '2024-03-14', '1234567892', '11:00:00', 'CONFIRMED', 'GUIDEDGROUP'),
+(4, 104, 1, 4, 80.00, 'email4@example.com', '2024-03-15', '1234567893', '12:00:00', 'CONFIRMED', 'FAMILY'),
+(5, 105, 1, 5, 100.00, 'email5@example.com', '2024-03-16', '1234567894', '13:00:00', 'CONFIRMED', 'SOLO'),
+(6, 106, 1, 3, 60.00, 'email6@example.com', '2024-03-17', '1234567895', '14:00:00', 'CONFIRMED', 'GUIDEDGROUP'),
+(7, 107, 1, 2, 40.00, 'email7@example.com', '2024-03-18', '1234567896', '15:00:00', 'CONFIRMED', 'FAMILY'),
+(8, 108, 1, 4, 80.00, 'email8@example.com', '2024-03-19', '1234567897', '16:00:00', 'CONFIRMED', 'SOLO'),
+(9, 109, 1, 5, 100.00, 'email9@example.com', '2024-03-20', '1234567898', '09:30:00', 'CONFIRMED', 'GUIDEDGROUP'),
+(10, 110, 1, 3, 60.00, 'email10@example.com', '2024-03-21', '1234567899', '10:30:00', 'CONFIRMED', 'FAMILY'),
+(11, 111, 1, 2, 40.00, 'email11@example.com', '2024-03-22', '1234567800', '11:30:00', 'CONFIRMED', 'SOLO'),
+(12, 112, 1, 4, 80.00, 'email12@example.com', '2024-03-23', '1234567801', '12:30:00', 'CONFIRMED', 'GUIDEDGROUP'),
+(13, 113, 1, 5, 100.00, 'email13@example.com', '2024-03-24', '1234567802', '13:30:00', 'CONFIRMED', 'FAMILY'),
+(14, 114, 1, 3, 60.00, 'email14@example.com', '2024-03-25', '1234567803', '14:30:00', 'CONFIRMED', 'SOLO'),
+(15, 115, 1, 2, 40.00, 'email15@example.com', '2024-03-26', '1234567804', '15:30:00', 'CONFIRMED', 'GUIDEDGROUP'),
+(16, 116, 1, 4, 80.00, 'email16@example.com', '2024-03-27', '1234567805', '16:30:00', 'CONFIRMED', 'FAMILY'),
+(17, 117, 1, 5, 100.00, 'email17@example.com', '2024-03-28', '1234567806', '09:45:00', 'CONFIRMED', 'SOLO'),
+(18, 118, 1, 3, 60.00, 'email18@example.com', '2024-03-29', '1234567807', '10:45:00', 'CONFIRMED', 'GUIDEDGROUP'),
+(19, 119, 1, 2, 40.00, 'email19@example.com', '2024-03-30', '1234567808', '11:45:00', 'CONFIRMED', 'FAMILY'),
+(20, 120, 1, 4, 80.00, 'email20@example.com', '2024-03-31', '1234567809', '12:45:00', 'CONFIRMED', 'SOLO');
+CREATE TABLE Report (
+    reportID INT PRIMARY KEY,
+    reportType VARCHAR(255) NOT NULL,
+    parkID INT NOT NULL,
+    date DATE NOT NULL,
+    comment TEXT
+);
+CREATE TABLE VisitorsReport (
+    reportID INT PRIMARY KEY,
     parkNumber INT NOT NULL,
-    maxVisitors INT NOT NULL,
-    gap DOUBLE NOT NULL,
-    staytime INT NOT NULL,
-    approved ENUM('REJECTED', 'APPROVAL', 'WAITING_FOR_APPROVAL') NOT NULL
+    totalIndividualVisitors INT NOT NULL,
+    totalGroupVisitors INT NOT NULL,
+    totalFamilyVisitors INT NOT NULL,
+    totalVisitors INT NOT NULL
 );
 
 --
