@@ -174,9 +174,14 @@ public class ServerController {
 		}
 
 	}
+	
 
 	@FXML
 	protected void initialize() {
+		PortTxt.setText("5555");
+	    DBUserNameTxt.setText("root"); // Assuming you might want to set the username to 'root' as well
+
+		
         //redirectSystemStreams(); // Redirect System.out and System.err
 
 		HostCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getHost()));

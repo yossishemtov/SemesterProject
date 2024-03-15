@@ -44,13 +44,14 @@ public class TravelerLoginController {
 	    if (isSuccessful) { // if entered right ID with 9 digits
 	        try {
 	        	// creating a traveler instance to send to server controller for validation 
-		    	Traveler TryLoginVistor = new Traveler(Integer.parseInt(visitorID), null, null, null, null, null);
+
+		    	Traveler TryLoginVistor = new Traveler(Integer.parseInt(visitorID), null, null, null, null, null,null);
+
 		    	
 		        ClientServerMessage TravelerLoginAttemptInformation = new ClientServerMessage(TryLoginVistor, Operation.GET_TRAVLER_INFO);
 		        ClientUI.clientControllerInstance.sendMessageToServer(TravelerLoginAttemptInformation);
 		        // Get traveler data from the server
 		        Traveler TravelerFromServer = (Traveler) ClientController.data.getDataTransfered();
-		        // update the current traveler in UserManager
 		        Usermanager.setCurrentTraveler(TravelerFromServer);
 		       
 		        // if traveler has an order in the system
@@ -78,7 +79,7 @@ public class TravelerLoginController {
 		        	// if traveler does not have an order in the system
 		        	if (TravelerFromServer == null) {
 		        		// open order a visit screen 
-		        		NavigationManager.openPage("OrdervisitFrame.fxml", click, "order A visit Screen", true);
+		        		NavigationManager.openPage("OrderVisit.fxml", click, "order A visit Screen", true);
 		        	}	
 		        }
 	        } catch (Exception e) {

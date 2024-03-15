@@ -4,6 +4,8 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
+
 import common.*;
 import common.worker.*;
 
@@ -26,7 +28,90 @@ public class DatabaseController {
 	}
 	
 	
+
+	public boolean insertChangeRequest(ChangeRequest request) {
+	    String query = "INSERT INTO `changerequests` (parkName, parkNumber, maxVisitors, gap, staytime, approved) VALUES (?, ?, ?, ?, ?, ?)";
+	    try (
+	         PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	        
+	        ps.setString(1, request.getParkName());
+	        ps.setInt(2, request.getParkNumber());
+	        ps.setInt(3, request.getMaxVisitors());
+	        ps.setDouble(4, request.getGap());
+	        ps.setInt(5, request.getStaytime());
+	        ps.setString(6, request.getApproved()); // Assuming you handle the enum to string conversion
+	        
+	        int rowsAffected = ps.executeUpdate();
+	        return rowsAffected > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+	public ArrayList<ChangeRequest> getChangeRequestsWaitingForApproval(GeneralParkWorker worker) {
+		ArrayList<ChangeRequest> requests = new ArrayList<>();
+	    String query = "SELECT * FROM `changerequests` WHERE parkNumber = ? AND approved = 'WAITING_FOR_APPROVAL'";
+	    
+		// Determine the query based on the worker's role
+	    if ("Department Manager".equals(worker.getRole())) {
+	        // For department managers: fetch requests waiting for approval for a specific park
+	        query = "SELECT * FROM `changerequests` WHERE parkNumber = ? AND approved = 'WAITING_FOR_APPROVAL'";
+	    } else if ("Park Manager".equals(worker.getRole())) {
+	        // For park managers: fetch all requests, regardless of approval status
+	        query = "SELECT * FROM `changerequests` WHERE parkNumber = ?";
+	    } 
+	    System.out.println(query);
+	    try (
+	         PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	        
+	        ps.setInt(1, worker.getWorksAtPark());
+	        try (ResultSet rs = ps.executeQuery()) {
+	            while (rs.next()) {
+	                ChangeRequest request = new ChangeRequest(
+	                        rs.getInt("id"),
+	                        rs.getString("parkName"),
+	                        rs.getInt("parkNumber"),
+	                        rs.getInt("maxVisitors"),
+	                        rs.getInt("gap"),
+	                        rs.getInt("staytime"),
+	                        rs.getString("approved"));
+	                requests.add(request);
+	            }
+	        }
+	    }  catch (SQLException e) {
+	        System.out.println("SQLException occurred");
+	        e.printStackTrace();
+	    } catch (Exception e) {
+	        System.out.println("General exception occurred");
+	        e.printStackTrace();
+	    }
+	    
+	    System.out.println("not error in");
+
+	    return requests.isEmpty() ? null : requests; // Return null if the list is empty
+	}
 	
+	
+	public boolean updateChangeRequestStatus(ChangeRequest request) {
+	    String query = "UPDATE `changerequests` SET approved = ? WHERE id = ?";
+	    try (
+	         PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	        
+	        ps.setString(1, request.getApproved()); // Use the request's approved status
+	        ps.setInt(2, request.getId()); // Use the request's id
+	        
+	        int rowsAffected = ps.executeUpdate();
+	        return rowsAffected > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+
+
+
+
+
 	/**
      * Updates a traveler's record to mark them as a guide.
      *
@@ -64,7 +149,7 @@ public class DatabaseController {
 	            pstmt.setString(3, traveler.getLastName());
 	            pstmt.setString(4, traveler.getEmail());
 	            pstmt.setString(5, traveler.getPhoneNum());
-	            pstmt.setInt(6, traveler.getIsGrupGuide()); // Assuming 1 for guide, 0 for not a guide.
+	            pstmt.setInt(6, traveler.getIsGroupGuide()); // Assuming 1 for guide, 0 for not a guide.
 	            pstmt.setInt(7, 0); // Assuming isloggedin default to 0.
 
 	            int affectedRows = pstmt.executeUpdate();
@@ -81,69 +166,67 @@ public class DatabaseController {
 	    }
 	
 	
-	  // Method to get a Park object by parkNumber
-    public Park getParkDetails(int parkNumber) {
-        Park park = null;
-        String query = "SELECT * FROM `park` WHERE parkNumber = ?";
-        
-        try (
+	// Method to get a Park object by parkNumber
+	 public Park getParkDetails(int parkNumber) {
+	     Park park = null;
+	     String query = "SELECT * FROM `park` WHERE parkNumber = ?";
 
-             PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
-            
-            preparedStatement.setInt(1, parkNumber);
-            
-            ResultSet resultSet = preparedStatement.executeQuery();
-            
-            if (resultSet.next()) {
-	            System.out.println("in");
+	     try (PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
+	         preparedStatement.setInt(1, parkNumber);
 
-                String name = resultSet.getString("name");
-                Integer maxVisitors = resultSet.getInt("maxVisitors");
-                Integer capacity = resultSet.getInt("capacity");
-                Integer currentVisitors = resultSet.getInt("currentVisitors");
-                String location = resultSet.getString("location");
-                Integer staytime = resultSet.getInt("staytime");
-                Integer workersAmount = resultSet.getInt("workersAmount");
-                Integer managerID = resultSet.getInt("managerId");
-                Integer workingTime = resultSet.getInt("workingTime");
-                
-                park = new Park(name, parkNumber, maxVisitors, capacity, currentVisitors, location, staytime, workersAmount, managerID, workingTime);
+	         ResultSet resultSet = preparedStatement.executeQuery();
+
+	         if (resultSet.next()) {
+	             System.out.println("in");
+
+	             String name = resultSet.getString("name");
+	             Integer maxVisitors = resultSet.getInt("maxVisitors");
+	             Integer capacity = resultSet.getInt("capacity");
+	             Integer currentVisitors = resultSet.getInt("currentVisitors");
+	             String location = resultSet.getString("location");
+	             Integer staytime = resultSet.getInt("staytime");
+	             Integer workersAmount = resultSet.getInt("workersAmount");
+	             Integer managerID = resultSet.getInt("managerId");
+	             Integer workingTime = resultSet.getInt("workingTime");
+	             Integer gap = resultSet.getInt("gap"); // Retrieve gap from resultSet
+
+	             park = new Park(name, parkNumber, maxVisitors, capacity, currentVisitors, location, staytime, workersAmount, gap, managerID, workingTime);
+	         }
+	     } catch (SQLException e) {
+	         e.printStackTrace();
+	     }
+	     return park;
+	 }
+
+	
+	
+
+    public Traveler getTravelerDetails(Traveler travelerFromClient) {
+        String query = "SELECT firstName, lastName, email, phoneNumber, GroupGuide, isloggedin FROM `travler` WHERE id = ?";
+        Traveler traveler = null; // Initialize to null
+
+        try (PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
+            preparedStatement.setInt(1, travelerFromClient.getId());
+
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    // Instantiate a new Traveler object with the retrieved details
+                    String firstName = resultSet.getString("firstName");
+                    String lastName = resultSet.getString("lastName");
+                    String email = resultSet.getString("email");
+                    String phoneNum = resultSet.getString("phoneNumber");
+                    Integer isGrupGuide = resultSet.getInt("GroupGuide");
+                    Integer isloggedin = resultSet.getInt("isloggedin"); // Fetch isloggedin status
+                    traveler = new Traveler(travelerFromClient.getId(), firstName, lastName, email, phoneNum, isGrupGuide, isloggedin);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            // Consider better exception handling
         }
-        //System.out.println(park.toString());
-        return park;
+        return traveler; // Returns the new Traveler object or null if not found
     }
-	
-	
-	
-
-	
-	public Traveler getTravelerDetails(Traveler travelerFromClient) {
-	    String query = "SELECT firstName, lastName, email, phoneNumber FROM travler WHERE id = ?";
-	    Traveler traveler = null; // Initialize to null
-
-	    try (PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
-	        preparedStatement.setInt(1, travelerFromClient.getId());
-
-	        try (ResultSet resultSet = preparedStatement.executeQuery()) {
-	            if (resultSet.next()) {
-	                // Instantiate a new Traveler object with the retrieved details
-	                String firstName = resultSet.getString("firstName");
-	                String lastName = resultSet.getString("lastName");
-	                String email = resultSet.getString("email");
-	                String phoneNum = resultSet.getString("phoneNumber");
-
-	                traveler = new Traveler(travelerFromClient.getId(), firstName, lastName, email, phoneNum, 0);
-	            }
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        // Consider better exception handling
-	    }
-	    return traveler; // Returns the new Traveler object or null if not found
-	}
 
 	// Get GeneralParkWorkerDetails
 	// check GetGeneralParkWorker login details and return the data,if not exist return empty ArrayList of type generalParkWorker
@@ -178,10 +261,8 @@ public class DatabaseController {
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-	        return null; // Consider throwing a custom exception
+	        return generalParkWorker; // Consider throwing a custom exception
 	    }
-	
-		System.out.println(generalParkWorker.toString());
 
 	    return generalParkWorker; // This will return an empty list if there were no records found
 	}
@@ -236,7 +317,7 @@ public class DatabaseController {
 	     */
 		public Boolean insertTravelerOrder(Order order) {
 		    // Adjusting the query to match the database schema order provided
-		    String query = "INSERT INTO orders (orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		    String query = "INSERT INTO `order` (orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		    try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 		        // Set parameters based on the Order object fields, in the order specified
@@ -318,20 +399,18 @@ public class DatabaseController {
 	    }
 	    
 	    
-	    public Boolean patchParkParameters(Park park) {
-	        String query = "UPDATE parks SET name = ?, maxVisitors = ?, capacity = ?, currentVisitors = ?, location = ?, stayTime = ?, workersAmount = ?, managerId = ?, workingTime = ? WHERE parkNumber = ?";
+	    public Boolean patchParkParameters(ChangeRequest changeRequest) {
+	        // Assuming capacity is a column in your database that should be updated based on gap
+	        // Calculate the new capacity based on the provided gap and maxVisitors
+	        
+	        // Update only the fields that are affected by a change request
+	        String query = "UPDATE `park` SET maxVisitors = ?, stayTime = ?, gap = ? WHERE parkNumber = ?";
 
 	        try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-	            ps.setString(1, park.getName());
-	            ps.setInt(2, park.getMaxVisitors());
-	            ps.setInt(3, park.getCapacity());
-	            ps.setInt(4, park.getCurrentVisitors());
-	            ps.setString(5, park.getLocation());
-	            ps.setInt(6, park.getStaytime());
-	            ps.setInt(7, park.getWorkersAmount());
-	            ps.setInt(8, park.getManagerid()); 
-	            ps.setInt(9, park.getWorkingTime());
-	            ps.setInt(10, park.getParkNumber());
+	            ps.setInt(1, changeRequest.getMaxVisitors());
+	            ps.setInt(2, changeRequest.getStaytime());
+	            ps.setInt(3, changeRequest.getGap());
+	            ps.setInt(4, changeRequest.getParkNumber());
 
 	            int affectedRows = ps.executeUpdate();
 	            return affectedRows > 0;
@@ -340,6 +419,7 @@ public class DatabaseController {
 	            return false;
 	        }
 	    }
+
 	    
 	    /**
 	     * Updates the status of generalparkworker to signedin
@@ -368,7 +448,7 @@ public class DatabaseController {
 	     * @return true if the signed out was successful, false otherwise.
 	     */
 	    public Boolean changeSignedOutOfGeneralParkWorker(GeneralParkWorker signedParkWorker) {
-	    	String query = "UPDATE generalparkworker SET isloggedin = 0 WHERE workerid = ?";
+	    	String query = "UPDATE `generalparkworker` SET isloggedin = 0 WHERE workerid = ?";
 	    	
 	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
 	    		ps.setInt(1, signedParkWorker.getWorkerId());
@@ -501,6 +581,7 @@ public class DatabaseController {
 	     * @param parkworker the park worker information
 	     * @return park information if successful and null if not found
 	     */
+
 	    public Park getAmountOfVisitorsByParkWorker(GeneralParkWorker parkworker) {
 	    	//Querying for the park information with the park number associated with the park worker
 	    	String query = "Select * FROM park WHERE parkNumber = ?";
@@ -510,54 +591,58 @@ public class DatabaseController {
 	            ps.setInt(1, parkworker.getWorksAtPark());
 	            ResultSet rs = ps.executeQuery(); // Use executeQuery for SELECT statements
 
-	            while (rs.next()) {
-	                // Assuming you have a constructor that matches this data extraction pattern.
-	            	    fetchedPark = new Park(
-	                    rs.getString("name"), 
-	                    rs.getInt("parkNumber"), 
-	                    rs.getInt("maxVisitors"), 
-	                    rs.getInt("capacity"), 
-	                    rs.getInt("currentVisitors"), 
-	                    rs.getString("location"), 
-	                    rs.getInt("staytime"), 
-	                    rs.getInt("workersAmount"), 
-	                    null, // For manager, since it's a complex object, you might need a different approach
-	                    rs.getInt("workingTime")
-	                );
+
+	  
+	                if (rs.next()) { // Use if instead of while if you expect or require a single result
+	                    fetchedPark = new Park(
+	                        rs.getString("name"), 
+	                        rs.getInt("parkNumber"), 
+	                        rs.getInt("maxVisitors"), 
+	                        rs.getInt("capacity"), 
+	                        rs.getInt("currentVisitors"), 
+	                        rs.getString("location"), 
+	                        rs.getInt("staytime"), 
+	                        rs.getInt("workersAmount"), 
+	                        rs.getInt("gap"), // Assuming you have a column for gap in your DB
+	                        rs.getInt("managerID"), // Assuming managerID is stored directly as an integer
+	                        rs.getInt("workingTime")
+	                    );
+	                }
 	            }
-	        } catch (SQLException e) {
+	         catch (SQLException e) {
 	            e.printStackTrace();
+	            // Consider logging this exception or handling it more gracefully
 	        }
+
 	        return fetchedPark;
-	    	
 	    }
 	    
 	    public Park getAmountOfVisitors(GeneralParkWorker worker) {
-	        String query = "SELECT * FROM park WHERE parkNumber=?"; // Corrected FROM clause
+	        String query = "SELECT * FROM park WHERE parkNumber = ?"; 
 
 	        Park park = null;
-			try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	        try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 	            ps.setInt(1, worker.getWorksAtPark());
-	            ResultSet rs = ps.executeQuery(); // Use executeQuery for SELECT statements
+	            try (ResultSet rs = ps.executeQuery()) { 
 
-	            while (rs.next()) {
-	                // Assuming you have a constructor that matches this data extraction pattern.
-	                park = new Park(
-	                    rs.getString("name"), 
-	                    rs.getInt("parkNumber"), 
-	                    rs.getInt("maxVisitors"), 
-	                    rs.getInt("capacity"), 
-	                    rs.getInt("currentVisitors"), 
-	                    rs.getString("location"), 
-	                    rs.getInt("staytime"), 
-	                    rs.getInt("workersAmount"), 
-	                    rs.getInt("managerId"), // For manager, since it's a complex object, you might need a different approach
-	                    rs.getInt("workingTime")
-	                );
-	               
+	                if (rs.next()) { 
+	                    park = new Park(
+	                        rs.getString("name"), 
+	                        rs.getInt("parkNumber"), 
+	                        rs.getInt("maxVisitors"), 
+	                        rs.getInt("capacity"), 
+	                        rs.getInt("currentVisitors"), 
+	                        rs.getString("location"), 
+	                        rs.getInt("staytime"), 
+	                        rs.getInt("workersAmount"),
+	                        rs.getInt("gap"), 
+	                        rs.getInt("managerID"), 
+	                        rs.getInt("workingTime")
+	                    );
+	                }
 	            }
 	        } catch (SQLException e) {
-	            e.printStackTrace();
+	            e.printStackTrace(); 
 	        }
 	        return park;
 	    }
@@ -623,88 +708,4 @@ public class DatabaseController {
 
 }
 
-	/**
-	 * Retrieves specific order data from the database based on the order number.
-	 *
-	 * @param orderId The order number to search for.
-	 * @return An ArrayList containing the park name and telephone number for the
-	 *         specified order.
-	 */
-	/*
-	public ArrayList<String> getSpecificDataFromDB(String orderId) {
 
-		ArrayList<String> orderDataForClient = new ArrayList<>();
-		String query = "SELECT * FROM `order` WHERE OrderNumber=?";
-
-		try {
-			PreparedStatement ps = connectionToDatabase.prepareStatement(query);
-			ps.setString(1, orderId);
-			ResultSet rs = ps.executeQuery();
-
-			if (rs.next()) {
-				String parkName = rs.getString("ParkName");
-				String telephoneNumber = rs.getString("TelephoneNumber");
-
-				orderDataForClient.add(parkName);
-				orderDataForClient.add(telephoneNumber);
-			}
-
-			rs.close();
-			ps.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return orderDataForClient;
-	}
-	*/
-
-
-
-
-	/**
-	 * Updates the telephone number and park name for a specific order in the
-	 * database.
-	 *
-	 * @param orderId                 The ID of the order to update.
-	 * @param parkNameToChange        The new park name.
-	 * @param telephoneNumberToChange The new telephone number.
-	 */
-	/*
-	public void setOrderDataOnDatabase_TelphoneParkNameChange(String orderId, String parkNameToChange,
-			String telephoneNumberToChange) {
-		String updateQuery = "UPDATE `order` SET TelephoneNumber=?, ParkName=? WHERE OrderNumber=?";
-
-		try {
-			PreparedStatement ps = connectionToDatabase.prepareStatement(updateQuery);
-
-			ps.setString(1, telephoneNumberToChange);
-			ps.setString(2, parkNameToChange);
-			ps.setString(3, orderId);
-			ps.executeUpdate();
-			ps.close();
-			System.out.println("Order data updated successfully.");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	
-}
-/*
-	public void GetTravelerID(Traveler traveler) {
-//		String query = "SELECT * FROM traveler WHERE id=?";
-//		try {
-//			PreparedStatement ps = connectionToDatabase.prepareStatement(query);
-//			ps.setInt(1, traveler.getId());
-//		}catch() {
-//			
-//		}
-
-//		ClientServerMessage message = new ClientServerMessage(,guery);
-
-	}
-
-}
-
-*/

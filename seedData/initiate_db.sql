@@ -18,6 +18,16 @@
 --
 -- Table structure for table `generalparkworker`
 --
+CREATE TABLE ChangeRequests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    parkName VARCHAR(255) NOT NULL,
+    parkNumber INT NOT NULL,
+    maxVisitors INT NOT NULL,
+    gap DOUBLE NOT NULL,
+    staytime INT NOT NULL,
+    approved ENUM('REJECTED', 'APPROVAL', 'WAITING_FOR_APPROVAL') NOT NULL
+);
+
 
 DROP TABLE IF EXISTS `generalparkworker`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -82,6 +92,17 @@ LOCK TABLES `order` WRITE;
 INSERT INTO `order` VALUES (1,1214214,1,5,50,'alice@example.com','2024-07-04','054-7376231','09:00:00','PENDING','FAMILY\r'),(2,2654456,2,3,30,'bob@example.com','2024-07-05','052-7355231','14:00:00','CONFIRMED','FAMILY\r'),(3,3123123,3,6,60,'claire@example.com','2024-07-06','054-7376431','08:00:00','PENDING','GUIDEDGROUP\r'),(4,4643544,2,4,40,'david@example.com','2024-07-07','054-2136231','10:30:00','CONFIRMED','FAMILY\r'),(5,4643544,2,1,10,'david@example.com','2024-08-07','054-2136231','10:30:00','CANCEL','SOLO'),(6,3847485,1,14,100,'JoeBoden@e.braude.ac.il','2024-08-07','054-2232574','12:00:00','PENDING','GUIDEDGROUP\rGUIDEDGROUP\r'),(7,3847482,3,3,10,'deadpool@e.braude.ac.il','2024-07-15','054-2232594','14:00:00','CONFIRMED','FAMILY'),(8,3847486,2,1,40,'Barakobomo@e.braude.ac.il','2024-07-07','054-2232511','08:00:00','PENDING','SOLO');
 /*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `ChangeRequests`;
+CREATE TABLE ChangeRequests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    parkName VARCHAR(255) NOT NULL,
+    parkNumber INT NOT NULL,
+    maxVisitors INT NOT NULL,
+    gap DOUBLE NOT NULL,
+    staytime INT NOT NULL,
+    approved ENUM('REJECTED', 'APPROVAL', 'WAITING_FOR_APPROVAL') NOT NULL
+);
 
 --
 -- Table structure for table `park`

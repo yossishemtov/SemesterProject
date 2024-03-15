@@ -1,6 +1,7 @@
 package server;
 
 import common.*;
+import common.worker.ChangeRequest;
 import common.worker.GeneralParkWorker;
 import common.worker.ParkWorker;
 
@@ -299,10 +300,14 @@ public class MessageHandlerFromClient {
 
 		case Operation.PATCH_PARK_PARAMETERS:
 			// Placeholder for patching park parameters
-			ArrayList<Park> park = (ArrayList<Park>) messageFromClient.getDataTransfered();
-			if (dbControllerInstance.patchParkParameters(park.get(0))) {
+			ChangeRequest request = (ChangeRequest) messageFromClient.getDataTransfered();
+			if (dbControllerInstance.patchParkParameters(request)) {
+				System.out.println("set true");
+
 				messageFromClient.setflagTrue();
 			} else {
+				System.out.println("set flase");
+
 				messageFromClient.setflagFalse();
 
 			}
@@ -341,6 +346,50 @@ public class MessageHandlerFromClient {
 
 			break;
 			
+	
+		case Operation.POST_NEW_CHANGE_REQUEST:
+		    // Placeholder for posting a new change request
+            System.out.println("in POST_NEW_CHANGE_REQUEST");
+
+		    ChangeRequest newChangeRequest = (ChangeRequest) messageFromClient.getDataTransfered();
+		    if (dbControllerInstance.insertChangeRequest(newChangeRequest)) {
+		        messageFromClient.setflagTrue();
+		    } else {
+		        messageFromClient.setflagFalse();
+		    }
+		    client.sendToClient(messageFromClient);
+		    break; 
+
+		case Operation.GET_CHANGE_REQUESTS:
+		    // Placeholder for getting change requests waiting for approval
+			System.out.println("in " + command);
+
+		    GeneralParkWorker parkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
+		    ArrayList<ChangeRequest> waitingForApprovalRequests = dbControllerInstance.getChangeRequestsWaitingForApproval(parkWorker);
+		    //System.out.println(waitingForApprovalRequests);
+		    System.out.println("out " + command);
+		    if (waitingForApprovalRequests != null) 
+		    {
+		        System.out.println(waitingForApprovalRequests.get(0));
+
+		    	 messageFromClient.setflagTrue();
+		        messageFromClient.setDataTransfered(waitingForApprovalRequests);
+		    } else {
+		        messageFromClient.setflagFalse(); // Indicate no requests found or an error occurred
+		    }
+		    client.sendToClient(messageFromClient);
+		    break;
+
+		case Operation.PATCH_CHANGE_REQUEST_STATUS:
+		    // Placeholder for updating the status of a change request
+		    ChangeRequest changeRequestToUpdate = (ChangeRequest) messageFromClient.getDataTransfered();
+		    if (dbControllerInstance.updateChangeRequestStatus(changeRequestToUpdate)) {
+		        messageFromClient.setflagTrue();
+		    } else {
+		        messageFromClient.setflagFalse();
+		    }
+		    client.sendToClient(messageFromClient);
+		    break;
 
 		default:
 			System.out.println("default");

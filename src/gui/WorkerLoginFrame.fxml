@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
@@ -59,13 +60,6 @@
             <Font name="Ebrima" size="14.0" />
          </font>
       </JFXTextField>
-      <JFXTextField fx:id="WorkerPwd" focusColor="#121920" layoutX="355.0" layoutY="328.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="190.0" promptText="Enter password" styleClass="txtField" unFocusColor="#a3a3a3">
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <font>
-            <Font name="Ebrima" size="14.0" />
-         </font>
-      </JFXTextField>
+      <JFXPasswordField fx:id="WorkerPwd" focusColor="#121920" layoutX="355.0" layoutY="332.0" prefHeight="31.0" prefWidth="190.0" promptText="EnterPassword" unFocusColor="#a3a3a3" />
    </children>
 </Pane>

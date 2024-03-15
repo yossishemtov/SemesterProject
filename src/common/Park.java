@@ -14,10 +14,11 @@ public class Park  implements Serializable {
 	private Integer staytime;
 	private Integer workersAmount;
 	private Integer managerID;
+	private Integer gap;
 	private Integer workingTime;
 	
 	public Park(String name, Integer parkNumber, Integer maxVisitors, Integer capacity, Integer currentVisitors,
-			String location, Integer staytime, Integer workersAmount, Integer managerID, Integer workingTime) {
+			String location, Integer staytime, Integer workersAmount,Integer gap, Integer managerID, Integer workingTime) {
 		super();
 		this.name = name;
 		this.parkNumber = parkNumber;
@@ -26,10 +27,19 @@ public class Park  implements Serializable {
 		this.currentVisitors = currentVisitors;
 		this.location = location;
 		this.staytime = staytime;
+		this.gap = gap; 
 		this.workersAmount = workersAmount;
 		this.managerID = managerID;
 		this.workingTime = workingTime;
 	}
+	
+    public Integer getGap() {
+        return gap;
+    }
+
+    public void setGap(Integer gap) {
+        this.gap = gap;
+    }
 	
 	
 	public String getName() {
@@ -93,20 +103,21 @@ public class Park  implements Serializable {
 		this.workingTime = workingTime;
 	}
 	
-	  @Override
-	    public String toString() {
-	        return "Park{" +
-	                "name='" + name + '\'' +
-	                ", parkNumber=" + parkNumber +
-	                ", maxVisitors=" + maxVisitors +
-	                ", capacity=" + capacity +
-	                ", currentVisitors=" + currentVisitors +
-	                ", location='" + location + '\'' +
-	                ", staytime=" + staytime +
-	                ", workersAmount=" + workersAmount +
-	                ", managerID=" + managerID +
-	                ", workingTime=" + workingTime +
-	                '}';
-	    }
+    @Override
+    public String toString() {
+        return "Park{" +
+                "name='" + name + '\'' +
+                ", parkNumber=" + parkNumber +
+                ", maxVisitors=" + maxVisitors +
+                ", capacity=" + capacity +
+                ", currentVisitors=" + currentVisitors +
+                ", location='" + location + '\'' +
+                ", staytime=" + staytime +
+                ", workersAmount=" + workersAmount +
+                ", managerID=" + managerID +
+                ", gap=" + gap + // Include 'gap' in the toString representation
+                ", workingTime=" + workingTime +
+                '}';
+    }
 	
 }
