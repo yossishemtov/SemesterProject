@@ -49,8 +49,8 @@ public class InputValidation {
 	 }
 	 
 	 public static Alerts validateOrderNumber(String orderId) {
-		 if(!orderId.matches("//d+")) {
-	            return new Alerts(Alerts.AlertType.ERROR, "Invalid Order Id", "", "Order id must only contain numbers");
+		 if(!orderId.matches("[1-9]\\d{0,4}|0")) {
+	            return new Alerts(Alerts.AlertType.ERROR, "Invalid Order Id", "", "Order id must only contain numbers and not exceed 8 characters");
 		 }else {
 	        	return new Alerts(Alerts.AlertType.INFORMATION, "Order Id Validation", "", "Order Id Validation");
 	        }

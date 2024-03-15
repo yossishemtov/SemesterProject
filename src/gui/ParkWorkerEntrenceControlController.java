@@ -8,6 +8,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
 import client.ClientUI;
+import client.InputValidation;
 import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
@@ -47,7 +48,14 @@ public class ParkWorkerEntrenceControlController {
     	try {
     		
     		String orderIdText = orderTextBox.getText();
+    		
+    		//Checks if order id entered by user only contains numbers
+    		Alerts alertIndication = InputValidation.validateOrderNumber(orderIdText);
+        	Boolean checkIfNoError = alertIndication.getAlertType().toString().equals("INFORMATION");
+    		
         	
+        	if(checkIfNoError) {
+        		
         	Integer orderIdInteger = Integer.parseInt(orderIdText);
         	
         	//Send the orderId within an order dummy object to the server
@@ -76,6 +84,10 @@ public class ParkWorkerEntrenceControlController {
         		Alerts noOrderIdExists = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "No such order exists!");
         		noOrderIdExists.showAndWait();
         	}
+        }else {
+        	//If validation fails (user didnt enter only numbers)
+        	alertIndication.showAndWait();
+        }
     		
     	}catch(Exception e) {
     		e.printStackTrace();
