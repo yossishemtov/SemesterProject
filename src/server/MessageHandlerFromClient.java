@@ -257,12 +257,12 @@ public class MessageHandlerFromClient {
 				else {
 					messageFromClient.setflagFalse();
 				}
-				
-				client.sendToClient(messageFromClient);
-				
+
 			}catch (IndexOutOfBoundsException e) {
 				e.printStackTrace();
 			}
+			
+			client.sendToClient(messageFromClient);
 			break;
 			
 		case Operation.PATCH_TRAVELER_SIGNEDOUT:
@@ -277,12 +277,33 @@ public class MessageHandlerFromClient {
 					messageFromClient.setflagFalse();
 				}
 				
-				client.sendToClient(messageFromClient);
 				
 			}catch (IndexOutOfBoundsException e) {
 				e.printStackTrace();
 			}
+			client.sendToClient(messageFromClient);
 			
+			break;
+			
+		case Operation.POST_NEW_VISIT:
+			//Post a new visit to the database
+			Visit visitOfPark = (Visit) messageFromClient.getDataTransfered();
+			
+			try {				
+				Boolean isSuccessful = dbControllerInstance.addNewVisit(visitOfPark);
+				
+				if(isSuccessful) {
+					messageFromClient.setflagTrue();
+				} else {
+					messageFromClient.setflagFalse();
+
+				}
+				
+			}catch (IndexOutOfBoundsException e) {
+				e.printStackTrace();
+			}
+
+			client.sendToClient(messageFromClient);
 			break;
 			
 			
@@ -302,6 +323,7 @@ public class MessageHandlerFromClient {
 			} catch (IndexOutOfBoundsException e) {
 				e.printStackTrace();
 			}
+			client.sendToClient(messageFromClient);
 
 			break;
 
@@ -402,6 +424,35 @@ public class MessageHandlerFromClient {
 		    client.sendToClient(messageFromClient);
 		    break;
 
+		case Operation.PATCH_ORDER_STATUS_TO_INPARK:
+			//Changes the state of an order to INPARK
+				Order orderInformationToChangeStatus = (Order) messageFromClient.getDataTransfered();
+				Boolean receivedOrderInformationToChangeStatusFromDb = dbControllerInstance.patchOrderStatusToInpark(orderInformationToChangeStatus);
+
+				if(receivedOrderInformationToChangeStatusFromDb) {
+					messageFromClient.setflagTrue();
+				}else {
+					messageFromClient.setflagFalse();
+				}
+				
+				client.sendToClient(messageFromClient);
+			break;
+			
+		case Operation.PATCH_PARK_VISITORS_APPEND:
+			//Append the number of visitors to the park
+			Park parkToAppendVisitors = (Park) messageFromClient.getDataTransfered();
+			
+			Boolean isChangesAmountSucessful = dbControllerInstance.patchParkVisitorsNumberAppend(parkToAppendVisitors);
+			
+			if(isChangesAmountSucessful) {
+				messageFromClient.setflagTrue();
+			}else {
+				messageFromClient.setflagFalse();
+			}
+			
+			client.sendToClient(messageFromClient);
+			break;
+		    
 		default:
 			System.out.println("default");
 			try {

@@ -25,9 +25,9 @@ public abstract class Operation {
 
     public final static String POST_NEW_TRAVLER_GUIDER = "Post new traveler guide request";
     public final static String POST_EXISTS_TRAVLER_GUIDER = "Post exists traveler guide request";
-
     public final static String POST_TRAVLER_ORDER = "Post new traveler order";
     public final static String POST_NEW_REPORT = "Post a new report";
+    public final static String POST_NEW_VISIT = "Post new visit";
     
     // PATCH COMMANDS
     public final static String PATCH_EXIST_ORDER = "Patch existing order";
@@ -37,7 +37,8 @@ public abstract class Operation {
     public final static String PATCH_GENERALPARKWORKER_SIGNEDOUT = "Patch generalparkworker to signed out";
     public final static String PATCH_TRAVELER_SIGNEDIN = "Patch traveler to signed in";
     public final static String PATCH_TRAVELER_SIGNEDOUT = "Patch traveler to signed out";
-
+    public final static String PATCH_ORDER_STATUS_TO_INPARK = "Patch an order to be INPARK status";
+    public final static String PATCH_PARK_VISITORS_APPEND = "Patch a park visitors number - append";
     
     // DELETE COMMANDS
     public final static String DELETE_EXISTING_ORDER = "Delete an existing order";

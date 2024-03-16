@@ -1,6 +1,9 @@
 package common.worker;
 
+import common.Order;
+
 public class ParkWorker extends GeneralParkWorker{
+
 
 	public ParkWorker(Integer workerNumber, String firstName, String lastName, String email, String role,
 			String userName, String password, Integer worksAtPark) {
@@ -8,7 +11,5 @@ public class ParkWorker extends GeneralParkWorker{
 		// TODO Auto-generated constructor stub
 	}
 
-	public void checkAvailableSpace() {
-		
-	}
+	
 }

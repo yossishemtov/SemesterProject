@@ -572,10 +572,86 @@ public class DatabaseController {
 	    	
 	    	
 	    }
+	    
+	    /**
+	     * Get order information and change its state to INPARK
+	     * @param Order object that contains a valid orderId
+	     * @return True if success or False if not
+	     */	
+	    public Boolean patchOrderStatusToInpark(Order receivedOrder) {
+	    	String query = "UPDATE `order` SET orderStatus = 'INPARK' WHERE orderId = ?";
+	    	
+	    	
+	    	try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
+	            pstmt.setInt(1, receivedOrder.getOrderId());
+
+	            int affectedRows = pstmt.executeUpdate();
+
+	            // Check if the update was successful
+	            return affectedRows > 0;
+	        } catch (SQLException e) {
+	            System.err.println("SQLException: " + e.getMessage());
+	            return false;
+	        } 
+
+	    }
+	    
+	    /**
+	     * Change park current amount of visitors
+	     * @param Park object with new amount of visitors
+	     * @return True if success or False if not
+	     */	
+	    public Boolean patchParkVisitorsNumberAppend(Park parkToAppend) {
+	    	//Append the visitors to the park currentvisitors
+	    	
+	    	String query = "UPDATE `park` SET currentVisitors = ? WHERE parkNumber = ?";
+	    	
+	    	try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
+	            pstmt.setInt(1, parkToAppend.getCurrentVisitors());
+	            pstmt.setInt(2, parkToAppend.getParkNumber());
+
+	            int affectedRows = pstmt.executeUpdate();
+
+	            // Check if the update was successful
+	            return affectedRows > 0;
+	            
+	        } catch (SQLException e) {
+	            System.err.println("SQLException: " + e.getMessage());
+	            return false;
+	        } 
+	    }
+	    
+	    /**
+	     * Insert a visit based on provided Visit object
+	     * @param Visit object to insert
+	     * @return True if success or False if not
+	     */	
+	    public Boolean addNewVisit(Visit newVisitToAdd) {
+	    	String query = "INSERT INTO `visit` (visitDate, enteringTime, exitingTime, parkNumber, orderId) VALUES (?, ?, ?, ?, ?)";
+
+		    try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+		        // Set parameters based on the Order object fields, in the order specified
+		        ps.setDate(1, java.sql.Date.valueOf(newVisitToAdd.getVisitDate()));
+		        ps.setTime(2, java.sql.Time.valueOf(newVisitToAdd.getEnteringTime()));
+		        ps.setTime(3, java.sql.Time.valueOf(newVisitToAdd.getExistingTime()));
+		        ps.setInt(4, newVisitToAdd.getParkNumber());
+		        ps.setFloat(5, newVisitToAdd.getOrderId());
+
+		        int affectedRows = ps.executeUpdate();
+		        if (affectedRows > 0) {
+		            return true;
+		        } else {
+		            return false;
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		        return false;
+		    }
+	    }
 	    	
 	    /**
-	     * Get order information based on the orderId provided and park
-	     * @param Order object that contains a valid orderId
+	     * Get order information based on the orderId, park number and date provided
+	     * @param Order object that contains a valid orderId, parknumber and date
 	     * @return Order object containing all the information about the order
 	     */	
 	    public Order getOrderInformationByOrderIdAndParkNumber(Order receivedOrderId) {
