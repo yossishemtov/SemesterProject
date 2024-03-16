@@ -233,8 +233,9 @@ public class DatabaseController {
 	// WorkerId | firstName | lastName | email | role | userName | password | worksAtPark
 	public GeneralParkWorker getGeneralParkWorkerDetails(GeneralParkWorker worker) {
 	    // Removed unused ArrayList<Order>
+		System.out.println("worker username: " + worker.getUserName() + "worker password: " + worker.getPassword());
 	    System.out.println("in db");
-	    System.out.println(worker.getPassword()+worker.getUserName());
+	    
 	    GeneralParkWorker generalParkWorker = null;
 
 	    String query = "SELECT * FROM `generalparkworker` WHERE userName = ? AND password= ?";

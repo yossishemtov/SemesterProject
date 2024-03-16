@@ -47,6 +47,9 @@ public class TravelerFrameController implements Initializable {
     private Label userLabel;
 
     @FXML
+    private JFXButton viewOrdersbutton;
+    
+    @FXML
     private StackPane leftBorder;
 
     @FXML
@@ -67,9 +70,7 @@ public class TravelerFrameController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     	Traveler currentTraveler = Usermanager.getCurrentTraveler();
-//    	System.out.println(currentTraveler.getEmail());
-    	
-    	
+//    	System.out.println(currentTraveler.getEmail()); 	
     }
     
     @FXML
@@ -80,7 +81,6 @@ public class TravelerFrameController implements Initializable {
 			 System.out.print("Something went wrong while trying view service traveler profile, check stack trace");
 			 e.printStackTrace();
 		 }
-    	
     }
     
     @FXML
@@ -91,7 +91,15 @@ public class TravelerFrameController implements Initializable {
 			 System.out.print("Something went wrong while clicking on order a visit button, check stack trace");
 			 e.printStackTrace();
     	}
-    	
+    }
+    
+    public void viewOrdersbutton(ActionEvent event) throws Exception {
+    	try {
+    		NavigationManager.openPageInCenter(pane, "OrderFrame.fxml");
+    	} catch(Exception e) {
+			 System.out.print("Something went wrong while clicking on view orders button, check stack trace");
+			 e.printStackTrace();
+    	}
     }
     
     @FXML
@@ -136,21 +144,6 @@ public class TravelerFrameController implements Initializable {
    
 
 	    
-	    
-//	    public void editOrderBtn(ActionEvent click) throws Exception {
-//	    	
-//	    	
-//	    	String orderID = OrderID.getText(); // get the order ID
-//		    Alerts alertID = InputValidation.ValidateVisitorID(orderID); // get the right alert
-//		    Boolean isSuccessful = alertID.getAlertType().toString().equals("INFORMATION");
-//		    
-//		    if (isSuccessful) { // if entered the right order ID
-//		        try {
-//		            NavigationManager.openPage("OrderFrame.fxml", click, "test", true);
-//		        }
-//		    }
-//	    }
-
 
 	public void orderVisit(ActionEvent click) throws Exception {
 
