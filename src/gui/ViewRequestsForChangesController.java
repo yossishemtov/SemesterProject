@@ -55,7 +55,7 @@ public class ViewRequestsForChangesController implements Initializable {
     @FXML
     private TableView<ChangeRequest> parametersTable;
     @FXML
-    private TableColumn<ChangeRequest, Integer> RequestIDCol, parkIDCol, NewMaxVisitorsCol, NewStayTimeCol, NewGapCol;
+    private TableColumn<ChangeRequest, Integer> RequestIDCol, parkIDCol, NewCapacityCol, NewStayTimeCol, NewGapCol;
     @FXML
     private TableColumn<ChangeRequest, String> StatusCol;
     @FXML
@@ -105,7 +105,7 @@ public class ViewRequestsForChangesController implements Initializable {
         // Binding table columns to ChangeRequest properties
         RequestIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         parkIDCol.setCellValueFactory(new PropertyValueFactory<>("parkNumber"));
-        NewMaxVisitorsCol.setCellValueFactory(new PropertyValueFactory<>("maxVisitors"));
+        NewCapacityCol.setCellValueFactory(new PropertyValueFactory<>("capacity"));
         NewStayTimeCol.setCellValueFactory(new PropertyValueFactory<>("staytime"));
         NewGapCol.setCellValueFactory(new PropertyValueFactory<>("gap"));
         StatusCol.setCellValueFactory(new PropertyValueFactory<>("approved"));

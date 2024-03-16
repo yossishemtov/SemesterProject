@@ -346,7 +346,6 @@ public class MessageHandlerFromClient {
 		case Operation.GET_CHANGE_REQUESTS:
 			// Placeholder for getting change requests waiting for approval
 			System.out.println("in " + command);
-
 			GeneralParkWorker parkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
 			ArrayList<ChangeRequest> waitingForApprovalRequests = dbControllerInstance
 					.getChangeRequestsWaitingForApproval(parkWorker);

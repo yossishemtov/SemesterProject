@@ -75,13 +75,13 @@ public class DatabaseController {
 	}
 
 	public boolean insertChangeRequest(ChangeRequest request) {
-		String query = "INSERT INTO `changerequests` (parkName, parkNumber, maxVisitors, gap, staytime, approved) VALUES (?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO `changerequests` (parkName, parkNumber, capacity, gap, staytime, approved) VALUES (?, ?, ?, ?, ?, ?)";
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 
 			ps.setString(1, request.getParkName());
 			ps.setInt(2, request.getParkNumber());
-			ps.setInt(3, request.getMaxVisitors());
-			ps.setDouble(4, request.getGap());
+			ps.setInt(3, request.getCapacity());
+			ps.setInt(4, request.getGap());
 			ps.setInt(5, request.getStaytime());
 			ps.setString(6, request.getApproved()); // Assuming you handle the enum to string conversion
 
@@ -113,7 +113,7 @@ public class DatabaseController {
 			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
 					ChangeRequest request = new ChangeRequest(rs.getInt("id"), rs.getString("parkName"),
-							rs.getInt("parkNumber"), rs.getInt("maxVisitors"), rs.getInt("gap"), rs.getInt("staytime"),
+							rs.getInt("parkNumber"), rs.getInt("capacity"), rs.getInt("gap"), rs.getInt("staytime"),
 							rs.getString("approved"));
 					requests.add(request);
 				}
@@ -435,22 +435,31 @@ public class DatabaseController {
 		// Assuming capacity is a column in your database that should be updated based
 		// on gap
 		// Calculate the new capacity based on the provided gap and maxVisitors
-
+		Integer newMaxVisitor=changeRequest.getCapacity()-changeRequest.getGap();
 		// Update only the fields that are affected by a change request
-		String query = "UPDATE `park` SET maxVisitors = ?, stayTime = ?, gap = ? WHERE parkNumber = ?";
+		String query = "UPDATE `park` SET capacity = ?, stayTime = ? ,gap = ? , maxVisitors = ? WHERE parkNumber = ?";
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-			ps.setInt(1, changeRequest.getMaxVisitors());
+			ps.setInt(1, changeRequest.getCapacity());
 			ps.setInt(2, changeRequest.getStaytime());
 			ps.setInt(3, changeRequest.getGap());
-			ps.setInt(4, changeRequest.getParkNumber());
+			ps.setInt(4, newMaxVisitor);
+			ps.setInt(5, changeRequest.getParkNumber());
+		
+		       // Print query for debugging
+	        System.out.println("Executing update: " + ps);
+	        
+	        int affectedRows = ps.executeUpdate();
 
-			int affectedRows = ps.executeUpdate();
-			return affectedRows > 0;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+	        // Check and print the number of affected rows
+	        System.out.println(affectedRows + " rows affected.");
+
+	        return affectedRows > 0;
+	    } catch (SQLException e) {
+	        System.err.println("SQL Exception: " + e.getMessage());
+	        e.printStackTrace();
+	        return false;
+	    }
 	}
 
 	/**

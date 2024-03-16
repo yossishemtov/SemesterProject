@@ -38,8 +38,8 @@ import javafx.scene.layout.AnchorPane;
  */
 public class UpdateParametersController implements Initializable {
 
-	@FXML
-	private Label maxvisitorLabel;
+    @FXML
+    private Label CapacityLabel;
 
 	@FXML
 	private Label allowedGapLabel;
@@ -50,8 +50,8 @@ public class UpdateParametersController implements Initializable {
 	@FXML
 	private TextField NewStayTime;
 
-	@FXML
-	private TextField NewMaxVisitorsField;
+    @FXML
+    private TextField CapacityField;
 
 	@FXML
 	private TextField NewAllowedGap;
@@ -99,7 +99,7 @@ public class UpdateParametersController implements Initializable {
 	private void updateLabels(Park parkData) {
 		if (parkData != null) {
 			parkNameLabel.setText(parkData.getName());
-			maxvisitorLabel.setText(String.valueOf(parkData.getMaxVisitors()));
+			CapacityLabel.setText(String.valueOf(parkData.getCapacity()));
 			allowedGapLabel.setText(String.valueOf(parkData.getGap()));
 			StayTimeLabel.setText(String.valueOf(parkData.getStaytime()) + " hours");
 		}
@@ -110,14 +110,14 @@ public class UpdateParametersController implements Initializable {
 		if (validateInput()) {
 			try {
 				Integer newStayTime = Integer.valueOf(NewStayTime.getText());
-				Integer newMaxVisitors = Integer.valueOf(NewMaxVisitorsField.getText());
+				Integer newCapacity = Integer.valueOf(CapacityField.getText());
 				Integer newAllowedGap = Integer.valueOf(NewAllowedGap.getText());
 				Integer parkNumber = Usermanager.getCurrentWorker().getWorksAtPark(); 
 				System.out.println("in send action");
 				// Construct the ChangeRequest object
 				ChangeRequest request = new ChangeRequest(0, // Assuming an 'id' is not needed or will be auto-generated
 																// by the database
-						parkData.getName(), parkNumber, newMaxVisitors, newAllowedGap, newStayTime,
+						parkData.getName(), parkNumber, newCapacity, newAllowedGap, newStayTime,
 						"WAITING_FOR_APPROVAL" // Assuming a new request starts with a status indicating it's waiting
 												// for approval
 				);
@@ -155,21 +155,15 @@ public class UpdateParametersController implements Initializable {
 			showAlert("New Stay Time is required.");
 			return false;
 		}
-		if (NewMaxVisitorsField.getText().isEmpty()) {
-			showAlert("New Max Visitors field is required.");
+		if (CapacityField.getText().isEmpty()) {
+			showAlert("New capacity field is required.");
 			return false;
 		}
 		if (NewAllowedGap.getText().isEmpty()) {
 			showAlert("New Allowed Gap is required.");
 			return false;
 		}
-		Integer newMaxVisitors = Integer.valueOf(NewMaxVisitorsField.getText());
-		Integer newAllowedGap = Integer.valueOf(NewAllowedGap.getText());
-		if (parkData.getCapacity() != newMaxVisitors + newAllowedGap) {
-		    showAlert("The new values for gap (" + newAllowedGap + ") and the maximum number of visitors (" + newMaxVisitors + 
-		              ") do not meet the required capacity value of " + parkData.getCapacity() + ".");
-		    return false;
-		}
+	
 
 		// Additional validation can be added here (e.g., numeric values, ranges, etc.)
 		return true;

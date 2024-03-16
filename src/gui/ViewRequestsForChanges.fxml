@@ -14,7 +14,7 @@
         <columns>
             <TableColumn fx:id="RequestIDCol" prefWidth="47.5" text="ID" />
             <TableColumn fx:id="parkIDCol" prefWidth="112.5" text="Park ID" />
-          <TableColumn fx:id="NewMaxVisitorsCol" prefWidth="65.5" text="New Max Visitors" />
+          <TableColumn fx:id="NewCapacityCol" prefWidth="65.5" text="New Capacity" />
 	<TableColumn fx:id="NewStayTimeCol" prefWidth="94.5" text="New stay time" />
 	<TableColumn fx:id="NewGapCol" prefWidth="84.0" text="New gap" />
 

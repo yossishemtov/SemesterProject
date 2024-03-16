@@ -23,7 +23,7 @@
             <RowConstraints maxHeight="124.0" minHeight="10.0" prefHeight="123.5" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Max Visitors:">
+            <Label text="Capacity">
                <font>
                   <Font size="14.0" />
                </font></Label>
@@ -35,7 +35,7 @@
                <font>
                   <Font size="14.0" />
                </font></Label>
-            <Label fx:id="maxvisitorLabel" text="0" GridPane.columnIndex="1">
+            <Label fx:id="CapacityLabel" text="0" GridPane.columnIndex="1">
                <font>
                   <Font size="14.0" />
                </font></Label>
@@ -91,7 +91,7 @@
                <font>
                   <Font size="14.0" />
                </font></Label>
-            <TextField fx:id="NewMaxVisitorsField" GridPane.columnIndex="1" />
+            <TextField fx:id="CapacityField" GridPane.columnIndex="1" />
          </children>
       </GridPane>
    </children>

@@ -18,12 +18,14 @@
 --
 -- Table structure for table `generalparkworker`
 --
+DROP TABLE IF EXISTS ChangeRequests;
+
 CREATE TABLE ChangeRequests (
     id INT AUTO_INCREMENT PRIMARY KEY,
     parkName VARCHAR(255) NOT NULL,
     parkNumber INT NOT NULL,
-    maxVisitors INT NOT NULL,
-    gap DOUBLE NOT NULL,
+    capacity INT NOT NULL,
+    gap INT NOT NULL,
     staytime INT NOT NULL,
     approved ENUM('REJECTED', 'APPROVAL', 'WAITING_FOR_APPROVAL') NOT NULL
 );
