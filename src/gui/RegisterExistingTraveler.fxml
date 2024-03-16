@@ -11,7 +11,7 @@
    <children>
       <Label layoutX="368.0" layoutY="93.0" text="Register Existing Traveler" />
       <JFXTextField fx:id="travelerID" layoutX="354.0" layoutY="172.0" prefHeight="59.0" prefWidth="231.0" promptText="Enter Traveler ID" />
-      <JFXButton fx:id="submitBtn" layoutX="405.0" layoutY="285.0" prefHeight="59.0" prefWidth="97.0" text="Submit">
+      <JFXButton fx:id="submitBtn" layoutX="405.0" layoutY="285.0" onAction="#SubmitForm" prefHeight="59.0" prefWidth="97.0" text="Submit">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
