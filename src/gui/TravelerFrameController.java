@@ -77,7 +77,7 @@ public class TravelerFrameController implements Initializable {
     
     public void viewOrdersbutton(ActionEvent event) throws Exception {
     	try {
-    		NavigationManager.openPageInCenter(pane, "OrderFrame.fxml");
+    		NavigationManager.openPageInCenter(pane, "TravelerOrdersFrame.fxml");
     	} catch(Exception e) {
 			 System.out.print("Something went wrong while clicking on view orders button, check stack trace");
 			 e.printStackTrace();

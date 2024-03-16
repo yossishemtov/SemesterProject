@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.UserOrdersController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TravelerOrdersController">
    <children>
       <Button fx:id="backbtn" layoutX="834.0" layoutY="561.0" mnemonicParsing="false" onAction="#btnBack" prefHeight="25.0" prefWidth="52.0" text="Back" textFill="#e83b3b" />
       <TableView fx:id="OrdersTable" layoutX="14.0" layoutY="28.0" prefHeight="344.0" prefWidth="757.0">

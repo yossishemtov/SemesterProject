@@ -24,6 +24,7 @@ public class InputValidation {
         	 return new Alerts(Alerts.AlertType.INFORMATION, "ID Validation", "", "Valid ID");
         }
     }
+	
 	// function for chacking validation of an email
 	public static Alerts validateEmail(String email) {
 	    // Check if the email is empty
@@ -60,7 +61,6 @@ public class InputValidation {
 	        }
 	 }
 	 
- 
 	// function for validate worker username
 	 public static Alerts validateUsername(String username) {
 	    // Check if the username is empty
