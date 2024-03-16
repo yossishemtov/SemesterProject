@@ -60,14 +60,17 @@ public class ParkWorkerEntrenceControlController {
         	GeneralParkWorker currentWorkerAccount = Usermanager.getCurrentWorker();
         	Integer currentWorkerPark = currentWorkerAccount.getWorksAtPark();
         	
+        	//Get current date of today
+        	LocalDate today = LocalDate.now();
+        	
         	System.out.print(currentWorkerPark);
         	if(checkIfNoError) {
         		
 	        	Integer orderIdInteger = Integer.parseInt(orderIdText);
 	        	
 	        	//Send the orderId within an order dummy object to the server
-	        	Order dummyOrder = new Order(orderIdInteger, null, currentWorkerPark, null, null, null, null, null, null, null, null);
-	        	ClientServerMessage requestOrderInformation = new ClientServerMessage(dummyOrder, Operation.GET_ORDER_BY_ID_AND_PARK_NUMBER);
+	        	Order dummyOrder = new Order(orderIdInteger, null, currentWorkerPark, null, null, null, today, null, null, null, null);
+	        	ClientServerMessage requestOrderInformation = new ClientServerMessage(dummyOrder, Operation.GET_ORDER_BY_ID_AND_PARK_NUMBER_DATE);
 	        	ClientUI.clientControllerInstance.sendMessageToServer(requestOrderInformation);
 	        	
 	        	
@@ -88,7 +91,7 @@ public class ParkWorkerEntrenceControlController {
         		visitTimeLabel.setText(timeReceived.toString());
         		
         	}else {
-        		Alerts noOrderIdExists = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "No such order exists for your park!");
+        		Alerts noOrderIdExists = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "No such order exists for your park for today!");
         		noOrderIdExists.showAndWait();
         	}
         }else {
@@ -106,6 +109,11 @@ public class ParkWorkerEntrenceControlController {
     
     public void entrenceControlAction(ActionEvent event) {
     	if(orderToEnterOrExit == null) {
+    		
+    		if(orderToEnterOrExit.getDate() != LocalDate.now());
+    		
+    		
+    		
     		
     	}else {
     		Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Please insert order to submit to park entrence system");

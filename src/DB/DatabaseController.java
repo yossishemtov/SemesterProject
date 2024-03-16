@@ -579,12 +579,13 @@ public class DatabaseController {
 	     * @return Order object containing all the information about the order
 	     */	
 	    public Order getOrderInformationByOrderIdAndParkNumber(Order receivedOrderId) {
-	    	String query = "SELECT * FROM `order` WHERE orderId = ? AND parkNumber = ?";
+	    	String query = "SELECT * FROM `order` WHERE orderId = ? AND parkNumber = ? AND date = ?";
 	    	Order orderInformation = null;
 	    	
 	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 	    		ps.setInt(1, receivedOrderId.getOrderId());
 	    		ps.setInt(2, receivedOrderId.getParkNumber());
+	    		ps.setObject(3, java.sql.Date.valueOf(receivedOrderId.getDate()));
 	            ResultSet rs = ps.executeQuery(); // Use executeQuery for SELECT statements
 	            
 	            
