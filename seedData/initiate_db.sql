@@ -114,21 +114,31 @@ INSERT INTO `order` (orderId, travlerId, parkNumber, amountOfVisitors, price, vi
 (18, 118, 1, 3, 60.00, 'email18@example.com', '2024-03-29', '1234567807', '10:45:00', 'CONFIRMED', 'GUIDEDGROUP'),
 (19, 119, 1, 2, 40.00, 'email19@example.com', '2024-03-30', '1234567808', '11:45:00', 'CONFIRMED', 'FAMILY'),
 (20, 120, 1, 4, 80.00, 'email20@example.com', '2024-03-31', '1234567809', '12:45:00', 'CONFIRMED', 'SOLO');
+-- Drop the existing tables if they exist
+DROP TABLE IF EXISTS VisitorsReport;
+DROP TABLE IF EXISTS Report;
+
+-- Create the Report table
 CREATE TABLE Report (
-    reportID INT PRIMARY KEY,
+    reportID INT AUTO_INCREMENT PRIMARY KEY,
     reportType VARCHAR(255) NOT NULL,
     parkID INT NOT NULL,
     date DATE NOT NULL,
     comment TEXT
 );
+
+-- Create the VisitorsReport table with a foreign key reference to Report
 CREATE TABLE VisitorsReport (
-    reportID INT PRIMARY KEY,
+    reportID INT,
     parkNumber INT NOT NULL,
     totalIndividualVisitors INT NOT NULL,
     totalGroupVisitors INT NOT NULL,
     totalFamilyVisitors INT NOT NULL,
-    totalVisitors INT NOT NULL
+    totalVisitors INT NOT NULL,
+    PRIMARY KEY (reportID),
+    FOREIGN KEY (reportID) REFERENCES Report(reportID)
 );
+
 
 --
 -- Table structure for table `park`

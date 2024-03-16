@@ -702,11 +702,14 @@ public class DatabaseController {
 
 
 	public VisitorsReport getVisitorsReportByReportId(Report inputReport) {
+        System.out.println("in db getVisitorsReportByReportId...");
+
 	    VisitorsReport visitorsReport = null;
 	    // Query to select visitor report details based on the reportID from the Report object
 	    String query = "SELECT vr.reportID, vr.parkNumber, vr.totalIndividualVisitors, vr.totalGroupVisitors, vr.totalFamilyVisitors, vr.totalVisitors, r.reportType, r.date, r.comment "
-	            + "FROM `visitorsreport` vr JOIN `report` r ON vr.reportID = r.reportID "
+	            + "FROM `VisitorsReport` vr JOIN `report` r ON vr.reportID = r.reportID "
 	            + "WHERE vr.reportID = ?";
+	    System.out.println("Attempting to retrieve VisitorsReport for Report ID: " + inputReport.getReportID());
 
 	    try (PreparedStatement statement = connectionToDatabase.prepareStatement(query)) {
 	        // Set the reportID from the Report object into the query
@@ -727,6 +730,10 @@ public class DatabaseController {
 	                // Construct a new VisitorsReport object using the fetched data
 	                visitorsReport = new VisitorsReport(reportID, Report.ReportType.valueOf(reportType), parkNumber, date, comment, totalIndividualVisitors, totalGroupVisitors, totalFamilyVisitors, totalVisitors);
 	            }
+	            else {
+	                System.out.println("No VisitorsReport found in database for Report ID: " + inputReport.getReportID());
+
+	            }
 	        }
 	    } catch (SQLException e) {
 	        System.err.println("An error occurred while fetching the visitors report: " + e.getMessage());
@@ -739,7 +746,7 @@ public class DatabaseController {
 	
 	 public List<Report> getGeneralReportsByParkId(int parkId) {
 	        List<Report> reports = new ArrayList<>();
-	        String query = "SELECT reportID, reportType, parkID, date, comment FROM Report WHERE parkID = ?";
+	        String query = "SELECT reportID, reportType, parkID, date, comment FROM `Report` WHERE parkID = ?";
 
 	        try (PreparedStatement statement = connectionToDatabase.prepareStatement(query)) {
 	            statement.setInt(1, parkId);

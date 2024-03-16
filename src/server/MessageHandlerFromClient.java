@@ -133,6 +133,7 @@ public class MessageHandlerFromClient {
 			ArrayList<Report> listGeneralReport = (ArrayList<Report>) dbControllerInstance
 					.getGeneralReportsByParkId(park);
 			if (listGeneralReport != null) {
+				messageFromClient.setDataTransfered(listGeneralReport);
 				messageFromClient.setflagTrue();
 			} else {
 				messageFromClient.setflagFalse();
