@@ -95,7 +95,6 @@ public class MessageHandlerFromClient {
 			GeneralParkWorker generalParkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
 			messageFromClient.setDataTransfered(dbControllerInstance.getGeneralParkWorkerDetails(generalParkWorker));
 
-			
 			client.sendToClient(messageFromClient);
 			break;
 
@@ -103,9 +102,9 @@ public class MessageHandlerFromClient {
 			// Placeholder for getting all reports
 			break;
 
-		case Operation.GET_VISITORS_REPORT:
+		case Operation.GET_NEW_VISITORS_REPORT:
 			GeneralParkWorker worker = (GeneralParkWorker) messageFromClient.getDataTransfered();
-			messageFromClient.setDataTransfered(dbControllerInstance.getTotalNumberOfVisitorsReport(worker));
+			messageFromClient.setDataTransfered(dbControllerInstance.getNewVisitorsReport(worker));
 			client.sendToClient(messageFromClient);
 			break;
 
@@ -138,11 +137,55 @@ public class MessageHandlerFromClient {
 			
 			
 			break;
+			
+		case Operation.POST_VISITORS_REPORT:
+	        System.out.println("in opertion insert...");
 
 			
+	        VisitorsReport visitorReportFromClient = (VisitorsReport) messageFromClient.getDataTransfered();
+	        System.out.println("in opertion insert 11...");
+
+	        if (dbControllerInstance.insertVisitorReport(visitorReportFromClient)) {
+				messageFromClient.setflagTrue();
+			} else {
+				messageFromClient.setflagFalse();
+			}
+
+			client.sendToClient(messageFromClient);
+			break;
+			
+		case Operation.GET_GENERAL_REPORT:
+			Integer park = (Integer) messageFromClient.getDataTransfered();
+			ArrayList<Report> listGeneralReport = (ArrayList<Report>) dbControllerInstance
+					.getGeneralReportsByParkId(park);
+			if (listGeneralReport != null) {
+				messageFromClient.setDataTransfered(listGeneralReport);
+				messageFromClient.setflagTrue();
+			} else {
+				messageFromClient.setflagFalse();
+			}
+
+			client.sendToClient(messageFromClient);
+			break;
+		case Operation.GET_EXISTS_VISITORS_REPORT:
+			Report reportFromClient = (Report) messageFromClient.getDataTransfered();
+			VisitorsReport VisitReport = (VisitorsReport) dbControllerInstance
+					.getVisitorsReportByReportId(reportFromClient);
+			if (VisitReport != null) {
+				messageFromClient.setDataTransfered(VisitReport);
+				messageFromClient.setflagTrue();
+			} else {
+				messageFromClient.setflagFalse();
+			}
+
+			client.sendToClient(messageFromClient);
+			break;
+			
+
 		case Operation.GET_AMOUNT_OF_VISITORS_FOR_GENERALPARKWORKER:
 			GeneralParkWorker loggedInParkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
-			messageFromClient.setDataTransfered(dbControllerInstance.getAmountOfVisitorsByParkWorker(loggedInParkWorker));
+			messageFromClient
+					.setDataTransfered(dbControllerInstance.getAmountOfVisitorsByParkWorker(loggedInParkWorker));
 			client.sendToClient(messageFromClient);
 			break;
 
@@ -165,63 +208,62 @@ public class MessageHandlerFromClient {
 				messageFromClient.setflagFalse();
 
 			}
-		
+
 			client.sendToClient(messageFromClient);
 
 			break;
 
-		 
 		case Operation.GET_GENERALPARKWORKER_SIGNED:
-			//Get the status of isloggedin of generalparkworker
+			// Get the status of isloggedin of generalparkworker
 			GeneralParkWorker checkStatusOfParkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
-			
-			if(dbControllerInstance.getSignedinStatusOfGeneralParkWorker(checkStatusOfParkWorker)) {
+
+			if (dbControllerInstance.getSignedinStatusOfGeneralParkWorker(checkStatusOfParkWorker)) {
 				messageFromClient.setflagTrue();
-			}else {
+			} else {
 				messageFromClient.setflagFalse();
 			}
-			
+
 			client.sendToClient(messageFromClient);
-			
+
 			break;
-			
+
 		case Operation.PATCH_GENERALPARKWORKER_SIGNEDOUT:
-			//Signing out a GeneralParkWorker
+			// Signing out a GeneralParkWorker
 			GeneralParkWorker parkWorkerToSignOut = (GeneralParkWorker) messageFromClient.getDataTransfered();
-			
+
 			try {
-				
-				if(dbControllerInstance.changeSignedOutOfGeneralParkWorker(parkWorkerToSignOut)) {
+
+				if (dbControllerInstance.changeSignedOutOfGeneralParkWorker(parkWorkerToSignOut)) {
 					messageFromClient.setflagTrue();
-				}else {
+				} else {
 					messageFromClient.setflagFalse();
 				}
-				
+
 				client.sendToClient(messageFromClient);
-				
-			}catch (IndexOutOfBoundsException e) {
+
+			} catch (IndexOutOfBoundsException e) {
 				e.printStackTrace();
 			}
-			
+
 			break;
-			
+
 		case Operation.PATCH_GENERALPARKWORKER_SIGNEDIN:
-			//Signing in a GeneralParkWorker
-				
+			// Signing in a GeneralParkWorker
+
 			try {
 				GeneralParkWorker parkWorkerToSignIn = (GeneralParkWorker) messageFromClient.getDataTransfered();
-				
-				if(dbControllerInstance.changeSingedInOfGeneralParkWorker(parkWorkerToSignIn)) {
-					//If changing the status of worker was successful sets the flag of the message back to the client to true
+
+				if (dbControllerInstance.changeSingedInOfGeneralParkWorker(parkWorkerToSignIn)) {
+					// If changing the status of worker was successful sets the flag of the message
+					// back to the client to true
 					messageFromClient.setflagTrue();
-				}
-				else {
+				} else {
 					messageFromClient.setflagFalse();
 				}
-				
+
 				client.sendToClient(messageFromClient);
-				
-			}catch (IndexOutOfBoundsException e) {
+
+			} catch (IndexOutOfBoundsException e) {
 				e.printStackTrace();
 			}
 			break;
@@ -239,7 +281,7 @@ public class MessageHandlerFromClient {
 				messageFromClient.setflagFalse();
 
 			}
-		
+
 			client.sendToClient(messageFromClient);
 
 			break;
@@ -309,7 +351,7 @@ public class MessageHandlerFromClient {
 			
 		case Operation.POST_TRAVLER_ORDER:
 			// Placeholder for posting a new traveler order
-			
+
 			try {
 				ArrayList<Order> travelerOrder = (ArrayList<Order>) messageFromClient.getDataTransfered();
 
@@ -378,51 +420,64 @@ public class MessageHandlerFromClient {
 			client.sendToClient(messageFromClient);
 
 			break;
-			
-	
-		case Operation.POST_NEW_CHANGE_REQUEST:
-		    // Placeholder for posting a new change request
-            System.out.println("in POST_NEW_CHANGE_REQUEST");
 
-		    ChangeRequest newChangeRequest = (ChangeRequest) messageFromClient.getDataTransfered();
-		    if (dbControllerInstance.insertChangeRequest(newChangeRequest)) {
-		        messageFromClient.setflagTrue();
-		    } else {
-		        messageFromClient.setflagFalse();
-		    }
-		    client.sendToClient(messageFromClient);
-		    break; 
+		case Operation.POST_NEW_CHANGE_REQUEST:
+			// Placeholder for posting a new change request
+			System.out.println("in POST_NEW_CHANGE_REQUEST");
+
+			ChangeRequest newChangeRequest = (ChangeRequest) messageFromClient.getDataTransfered();
+			if (dbControllerInstance.insertChangeRequest(newChangeRequest)) {
+				messageFromClient.setflagTrue();
+			} else {
+				messageFromClient.setflagFalse();
+			}
+			client.sendToClient(messageFromClient);
+			break;
 
 		case Operation.GET_CHANGE_REQUESTS:
-		    // Placeholder for getting change requests waiting for approval
+			// Placeholder for getting change requests waiting for approval
 			System.out.println("in " + command);
+			GeneralParkWorker parkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
+			ArrayList<ChangeRequest> waitingForApprovalRequests = dbControllerInstance
+					.getChangeRequestsWaitingForApproval(parkWorker);
+			// System.out.println(waitingForApprovalRequests);
+			System.out.println("out " + command);
+			if (waitingForApprovalRequests != null) {
+				System.out.println(waitingForApprovalRequests.get(0));
 
-		    GeneralParkWorker parkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
-		    ArrayList<ChangeRequest> waitingForApprovalRequests = dbControllerInstance.getChangeRequestsWaitingForApproval(parkWorker);
-		    //System.out.println(waitingForApprovalRequests);
-		    System.out.println("out " + command);
-		    if (waitingForApprovalRequests != null) 
-		    {
-		        System.out.println(waitingForApprovalRequests.get(0));
-
-		    	 messageFromClient.setflagTrue();
-		        messageFromClient.setDataTransfered(waitingForApprovalRequests);
-		    } else {
-		        messageFromClient.setflagFalse(); // Indicate no requests found or an error occurred
-		    }
-		    client.sendToClient(messageFromClient);
-		    break;
+				messageFromClient.setflagTrue();
+				messageFromClient.setDataTransfered(waitingForApprovalRequests);
+			} else {
+				messageFromClient.setflagFalse(); // Indicate no requests found or an error occurred
+			}
+			client.sendToClient(messageFromClient);
+			break;
 
 		case Operation.PATCH_CHANGE_REQUEST_STATUS:
-		    // Placeholder for updating the status of a change request
-		    ChangeRequest changeRequestToUpdate = (ChangeRequest) messageFromClient.getDataTransfered();
-		    if (dbControllerInstance.updateChangeRequestStatus(changeRequestToUpdate)) {
-		        messageFromClient.setflagTrue();
-		    } else {
-		        messageFromClient.setflagFalse();
-		    }
-		    client.sendToClient(messageFromClient);
-		    break;
+			// Placeholder for updating the status of a change request
+			ChangeRequest changeRequestToUpdate = (ChangeRequest) messageFromClient.getDataTransfered();
+			if (dbControllerInstance.updateChangeRequestStatus(changeRequestToUpdate)) {
+				messageFromClient.setflagTrue();
+			} else {
+				messageFromClient.setflagFalse();
+			}
+			client.sendToClient(messageFromClient);
+			break;
+
+		case Operation.GET_HOURLY_VISIT_DATA_FOR_PARK:
+			// Placeholder for updating the status of a change request
+			Integer parkID = (Integer) messageFromClient.getDataTransfered();
+			ArrayList<HourlyVisitData> listHoyrVisit = (ArrayList<HourlyVisitData>) dbControllerInstance
+					.getHourlyVisitDataForPark(parkID);
+			if (listHoyrVisit != null) {
+				messageFromClient.setflagTrue();
+				messageFromClient.setDataTransfered(listHoyrVisit);
+
+			} else {
+				messageFromClient.setflagFalse();
+			}
+			client.sendToClient(messageFromClient);
+			break;
 
 		case Operation.PATCH_ORDER_STATUS_TO_INPARK:
 			//Changes the state of an order to INPARK

@@ -18,30 +18,19 @@
 --
 -- Table structure for table `changerequests`
 --
+DROP TABLE IF EXISTS ChangeRequests;
 
-DROP TABLE IF EXISTS `changerequests`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `changerequests` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `parkName` varchar(255) NOT NULL,
-  `parkNumber` int NOT NULL,
-  `maxVisitors` int NOT NULL,
-  `gap` double NOT NULL,
-  `staytime` int NOT NULL,
-  `approved` enum('REJECTED','APPROVAL','WAITING_FOR_APPROVAL') NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE TABLE ChangeRequests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    parkName VARCHAR(255) NOT NULL,
+    parkNumber INT NOT NULL,
+    capacity INT NOT NULL,
+    gap INT NOT NULL,
+    staytime INT NOT NULL,
+    approved ENUM('REJECTED', 'APPROVAL', 'WAITING_FOR_APPROVAL') NOT NULL
+);
 
---
--- Dumping data for table `changerequests`
---
 
-LOCK TABLES `changerequests` WRITE;
-/*!40000 ALTER TABLE `changerequests` DISABLE KEYS */;
-/*!40000 ALTER TABLE `changerequests` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `generalparkworker`
@@ -105,11 +94,56 @@ CREATE TABLE `order` (
 -- Dumping data for table `order`
 --
 
+
 LOCK TABLES `order` WRITE;
-/*!40000 ALTER TABLE `order` DISABLE KEYS */;
-INSERT INTO `order` VALUES (1,1214214,1,5,50,'alice@example.com','2024-07-04','054-7376231','09:00:00','PENDING','FAMILY\r'),(2,2654456,2,3,30,'bob@example.com','2024-07-05','052-7355231','14:00:00','CONFIRMED','FAMILY\r'),(3,3123123,3,6,60,'claire@example.com','2024-07-06','054-7376431','08:00:00','PENDING','GUIDEDGROUP\r'),(4,4643544,2,4,40,'david@example.com','2024-07-07','054-2136231','10:30:00','CONFIRMED','FAMILY\r'),(5,4643544,2,1,10,'david@example.com','2024-08-07','054-2136231','10:30:00','CANCEL','SOLO'),(6,3847485,1,14,100,'JoeBoden@e.braude.ac.il','2024-08-07','054-2232574','12:00:00','PENDING','GUIDEDGROUP\rGUIDEDGROUP\r'),(7,3847482,3,3,10,'deadpool@e.braude.ac.il','2024-07-15','054-2232594','14:00:00','CONFIRMED','FAMILY'),(8,3847486,2,1,40,'Barakobomo@e.braude.ac.il','2024-07-07','054-2232511','08:00:00','PENDING','SOLO');
-/*!40000 ALTER TABLE `order` ENABLE KEYS */;
+INSERT INTO `order` (orderId, travlerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder) VALUES
+(1, 101, 1, 5, 100.00, 'email1@example.com', '2024-03-12', '1234567890', '09:00:00', 'CONFIRMED', 'FAMILY'),
+(2, 102, 1, 3, 60.00, 'email2@example.com', '2024-03-13', '1234567891', '10:00:00', 'CONFIRMED', 'SOLO'),
+(3, 103, 1, 2, 40.00, 'email3@example.com', '2024-03-14', '1234567892', '11:00:00', 'CONFIRMED', 'GUIDEDGROUP'),
+(4, 104, 1, 4, 80.00, 'email4@example.com', '2024-03-15', '1234567893', '12:00:00', 'CONFIRMED', 'FAMILY'),
+(5, 105, 1, 5, 100.00, 'email5@example.com', '2024-03-16', '1234567894', '13:00:00', 'CONFIRMED', 'SOLO'),
+(6, 106, 1, 3, 60.00, 'email6@example.com', '2024-03-17', '1234567895', '14:00:00', 'CONFIRMED', 'GUIDEDGROUP'),
+(7, 107, 1, 2, 40.00, 'email7@example.com', '2024-03-18', '1234567896', '15:00:00', 'CONFIRMED', 'FAMILY'),
+(8, 108, 1, 4, 80.00, 'email8@example.com', '2024-03-19', '1234567897', '16:00:00', 'CONFIRMED', 'SOLO'),
+(9, 109, 1, 5, 100.00, 'email9@example.com', '2024-03-20', '1234567898', '09:30:00', 'CONFIRMED', 'GUIDEDGROUP'),
+(10, 110, 1, 3, 60.00, 'email10@example.com', '2024-03-21', '1234567899', '10:30:00', 'CONFIRMED', 'FAMILY'),
+(11, 111, 1, 2, 40.00, 'email11@example.com', '2024-03-22', '1234567800', '11:30:00', 'CONFIRMED', 'SOLO'),
+(12, 112, 1, 4, 80.00, 'email12@example.com', '2024-03-23', '1234567801', '12:30:00', 'CONFIRMED', 'GUIDEDGROUP'),
+(13, 113, 1, 5, 100.00, 'email13@example.com', '2024-03-24', '1234567802', '13:30:00', 'CONFIRMED', 'FAMILY'),
+(14, 114, 1, 3, 60.00, 'email14@example.com', '2024-03-25', '1234567803', '14:30:00', 'CONFIRMED', 'SOLO'),
+(15, 115, 1, 2, 40.00, 'email15@example.com', '2024-03-26', '1234567804', '15:30:00', 'CONFIRMED', 'GUIDEDGROUP'),
+(16, 116, 1, 4, 80.00, 'email16@example.com', '2024-03-27', '1234567805', '16:30:00', 'CONFIRMED', 'FAMILY'),
+(17, 117, 1, 5, 100.00, 'email17@example.com', '2024-03-28', '1234567806', '09:45:00', 'CONFIRMED', 'SOLO'),
+(18, 118, 1, 3, 60.00, 'email18@example.com', '2024-03-29', '1234567807', '10:45:00', 'CONFIRMED', 'GUIDEDGROUP'),
+(19, 119, 1, 2, 40.00, 'email19@example.com', '2024-03-30', '1234567808', '11:45:00', 'CONFIRMED', 'FAMILY'),
+(20, 120, 1, 4, 80.00, 'email20@example.com', '2024-03-31', '1234567809', '12:45:00', 'CONFIRMED', 'SOLO');
 UNLOCK TABLES;
+
+-- Drop the existing tables if they exist
+DROP TABLE IF EXISTS VisitorsReport;
+DROP TABLE IF EXISTS Report;
+
+-- Create the Report table
+CREATE TABLE Report (
+    reportID INT AUTO_INCREMENT PRIMARY KEY,
+    reportType VARCHAR(255) NOT NULL,
+    parkID INT NOT NULL,
+    date DATE NOT NULL,
+    comment TEXT
+);
+
+-- Create the VisitorsReport table with a foreign key reference to Report
+CREATE TABLE VisitorsReport (
+    reportID INT,
+    parkNumber INT NOT NULL,
+    totalIndividualVisitors INT NOT NULL,
+    totalGroupVisitors INT NOT NULL,
+    totalFamilyVisitors INT NOT NULL,
+    totalVisitors INT NOT NULL,
+    PRIMARY KEY (reportID),
+    FOREIGN KEY (reportID) REFERENCES Report(reportID)
+);
+
 
 --
 -- Table structure for table `park`
