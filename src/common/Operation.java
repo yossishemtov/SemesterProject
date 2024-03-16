@@ -20,7 +20,7 @@ public abstract class Operation {
     public final static String GET_GENERALPARKWORKER_SIGNED = "Get status of signed in or out of generalparkworker";
     public final static String GET_TRAVELER_SIGNED = "Get status of signed in or out of traveler";
     public final static String GET_AMOUNT_OF_VISITORS_FOR_GENERALPARKWORKER = "Get amount of visitors for park worker";
-    public final static String GET_ORDER_BY_ID = "Get order information by id";
+    public final static String GET_ORDER_BY_ID_AND_PARK_NUMBER = "Get order information by id and park number";
     
 
     public final static String POST_NEW_TRAVLER_GUIDER = "Post new traveler guide request";

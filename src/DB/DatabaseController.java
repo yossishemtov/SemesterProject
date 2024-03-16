@@ -574,16 +574,17 @@ public class DatabaseController {
 	    }
 	    	
 	    /**
-	     * Get order information based on the orderId provided
+	     * Get order information based on the orderId provided and park
 	     * @param Order object that contains a valid orderId
 	     * @return Order object containing all the information about the order
 	     */	
-	    public Order getOrderInformationByOrderId(Order receivedOrderId) {
-	    	String query = "SELECT * FROM `order` WHERE orderId = ?";
+	    public Order getOrderInformationByOrderIdAndParkNumber(Order receivedOrderId) {
+	    	String query = "SELECT * FROM `order` WHERE orderId = ? AND parkNumber = ?";
 	    	Order orderInformation = null;
 	    	
 	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 	    		ps.setInt(1, receivedOrderId.getOrderId());
+	    		ps.setInt(2, receivedOrderId.getParkNumber());
 	            ResultSet rs = ps.executeQuery(); // Use executeQuery for SELECT statements
 	            
 	            
@@ -612,6 +613,7 @@ public class DatabaseController {
 	            }
 	         catch (SQLException e) {
 	            e.printStackTrace();
+	            return orderInformation;
 	            // Consider logging this exception or handling it more gracefully
 	        }
 	    	

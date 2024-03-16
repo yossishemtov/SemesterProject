@@ -113,10 +113,10 @@ public class MessageHandlerFromClient {
 			// Placeholder for getting messages
 			break;
 		
-		case Operation.GET_ORDER_BY_ID:
+		case Operation.GET_ORDER_BY_ID_AND_PARK_NUMBER:
 			//Get order information by orderId
 			Order orderInformation = (Order) messageFromClient.getDataTransfered();
-			Order receivedOrderInformationFromDb = dbControllerInstance.getOrderInformationByOrderId(orderInformation);
+			Order receivedOrderInformationFromDb = dbControllerInstance.getOrderInformationByOrderIdAndParkNumber(orderInformation);
 			
 			messageFromClient.setDataTransfered(receivedOrderInformationFromDb);
 			

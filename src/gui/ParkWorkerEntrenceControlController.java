@@ -13,6 +13,8 @@ import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
 import common.Order;
+import common.Usermanager;
+import common.worker.GeneralParkWorker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -40,9 +42,10 @@ public class ParkWorkerEntrenceControlController {
     @FXML
     private Label visitTimeLabel;
     
+    static private Order orderToEnterOrExit = null;
     
     @FXML
-    void receiveOrderInformationAction(ActionEvent event) {
+    public void receiveOrderInformationAction(ActionEvent event) {
     	//Send a request to the server to receive order Information
     	
     	try {
@@ -52,19 +55,23 @@ public class ParkWorkerEntrenceControlController {
     		//Checks if order id entered by user only contains numbers
     		Alerts alertIndication = InputValidation.validateOrderNumber(orderIdText);
         	Boolean checkIfNoError = alertIndication.getAlertType().toString().equals("INFORMATION");
-    		
         	
+        	//Get the park where the worker works at
+        	GeneralParkWorker currentWorkerAccount = Usermanager.getCurrentWorker();
+        	Integer currentWorkerPark = currentWorkerAccount.getWorksAtPark();
+        	
+        	System.out.print(currentWorkerPark);
         	if(checkIfNoError) {
         		
-        	Integer orderIdInteger = Integer.parseInt(orderIdText);
-        	
-        	//Send the orderId within an order dummy object to the server
-        	Order dummyOrder = new Order(orderIdInteger, null, null, null, null, null, null, null, null, null, null);
-        	ClientServerMessage requestOrderInformation = new ClientServerMessage(dummyOrder, Operation.GET_ORDER_BY_ID);
-        	ClientUI.clientControllerInstance.sendMessageToServer(requestOrderInformation);
-        	
-        	
-        	Order receivedOrderFromServer = (Order) ClientUI.clientControllerInstance.getData().getDataTransfered();
+	        	Integer orderIdInteger = Integer.parseInt(orderIdText);
+	        	
+	        	//Send the orderId within an order dummy object to the server
+	        	Order dummyOrder = new Order(orderIdInteger, null, currentWorkerPark, null, null, null, null, null, null, null, null);
+	        	ClientServerMessage requestOrderInformation = new ClientServerMessage(dummyOrder, Operation.GET_ORDER_BY_ID_AND_PARK_NUMBER);
+	        	ClientUI.clientControllerInstance.sendMessageToServer(requestOrderInformation);
+	        	
+	        	
+	        	Order receivedOrderFromServer = (Order) ClientUI.clientControllerInstance.getData().getDataTransfered();
         	if(receivedOrderFromServer != null) {
         		//Receiving information to parse to the screen
         		Integer orderIdReceived = receivedOrderFromServer.getOrderId();
@@ -81,7 +88,7 @@ public class ParkWorkerEntrenceControlController {
         		visitTimeLabel.setText(timeReceived.toString());
         		
         	}else {
-        		Alerts noOrderIdExists = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "No such order exists!");
+        		Alerts noOrderIdExists = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "No such order exists for your park!");
         		noOrderIdExists.showAndWait();
         	}
         }else {
@@ -94,8 +101,16 @@ public class ParkWorkerEntrenceControlController {
     		Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong");
 			somethingWentWrong.showAndWait();
     	}
-    	
-    	
+
+    }
+    
+    public void entrenceControlAction(ActionEvent event) {
+    	if(orderToEnterOrExit == null) {
+    		
+    	}else {
+    		Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Please insert order to submit to park entrence system");
+			somethingWentWrong.showAndWait();
+    	}
     }
     
     
