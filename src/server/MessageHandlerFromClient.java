@@ -146,6 +146,7 @@ public class MessageHandlerFromClient {
 			VisitorsReport VisitReport = (VisitorsReport) dbControllerInstance
 					.getVisitorsReportByReportId(reportFromClient);
 			if (VisitReport != null) {
+				messageFromClient.setDataTransfered(VisitReport);
 				messageFromClient.setflagTrue();
 			} else {
 				messageFromClient.setflagFalse();

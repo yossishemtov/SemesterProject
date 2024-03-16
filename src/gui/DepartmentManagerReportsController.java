@@ -17,6 +17,7 @@ import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
 import common.Report;
+import common.VisitorsReport;
 import common.worker.ChangeRequest;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -124,10 +125,19 @@ public class DepartmentManagerReportsController implements Initializable {
 			if (selectedReport != null) {
 				ClientServerMessage<Report> messageForServer = new ClientServerMessage<>(selectedReport, Operation.GET_EXISTS_VISITORS_REPORT);
 	             ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
+	      
+	             
 	             if (ClientController.data.getFlag()) {
+	            	 System.out.println(ClientController.data.getDataTransfered().toString());
 	            		Alerts infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
 								"Report get from database");
 	            		infoalert.showAndWait();
+	            		try {
+							NavigationManager.openPage("VisitorsReport.fxml", event, "", false);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 	            		
 	             }
 	             else {

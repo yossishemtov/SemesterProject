@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
 
-
 import client.ClientUI;
 import client.NavigationManager;
 import common.ClientServerMessage;
@@ -24,15 +23,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-
 /**
- * This Class is the GUI controller of DepartmentManager.fxml
- * It handles all the JavaFx nodes events.
+ * This Class is the GUI controller of DepartmentManager.fxml It handles all the
+ * JavaFx nodes events.
  * 
  * This is the main screen of the park manager
  *
  */
-public class ParkManagerController  {
+public class ParkManagerController {
 
 	@FXML
 	private BorderPane borderPane;
@@ -61,58 +59,50 @@ public class ParkManagerController  {
 	@FXML
 	private JFXButton updateParametersButton;
 
-    @FXML
-    private JFXButton RequeststatusBth;
+	@FXML
+	private JFXButton RequeststatusBth;
 
+	@FXML
+	void loadRequeststatus(MouseEvent event) throws IOException {
 
+		NavigationManager.openPageInCenter(borderPane, "ViewRequestsForChanges.fxml");
 
+	}
 
-
-    @FXML
-    void loadRequeststatus(MouseEvent event) throws IOException {
-    	
-    	NavigationManager.openPageInCenter(borderPane,"ViewRequestsForChanges.fxml");
-
-
-    }
-
-
- 
 	@FXML
 	private void loadCreateReports() throws IOException {
-		NavigationManager.openPageInCenter(borderPane,"VisitorsReport.fxml");
-
+		NavigationManager.openPageInCenter(borderPane, "VisitorsReport.fxml");
 
 	}
+
 	@FXML
 	void loadParkParameters(MouseEvent event) throws IOException {
-		NavigationManager.openPageInCenter(borderPane,"ParkParameters.fxml");
+		NavigationManager.openPageInCenter(borderPane, "ParkParameters.fxml");
 
 	}
+
 	@FXML
 	void loadUpdateParameters(MouseEvent event) throws IOException {
-		NavigationManager.openPageInCenter(borderPane,"UpdateParkParameters.fxml");
-
-	
+		NavigationManager.openPageInCenter(borderPane, "UpdateParkParameters.fxml");
 
 	}
 
 	@FXML
 	void loadProfile(MouseEvent event) throws IOException {
-		NavigationManager.openPageInCenter(borderPane,"Profile.fxml");
+		NavigationManager.openPageInCenter(borderPane, "Profile.fxml");
 
 	}
-
 
 	@FXML
 	void logOut(MouseEvent event) {
 		try {
-			if(Usermanager.getCurrentWorker() != null) {
-    			ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentWorker(), Operation.PATCH_GENERALPARKWORKER_SIGNEDOUT);
-    			ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
-    			
-    		}
-    		
+			if (Usermanager.getCurrentWorker() != null) {
+				ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentWorker(),
+						Operation.PATCH_GENERALPARKWORKER_SIGNEDOUT);
+				ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
+
+			}
+
 			NavigationManager.openPage("HomePageFrame.fxml", event, "User Menu", true);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
