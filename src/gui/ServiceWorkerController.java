@@ -43,6 +43,9 @@ public class ServiceWorkerController implements Initializable {
 	 private JFXButton registerNewGuide;
 
 	 @FXML
+	 private JFXButton registerExistTraveler;
+
+	 @FXML
 	 private JFXButton logoutBtn;
 	 
 	 @Override
@@ -87,7 +90,15 @@ public class ServiceWorkerController implements Initializable {
 			 e.printStackTrace();
 			}
 	 }
-	 
+	 public void registerExistingTravelerGuide(ActionEvent click) throws Exception {
+		 // navigate to register form screen
+		 try {
+			 NavigationManager.openPageInCenter(mainPane, "RegisterExistingTraveler.fxml");
+		 } catch(Exception e) {
+			 System.out.print("Something went wrong while clicking on register new guide button, check stack trace");
+			 e.printStackTrace();
+			}
+	 }
 }
 
 		 

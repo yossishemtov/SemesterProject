@@ -22,6 +22,7 @@ import common.VisitorsReport;
 
 public class CreateVisitorsReportController {
 
+
 	private VisitorsReport visitorReport;
 
 	@FXML

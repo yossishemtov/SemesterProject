@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ServiceWorkerController">
    <top>
       <AnchorPane fx:id="topPane" prefHeight="85.0" prefWidth="900.0" BorderPane.alignment="CENTER">
@@ -24,11 +23,11 @@
       </AnchorPane>
    </top>
    <left>
-      <StackPane fx:id="leftPane" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <StackPane fx:id="leftPane" prefHeight="515.0" prefWidth="273.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox fx:id="vbox" prefHeight="200.0" prefWidth="100.0">
+            <VBox fx:id="vbox" prefHeight="515.0" prefWidth="252.0">
                <children>
-                  <JFXButton fx:id="viewProfile" onAction="#viewProfile" prefHeight="198.0" prefWidth="200.0" text="Profile">
+                  <JFXButton fx:id="viewProfile" onAction="#viewProfile" prefHeight="144.0" prefWidth="308.0" text="Profile">
                      <graphic>
                         <FontAwesomeIconView glyphName="USER" />
                      </graphic>
@@ -36,7 +35,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </JFXButton>
-                  <JFXButton fx:id="registerNewGuide" onAction="#registerNewGuide" prefHeight="207.0" prefWidth="206.0" text="Register New Guide">
+                  <JFXButton fx:id="registerNewGuide" onAction="#registerNewGuide" prefHeight="135.0" prefWidth="288.0" text="Register New Guide">
                      <graphic>
                         <FontAwesomeIconView />
                      </graphic>
@@ -44,7 +43,15 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </JFXButton>
-                  <JFXButton fx:id="logoutBtn" onAction="#LogoutBtn" prefHeight="201.0" prefWidth="211.0" text="Logout">
+                  <JFXButton fx:id="registerExistTraveler" onAction="#registerExistingTravelerGuide" prefHeight="126.0" prefWidth="285.0" text="Register Existing Traveler As Guide">
+                     <graphic>
+                        <FontAwesomeIconView />
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton fx:id="logoutBtn" onAction="#LogoutBtn" prefHeight="131.0" prefWidth="313.0" text="Logout">
                      <graphic>
                         <FontAwesomeIconView glyphName="SIGN_OUT" />
                      </graphic>

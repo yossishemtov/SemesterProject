@@ -23,14 +23,26 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
+import com.jfoenix.controls.JFXButton;
+import javafx.fxml.FXML;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class ParkWorkerController implements Initializable {
-    @FXML
-    private Button availableSpaceBtn;
 
-    @FXML
-    private Button PresentABillBtn;
+	@FXML
+	private JFXButton profileBtn;
+
+	@FXML
+	private JFXButton availableSpaceBtn;
+
+	@FXML
+	private JFXButton entrenceControlBtn;
+
+	@FXML
+	private JFXButton LogoutBtn;
 
     @FXML
     private Label nametextlabel;
@@ -43,45 +55,58 @@ public class ParkWorkerController implements Initializable {
 
     @FXML
     private Label parktextlabel;
-    
-    @FXML
-    private Button backBtn;
-    
+
     @FXML
     private Label availableSpaceLabel;
     
+    @FXML
+    private BorderPane mainPane;
+
+    @FXML
+    private AnchorPane anchorPane;
+
+    @FXML
+    private StackPane stackPane;
+
+    @FXML
+    private VBox vbox;
+
+    
+public void loadProfileOfWorker(ActionEvent click) throws Exception{
+	//Loading profile of the current park worker
+	try {
+		 NavigationManager.openPageInCenter(mainPane,"Profile.fxml");
+	 } catch(Exception e) {
+		 Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when loading profile");
+			somethingWentWrong.showAndWait();
+		 e.printStackTrace();
+	 }
+    }
+
     
     
     public void availableSpaceBtnAction(ActionEvent click) throws Exception{
-    	//Receiving information about the park, sending the worker information
-    	
+    	//Displaying the available space in the park
     	try {
-    	
-	    	GeneralParkWorker loggedInWorker = Usermanager.getCurrentWorker();
-	    	
-	    	//Send the worker with command to retrieve information about the park the worker works at.
-	    	ClientServerMessage sendRequestForParkInformation = new ClientServerMessage(loggedInWorker, Operation.GET_AMOUNT_OF_VISITORS_FOR_GENERALPARKWORKER);
-	    	ClientUI.clientControllerInstance.sendMessageToServer(sendRequestForParkInformation);
-	    	
-	    	
-	    	Park parkInformation = (Park)(ClientUI.clientControllerInstance.getData()).getDataTransfered();
-	    	
-	    	String showNumberOfVisitorsAndCapacity = Integer.toString(parkInformation.getCurrentVisitors()) + "/" + Integer.toString(parkInformation.getCapacity());
-	    	
-	    	availableSpaceLabel.setText(showNumberOfVisitorsAndCapacity);
-    	
-    	}catch (Exception e){
-    		Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when receiving park current amount of visitors");
-			somethingWentWrong.showAndWait();
-    	}
-    	
-    	
-    	
-    }
+   		 NavigationManager.openPageInCenter(mainPane,"ParkWorkerAvailableSpace.fxml");
+   	 } catch(Exception e) {
+   		 Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when loading profile");
+   			somethingWentWrong.showAndWait();
+   		 e.printStackTrace();
+   	 }
+
+  }
     
     
-    public void presentBillBtnAction(ActionEvent click) throws Exception{
-    	
+    public void entrenceControlAction(ActionEvent click) throws Exception{
+    	//Loading the entrenceControl page
+    	try {
+      		 NavigationManager.openPageInCenter(mainPane,"ParkWorkerEntrenceControl.fxml");
+      	 } catch(Exception e) {
+      		 Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when loading profile");
+      			somethingWentWrong.showAndWait();
+      		 e.printStackTrace();
+      	 }
     }
 
     
@@ -111,14 +136,6 @@ public class ParkWorkerController implements Initializable {
 		try {
 			//Parsing worker information to the screen
 			GeneralParkWorker loggedInWorker = Usermanager.getCurrentWorker();
-			
-			String firstNameLoggedInUser = loggedInWorker.getFirstName();
-			String lastNameLoggedInUser = loggedInWorker.getLastName();
-			String roleLoggedInUser = loggedInWorker.getRole();
-			
-			nametextlabel.setText(firstNameLoggedInUser);
-			lastnametextlabel.setText(lastNameLoggedInUser);
-			roletextlabel.setText(roleLoggedInUser);
 		
 		}catch(Exception e) {
 			

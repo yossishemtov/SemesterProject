@@ -19,6 +19,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -47,29 +48,45 @@ public class TravelerLoginController {
 		    	Traveler TryLoginVistor = new Traveler(Integer.parseInt(visitorID), null, null, null, null, null,null);
 
 		    	
-		        ClientServerMessage<?> TravelerLoginAttemptInformation = new ClientServerMessage<>(TryLoginVistor, Operation.GET_TRAVLER_INFO);
+		        ClientServerMessage TravelerLoginAttemptInformation = new ClientServerMessage(TryLoginVistor, Operation.GET_TRAVLER_INFO);
 		        ClientUI.clientControllerInstance.sendMessageToServer(TravelerLoginAttemptInformation);
-		        // get the data return from server 
+		        // Get traveler data from the server
 		        Traveler TravelerFromServer = (Traveler) ClientController.data.getDataTransfered();
-//		        System.out.println(TravelerFromServer.getId());
-		        // update the current traveler in UserManage
 		        Usermanager.setCurrentTraveler(TravelerFromServer);
-		        // if traveler has an order in the system
 		       
+		        // if traveler has an order in the system
 		        if(TravelerFromServer instanceof Traveler) {
-	        		// open visitor screen 
-		        	NavigationManager.openPage("TravelerFrame.fxml", click, "Traveler Screen", true);
+	        		//Open visitor screen if traveler is registered and not logged in
+		        	ClientServerMessage checkIfNotLoggedIn = new ClientServerMessage(TravelerFromServer, Operation.GET_TRAVELER_SIGNED);
+		        	ClientUI.clientControllerInstance.sendMessageToServer(checkIfNotLoggedIn);
+		        	
+		        	
+		        	Boolean isloggedin = ClientUI.clientControllerInstance.getData().getFlag();
+		        	if(isloggedin == false) {
+		        		//Send a login request to server
+		        		ClientServerMessage travelerLoginRequest = new ClientServerMessage(TravelerFromServer, Operation.PATCH_TRAVELER_SIGNEDIN);
+		        		ClientUI.clientControllerInstance.sendMessageToServer(travelerLoginRequest);
+		        		
+		        		NavigationManager.openPage("TravelerFrame.fxml", click, "Traveler Screen", true);
+		        	}else {
+		        		
+		        		Alerts nullResponseAlert = new Alerts(Alert.AlertType.ERROR, "Already Logged In",
+								"Traveler already logged in!", "Traveler already logged in!");
+						nullResponseAlert.showAndWait();
+		        	}
 		        }
 		        else {
-		        	// if traveler has not an order in the system
+		        	// if traveler does not have an order in the system
 		        	if (TravelerFromServer == null) {
 		        		// open order a visit screen 
 		        		NavigationManager.openPage("OrderVisit.fxml", click, "order A visit Screen", true);
 		        	}	
 		        }
 	        } catch (Exception e) {
-	            System.out.print("Something went wrong while clicking on visitor login button, check stack trace");
-	            e.printStackTrace();
+	        	e.printStackTrace();
+	        	Alerts nullResponseAlert = new Alerts(Alert.AlertType.ERROR, "Error",
+						"Something went wrong!", "Something went wrong!");
+				nullResponseAlert.showAndWait();
 	        }
 	    } else {
 	    	// Display the error alert to the user

@@ -1,9 +1,10 @@
 package common;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Order {
+public class Order implements Serializable{
 
 	private Integer parkNumber;
 	private Integer amountOfVisitors;
@@ -18,7 +19,8 @@ public class Order {
 	private typeOfOrder orderType;
 
 	private enum status {
-		PENDING, CONFIRM, CANCEL,COMPLETED
+
+		PENDING, NOTARRIVED, INPARK, CONFIRM, CANCEL,COMPLETED
 	}
 
 	private enum typeOfOrder {
@@ -39,23 +41,34 @@ public class Order {
 		this.visitTime = visitTime;
 		this.telephoneNumber = telephoneNumber; // Set the telephone number
 
+		
 		// Convert the String status to the enum status
-		try {
-			this.orderStatus = Order.status.valueOf(statusStr.toUpperCase());
-		} catch (IllegalArgumentException e) {
-			this.orderStatus = Order.status.PENDING; // Default to PENDING if conversion fails
+		if(statusStr!= null) {
+			try {
+				this.orderStatus = Order.status.valueOf(statusStr.toUpperCase());
+			} catch (IllegalArgumentException e) {
+				this.orderStatus = Order.status.PENDING; // Default to PENDING if conversion fails
+			}
+		}else {
+			this.orderStatus = null;
 		}
 
 		// Convert the String typeOfOrder to the enum typeOfOrder
-		try {
-			this.orderType = Order.typeOfOrder.valueOf(typeOfOrderStr.toUpperCase());
-		} catch (IllegalArgumentException e) {
-			// Handle the error or default case here
-			// For example, default to SOLO if the conversion fails
-			this.orderType = Order.typeOfOrder.SOLO;
-
-	}
+		
+		if(typeOfOrderStr != null) {
+			
+			try {
+				this.orderType = Order.typeOfOrder.valueOf(typeOfOrderStr.toUpperCase());
+			} catch (IllegalArgumentException e) {
+				// Handle the error or default case here
+				// For example, default to SOLO if the conversion fails
+				this.orderType = Order.typeOfOrder.SOLO;
+			}
+			
+		}else {
+			this.orderType = null;
 		}
+	}
 
 	public String getTelephoneNumber() {
 		return telephoneNumber;

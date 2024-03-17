@@ -51,13 +51,14 @@ public class WorkerLoginController {
 			// Create a worker object to send to the server
 			GeneralParkWorker workerForServer = new GeneralParkWorker(null, null, null, null, null, workerUsername,
 					workerPassword, null);
+//			System.out.println("worker username: " + workerForServer.getUserName() + "worker password: " + workerForServer.getPassword());
 
 			// Send worker object to server and request worker details
-			ClientServerMessage<?> messageForServer = new ClientServerMessage<>(workerForServer,
+			ClientServerMessage messageForServer = new ClientServerMessage(workerForServer,
 					Operation.GET_GENERAL_PARK_WORKER_DETAILS);
 			
 			ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
-			ClientServerMessage retrieveInformationIfLoggedIn;
+			ClientServerMessage<?> retrieveInformationIfLoggedIn;
 			// Retrieve worker details from server
 			GeneralParkWorker workerFromServer = (GeneralParkWorker) ClientController.data.getDataTransfered();
 
@@ -66,9 +67,9 @@ public class WorkerLoginController {
 
 				// Update the current worker in UserManager
 				Usermanager.setCurrentWorker(workerFromServer);
-				System.out.println(workerFromServer.toString());
+				System.out.println("Worker username: " + workerFromServer.getUserName()+ "worker password: " + workerFromServer.getPassword());
 			 
-				retrieveInformationIfLoggedIn = new ClientServerMessage(workerFromServer, Operation.GET_GENERALPARKWORKER_SIGNED);
+				retrieveInformationIfLoggedIn = new ClientServerMessage<>(workerFromServer, Operation.GET_GENERALPARKWORKER_SIGNED);
 				ClientUI.clientControllerInstance.sendMessageToServer(retrieveInformationIfLoggedIn);
 				
 				//Checks if worker is not loggedin
@@ -78,10 +79,8 @@ public class WorkerLoginController {
 				if(!isLoggedIn) {
 					
 					//Logging in the user
-					ClientServerMessage requestToLoginTheWorker = new ClientServerMessage(workerFromServer, Operation.PATCH_GENERALPARKWORKER_SIGNEDIN);
+					ClientServerMessage<?> requestToLoginTheWorker = new ClientServerMessage<>(workerFromServer, Operation.PATCH_GENERALPARKWORKER_SIGNEDIN);
 					ClientUI.clientControllerInstance.sendMessageToServer(requestToLoginTheWorker);
-					
-					
 					
 					// Navigate based on the worker's role
 					String role = workerFromServer.getRole();
@@ -96,20 +95,18 @@ public class WorkerLoginController {
 						break;
 					case "Worker":
 						System.out.println("in Worker");
-						
-						
-						NavigationManager.openPage("parkWorkerFrame.fxml", click, "workerScreen", true);
+						NavigationManager.openPage("ParkWorkerFrame.fxml", click, "workerScreen", true);
+
 						break;
-						
 					case "Service Worker":
 						NavigationManager.openPage("ServiceWorkerFrame.fxml", click, "workerScreen", true);
 						break;
-						
 					default:
 						System.out.println("Role not recognized. Unable to proceed.");
 						// Optionally, display an error message or alert to the user here
 						break;
 					}
+					// if the worker is already logged in
 				}else {
 					Alerts nullResponseAlert = new Alerts(Alert.AlertType.ERROR, "Already Logged In",
 							"Worker already logged in!", "Worker already logged in!");
@@ -119,9 +116,10 @@ public class WorkerLoginController {
 				System.out.println("Worker added to list. Worker Username: " + workerFromServer.getUserName());
 			} else {
 				// Handle null response from server (worker details not found or error occurred)
-				System.out.println("Failed to retrieve worker details from server.");
+
+				System.out.println("Getting null worker from server");
 				Alerts nullResponseAlert = new Alerts(Alert.AlertType.ERROR, "Login Error",
-						"Failed to retrieve worker details.", "Please try again or contact the system administrator.");
+						"Wrong Username or Password", "Please try again or contact the system administrator.");
 				nullResponseAlert.showAndWait();
 			}
 		} else {

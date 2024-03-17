@@ -124,6 +124,32 @@ public class MessageHandlerFromClient {
 		case Operation.GET_MESSAGES:
 			// Placeholder for getting messages
 			break;
+		
+		case Operation.GET_ORDER_BY_ID_AND_PARK_NUMBER_DATE:
+			//Get order information by orderId
+			Order orderInformation = (Order) messageFromClient.getDataTransfered();
+			Order receivedOrderInformationFromDb = dbControllerInstance.getOrderInformationByOrderIdAndParkNumber(orderInformation);
+			
+			messageFromClient.setDataTransfered(receivedOrderInformationFromDb);
+			
+			client.sendToClient(messageFromClient);
+			
+			break;
+		
+		case Operation.GET_TRAVELER_SIGNED:
+			//Get status if traveler is already signedin
+			Traveler checkStatusOfTraveler = (Traveler) messageFromClient.getDataTransfered();
+			
+			if(dbControllerInstance.getSignedinStatusOfTraveler(checkStatusOfTraveler)) {
+				messageFromClient.setflagTrue();
+			}else {
+				messageFromClient.setflagFalse();
+			}
+			
+			client.sendToClient(messageFromClient);
+			
+			
+			break;
 			
 		case Operation.POST_VISITORS_REPORT:
 	        System.out.println("in opertion insert...");
@@ -254,6 +280,7 @@ public class MessageHandlerFromClient {
 				e.printStackTrace();
 			}
 			break;
+			
 
 		case Operation.POST_EXISTS_TRAVLER_GUIDER:
 			// Placeholder for posting a new traveler guide request
@@ -271,7 +298,70 @@ public class MessageHandlerFromClient {
 			client.sendToClient(messageFromClient);
 
 			break;
+		
+		case Operation.PATCH_TRAVELER_SIGNEDIN:
+			//Changing state of traveler to signedin
+			
+			try {
+				Traveler travelerToSignIn = (Traveler) messageFromClient.getDataTransfered();
+				
+				if(dbControllerInstance.changedSignedInOfTraveler(travelerToSignIn)) {
+					//If changing the status of traveler was successful sets the flag of the message back to the client to true
+					messageFromClient.setflagTrue();
+				}
+				else {
+					messageFromClient.setflagFalse();
+				}
 
+			}catch (IndexOutOfBoundsException e) {
+				e.printStackTrace();
+			}
+			
+			client.sendToClient(messageFromClient);
+			break;
+			
+		case Operation.PATCH_TRAVELER_SIGNEDOUT:
+			//Signing out a GeneralParkWorker
+			Traveler travelerToSignOut = (Traveler) messageFromClient.getDataTransfered();
+			
+			try {
+				
+				if(dbControllerInstance.changedSignedOutOfTraveler(travelerToSignOut)) {
+					messageFromClient.setflagTrue();
+				}else {
+					messageFromClient.setflagFalse();
+				}
+				
+				
+			}catch (IndexOutOfBoundsException e) {
+				e.printStackTrace();
+			}
+			client.sendToClient(messageFromClient);
+			
+			break;
+			
+		case Operation.POST_NEW_VISIT:
+			//Post a new visit to the database
+			Visit visitOfPark = (Visit) messageFromClient.getDataTransfered();
+			
+			try {				
+				Boolean isSuccessful = dbControllerInstance.addNewVisit(visitOfPark);
+				
+				if(isSuccessful) {
+					messageFromClient.setflagTrue();
+				} else {
+					messageFromClient.setflagFalse();
+
+				}
+				
+			}catch (IndexOutOfBoundsException e) {
+				e.printStackTrace();
+			}
+
+			client.sendToClient(messageFromClient);
+			break;
+			
+			
 		case Operation.POST_TRAVLER_ORDER:
 			// Placeholder for posting a new traveler order
 
@@ -288,6 +378,7 @@ public class MessageHandlerFromClient {
 			} catch (IndexOutOfBoundsException e) {
 				e.printStackTrace();
 			}
+			client.sendToClient(messageFromClient);
 
 			break;
 
@@ -401,6 +492,35 @@ public class MessageHandlerFromClient {
 			client.sendToClient(messageFromClient);
 			break;
 
+		case Operation.PATCH_ORDER_STATUS_TO_INPARK:
+			//Changes the state of an order to INPARK
+				Order orderInformationToChangeStatus = (Order) messageFromClient.getDataTransfered();
+				Boolean receivedOrderInformationToChangeStatusFromDb = dbControllerInstance.patchOrderStatusToInpark(orderInformationToChangeStatus);
+
+				if(receivedOrderInformationToChangeStatusFromDb) {
+					messageFromClient.setflagTrue();
+				}else {
+					messageFromClient.setflagFalse();
+				}
+				
+				client.sendToClient(messageFromClient);
+			break;
+			
+		case Operation.PATCH_PARK_VISITORS_APPEND:
+			//Append the number of visitors to the park
+			Park parkToAppendVisitors = (Park) messageFromClient.getDataTransfered();
+			
+			Boolean isChangesAmountSucessful = dbControllerInstance.patchParkVisitorsNumberAppend(parkToAppendVisitors);
+			
+			if(isChangesAmountSucessful) {
+				messageFromClient.setflagTrue();
+			}else {
+				messageFromClient.setflagFalse();
+			}
+			
+			client.sendToClient(messageFromClient);
+			break;
+		    
 		default:
 			System.out.println("default");
 			try {

@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.36, for macos14 (arm64)
+-- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
 -- Host: localhost    Database: project
 -- ------------------------------------------------------
@@ -16,7 +16,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `generalparkworker`
+-- Table structure for table `changerequests`
 --
 DROP TABLE IF EXISTS ChangeRequests;
 
@@ -30,6 +30,11 @@ CREATE TABLE ChangeRequests (
     approved ENUM('REJECTED', 'APPROVAL', 'WAITING_FOR_APPROVAL') NOT NULL
 );
 
+
+
+--
+-- Table structure for table `generalparkworker`
+--
 
 DROP TABLE IF EXISTS `generalparkworker`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -56,7 +61,7 @@ CREATE TABLE `generalparkworker` (
 
 LOCK TABLES `generalparkworker` WRITE;
 /*!40000 ALTER TABLE `generalparkworker` DISABLE KEYS */;
-INSERT INTO `generalparkworker` VALUES (1,'John','Doe','johndoe@example.com','Park Manager','johndoe123','password123',1,0),(2,'Jane','Smith','janesmith@example.com','Park Manager','janesmith456','password456',2,0),(3,'Michael','Johnson','michaeljohnson@example.com','Park Manager','michaelj','password789',3,0),(4,'Emily ','Williams','emilywilliams@example.com','Worker','emilyw','password123',1,0),(5,'Chavi','Alonso','ChaviAlonso@e.braude.ac.il','Worker','userchavi','123456a',2,0),(6,'Yossi','Hanoder','Yossihanoder@e.braude.ac.il','Worker','yossinoder','123456a',3,0),(7,'Emanuel','Braude','emanuelbraude@e.braude.ac.il','Department Manager','emanuelb','123456a',1,0),(8,'lil','bullet','lilbullet@e.braude.ac.il','Department Manager','lilbullet','123456a',2,0),(9,'Rosh','Tirosh','roshtirosh@e.braude.ac.il','Department Manager','roshtirosh','123456a',3,0);
+INSERT INTO `generalparkworker` VALUES (1,'John','Doe','johndoe@example.com','Park Manager','johndoe123','password123',1,0),(2,'Jane','Smith','janesmith@example.com','Park Manager','janesmith456','password456',2,0),(3,'Michael','Johnson','michaeljohnson@example.com','Park Manager','michaelj','password789',3,0),(4,'Emily ','Williams','emilywilliams@example.com','Worker','emilyw','password123',1,0),(5,'Chavi','Alonso','ChaviAlonso@e.braude.ac.il','Worker','userchavi','123456a',2,0),(6,'Yossi','Hanoder','Yossihanoder@e.braude.ac.il','Worker','yossinoder','123456a',3,0),(7,'Emanuel','Braude','emanuelbraude@e.braude.ac.il','Department Manager','emanuelb','123456a',1,0),(8,'lil','bullet','lilbullet@e.braude.ac.il','Department Manager','lilbullet','123456a',2,0),(9,'Rosh','Tirosh','roshtirosh@e.braude.ac.il','Department Manager','roshtirosh','123456a',3,0),(10,'El','Salvador','elsalvador@e.braude.ac.il','Service Worker','salvador','123456a',1,0);
 /*!40000 ALTER TABLE `generalparkworker` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -89,12 +94,8 @@ CREATE TABLE `order` (
 -- Dumping data for table `order`
 --
 
-LOCK TABLES `order` WRITE;
-/*!40000 ALTER TABLE `order` DISABLE KEYS */;
-INSERT INTO `order` VALUES (1,1214214,1,5,50,'alice@example.com','2024-07-04','054-7376231','09:00:00','PENDING','FAMILY\r'),(2,2654456,2,3,30,'bob@example.com','2024-07-05','052-7355231','14:00:00','CONFIRMED','FAMILY\r'),(3,3123123,3,6,60,'claire@example.com','2024-07-06','054-7376431','08:00:00','PENDING','GUIDEDGROUP\r'),(4,4643544,2,4,40,'david@example.com','2024-07-07','054-2136231','10:30:00','CONFIRMED','FAMILY\r'),(5,4643544,2,1,10,'david@example.com','2024-08-07','054-2136231','10:30:00','CANCEL','SOLO'),(6,3847485,1,14,100,'JoeBoden@e.braude.ac.il','2024-08-07','054-2232574','12:00:00','PENDING','GUIDEDGROUP\rGUIDEDGROUP\r'),(7,3847482,3,3,10,'deadpool@e.braude.ac.il','2024-07-15','054-2232594','14:00:00','CONFIRMED','FAMILY'),(8,3847486,2,1,40,'Barakobomo@e.braude.ac.il','2024-07-07','054-2232511','08:00:00','PENDING','SOLO');
-/*!40000 ALTER TABLE `order` ENABLE KEYS */;
-UNLOCK TABLES;
 
+LOCK TABLES `order` WRITE;
 INSERT INTO `order` (orderId, travlerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder) VALUES
 (1, 101, 1, 5, 100.00, 'email1@example.com', '2024-03-12', '1234567890', '09:00:00', 'CONFIRMED', 'FAMILY'),
 (2, 102, 1, 3, 60.00, 'email2@example.com', '2024-03-13', '1234567891', '10:00:00', 'CONFIRMED', 'SOLO'),
@@ -116,6 +117,8 @@ INSERT INTO `order` (orderId, travlerId, parkNumber, amountOfVisitors, price, vi
 (18, 118, 1, 3, 60.00, 'email18@example.com', '2024-03-29', '1234567807', '10:45:00', 'CONFIRMED', 'GUIDEDGROUP'),
 (19, 119, 1, 2, 40.00, 'email19@example.com', '2024-03-30', '1234567808', '11:45:00', 'CONFIRMED', 'FAMILY'),
 (20, 120, 1, 4, 80.00, 'email20@example.com', '2024-03-31', '1234567809', '12:45:00', 'CONFIRMED', 'SOLO');
+UNLOCK TABLES;
+
 -- Drop the existing tables if they exist
 DROP TABLE IF EXISTS VisitorsReport;
 DROP TABLE IF EXISTS Report;
@@ -160,6 +163,7 @@ CREATE TABLE `park` (
   `workersAmount` int DEFAULT NULL,
   `managerId` int DEFAULT NULL,
   `workingTime` int DEFAULT NULL,
+  `gap` int DEFAULT NULL,
   PRIMARY KEY (`parkNumber`),
   KEY `managerId` (`managerId`),
   CONSTRAINT `park_ibfk_1` FOREIGN KEY (`managerId`) REFERENCES `generalparkworker` (`workerId`)
@@ -172,7 +176,7 @@ CREATE TABLE `park` (
 
 LOCK TABLES `park` WRITE;
 /*!40000 ALTER TABLE `park` DISABLE KEYS */;
-INSERT INTO `park` VALUES ('Mount Rainier',1,20,30,1,'Washington',4,2,1,8),('Yellowstone',2,57,60,1,'Utah',5,1,2,7),('Yosemite',3,44,50,1,'Wyoming',6,1,3,8);
+INSERT INTO `park` VALUES ('Mount Rainier',1,20,30,1,'Washington',4,2,1,8,0),('Yellowstone',2,57,60,1,'Utah',5,1,2,7,0),('Yosemite',3,44,50,1,'Wyoming',6,1,3,8,0);
 /*!40000 ALTER TABLE `park` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -217,9 +221,12 @@ CREATE TABLE `visit` (
   `enteringTime` time DEFAULT NULL,
   `exitingTime` time DEFAULT NULL,
   `parkNumber` int DEFAULT NULL,
+  `orderId` int NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`orderId`),
   KEY `parkNumber` (`parkNumber`),
+  CONSTRAINT `fk_visit_orderId` FOREIGN KEY (`orderId`) REFERENCES `order` (`orderId`),
   CONSTRAINT `visit_ibfk_1` FOREIGN KEY (`parkNumber`) REFERENCES `park` (`parkNumber`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -228,7 +235,7 @@ CREATE TABLE `visit` (
 
 LOCK TABLES `visit` WRITE;
 /*!40000 ALTER TABLE `visit` DISABLE KEYS */;
-INSERT INTO `visit` VALUES ('2024-07-04','09:00:00','12:00:00',1),('2024-07-05','14:00:00','17:00:00',2),('2024-07-06','08:00:00','11:00:00',1),('2024-07-07','10:30:00','13:30:00',3);
+INSERT INTO `visit` VALUES ('2024-07-04','09:00:00','12:00:00',1,1),('2024-07-05','14:00:00','17:00:00',2,2),('2024-07-06','08:00:00','11:00:00',1,3),('2024-07-07','10:30:00','13:30:00',3,4);
 /*!40000 ALTER TABLE `visit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -271,4 +278,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-13 18:13:54
+-- Dump completed on 2024-03-16  0:18:58

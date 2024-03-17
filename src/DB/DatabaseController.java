@@ -539,14 +539,218 @@ public class DatabaseController {
 		}
 
 	}
+	    
+	   
+	    
+	    /**
+	     * Updates the status of Traveler to signedin
+	     * @param Traveler to signin
+	     * @return true if the signedin was successful, false otherwise.
+	     */
+	    public Boolean changedSignedInOfTraveler(Traveler signedTraveler) {
+	    	String query = "UPDATE travler SET isloggedin = 1 WHERE id = ?";
+	    	
+	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
+	    		ps.setInt(1, signedTraveler.getId());
+	    		int affectedRows = ps.executeUpdate();
+	    		
+	    		return affectedRows > 0;
+	    		
+	    	}catch(SQLException e) {
+	    		e.printStackTrace();
+	    		return false;
+	    	}
+	    }
+	    
+	    
+	    /**
+	     * Updates the status of Traveler to signout
+	     * @param Traveler to signout
+	     * @return true if the signedout was successful, false otherwise.
+	     */
+	    public Boolean changedSignedOutOfTraveler(Traveler signedTraveler) {
+	    	String query = "UPDATE travler SET isloggedin = 0 WHERE id = ?";
+	    	
+	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
+	    		ps.setInt(1, signedTraveler.getId());
+	    		int affectedRows = ps.executeUpdate();
+	    		
+	    		return affectedRows > 0;
+	    		
+	    	}catch(SQLException e) {
+	    		e.printStackTrace();
+	    		return false;
+	    	}
+	    }
+	    
+	    
+	    
+	    
+	    /**
+	     * Gets the status of loggedin of Traveler
+	     * @param GeneralParkWorker
+	     * @return Boolean isloggedin of Traveler
+	     */  	
+	    public Boolean getSignedinStatusOfTraveler(Traveler signedTraveler) {
+	    	//Return the status of isloggedin of Traveler
+	    	String query = "SELECT isloggedin FROM travler WHERE id = ?";
+	     
+	    	
+	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
+	    		ps.setInt(1, signedTraveler.getId());
+	    		ResultSet rs = ps.executeQuery();
+	    		
+	    		if (rs.next()) {
+	                // Retrieve the value of isloggedin from the ResultSet
+	                int isLoggedIn = rs.getInt("isloggedin");
+	                
+	                 if(isLoggedIn == 0)
+	                	 return false;
+	                 
+	                 return true;
+	            } else {
+	                // No rows returned, worker not found or not signed in
+	                return true;
+	            }
+	    		
+	    	}catch(SQLException e) {
+	    		e.printStackTrace();
+	    		return false;
+	    	}
+	    	
+	    	
+	    }
+	    
+	    /**
+	     * Get order information and change its state to INPARK
+	     * @param Order object that contains a valid orderId
+	     * @return True if success or False if not
+	     */	
+	    public Boolean patchOrderStatusToInpark(Order receivedOrder) {
+	    	String query = "UPDATE `order` SET orderStatus = 'INPARK' WHERE orderId = ?";
+	    	
+	    	
+	    	try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
+	            pstmt.setInt(1, receivedOrder.getOrderId());
 
-	/**
-	 * Gets the amount of visitors in the park where the parkworker works at
-	 * 
-	 * @param parkworker the park worker information
-	 * @return park information if successful and null if not found
-	 */
+	            int affectedRows = pstmt.executeUpdate();
 
+	            // Check if the update was successful
+	            return affectedRows > 0;
+	        } catch (SQLException e) {
+	            System.err.println("SQLException: " + e.getMessage());
+	            return false;
+	        } 
+
+	    }
+	    
+	    /**
+	     * Change park current amount of visitors
+	     * @param Park object with new amount of visitors
+	     * @return True if success or False if not
+	     */	
+	    public Boolean patchParkVisitorsNumberAppend(Park parkToAppend) {
+	    	//Append the visitors to the park currentvisitors
+	    	
+	    	String query = "UPDATE `park` SET currentVisitors = ? WHERE parkNumber = ?";
+	    	
+	    	try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
+	            pstmt.setInt(1, parkToAppend.getCurrentVisitors());
+	            pstmt.setInt(2, parkToAppend.getParkNumber());
+
+	            int affectedRows = pstmt.executeUpdate();
+
+	            // Check if the update was successful
+	            return affectedRows > 0;
+	            
+	        } catch (SQLException e) {
+	            System.err.println("SQLException: " + e.getMessage());
+	            return false;
+	        } 
+	    }
+	    
+	    /**
+	     * Insert a visit based on provided Visit object
+	     * @param Visit object to insert
+	     * @return True if success or False if not
+	     */	
+	    public Boolean addNewVisit(Visit newVisitToAdd) {
+	    	String query = "INSERT INTO `visit` (visitDate, enteringTime, exitingTime, parkNumber, orderId) VALUES (?, ?, ?, ?, ?)";
+
+		    try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+		        // Set parameters based on the Order object fields, in the order specified
+		        ps.setDate(1, java.sql.Date.valueOf(newVisitToAdd.getVisitDate()));
+		        ps.setTime(2, java.sql.Time.valueOf(newVisitToAdd.getEnteringTime()));
+		        ps.setTime(3, java.sql.Time.valueOf(newVisitToAdd.getExistingTime()));
+		        ps.setInt(4, newVisitToAdd.getParkNumber());
+		        ps.setFloat(5, newVisitToAdd.getOrderId());
+
+		        int affectedRows = ps.executeUpdate();
+		        if (affectedRows > 0) {
+		            return true;
+		        } else {
+		            return false;
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		        return false;
+		    }
+	    }
+	    	
+	    /**
+	     * Get order information based on the orderId, park number and date provided
+	     * @param Order object that contains a valid orderId, parknumber and date
+	     * @return Order object containing all the information about the order
+	     */	
+	    public Order getOrderInformationByOrderIdAndParkNumber(Order receivedOrderId) {
+	    	String query = "SELECT * FROM `order` WHERE orderId = ? AND parkNumber = ? AND date = ?";
+	    	Order orderInformation = null;
+	    	
+	    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	    		ps.setInt(1, receivedOrderId.getOrderId());
+	    		ps.setInt(2, receivedOrderId.getParkNumber());
+	    		ps.setObject(3, java.sql.Date.valueOf(receivedOrderId.getDate()));
+	            ResultSet rs = ps.executeQuery(); // Use executeQuery for SELECT statements
+	            
+	            
+	  
+	                if (rs.next()) { // Use if instead of while if you expect or require a single result
+	                	
+	                	//Parsing special object such of type localDate and LocalTime
+	    	            LocalDate orderDate = rs.getObject("date", LocalDate.class);
+	    	            LocalTime visitTime = rs.getObject("visitTime", LocalTime.class);
+	    	            float price = rs.getFloat("price");
+	    	            
+	                	orderInformation = new Order(
+	                        rs.getInt("orderId"), 
+	                        rs.getInt("travlerId"), 
+	                        rs.getInt("parkNumber"), 
+	                        rs.getInt("amountOfVisitors"), 
+	                        price, 
+	                        rs.getString("visitorEmail"), 
+	                        orderDate, 
+	                        visitTime, // Assuming you have a column for gap in your DB
+	                        rs.getString("orderStatus"), // Assuming managerID is stored directly as an integer
+	                        rs.getString("typeOfOrder"),
+	                        rs.getString("TelephoneNumber")
+	                    );
+	                }
+	            }
+	         catch (SQLException e) {
+	            e.printStackTrace();
+	            return orderInformation;
+	            // Consider logging this exception or handling it more gracefully
+	        }
+	    	
+	    	return orderInformation;
+	    }
+	    
+	    
+	    /**
+	     * Gets the amount of visitors in the park where the parkworker works at
+	     * @param parkworker the park worker information
+	     * @return park information if successful and null if not found
+	     */                    
 	public Park getAmountOfVisitorsByParkWorker(GeneralParkWorker parkworker) {
 		// Querying for the park information with the park number associated with the
 		// park worker

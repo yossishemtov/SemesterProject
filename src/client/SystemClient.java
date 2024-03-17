@@ -122,6 +122,31 @@ public class SystemClient extends AbstractClient{
 				        e.printStackTrace();
 					}
 			  }
+		  
+		//Check if Traveler is logged in (if the user exited from Traveler signin page) and sign him off
+		  if(Usermanager.getCurrentTraveler() != null) {
+				ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentTraveler(), Operation.PATCH_TRAVELER_SIGNEDOUT);
+				
+				try {
+			        sendToServer(requestToLogout);
+			        awaitResponse = true; // Wait for the server to acknowledge disconnection
+
+			        // Wait for acknowledgment
+			        while (awaitResponse) {
+			            try {
+			                Thread.sleep(100); // Check for the acknowledgment every 100 milliseconds
+			            } catch (InterruptedException e) {
+			                Thread.currentThread().interrupt(); // Restore interrupted status
+			                System.err.println("Interrupted while waiting for disconnection acknowledgment.");
+			                break;
+			            }
+			        }
+				
+					}catch(IOException e) {
+				        // Handle exception
+				        e.printStackTrace();
+					}
+			  }
 		    
 		    	
 		    	
