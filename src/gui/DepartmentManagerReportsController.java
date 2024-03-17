@@ -133,7 +133,7 @@ public class DepartmentManagerReportsController implements Initializable {
 								"Report get from database");
 	            		infoalert.showAndWait();
 	            		try {
-							NavigationManager.openPage("VisitorsReport.fxml", event, "", false);
+							NavigationManager.openPage("ShowVisitorsReport.fxml", event, "", false);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

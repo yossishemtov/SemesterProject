@@ -33,7 +33,7 @@ import javafx.stage.WindowEvent;
 public class ParkManagerController {
 
 	@FXML
-	private BorderPane borderPane;
+	protected BorderPane borderPane;
 
 	@FXML
 	private AnchorPane topPane;

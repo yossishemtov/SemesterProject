@@ -20,12 +20,9 @@ import common.Operation;
 import common.Usermanager;
 import common.VisitorsReport;
 
-public class VisitorsReportController {
+public class ShowVisitorsReportController {
 
 	private VisitorsReport visitorReport;
-
-	@FXML
-	private JFXButton savereportbth;
 
 	@FXML
 	private PieChart visitorsChart;
@@ -47,66 +44,21 @@ public class VisitorsReportController {
 	@FXML
 	private void initialize() {
 		visitorReport = null;
-		adjustSaveButtonVisibility();
 		loadVisitorsReport();
 
 	}
 
-	private void adjustSaveButtonVisibility() {
-		String role = Usermanager.getCurrentWorker().getRole();
-		if ("Department Manager".equals(role)) {
-			// Hide the save button for Department Manager
-			savereportbth.setVisible(false);
-			CommentTextArea.setVisible(false);
-			commentLabal.setVisible(false);
-		} else {
-		
-				// Show the save button for other roles
-				savereportbth.setVisible(true);
-
-			
-		}
-		
-	}
-
-	@FXML
-	void saveVisitorReportAction(ActionEvent event) {
-		if (visitorReport != null) {
-			ClientServerMessage<?> messageForServer = new ClientServerMessage<>(visitorReport,
-					Operation.POST_VISITORS_REPORT);
-			ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
-
-			if (ClientController.data.getFlag()) {
-				Alerts erorAlert = new Alerts(Alerts.AlertType.CONFIRMATION, "Confirmtion", "",
-						"The report was successfully saved.");
-				erorAlert.showAndWait();
-
-			}
-			// fetches the data
-		} else {
-			Alerts erorAlert = new Alerts(Alerts.AlertType.ERROR, "Error", "Error", "Not able to save visitor report.");
-			erorAlert.showAndWait();
-		}
-	}
-
 	private void loadVisitorsReport() {
-		String role = Usermanager.getCurrentWorker().getRole();
-		switch (role)
-
-		{
-		case "Department Manager":
-			System.out.println("in Department Manager");
-			break;
-		case "Park Manager":
-
-			System.out.println("in Park Manager");
-			break;
-		}
 
 		visitorReport = (VisitorsReport) ClientController.data.getDataTransfered();
 		System.out.println(visitorReport.toString());
 		if (visitorReport != null) {
 			updateChart(visitorReport);
+			if (visitorReport.getComment() != null) {
+				CommentTextArea.setText(visitorReport.getComment());
+
+			}
+
 		} else {
 			Alerts erorAlert = new Alerts(Alerts.AlertType.ERROR, "Error", "Error", "Not able to load visitor report.");
 			erorAlert.showAndWait();

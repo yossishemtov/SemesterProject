@@ -46,10 +46,6 @@ public class ParkmanagerReportController implements Initializable {
 
 	ObservableList<?> observable = FXCollections.observableArrayList();
 
-
-
-
-
 	@FXML
 	private TableView<Report> ReportsTableView;
 
@@ -127,7 +123,7 @@ public class ParkmanagerReportController implements Initializable {
 								"Report get from database");
 	            		infoalert.showAndWait();
 	            		try {
-							NavigationManager.openPage("VisitorsReport.fxml", event, "", false);
+							NavigationManager.openPage("ShowVisitorsReport.fxml", event, "", false);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -197,7 +193,7 @@ public class ParkmanagerReportController implements Initializable {
 	        	ClientServerMessage<?> messageForServer = new ClientServerMessage<>(visitorReportToServer, Operation.GET_NEW_VISITORS_REPORT);
 	             ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
 			try {
-				NavigationManager.openPage("VisitorsReport.fxml", event, "", false);
+				NavigationManager.openPage("CreateVisitorsReport.fxml", event, "", false);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

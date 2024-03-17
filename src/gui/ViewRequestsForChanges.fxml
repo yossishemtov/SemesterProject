@@ -32,11 +32,14 @@
          <font>
             <Font size="18.0" />
          </font></Label>
-      <Button fx:id="confirmRequestBtn" layoutX="472.0" layoutY="540.0" mnemonicParsing="false" onAction="#confirmRequestBtn" prefHeight="39.0" prefWidth="196.0" text="Confirm Request" />
-<Button fx:id="cancelRequestBtn" layoutX="264.0" layoutY="540.0" mnemonicParsing="false" onAction="#cancelRequestBtn" prefHeight="39.0" prefWidth="188.0" text="Cancel Request" />
-
-      <Label layoutX="413.0" layoutY="492.0" text="Selected Request:" underline="true" />
-      <FontAwesomeIconView glyphName="CLOSE" layoutX="283.0" layoutY="557.0" size="15" />
-      <FontAwesomeIconView glyphName="CHECK" layoutX="487.0" layoutY="557.0" size="15" />
+      <Button fx:id="confirmRequestBtn" layoutX="472.0" layoutY="540.0" mnemonicParsing="false" onAction="#confirmRequestBtn" prefHeight="39.0" prefWidth="196.0" text="Confirm Request">
+         <graphic>
+            <FontAwesomeIconView glyphName="CHECK" size="15" />
+         </graphic></Button>
+<Button fx:id="cancelRequestBtn" layoutX="264.0" layoutY="540.0" mnemonicParsing="false" onAction="#cancelRequestBtn" prefHeight="39.0" prefWidth="188.0" text="Cancel Request">
+         <graphic>
+            <FontAwesomeIconView glyphName="CLOSE" size="15" />
+         </graphic></Button>
+      <Label fx:id="SelectLabal" layoutX="119.0" layoutY="466.0" text="Select a change request in the table for approval or cancellation" />
    </children>
 </Pane>

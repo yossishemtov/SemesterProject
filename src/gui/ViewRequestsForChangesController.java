@@ -62,6 +62,8 @@ public class ViewRequestsForChangesController implements Initializable {
     private Button confirmRequestBtn, cancelRequestBtn;
     @FXML
     private Label headerLabel;
+    @FXML
+    private Label SelectLabal;
     
     private  GeneralParkWorker CurWorker;
 
@@ -84,19 +86,24 @@ public class ViewRequestsForChangesController implements Initializable {
      * Adjusts the UI elements based on the worker's role.
      */
     private void adjustUIForRole(GeneralParkWorker worker) {
-        // Assuming getRole() returns a String indicating the worker's role
         String role = worker.getRole();
 
         if ("Park Manager".equals(role)) {
-            // Hide confirm and cancel buttons for park managers
+            // Hide confirm and cancel buttons for park managers, including their icons
             confirmRequestBtn.setVisible(false);
+            confirmRequestBtn.setManaged(false);
             cancelRequestBtn.setVisible(false);
+            cancelRequestBtn.setManaged(false);
+            SelectLabal.setVisible(false);
         } else {
-            // Show buttons for department managers or any other roles if needed
+            // Show buttons for department managers or any other roles, including their icons
             confirmRequestBtn.setVisible(true);
+            confirmRequestBtn.setManaged(true);
             cancelRequestBtn.setVisible(true);
+            cancelRequestBtn.setManaged(true);
         }
     }
+
  
     /**
      * Sets up the table columns with the corresponding properties from the ChangeRequest class.
