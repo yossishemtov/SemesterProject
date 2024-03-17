@@ -10,31 +10,32 @@ public class Report implements Serializable {
         USAGE, VISITOR,
     }
 
-    private int reportID;
+    private Integer reportID;
     private ReportType reportType;
     private int parkID;
     private LocalDate date;
+    private int month; // New field
     private String comment;
 
     // Constructors
-    public Report(int reportID, ReportType reportType, int parkID, LocalDate date, String comment) {
+    public Report(Integer reportID, ReportType reportType, int parkID, LocalDate date, int month, String comment) {
         this.reportID = reportID;
         this.reportType = reportType;
         this.parkID = parkID;
         this.date = date;
+        this.month = month; // Set the month
         this.comment = comment;
     }
 
-    // Assume default constructor for inheritance
     protected Report() {
     }
 
-    // Getters and Setters
-    public int getReportID() {
+    // Getters and Setters for all fields including the new month field
+    public Integer getReportID() {
         return reportID;
     }
 
-    public void setReportID(int reportID) {
+    public void setReportID(Integer reportID) {
         this.reportID = reportID;
     }
 
@@ -54,12 +55,20 @@ public class Report implements Serializable {
         this.parkID = parkID;
     }
 
-    public LocalDate getDate() { 
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) { 
+    public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public int getMonth() { // Getter for month
+        return month;
+    }
+
+    public void setMonth(int month) { // Setter for month
+        this.month = month;
     }
 
     public String getComment() {
@@ -77,6 +86,7 @@ public class Report implements Serializable {
                 ", reportType=" + reportType +
                 ", parkID=" + parkID +
                 ", date=" + date +
+                ", month=" + month + // Include month in toString
                 ", comment='" + comment + '\'' +
                 '}';
     }

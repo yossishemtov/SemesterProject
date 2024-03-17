@@ -103,8 +103,21 @@ public class MessageHandlerFromClient {
 			break;
 
 		case Operation.GET_NEW_VISITORS_REPORT:
-			GeneralParkWorker worker = (GeneralParkWorker) messageFromClient.getDataTransfered();
-			messageFromClient.setDataTransfered(dbControllerInstance.getNewVisitorsReport(worker));
+			VisitorsReport NewVisitorReportFromClient = (VisitorsReport) messageFromClient.getDataTransfered();
+		
+			NewVisitorReportFromClient=dbControllerInstance.getNewVisitorsReport(NewVisitorReportFromClient);
+			System.out.println("return from");
+			if (NewVisitorReportFromClient != null)
+			{
+				messageFromClient.setDataTransfered(NewVisitorReportFromClient);
+				messageFromClient.setflagTrue();
+				
+			}
+			else
+			{
+				messageFromClient.setflagFalse();
+			}
+			
 			client.sendToClient(messageFromClient);
 			break;
 

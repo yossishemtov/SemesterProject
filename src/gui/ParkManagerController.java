@@ -71,7 +71,7 @@ public class ParkManagerController {
 
 	@FXML
 	private void loadCreateReports() throws IOException {
-		NavigationManager.openPageInCenter(borderPane, "VisitorsReport.fxml");
+		NavigationManager.openPageInCenter(borderPane, "ParkManagerReportScreen.fxml");
 
 	}
 

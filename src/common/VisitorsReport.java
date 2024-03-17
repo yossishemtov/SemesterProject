@@ -1,28 +1,24 @@
 package common;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
-public class VisitorsReport extends Report implements Serializable {
+public class VisitorsReport extends Report {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     private Integer totalIndividualVisitors;
     private Integer totalGroupVisitors;
     private Integer totalFamilyVisitors;
     private Integer totalVisitors;
 
-    public VisitorsReport(int reportID, ReportType reportType, int parkID, LocalDate date, String comment,
+    public VisitorsReport(Integer reportID, ReportType reportType, int parkID, LocalDate date, int month, String comment,
                           Integer totalIndividualVisitors, Integer totalGroupVisitors, Integer totalFamilyVisitors, Integer totalVisitors) {
-        super(reportID, reportType, parkID, date, comment);
+        super(reportID, reportType, parkID, date, month, comment); // Pass month to the superclass constructor
         this.totalIndividualVisitors = totalIndividualVisitors;
         this.totalGroupVisitors = totalGroupVisitors;
         this.totalFamilyVisitors = totalFamilyVisitors;
         this.totalVisitors = totalVisitors;
     }
-    // Getters and Setters
-   
-
     public Integer getTotalIndividualVisitors() {
         return totalIndividualVisitors;
     }
@@ -55,18 +51,15 @@ public class VisitorsReport extends Report implements Serializable {
         this.totalVisitors = totalVisitors;
     }
 
-    // ToString method updated to include new fields
     @Override
     public String toString() {
-        return "VisitorsReport{" +
-                "reportID=" + getReportID() +
-                ", parkID=" + getParkID() +
-                ", date=" + getDate() +
-                ", comment='" + getComment() + '\'' +
-                ", totalIndividualVisitors=" + totalIndividualVisitors +
-                ", totalGroupVisitors=" + totalGroupVisitors +
-                ", totalFamilyVisitors=" + totalFamilyVisitors +
-                ", totalVisitors=" + totalVisitors +
-                '}';
+        // Update toString to call super.toString() and append VisitorsReport specific fields
+        return super.toString() + 
+               ", VisitorsReport{" +
+               "totalIndividualVisitors=" + totalIndividualVisitors +
+               ", totalGroupVisitors=" + totalGroupVisitors +
+               ", totalFamilyVisitors=" + totalFamilyVisitors +
+               ", totalVisitors=" + totalVisitors +
+               '}';
     }
 }

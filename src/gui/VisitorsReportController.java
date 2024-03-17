@@ -5,9 +5,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextArea;
 
 import client.ClientController;
 import client.ClientUI;
@@ -27,37 +29,44 @@ public class VisitorsReportController {
 
 	@FXML
 	private PieChart visitorsChart;
-	   @FXML
-	    private JFXButton CloseWindowBth;
+	@FXML
+	private JFXTextArea CommentTextArea;
+	@FXML
+	private JFXButton CloseWindowBth;
+	@FXML
+	private Label commentLabal;
 
-	    @FXML
-	    void CloseWindowAction(ActionEvent event) {
-	        // Get the current stage using the event source
-	        Stage stage = (Stage) CloseWindowBth.getScene().getWindow();
-	        // Close the current stage
-	        stage.close();
-	    }
+	@FXML
+	void CloseWindowAction(ActionEvent event) {
+		// Get the current stage using the event source
+		Stage stage = (Stage) CloseWindowBth.getScene().getWindow();
+		// Close the current stage
+		stage.close();
+	}
 
 	@FXML
 	private void initialize() {
 		visitorReport = null;
 		adjustSaveButtonVisibility();
 		loadVisitorsReport();
-		
+
 	}
 
 	private void adjustSaveButtonVisibility() {
-	    // Assuming Usermanager.getCurrentWorker().getRole() returns the role of the user
-	    String role = Usermanager.getCurrentWorker().getRole();
-	    if ("Department Manager".equals(role)) {
-	        // Hide the save button for Department Manager
-	        savereportbth.setVisible(false);
-	    } else {
-	        // Show the save button for other roles
-	        savereportbth.setVisible(true);
-	        CloseWindowBth.setVisible(false);
+		String role = Usermanager.getCurrentWorker().getRole();
+		if ("Department Manager".equals(role)) {
+			// Hide the save button for Department Manager
+			savereportbth.setVisible(false);
+			CommentTextArea.setVisible(false);
+			commentLabal.setVisible(false);
+		} else {
+		
+				// Show the save button for other roles
+				savereportbth.setVisible(true);
 
-	    }
+			
+		}
+		
 	}
 
 	@FXML
@@ -67,8 +76,13 @@ public class VisitorsReportController {
 					Operation.POST_VISITORS_REPORT);
 			ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
 
-			visitorReport = (VisitorsReport) ClientController.data.getDataTransfered(); // Assuming this correctly
-																						// fetches the data
+			if (ClientController.data.getFlag()) {
+				Alerts erorAlert = new Alerts(Alerts.AlertType.CONFIRMATION, "Confirmtion", "",
+						"The report was successfully saved.");
+				erorAlert.showAndWait();
+
+			}
+			// fetches the data
 		} else {
 			Alerts erorAlert = new Alerts(Alerts.AlertType.ERROR, "Error", "Error", "Not able to save visitor report.");
 			erorAlert.showAndWait();
@@ -84,14 +98,12 @@ public class VisitorsReportController {
 			System.out.println("in Department Manager");
 			break;
 		case "Park Manager":
-			ClientServerMessage<?> messageForServer = new ClientServerMessage<>(Usermanager.getCurrentWorker(),
-					Operation.GET_NEW_VISITORS_REPORT);
-			ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
+
 			System.out.println("in Park Manager");
 			break;
 		}
 
-		visitorReport = (VisitorsReport) ClientController.data.getDataTransfered(); 
+		visitorReport = (VisitorsReport) ClientController.data.getDataTransfered();
 		System.out.println(visitorReport.toString());
 		if (visitorReport != null) {
 			updateChart(visitorReport);

@@ -595,77 +595,87 @@ public class DatabaseController {
 		return park;
 	}
 
-	public VisitorsReport getNewVisitorsReport(GeneralParkWorker worker) {
-		String query = "SELECT typeOfOrder, SUM(amountOfVisitors) AS totalVisitors FROM `order` WHERE parkNumber = ? GROUP BY typeOfOrder";
-		VisitorsReport report = null;
+	public VisitorsReport getNewVisitorsReport(VisitorsReport visitReport) {
+        System.out.println("in db getNewVisitorsReport...");
 
-		Integer totalIndividuals = 0;
-		Integer totalGroups = 0;
-		Integer totalFamilies = 0;
-		Integer totalVisitors = 0;
-		Integer parkNumber = worker.getWorksAtPark(); // Assuming this method exists and returns the parkNumber
+        String query = "SELECT typeOfOrder, SUM(amountOfVisitors) AS totalVisitors "
+                + "FROM `order` "
+                + "WHERE parkNumber = ? AND YEAR(date) = ? AND MONTH(date) = ? AND orderStatus = 'COMPLETED' "
+                + "GROUP BY typeOfOrder";
 
-		try (PreparedStatement statement = connectionToDatabase.prepareStatement(query)) {
-			statement.setInt(1, parkNumber);
 
-			try (ResultSet resultSet = statement.executeQuery()) {
-				while (resultSet.next()) {
-					String typeOfOrder = resultSet.getString("typeOfOrder").trim();
-					int visitors = resultSet.getInt("totalVisitors");
+	    // Initialize variables for the report
+	    Integer totalIndividuals = 0, totalGroups = 0, totalFamilies = 0, totalVisitors = 0;
+	    Integer parkNumber = visitReport.getParkID(); // Assuming VisitReport has this method
+	    LocalDate reportDate = visitReport.getDate(); // Assuming VisitReport has this method
+        System.out.println("Executing query with parameters - Park Number: " + parkNumber + ", Year: " + reportDate.getYear() + ", Month: " + reportDate.getMonthValue());
 
-					switch (typeOfOrder.toUpperCase()) { // Use upper case for comparison to avoid case sensitivity
-															// issues
-					case "SOLO":
-						totalIndividuals += visitors;
-						break;
-					case "GUIDEDGROUP":
-						totalGroups += visitors;
-						break;
-					case "FAMILY":
-						totalFamilies += visitors;
-						break;
-					default:
-						// Handle any unexpected typeOfOrder
-						break;
-					}
-				}
-			}
+	    // Prepare the database query
+	    try (PreparedStatement statement = connectionToDatabase.prepareStatement(query)) {
+	        statement.setInt(1, parkNumber);
+	        statement.setInt(2, reportDate.getYear());
+	        statement.setInt(3, reportDate.getMonthValue());
+	        System.out.println("Executing query with parameters - Park Number: " + parkNumber + ", Year: " + reportDate.getYear() + ", Month: " + reportDate.getMonthValue());
 
-			totalVisitors = totalIndividuals + totalGroups + totalFamilies;
 
-		} catch (SQLException e) {
-			System.err
-					.println("An error occurred while fetching the total number of visitors report: " + e.getMessage());
-			e.printStackTrace();
-		}
+	        // Execute the query and process the results
+	        try (ResultSet resultSet = statement.executeQuery()) {
+	            while (resultSet.next()) {
+	                String typeOfOrder = resultSet.getString("typeOfOrder").trim();
+	                int visitors = resultSet.getInt("totalVisitors");
+	                
+	                switch (typeOfOrder.toUpperCase()) {
+	                    case "SOLO":
+	                        totalIndividuals += visitors;
+	                        break;
+	                    case "GUIDEDGROUP":
+	                        totalGroups += visitors;
+	                        break;
+	                    case "FAMILY":
+	                        totalFamilies += visitors;
+	                        break;
+	                    default:
+	                        // Optionally handle unexpected values
+	                        break;
+	                }
+	            }
+	            totalVisitors = totalIndividuals + totalGroups + totalFamilies;
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("An error occurred while fetching the total number of visitors report: " + e.getMessage());
+	        e.printStackTrace();
+	    }
 
-		int reportID = -1;
-		Report.ReportType reportType = Report.ReportType.VISITOR;
-		LocalDate date = LocalDate.now(); // Assuming current date for the report
-		String comment = "Automatically generated report.";
-
-		report = new VisitorsReport(reportID, reportType, parkNumber, date, comment, totalIndividuals, totalGroups,
-				totalFamilies, totalVisitors);
-		System.out.println(report.toString());
-		return report;
+	    // Construct and return the report
+	    int month = reportDate.getMonthValue(); // Extract month from reportDate
+	    String comment = "Automatically generated report based on month and park ID.";
+	    
+	    // Corrected to match the constructor's parameters
+	    VisitorsReport report = new VisitorsReport(-1, Report.ReportType.VISITOR, parkNumber, reportDate, month, comment, totalIndividuals, totalGroups, totalFamilies, totalVisitors);
+	    System.out.println(report.toString());
+	    return report;
 	}
+
+
 
 	public boolean insertVisitorReport(VisitorsReport report) {
 	    // First, insert into the 'report' table.
         System.out.println("in db insert...");
 
-	    String insertReportSql = "INSERT INTO `report` (reportType, parkID, date, comment) VALUES (?, ?, ?, ?)";
+        String insertReportSql = "INSERT INTO `report` (reportType, parkID, date, month, comment) VALUES (?, ?, ?, ?, ?)";
 	    // Assuming 'visitorsreports' is the correct table name and it also includes a reference to 'reportID'.
 	    String insertVisitorsReportSql = "INSERT INTO `VisitorsReport` (reportID, parkNumber, totalIndividualVisitors, totalGroupVisitors, totalFamilyVisitors, totalVisitors) VALUES (?, ?, ?, ?, ?, ?)";
 
 	    try (PreparedStatement statementReport = connectionToDatabase.prepareStatement(insertReportSql, Statement.RETURN_GENERATED_KEYS);
 	         PreparedStatement statementVisitorsReport = connectionToDatabase.prepareStatement(insertVisitorsReportSql)) {
  
-	        // Set values for the report table insert.
-	        statementReport.setString(1, report.getReportType().toString()); // Assuming you have a method to get the report type as String.
-	        statementReport.setInt(2, report.getParkID());
-	        statementReport.setDate(3, java.sql.Date.valueOf(report.getDate()));
-	        statementReport.setString(4, report.getComment());
+	    	// Set values for the report table insert
+	    	statementReport.setString(1, report.getReportType().toString()); // Assuming you have a method to get the report type as String
+	    	statementReport.setInt(2, report.getParkID());
+	    	statementReport.setDate(3, java.sql.Date.valueOf(report.getDate()));
+	    	statementReport.setInt(4, report.getMonth()); // Assuming you have a method to get the month as an int
+	    	statementReport.setString(5, report.getComment());
+
 
 	        System.out.println("Executing report table insert...");
 	        // Execute the report table insert and get the generated key.
@@ -711,11 +721,11 @@ public class DatabaseController {
 
 
 	public VisitorsReport getVisitorsReportByReportId(Report inputReport) {
-        System.out.println("in db getVisitorsReportByReportId...");
+	    System.out.println("in db getVisitorsReportByReportId...");
 
 	    VisitorsReport visitorsReport = null;
 	    // Query to select visitor report details based on the reportID from the Report object
-	    String query = "SELECT vr.reportID, vr.parkNumber, vr.totalIndividualVisitors, vr.totalGroupVisitors, vr.totalFamilyVisitors, vr.totalVisitors, r.reportType, r.date, r.comment "
+	    String query = "SELECT vr.reportID, vr.parkNumber, vr.totalIndividualVisitors, vr.totalGroupVisitors, vr.totalFamilyVisitors, vr.totalVisitors, r.reportType, r.date, r.month, r.comment "
 	            + "FROM `VisitorsReport` vr JOIN `report` r ON vr.reportID = r.reportID "
 	            + "WHERE vr.reportID = ?";
 	    System.out.println("Attempting to retrieve VisitorsReport for Report ID: " + inputReport.getReportID());
@@ -732,16 +742,16 @@ public class DatabaseController {
 	                Integer totalGroupVisitors = resultSet.getInt("totalGroupVisitors");
 	                Integer totalFamilyVisitors = resultSet.getInt("totalFamilyVisitors");
 	                Integer totalVisitors = resultSet.getInt("totalVisitors");
-	                String reportType = resultSet.getString("reportType");
-	                LocalDate date = resultSet.getDate("date").toLocalDate(); // Assuming `date` is of type java.sql.Date
+	                String reportTypeStr = resultSet.getString("reportType");
+	                Report.ReportType reportType = Report.ReportType.valueOf(reportTypeStr); // Convert string to enum
+	                LocalDate date = resultSet.getDate("date").toLocalDate();
+	                int month = resultSet.getInt("month"); // Assuming `month` is stored as an INT in the database
 	                String comment = resultSet.getString("comment");
 
 	                // Construct a new VisitorsReport object using the fetched data
-	                visitorsReport = new VisitorsReport(reportID, Report.ReportType.valueOf(reportType), parkNumber, date, comment, totalIndividualVisitors, totalGroupVisitors, totalFamilyVisitors, totalVisitors);
-	            }
-	            else {
+	                visitorsReport = new VisitorsReport(reportID, reportType, parkNumber, date, month, comment, totalIndividualVisitors, totalGroupVisitors, totalFamilyVisitors, totalVisitors);
+	            } else {
 	                System.out.println("No VisitorsReport found in database for Report ID: " + inputReport.getReportID());
-
 	            }
 	        }
 	    } catch (SQLException e) {
@@ -753,30 +763,39 @@ public class DatabaseController {
 	}
 
 	
-	 public List<Report> getGeneralReportsByParkId(int parkId) {
-	        List<Report> reports = new ArrayList<>();
-	        String query = "SELECT reportID, reportType, parkID, date, comment FROM `Report` WHERE parkID = ?";
+	public List<Report> getGeneralReportsByParkId(int parkId) {
+	    List<Report> reports = new ArrayList<>();
+	    // Include 'month' in your SELECT query
+	    String query = "SELECT reportID, reportType, parkID, date, month, comment FROM `Report` WHERE parkID = ?";
 
-	        try (PreparedStatement statement = connectionToDatabase.prepareStatement(query)) {
-	            statement.setInt(1, parkId);
+	    try (PreparedStatement statement = connectionToDatabase.prepareStatement(query)) {
+	        statement.setInt(1, parkId);
 
-	            try (ResultSet resultSet = statement.executeQuery()) {
-	                while (resultSet.next()) {
-	                    int reportID = resultSet.getInt("reportID");
-	                    String reportType = resultSet.getString("reportType");
-	                    int parkID = resultSet.getInt("parkID");
-	                    LocalDate date = resultSet.getDate("date").toLocalDate();
-	                    String comment = resultSet.getString("comment");
+	        try (ResultSet resultSet = statement.executeQuery()) {
+	            while (resultSet.next()) {
+	                int reportID = resultSet.getInt("reportID");
+	                String reportTypeStr = resultSet.getString("reportType");
+	                Report.ReportType reportType = Report.ReportType.valueOf(reportTypeStr); // Convert the string to enum
+	                int parkID = resultSet.getInt("parkID");
+	                LocalDate date = resultSet.getDate("date").toLocalDate();
+	                int month = resultSet.getInt("month");
+	                String comment = resultSet.getString("comment");
 
-	                    reports.add(new Report(reportID, ReportType.valueOf(reportType), parkID, date, comment));
-	                }
+	                // Create a new Report object with the fetched data, including month
+	                Report report = new Report(reportID, reportType, parkID, date, month, comment);
+	                reports.add(report);
 	            }
-	        } catch (SQLException e) {
-	            System.err.println("An error occurred while fetching reports: " + e.getMessage());
-	            e.printStackTrace();
 	        }
-
-	        return reports;
+	    } catch (SQLException e) {
+	        System.err.println("An error occurred while fetching reports: " + e.getMessage());
+	        e.printStackTrace();
+	    } catch (IllegalArgumentException e) {
+	        System.err.println("An error occurred with enum conversion: " + e.getMessage());
+	        e.printStackTrace();
 	    }
+
+	    return reports;
+	}
+
 
 }

@@ -18,7 +18,7 @@ public class Order {
 	private typeOfOrder orderType;
 
 	private enum status {
-		PENDING, CONFIRM, CANCEL
+		PENDING, CONFIRM, CANCEL,COMPLETED
 	}
 
 	private enum typeOfOrder {

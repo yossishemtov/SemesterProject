@@ -41,7 +41,7 @@ public abstract class Operation {
     //report
     public final static String GET_HOURLY_VISIT_DATA_FOR_PARK = "Get hourly visit data for park";
     public final static String POST_VISITORS_REPORT = "post visitor report and general report from park maneger";
-    public final static String GET_NEW_VISITORS_REPORT = "Get new visitors report report";
+    public final static String GET_NEW_VISITORS_REPORT = "Get new visitors report";
     public final static String GET_EXISTS_VISITORS_REPORT = "Get exists visitors  report";
     public final static String GET_GENERAL_REPORT = "Get exists general report ";
 

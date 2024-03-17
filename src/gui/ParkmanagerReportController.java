@@ -6,9 +6,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
 
 import client.ClientController;
 import client.ClientUI;
@@ -17,42 +17,37 @@ import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
 import common.Report;
+import common.Usermanager;
 import common.VisitorsReport;
-import common.worker.ChangeRequest;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
-import javafx.scene.control.Tooltip;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
-public class DepartmentManagerReportsController implements Initializable {
+public class ParkmanagerReportController implements Initializable {
+
+	@FXML
+	private JFXComboBox<String> monthCombobox; // Changed to String for display purposes
+	@FXML
+	private JFXComboBox<String> ReportTypeCombobox; // Changed to String for display purposes
 
 	ObservableList<?> observable = FXCollections.observableArrayList();
 
-	@FXML
-	private Label headerLabel;
 
-	@FXML
-	private JFXButton visitReportBtn;
 
-	@FXML
-	private JFXButton CancelsReportBtn;
 
 
 	@FXML
@@ -73,18 +68,21 @@ public class DepartmentManagerReportsController implements Initializable {
 	@FXML
 	private TableColumn<Report, String> commentCol;
 	@FXML
-	private JFXTextField ParkIdField;
-
-	@FXML
-	private JFXButton ShowReportBth;
-
-
+	private JFXButton Createbth;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		configureTableColumns();
-	}
+		// Initialize months 1-12
+		for (int month = 1; month <= 12; month++) {
+			monthCombobox.getItems().add(String.valueOf(month));
+			// Initialize report types
+			ReportTypeCombobox.setItems(FXCollections.observableArrayList("Visit Report", "Occupancy Report"));
+		
 
+		}
+		configureTableColumns();
+		ShowReportparkIdAction();
+	}
 	private void configureTableColumns() {
 		reportIDCol.setCellValueFactory(new PropertyValueFactory<>("reportID"));
 		reportTypeCol.setCellValueFactory(new PropertyValueFactory<>("reportType"));
@@ -97,15 +95,11 @@ public class DepartmentManagerReportsController implements Initializable {
 		commentCol.setCellValueFactory(new PropertyValueFactory<>("comment"));
 	}
 
-	@FXML
-	void ShowReportparkIdAction(ActionEvent event) {
-		String parkId = ParkIdField.getText().trim();
-		if (parkId.isEmpty()) {
-			Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "", "Park ID field cannot be empty.");
-			warningalert.showAndWait();
-		} else {
+	private void ShowReportparkIdAction() {
+		Integer parkId = Usermanager.getCurrentWorker().getWorksAtPark();
+	
 			// Here, send request to server to get reports by parkId
-			ObservableList<Report> reports = getReportsByParkId(Integer.parseInt(parkId));
+			ObservableList<Report> reports = getReportsByParkId(parkId);
 			if (reports.isEmpty()) {
 				Alerts infoalert = new Alerts(Alert.AlertType.INFORMATION, "Information", "", "Not have report to show.");
 				infoalert.showAndWait();
@@ -116,7 +110,7 @@ public class DepartmentManagerReportsController implements Initializable {
 		            ReportsTableView.refresh(); // Explicitly refresh the table view
 			}
 		}
-	}
+	
 
 	@FXML
 	void ShowReportTableClickAction(MouseEvent event) {
@@ -155,7 +149,8 @@ public class DepartmentManagerReportsController implements Initializable {
 	}
 
 	private ObservableList<Report> getReportsByParkId(int parkId) {
-		ClientServerMessage<Integer> messageForServer = new ClientServerMessage<>(parkId, Operation.GET_GENERAL_REPORT);
+		ClientServerMessage<?> messageForServer = new ClientServerMessage<>(parkId, Operation.GET_GENERAL_REPORT);
+		System.out.println("1");
 		ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
 
 		if (ClientController.data.getFlag()) {
@@ -170,26 +165,60 @@ public class DepartmentManagerReportsController implements Initializable {
 		}
 	}
 
-
-
 	@FXML
-	void cancelReportBtn(MouseEvent event) {
+	void CreateReportAction(ActionEvent event) {
+		String selectedMonthString = monthCombobox.getSelectionModel().getSelectedItem();
+	    String selectedReportType = ReportTypeCombobox.getSelectionModel().getSelectedItem();
+	    
+	    // Validate that both selections are not null (i.e., a selection has been made)
+	    if (selectedMonthString == null || selectedReportType == null) {
+	        Alert errorAlert =new Alerts(Alert.AlertType.ERROR, "Error", "", "You must select a month and report type.");
+	        errorAlert.showAndWait(); 
+	    }
+	    else {
+			int selectedMonth = Integer.parseInt(selectedMonthString);
 
+	    
+	    // React based on the selected report type
+	    switch (selectedReportType) {
+	        case "Visit Report":
+	        	VisitorsReport visitorReportToServer = new VisitorsReport(
+	        		    0, // Assuming 0 is a placeholder for the report ID
+	        		    null, // Assuming this is for ReportType, which you might want to specify
+	        		    Usermanager.getCurrentWorker().getWorksAtPark(), // Gets the park ID from the current worker
+	        		    LocalDate.now(), // Sets the report's date to today
+	        		    selectedMonth, // The month selected, make sure this is correctly parsed as an integer if needed
+	        		    null, // Placeholder for comment
+	        		    null, // Placeholder for total individual visitors
+	        		    null, // Placeholder for total group visitors
+	        		    null, // Placeholder for total family visitors
+	        		    null  // Placeholder for total visitors
+	        		);
+	        	ClientServerMessage<?> messageForServer = new ClientServerMessage<>(visitorReportToServer, Operation.GET_NEW_VISITORS_REPORT);
+	             ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
+			try {
+				NavigationManager.openPage("VisitorsReport.fxml", event, "", false);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	             
+	        	System.out.println("Creating Visit Report for Month: " + selectedMonthString);
+	            break;
+	        case "Occupancy Report":
+	            // Code to handle occupancy report creation
+	            System.out.println("Creating Occupancy Report for Month: " + selectedMonthString);
+	            break;
+	        default:
+	            // Handle unexpected report type (if applicable)
+	            Alert infoAlert = new Alert(Alert.AlertType.INFORMATION, "Unknown report type selected.");
+	            infoAlert.setHeaderText("Information");
+	            infoAlert.showAndWait();
+	            break;
+	    }
+	    }
 	}
 
-	@FXML
-	void visitReportBtn(MouseEvent event) {
-
-		// NavigationManager.openPage("DeparmentManegerVisitsReport.fxml",event , "Home
-		// Page", true);
-		try {
-			System.out.println("Loading FXML from path: " + NavigationManager.class.getResource("/gui/" + "test.fxml"));
-
-			NavigationManager.openPage("test.fxml", event, "", true);
-		} catch (Exception ex) {
-			System.out.println(ex.toString()); // Log the exception to understand what went wrong
-		}
-
-	}
+	
 
 }
