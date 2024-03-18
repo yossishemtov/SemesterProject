@@ -93,7 +93,7 @@ CREATE TABLE `order` (
 --
 -- Dumping data for table `order`
 --
-
+SET foreign_key_checks = 0;
 
 LOCK TABLES `order` WRITE;
 INSERT INTO `order` (orderId, travlerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder) VALUES
@@ -117,6 +117,41 @@ INSERT INTO `order` (orderId, travlerId, parkNumber, amountOfVisitors, price, vi
 (18, 118, 1, 3, 60.00, 'email18@example.com', '2024-03-29', '1234567807', '10:45:00', 'CONFIRMED', 'GUIDEDGROUP'),
 (19, 119, 1, 2, 40.00, 'email19@example.com', '2024-03-30', '1234567808', '11:45:00', 'CONFIRMED', 'FAMILY'),
 (20, 120, 1, 4, 80.00, 'email20@example.com', '2024-03-31', '1234567809', '12:45:00', 'CONFIRMED', 'SOLO');
+
+
+INSERT INTO `order` (orderId, travlerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder) VALUES
+(21, 121, 1, 3, 60.00, 'email21@example.com', '2024-07-01', '1234567810', '10:00:00', 'COMPLETED', 'FAMILY'),
+(22, 122, 1, 4, 80.00, 'email22@example.com', '2024-07-02', '1234567811', '11:00:00', 'COMPLETED', 'SOLO'),
+(23, 123, 1, 2, 40.00, 'email23@example.com', '2024-07-03', '1234567812', '12:00:00', 'COMPLETED', 'GUIDEDGROUP'),
+(24, 124, 1, 5, 100.00, 'email24@example.com', '2024-07-04', '1234567813', '13:00:00', 'COMPLETED', 'FAMILY'),
+(25, 125, 1, 3, 60.00, 'email25@example.com', '2024-07-05', '1234567814', '14:00:00', 'COMPLETED', 'SOLO'),
+(26, 126, 1, 4, 80.00, 'email26@example.com', '2024-07-06', '1234567815', '09:00:00', 'COMPLETED', 'GUIDEDGROUP'),
+(27, 127, 1, 2, 40.00, 'email27@example.com', '2024-07-07', '1234567816', '10:30:00', 'COMPLETED', 'FAMILY'),
+(28, 128, 1, 5, 100.00, 'email28@example.com', '2024-07-08', '1234567817', '11:30:00', 'COMPLETED', 'SOLO'),
+(29, 129, 1, 3, 60.00, 'email29@example.com', '2024-07-09', '1234567818', '12:30:00', 'COMPLETED', 'GUIDEDGROUP'),
+(30, 130, 1, 4, 80.00, 'email30@example.com', '2024-07-10', '1234567819', '13:30:00', 'COMPLETED', 'FAMILY'),
+(31, 131, 1, 2, 40.00, 'email31@example.com', '2024-07-11', '1234567820', '14:30:00', 'COMPLETED', 'SOLO'),
+(32, 132, 1, 5, 100.00, 'email32@example.com', '2024-07-12', '1234567821', '15:30:00', 'COMPLETED', 'GUIDEDGROUP'),
+(33, 133, 1, 3, 60.00, 'email33@example.com', '2024-07-13', '1234567822', '16:30:00', 'COMPLETED', 'FAMILY'),
+(34, 134, 1, 4, 80.00, 'email34@example.com', '2024-07-14', '1234567823', '09:45:00', 'COMPLETED', 'SOLO'),
+(35, 135, 1, 2, 40.00, 'email35@example.com', '2024-07-15', '1234567824', '10:45:00', 'COMPLETED', 'GUIDEDGROUP'),
+(36, 136, 1, 5, 100.00, 'email36@example.com', '2024-07-16', '1234567825', '11:45:00', 'COMPLETED', 'FAMILY'),
+(37, 137, 1, 3, 60.00, 'email37@example.com', '2024-07-17', '1234567826', '12:45:00', 'COMPLETED', 'SOLO'),
+(38, 138, 1, 4, 80.00, 'email38@example.com', '2024-07-18', '1234567827', '13:45:00', 'COMPLETED', 'GUIDEDGROUP'),
+(39, 139, 1, 2, 40.00, 'email39@example.com', '2024-07-19', '1234567828', '14:45:00', 'COMPLETED', 'FAMILY'),
+(40, 140, 1, 5, 100.00, 'email40@example.com', '2024-07-20', '1234567829', '15:45:00', 'COMPLETED', 'SOLO'),
+(41, 141, 1, 3, 60.00, 'email41@example.com', '2024-07-21', '1234567830', '16:45:00', 'COMPLETED', 'GUIDEDGROUP'),
+(42, 142, 1, 4, 80.00, 'email42@example.com', '2024-07-22', '1234567831', '09:00:00', 'COMPLETED', 'FAMILY'),
+(43, 143, 1, 2, 40.00, 'email43@example.com', '2024-07-23', '1234567832', '10:00:00', 'COMPLETED', 'SOLO'),
+(44, 144, 1, 5, 100.00, 'email44@example.com', '2024-07-24', '1234567833', '11:00:00', 'COMPLETED', 'GUIDEDGROUP'),
+(45, 145, 1, 3, 60.00, 'email45@example.com', '2024-07-25', '1234567834', '12:00:00', 'COMPLETED', 'FAMILY'),
+(46, 146, 1, 4, 80.00, 'email46@example.com', '2024-07-26', '1234567835', '13:00:00', 'COMPLETED', 'SOLO'),
+(47, 147, 1, 2, 40.00, 'email47@example.com', '2024-07-27', '1234567836', '14:00:00', 'COMPLETED', 'GUIDEDGROUP'),
+(48, 148, 1, 5, 100.00, 'email48@example.com', '2024-07-28', '1234567837', '15:00:00', 'COMPLETED', 'FAMILY'),
+(49, 149, 1, 3, 60.00, 'email49@example.com', '2024-07-29', '1234567838', '16:00:00', 'COMPLETED', 'SOLO'),
+(50, 150, 1, 4, 80.00, 'email50@example.com', '2024-07-30', '1234567839', '09:30:00', 'COMPLETED', 'GUIDEDGROUP');
+SET foreign_key_checks = 1;
+
 UNLOCK TABLES;
 
 -- Drop the existing tables if they exist
@@ -142,6 +177,15 @@ CREATE TABLE VisitorsReport (
     totalVisitors INT NOT NULL,
     PRIMARY KEY (reportID),
     FOREIGN KEY (reportID) REFERENCES Report(reportID)
+);
+
+CREATE TABLE `UsageReport` (
+  `reportID` INT NOT NULL,
+  `parkNumber` INT NOT NULL,
+  `parkCapacity` INT NOT NULL,
+  `dailyUsage` TEXT NOT NULL,
+  PRIMARY KEY (`reportID`),
+  CONSTRAINT `fk_usageReport_report` FOREIGN KEY (`reportID`) REFERENCES `report` (`reportID`) ON DELETE CASCADE
 );
 
 

@@ -1,6 +1,8 @@
-package common;
+package common.worker;
 
 import java.time.LocalDate;
+
+import common.worker.Report.ReportType;
 
 public class VisitorsReport extends Report {
 

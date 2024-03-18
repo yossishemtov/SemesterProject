@@ -1,4 +1,4 @@
-package common;
+package common.worker;
 
 import java.io.Serializable;
 import java.time.LocalDate;

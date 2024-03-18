@@ -51,6 +51,11 @@ public abstract class Operation {
     public final static String GET_NEW_VISITORS_REPORT = "Get new visitors report";
     public final static String GET_EXISTS_VISITORS_REPORT = "Get exists visitors  report";
     public final static String GET_GENERAL_REPORT = "Get exists general report ";
+    
+    //Usage report
+    public final static String GET_EXISTS_USAGE_REPORT = "Get exists usage  report";
+    public final static String POST_USAGE_REPORT = "post usage report and general report from park maneger";
+    public final static String GET_NEW_USAGE_REPORT = "Get new usage report";
 
     
     // Operations related to Change Requests

@@ -4,6 +4,9 @@ import common.*;
 import common.worker.ChangeRequest;
 import common.worker.GeneralParkWorker;
 import common.worker.ParkWorker;
+import common.worker.Report;
+import common.worker.UsageReport;
+import common.worker.VisitorsReport;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -520,7 +523,23 @@ public class MessageHandlerFromClient {
 			
 			client.sendToClient(messageFromClient);
 			break;
-		    
+			
+		case Operation.GET_NEW_USAGE_REPORT:
+			//Append the number of visitors to the park
+			UsageReport usageReportFromClient = (UsageReport) messageFromClient.getDataTransfered();
+			
+			usageReportFromClient= dbControllerInstance.getNewUsageReport(usageReportFromClient);
+			
+			if(usageReportFromClient !=null) {
+				messageFromClient.setflagTrue();
+				messageFromClient.setDataTransfered(usageReportFromClient);
+				
+			}else {
+				messageFromClient.setflagFalse();
+			}
+			
+			client.sendToClient(messageFromClient);
+			break;
 		default:
 			System.out.println("default");
 			try {

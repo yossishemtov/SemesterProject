@@ -3,12 +3,19 @@ package DB;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import common.*;
-import common.Report.ReportType;
 import common.worker.*;
+import common.worker.Report.ReportType;
 
 /**
  * This class is responsible for managing database operations related to orders.
@@ -801,6 +808,7 @@ public class DatabaseController {
 
 	public VisitorsReport getNewVisitorsReport(VisitorsReport visitReport) {
         System.out.println("in db getNewVisitorsReport...");
+        System.out.println(visitReport.toString());
 
         String query = "SELECT typeOfOrder, SUM(amountOfVisitors) AS totalVisitors "
                 + "FROM `order` "
@@ -818,7 +826,8 @@ public class DatabaseController {
 	    try (PreparedStatement statement = connectionToDatabase.prepareStatement(query)) {
 	        statement.setInt(1, parkNumber);
 	        statement.setInt(2, reportDate.getYear());
-	        statement.setInt(3, reportDate.getMonthValue());
+	        statement.setInt(3, visitReport.getMonth());
+	        //statement.setInt(3, reportDate.getMonthValue());
 	        System.out.println("Executing query with parameters - Park Number: " + parkNumber + ", Year: " + reportDate.getYear() + ", Month: " + reportDate.getMonthValue());
 
 
@@ -859,6 +868,8 @@ public class DatabaseController {
 	    System.out.println(report.toString());
 	    return report;
 	}
+	
+	
 
 
 
@@ -1000,6 +1011,180 @@ public class DatabaseController {
 
 	    return reports;
 	}
+	
+	
+	public UsageReport getNewUsageReport(UsageReport usageReport) {
+	    System.out.println("In db getNewUsageReport...");
+	    System.out.println(usageReport.toString());
+
+	    UsageReport newReport = null;
+	    String query = "SELECT DAY(date) AS dayOfMonth, SUM(amountOfVisitors) AS dailyVisitors "
+	            + "FROM `order` "
+	            + "WHERE parkNumber = ? AND YEAR(date) = ? AND MONTH(date) = ? AND orderStatus = 'COMPLETED' "
+	            + "GROUP BY DAY(date)";
+
+	    Map<Integer, Integer> dailyUsage = new HashMap<>();
+	    Integer parkNumber = usageReport.getParkID();
+	    LocalDate reportDate = usageReport.getDate();
+
+	    // Initialize the dailyUsage map with all days of the month set to 0
+	    LocalDate startOfMonth = LocalDate.of(reportDate.getYear(), usageReport.getMonth(), 1);
+	    LocalDate endOfMonth = startOfMonth.with(TemporalAdjusters.lastDayOfMonth());
+	    for (LocalDate date = startOfMonth; !date.isAfter(endOfMonth); date = date.plusDays(1)) {
+	        dailyUsage.put(date.getDayOfMonth(), 0);
+	    }
+
+	    int parkCapacity = usageReport.getParkCapacity();
+	    System.out.println("Executing query with parameters - Park Number: " + parkNumber + ", Year: " + reportDate.getYear() + ", Month: " + usageReport.getMonth());
+
+	    try (PreparedStatement statement = connectionToDatabase.prepareStatement(query)) {
+	        statement.setInt(1, parkNumber);
+	        statement.setInt(2, reportDate.getYear());
+	        statement.setInt(3, usageReport.getMonth());
+
+	        System.out.println("Query Prepared: " + statement.toString()); // This line helps to see the prepared statement.
+
+	        try (ResultSet resultSet = statement.executeQuery()) {
+	            while (resultSet.next()) {
+	                int dayOfMonth = resultSet.getInt("dayOfMonth");
+	                int dailyVisitors = resultSet.getInt("dailyVisitors");
+
+	                System.out.println("Day: " + dayOfMonth + ", Visitors: " + dailyVisitors); // Diagnostic print
+
+	                // Check if park was fully occupied on this day
+	                boolean isFull = dailyVisitors >= parkCapacity;
+	                // Instead of storing a boolean, store the visitor count or 0 to indicate full/not full
+	                dailyUsage.put(dayOfMonth, isFull ? parkCapacity : dailyVisitors);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("An error occurred while fetching the usage report: " + e.getMessage());
+	        e.printStackTrace();
+	    }
+
+	    // Diagnostic print to check map contents after attempting to populate it
+	    System.out.println("Daily Usage Map: " + dailyUsage);
+
+	    // Prepare additional fields for the report
+	    int month = usageReport.getMonth();
+	    String comment = "Usage report generated for the month, showing daily visitor count and full occupancy days.";
+
+	    // Use corrected fields and constructor
+	    newReport = new UsageReport(-1, UsageReport.ReportType.USAGE, parkNumber, reportDate, month, comment, dailyUsage, parkCapacity);
+	    System.out.println(newReport.toString());
+	    return newReport;
+	}
+
+	
+	public boolean insertUsageReport(UsageReport report) {
+	    // First, insert into the 'report' table.
+	    System.out.println("in db insert...");
+
+	    String insertReportSql = "INSERT INTO `report` (reportType, parkID, date, month, comment) VALUES (?, ?, ?, ?, ?)";
+	    // Assuming 'usagereport' is the correct table name and it also includes a reference to 'reportID'.
+	    String insertUsageReportSql = "INSERT INTO `UsageReport` (reportID, parkNumber, parkCapacity, dailyUsage) VALUES (?, ?, ?, ?)";
+
+	    try (PreparedStatement statementReport = connectionToDatabase.prepareStatement(insertReportSql, Statement.RETURN_GENERATED_KEYS);
+	         PreparedStatement statementUsageReport = connectionToDatabase.prepareStatement(insertUsageReportSql)) {
+
+	        // Set values for the report table insert
+	        statementReport.setString(1, report.getReportType().toString());
+	        statementReport.setInt(2, report.getParkID());
+	        statementReport.setDate(3, java.sql.Date.valueOf(report.getDate()));
+	        statementReport.setInt(4, report.getMonth());
+	        statementReport.setString(5, report.getComment());
+
+	        System.out.println("Executing report table insert...");
+	        // Execute the report table insert and get the generated key.
+	        int rowsInsertedReport = statementReport.executeUpdate();
+
+	        if (rowsInsertedReport > 0) {
+	            try (ResultSet generatedKeys = statementReport.getGeneratedKeys()) {
+	                if (generatedKeys.next()) {
+	                    long reportId = generatedKeys.getLong(1);
+	                    System.out.println("Report inserted with ID: " + reportId);
+
+	                    // Convert dailyUsage map to JSON string for storage
+	                    String dailyUsageJson = new Gson().toJson(report.getDailyUsage());
+
+	                    // Set values for the usagereport table insert, using the generated reportID.
+	                    statementUsageReport.setLong(1, reportId);
+	                    statementUsageReport.setInt(2, report.getParkID());
+	                    statementUsageReport.setInt(3, report.getParkCapacity());
+	                    statementUsageReport.setString(4, dailyUsageJson);
+
+	                    System.out.println("Executing usagereport table insert...");
+	                    // Execute the usagereport table insert.
+	                    int rowsInsertedUsageReport = statementUsageReport.executeUpdate();
+	                    if (rowsInsertedUsageReport > 0) {
+	                        System.out.println("A new usage report was inserted successfully into both tables!");
+	                        return true;
+	                    } else {
+	                        System.out.println("Failed to insert into usagereport table.");
+	                    }
+	                } else {
+	                    System.out.println("No ID was generated for the report insert.");
+	                }
+	            }
+	        } else {
+	            System.out.println("Failed to insert into report table.");
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("SQL exception occurred during the insertUsageReport operation: ");
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+	
+	public UsageReport getUsageReportByReportId(Report inputReport) {
+	    System.out.println("in db getUsageReportByReportId...");
+
+	    UsageReport usageReport = null;
+	    String query = "SELECT ur.reportID, ur.parkNumber, ur.parkCapacity, ur.dailyUsage, r.reportType, r.date, r.month, r.comment "
+	            + "FROM `UsageReport` ur JOIN `report` r ON ur.reportID = r.reportID "
+	            + "WHERE ur.reportID = ?";
+
+	    System.out.println("Attempting to retrieve UsageReport for Report ID: " + inputReport.getReportID());
+
+	    try (PreparedStatement statement = connectionToDatabase.prepareStatement(query)) {
+	        statement.setInt(1, inputReport.getReportID());
+
+	        try (ResultSet resultSet = statement.executeQuery()) {
+	            if (resultSet.next()) {
+	                Integer reportID = resultSet.getInt("reportID");
+	                Integer parkNumber = resultSet.getInt("parkNumber");
+	                LocalDate date = resultSet.getDate("date").toLocalDate();
+	                int month = resultSet.getInt("month");
+	                int parkCapacity = resultSet.getInt("parkCapacity");
+	                String dailyUsageJson = resultSet.getString("dailyUsage");
+	                String reportTypeStr = resultSet.getString("reportType");
+	                Report.ReportType reportType = Report.ReportType.valueOf(reportTypeStr); // Convert string to enum
+	                String comment = resultSet.getString("comment");
+
+	                Gson gson = new Gson();
+	                // Assuming dailyUsage is a Map<Integer, Integer>
+	                Map<Integer, Integer> dailyUsage = gson.fromJson(dailyUsageJson, new TypeToken<Map<Integer, Integer>>() {}.getType());
+
+	                // Construct a new UsageReport object using the fetched data
+	                usageReport = new UsageReport(reportID, reportType, parkNumber, date, month, comment, dailyUsage, parkCapacity);
+	            } else {
+	                System.out.println("No UsageReport found in database for Report ID: " + inputReport.getReportID());
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("An error occurred while fetching the usage report: " + e.getMessage());
+	        e.printStackTrace();
+	    } catch (JsonSyntaxException e) {
+	        System.err.println("An error occurred while parsing the daily usage JSON: " + e.getMessage());
+	        e.printStackTrace();
+	    }
+
+	    return usageReport;
+	}
+
+
+
+
 
 
 }

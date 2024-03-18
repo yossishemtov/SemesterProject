@@ -16,9 +16,11 @@ import client.NavigationManager;
 import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
-import common.Report;
+import common.Park;
 import common.Usermanager;
-import common.VisitorsReport;
+import common.worker.Report;
+import common.worker.UsageReport;
+import common.worker.VisitorsReport;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -65,6 +67,7 @@ public class ParkmanagerReportController implements Initializable {
 	private TableColumn<Report, String> commentCol;
 	@FXML
 	private JFXButton Createbth;
+	private Park park;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -72,13 +75,29 @@ public class ParkmanagerReportController implements Initializable {
 		for (int month = 1; month <= 12; month++) {
 			monthCombobox.getItems().add(String.valueOf(month));
 			// Initialize report types
-			ReportTypeCombobox.setItems(FXCollections.observableArrayList("Visit Report", "Occupancy Report"));
-		
+			ReportTypeCombobox.setItems(FXCollections.observableArrayList("Visit Report", "Usage Report"));
 
 		}
-		configureTableColumns();
-		ShowReportparkIdAction();
+
+		ClientServerMessage<Report> messageForServer = new ClientServerMessage<>(
+				Usermanager.getCurrentWorker().getWorksAtPark(), Operation.GET_PARK_DETAILS);
+		ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
+
+		if (ClientController.data.getFlag()) {
+			park=(Park) ClientUI.clientControllerInstance.getData().getDataTransfered();
+		}
+		else {
+			Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "", "Error to load park data .");
+			warningalert.showAndWait();
+		}
+	
+
+	configureTableColumns();
+
+	ShowReportparkIdAction();
+
 	}
+
 	private void configureTableColumns() {
 		reportIDCol.setCellValueFactory(new PropertyValueFactory<>("reportID"));
 		reportTypeCol.setCellValueFactory(new PropertyValueFactory<>("reportType"));
@@ -93,51 +112,47 @@ public class ParkmanagerReportController implements Initializable {
 
 	private void ShowReportparkIdAction() {
 		Integer parkId = Usermanager.getCurrentWorker().getWorksAtPark();
-	
-			// Here, send request to server to get reports by parkId
-			ObservableList<Report> reports = getReportsByParkId(parkId);
-			if (reports.isEmpty()) {
-				Alerts infoalert = new Alerts(Alert.AlertType.INFORMATION, "Information", "", "Not have report to show.");
-				infoalert.showAndWait();
-			}
-			else {
-				 ReportsTableView.getItems().clear(); // Clear existing content
-		            ReportsTableView.setItems(reports); // Set new items
-		            ReportsTableView.refresh(); // Explicitly refresh the table view
-			}
+
+		// Here, send request to server to get reports by parkId
+		ObservableList<Report> reports = getReportsByParkId(parkId);
+		if (reports.isEmpty()) {
+			Alerts infoalert = new Alerts(Alert.AlertType.INFORMATION, "Information", "", "Not have report to show.");
+			infoalert.showAndWait();
+		} else {
+			ReportsTableView.getItems().clear(); // Clear existing content
+			ReportsTableView.setItems(reports); // Set new items
+			ReportsTableView.refresh(); // Explicitly refresh the table view
 		}
-	
+	}
 
 	@FXML
 	void ShowReportTableClickAction(MouseEvent event) {
 		if (event.getClickCount() == 2) { // Double click
 			Report selectedReport = ReportsTableView.getSelectionModel().getSelectedItem();
 			if (selectedReport != null) {
-				ClientServerMessage<Report> messageForServer = new ClientServerMessage<>(selectedReport, Operation.GET_EXISTS_VISITORS_REPORT);
-	             ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
-	      
-	             
-	             if (ClientController.data.getFlag()) {
-	            	 System.out.println(ClientController.data.getDataTransfered());
-	            		Alerts infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
-								"Report get from database");
-	            		infoalert.showAndWait();
-	            		try {
-							NavigationManager.openPage("ShowVisitorsReport.fxml", event, "", false);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-	            		
-	             }
-	             else {
-	            	 Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
-								"A report return empty request was not successfully executed on database");
-						somethingWentWrong.showAndWait();
-	             }
-			
-			}
-			else {
+				ClientServerMessage<Report> messageForServer = new ClientServerMessage<>(selectedReport,
+						Operation.GET_EXISTS_VISITORS_REPORT);
+				ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
+
+				if (ClientController.data.getFlag()) {
+					System.out.println(ClientController.data.getDataTransfered());
+					Alerts infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
+							"Report get from database");
+					infoalert.showAndWait();
+					try {
+						NavigationManager.openPage("ShowVisitorsReport.fxml", event, "", false);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				} else {
+					Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
+							"A report return empty request was not successfully executed on database");
+					somethingWentWrong.showAndWait();
+				}
+
+			} else {
 				Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "", "Selction is empty.");
 				warningalert.showAndWait();
 			}
@@ -164,57 +179,77 @@ public class ParkmanagerReportController implements Initializable {
 	@FXML
 	void CreateReportAction(ActionEvent event) {
 		String selectedMonthString = monthCombobox.getSelectionModel().getSelectedItem();
-	    String selectedReportType = ReportTypeCombobox.getSelectionModel().getSelectedItem();
-	    
-	    // Validate that both selections are not null (i.e., a selection has been made)
-	    if (selectedMonthString == null || selectedReportType == null) {
-	        Alert errorAlert =new Alerts(Alert.AlertType.ERROR, "Error", "", "You must select a month and report type.");
-	        errorAlert.showAndWait(); 
-	    }
-	    else {
+		String selectedReportType = ReportTypeCombobox.getSelectionModel().getSelectedItem();
+
+		// Validate that both selections are not null (i.e., a selection has been made)
+		if (selectedMonthString == null || selectedReportType == null) {
+			Alert errorAlert = new Alerts(Alert.AlertType.ERROR, "Error", "",
+					"You must select a month and report type.");
+			errorAlert.showAndWait();
+		} else {
 			int selectedMonth = Integer.parseInt(selectedMonthString);
 
-	    
-	    // React based on the selected report type
-	    switch (selectedReportType) {
-	        case "Visit Report":
-	        	VisitorsReport visitorReportToServer = new VisitorsReport(
-	        		    0, // Assuming 0 is a placeholder for the report ID
-	        		    null, // Assuming this is for ReportType, which you might want to specify
-	        		    Usermanager.getCurrentWorker().getWorksAtPark(), // Gets the park ID from the current worker
-	        		    LocalDate.now(), // Sets the report's date to today
-	        		    selectedMonth, // The month selected, make sure this is correctly parsed as an integer if needed
-	        		    null, // Placeholder for comment
-	        		    null, // Placeholder for total individual visitors
-	        		    null, // Placeholder for total group visitors
-	        		    null, // Placeholder for total family visitors
-	        		    null  // Placeholder for total visitors
-	        		);
-	        	ClientServerMessage<?> messageForServer = new ClientServerMessage<>(visitorReportToServer, Operation.GET_NEW_VISITORS_REPORT);
-	             ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
-			try {
-				NavigationManager.openPage("CreateVisitorsReport.fxml", event, "", false);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	             
-	        	System.out.println("Creating Visit Report for Month: " + selectedMonthString);
-	            break;
-	        case "Occupancy Report":
-	            // Code to handle occupancy report creation
-	            System.out.println("Creating Occupancy Report for Month: " + selectedMonthString);
-	            break;
-	        default:
-	            // Handle unexpected report type (if applicable)
-	            Alert infoAlert = new Alert(Alert.AlertType.INFORMATION, "Unknown report type selected.");
-	            infoAlert.setHeaderText("Information");
-	            infoAlert.showAndWait();
-	            break;
-	    }
-	    }
-	}
+			// React based on the selected report type
+			switch (selectedReportType) {
+			case "Visit Report":
+				VisitorsReport visitorReportToServer = new VisitorsReport(0, // Assuming 0 is a placeholder for the
+																				// report ID
+						null, // Assuming this is for ReportType, which you might want to specify
+						Usermanager.getCurrentWorker().getWorksAtPark(), // Gets the park ID from the current worker
+						LocalDate.now(), // Sets the report's date to today
+						selectedMonth, // The month selected, make sure this is correctly parsed as an integer if
+										// needed
+						null, // Placeholder for comment
+						null, // Placeholder for total individual visitors
+						null, // Placeholder for total group visitors
+						null, // Placeholder for total family visitors
+						null // Placeholder for total visitors
+				);
+				ClientServerMessage<?> messageForServer = new ClientServerMessage<>(visitorReportToServer,
+						Operation.GET_NEW_VISITORS_REPORT);
+				ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
+				try {
+					NavigationManager.openPage("CreateVisitorsReport.fxml", event, "", false);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 
-	
+				System.out.println("Creating Visit Report for Month: " + selectedMonthString);
+				break;
+			case "Usage Report":
+				UsageReport usageReport = new UsageReport(0, Report.ReportType.USAGE,
+						Usermanager.getCurrentWorker().getWorksAtPark(), LocalDate.now(), selectedMonth, "", null, park.getCapacity());
+				System.out.println(usageReport.toString());
+				ClientServerMessage<?> messageForServerUsageReport = new ClientServerMessage<>(usageReport,
+						Operation.GET_NEW_USAGE_REPORT);
+				ClientUI.clientControllerInstance.sendMessageToServer(messageForServerUsageReport);
+
+				try {
+					if (ClientController.data.getFlag()) {
+						UsageReport usageReport1=(UsageReport) ClientUI.clientControllerInstance.getData().getDataTransfered();
+					}
+					else {
+						Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "", "Error to load park data .");
+						warningalert.showAndWait();
+					}
+
+					NavigationManager.openPage("ParkManagerUsagerReport.fxml", event, "", false);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					System.out.println("error Usage Report for Month: " + selectedMonthString);
+
+					e.printStackTrace();
+				}
+
+				System.out.println("Creating Usage Report for Month: " + selectedMonthString);
+				break;
+			default:
+				Alert infoAlert = new Alert(Alert.AlertType.INFORMATION, "Unknown report type selected.");
+				infoAlert.setHeaderText("Information");
+				infoAlert.showAndWait();
+				break;
+			}
+		}
+	}
 
 }

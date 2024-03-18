@@ -18,7 +18,7 @@ import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
 import common.Usermanager;
-import common.VisitorsReport;
+import common.worker.VisitorsReport;
 
 public class CreateVisitorsReportController {
 
