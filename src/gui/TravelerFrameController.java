@@ -1,4 +1,22 @@
 package gui;
+import java.awt.TextField;
+import java.util.ArrayList;
+import java.util.List;
+
+import client.ClientController;
+import client.ClientUI;
+import client.InputValidation;
+import common.Traveler;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import common.Alerts;
+import common.ClientServerMessage;
+import common.Operation;
+import common.Usermanager;
+import client.NavigationManager;
+import common.Message;
 
 
 import java.io.IOException;
@@ -107,15 +125,63 @@ public class TravelerFrameController implements Initializable {
     @FXML
     public void logoutBtn(ActionEvent event) throws Exception {
     	try {
+    		
+    		if(Usermanager.getCurrentTraveler() != null) {
+				ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentTraveler(), Operation.PATCH_TRAVELER_SIGNEDOUT);
+				ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
+				
+			}
+    		
 			NavigationManager.openPage("HomePageFrame.fxml", event, "User Menu", true);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when trying to return to main menu");
+			somethingWentWrong.showAndWait();
 		}
     }
     
    
+
 	    
+
+	public void orderVisit(ActionEvent click) throws Exception {
+
+		NavigationManager.openPage("OrderAVisitFrame.fxml", click, "Order a visit", true);
+
+	}
+
+	public void viewOrders(ActionEvent click) throws Exception {
+
+		NavigationManager.openPage("OrdersFrame.fxml", click, "Orders", true);
+
+	}
+
+	public void viewWaitingList(ActionEvent click) throws Exception {
+
+		NavigationManager.openPage("WaitingListFrame.fxml", click, "Waiting list", true);
+
+	}
+
+
+	public void exit(ActionEvent click) throws Exception {
+		//Exit button, logs out the traveler without going to main menu
+		try {
+			
+			if(Usermanager.getCurrentTraveler() != null) {
+				ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentTraveler(), Operation.PATCH_TRAVELER_SIGNEDOUT);
+				ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
+				
+			}
+			NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true);
+			
+		}catch(Exception e) {
+			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when trying to return to main menu");
+			somethingWentWrong.showAndWait();
+		}
+		
+	}
+		
 
 //	public void viewMessages(ActionEvent click) throws Exception {
 
@@ -138,6 +204,7 @@ public class TravelerFrameController implements Initializable {
 //		}
 //
 //		messagesTextArea.setText(messagesText.toString());
+
 
 	
 
