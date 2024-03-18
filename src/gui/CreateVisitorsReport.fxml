@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextArea?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,15 +16,21 @@
          </font>
       </Label>
       <PieChart fx:id="visitorsChart" layoutX="310.0" layoutY="108.0" prefHeight="312.0" prefWidth="366.0" />
-      <JFXButton fx:id="savereportbth" layoutX="574.0" layoutY="515.0" onAction="#saveVisitorReportAction" prefHeight="34.0" prefWidth="97.0" text="Save report">
+      <JFXButton fx:id="savereportbth" layoutX="503.0" layoutY="513.0" onAction="#saveVisitorReportAction" prefHeight="34.0" prefWidth="119.0" text="Save report">
          <font>
             <Font size="14.0" />
          </font>
+         <graphic>
+            <FontAwesomeIconView glyphName="SAVE" />
+         </graphic>
       </JFXButton>
-      <JFXButton fx:id="CloseWindowBth" layoutX="295.0" layoutY="515.0" onAction="#CloseWindowAction" text="Close window">
+      <JFXButton fx:id="CloseWindowBth" layoutX="220.0" layoutY="515.0" onAction="#CloseWindowAction" text="Close window">
          <font>
             <Font size="14.0" />
          </font>
+         <graphic>
+            <FontAwesomeIconView glyphName="CLOSE" />
+         </graphic>
       </JFXButton>
       <JFXTextArea fx:id="CommentTextArea" layoutX="365.0" layoutY="415.0" prefHeight="71.0" prefWidth="257.0" />
       <Label fx:id="commentLabal" layoutX="228.0" layoutY="405.0" prefHeight="30.0" prefWidth="135.0" text="Comments to the report :" />

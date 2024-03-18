@@ -1106,6 +1106,7 @@ public class DatabaseController {
 
 	                    // Convert dailyUsage map to JSON string for storage
 	                    String dailyUsageJson = new Gson().toJson(report.getDailyUsage());
+	            	    System.out.println(dailyUsageJson);
 
 	                    // Set values for the usagereport table insert, using the generated reportID.
 	                    statementUsageReport.setLong(1, reportId);

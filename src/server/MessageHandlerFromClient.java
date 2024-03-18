@@ -540,6 +540,35 @@ public class MessageHandlerFromClient {
 			
 			client.sendToClient(messageFromClient);
 			break;
+		case Operation.POST_USAGE_REPORT:
+	        System.out.println("in opertion insert...");
+
+			
+	        UsageReport UsageReportToPost = (UsageReport) messageFromClient.getDataTransfered();
+	        System.out.println("in opertion insert 11...");
+
+	        if (dbControllerInstance.insertUsageReport(UsageReportToPost)) {
+				messageFromClient.setflagTrue();
+			} else {
+				messageFromClient.setflagFalse();
+			}
+
+			client.sendToClient(messageFromClient);
+			break;
+		case Operation.GET_EXISTS_USAGE_REPORT:
+			Report generalReportFromClient = (Report) messageFromClient.getDataTransfered();
+			UsageReport UsageReportToClient = (UsageReport) dbControllerInstance
+					.getUsageReportByReportId(generalReportFromClient);
+			if (UsageReportToClient != null) {
+				messageFromClient.setDataTransfered(UsageReportToClient);
+				messageFromClient.setflagTrue();
+			} else {
+				messageFromClient.setflagFalse();
+			}
+
+			client.sendToClient(messageFromClient);
+			break;
+			
 		default:
 			System.out.println("default");
 			try {

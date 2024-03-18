@@ -19,6 +19,7 @@ import common.Operation;
 import common.Park;
 import common.Usermanager;
 import common.worker.Report;
+import common.worker.Report.ReportType;
 import common.worker.UsageReport;
 import common.worker.VisitorsReport;
 import javafx.event.ActionEvent;
@@ -127,36 +128,50 @@ public class ParkmanagerReportController implements Initializable {
 
 	@FXML
 	void ShowReportTableClickAction(MouseEvent event) {
-		if (event.getClickCount() == 2) { // Double click
-			Report selectedReport = ReportsTableView.getSelectionModel().getSelectedItem();
-			if (selectedReport != null) {
-				ClientServerMessage<Report> messageForServer = new ClientServerMessage<>(selectedReport,
-						Operation.GET_EXISTS_VISITORS_REPORT);
-				ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
+	    if (event.getClickCount() == 2) { // Double click
+	        Report selectedReport = ReportsTableView.getSelectionModel().getSelectedItem();
+	        if (selectedReport != null) {
+	            String operation = null;
+	            String fxmlFile = "";
+	            
+	            // Determine the type of report and set the operation and FXML file accordingly
+	            if (selectedReport.getReportType() == ReportType.USAGE.toString()) {
+	                operation = Operation.GET_EXISTS_USAGE_REPORT;
+	                fxmlFile = "ShowUsageReport.fxml";
+	            } else if (selectedReport.getReportType() == ReportType.VISITOR.toString()) {
+	                operation = Operation.GET_EXISTS_VISITORS_REPORT;
+	                fxmlFile = "ShowVisitorsReport.fxml";
+	            }
+	            
+	            if (operation != null && !fxmlFile.isEmpty()) {
+	                ClientServerMessage<Report> messageForServer = new ClientServerMessage<>(selectedReport, operation);
+	                ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
 
-				if (ClientController.data.getFlag()) {
-					System.out.println(ClientController.data.getDataTransfered());
-					Alerts infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
-							"Report get from database");
-					infoalert.showAndWait();
-					try {
-						NavigationManager.openPage("ShowVisitorsReport.fxml", event, "", false);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+	                if (ClientController.data.getFlag()) {
+	                    System.out.println(ClientController.data.getDataTransfered());
+	                    Alerts infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
+	                            "Report retrieved from database");
+	                    infoalert.showAndWait();
+	                    try {
+	                        NavigationManager.openPage(fxmlFile, event, "", false);
+	                    } catch (IOException e) {
+	                        e.printStackTrace();
+	                    }
+	                } else {
+	                    Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
+	                            "A report return empty request was not successfully executed on database");
+	                    somethingWentWrong.showAndWait();
+	                }
+	            } else {
+	                Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "", "Selection is empty or report type is unknown.");
+	                warningalert.showAndWait();
+	            }
 
-				} else {
-					Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
-							"A report return empty request was not successfully executed on database");
-					somethingWentWrong.showAndWait();
-				}
-
-			} else {
-				Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "", "Selction is empty.");
-				warningalert.showAndWait();
-			}
-		}
+	        } else {
+	            Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "", "Selection is empty.");
+	            warningalert.showAndWait();
+	        }
+	    }
 	}
 
 	private ObservableList<Report> getReportsByParkId(int parkId) {
@@ -233,7 +248,7 @@ public class ParkmanagerReportController implements Initializable {
 						warningalert.showAndWait();
 					}
 
-					NavigationManager.openPage("ParkManagerUsagerReport.fxml", event, "", false);
+					NavigationManager.openPage("ParkManagerCreateUsageReport.fxml", event, "", false);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					System.out.println("error Usage Report for Month: " + selectedMonthString);

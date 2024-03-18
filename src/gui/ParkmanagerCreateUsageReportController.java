@@ -5,8 +5,13 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextArea;
 
+import client.ClientController;
 import client.ClientUI;
+import common.Alerts;
+import common.ClientServerMessage;
+import common.Operation;
 import common.worker.UsageReport;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,7 +33,7 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class ParkmanagerUsageReportController implements Initializable {
+public class ParkmanagerCreateUsageReportController implements Initializable {
 
 	@FXML
 	private GridPane gridPaneUsageReport;
@@ -39,6 +44,8 @@ public class ParkmanagerUsageReportController implements Initializable {
 	private GridPane GridPane;
 	
 	private UsageReport usageReport;
+    @FXML
+    private JFXTextArea CommentTextArea;
 
 	@FXML
 	private JFXButton SaveReportbth;
@@ -122,6 +129,25 @@ public class ParkmanagerUsageReportController implements Initializable {
 
 	@FXML
 	void SaveReportAction(ActionEvent event) {
+		if (usageReport != null) {
+			if (CommentTextArea.getText() !=null)
+			{
+				usageReport.setComment(CommentTextArea.getText());
+			}
+			ClientServerMessage<?> messageForServer = new ClientServerMessage<>(usageReport,
+					Operation.POST_USAGE_REPORT);
+			ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
+
+			if (ClientController.data.getFlag()) {
+				Alerts erorAlert = new Alerts(Alerts.AlertType.CONFIRMATION, "Confirmtion", "",
+						"The report was successfully saved.");
+				erorAlert.showAndWait();
+
+			}
+		} else {
+			Alerts erorAlert = new Alerts(Alerts.AlertType.ERROR, "Error", "Error", "Not able to save visitor report.");
+			erorAlert.showAndWait();
+		}
 
 	}
 
