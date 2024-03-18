@@ -171,7 +171,7 @@ public class ServerController {
 				System.out.println("Server fail.");
 				e.printStackTrace();
 			}
-		}
+		} 
 
 	}
 	

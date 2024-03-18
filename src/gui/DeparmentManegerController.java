@@ -78,7 +78,9 @@ public class DeparmentManegerController implements Initializable {
 	}
 
 	@FXML
-	void loadReports(MouseEvent event) {
+	void loadReports(MouseEvent event) throws IOException {
+		NavigationManager.openPageInCenter(borderPane,"DepartmentManagerReports.fxml");
+
 
 	}
 

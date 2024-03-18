@@ -54,7 +54,7 @@ public class WorkerLoginController {
 //			System.out.println("worker username: " + workerForServer.getUserName() + "worker password: " + workerForServer.getPassword());
 
 			// Send worker object to server and request worker details
-			ClientServerMessage<?> messageForServer = new ClientServerMessage<>(workerForServer,
+			ClientServerMessage messageForServer = new ClientServerMessage(workerForServer,
 					Operation.GET_GENERAL_PARK_WORKER_DETAILS);
 			
 			ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
@@ -95,7 +95,8 @@ public class WorkerLoginController {
 						break;
 					case "Worker":
 						System.out.println("in Worker");
-						NavigationManager.openPage("parkWorkerFrame.fxml", click, "workerScreen", true);
+						NavigationManager.openPage("ParkWorkerFrame.fxml", click, "workerScreen", true);
+
 						break;
 					case "Service Worker":
 						NavigationManager.openPage("ServiceWorkerFrame.fxml", click, "workerScreen", true);
@@ -115,6 +116,7 @@ public class WorkerLoginController {
 				System.out.println("Worker added to list. Worker Username: " + workerFromServer.getUserName());
 			} else {
 				// Handle null response from server (worker details not found or error occurred)
+
 				System.out.println("Getting null worker from server");
 				Alerts nullResponseAlert = new Alerts(Alert.AlertType.ERROR, "Login Error",
 						"Wrong Username or Password", "Please try again or contact the system administrator.");

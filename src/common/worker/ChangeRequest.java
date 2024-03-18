@@ -8,7 +8,7 @@ public class ChangeRequest implements Serializable {
     private Integer id; 
     private String parkName;
     private Integer parkNumber;
-    private Integer maxVisitors;
+    private Integer capacity;
     private Integer gap; // Ensure this matches the type Double as declared
     private Integer staytime;
     private ApprovalStatus approved; // Using ApprovalStatus enum
@@ -48,11 +48,11 @@ public class ChangeRequest implements Serializable {
     }
 
     // Constructor
-    public ChangeRequest(Integer id, String parkName, Integer parkNumber, Integer maxVisitors, Integer gap, Integer staytime, String approved) {
+    public ChangeRequest(Integer id, String parkName, Integer parkNumber, Integer capacity, Integer gap, Integer staytime, String approved) {
         this.id = id; // Initialize in constructor
         this.parkName = parkName;
         this.parkNumber = parkNumber;
-        this.maxVisitors = maxVisitors;
+        this.capacity = capacity;
         this.gap = gap;
         this.staytime = staytime;
         this.approved = ApprovalStatus.fromString(approved);
@@ -83,12 +83,12 @@ public class ChangeRequest implements Serializable {
         this.parkNumber = parkNumber;
     }
 
-    public Integer getMaxVisitors() {
-        return maxVisitors;
+    public Integer getCapacity() {
+        return capacity;
     }
 
-    public void setMaxVisitors(Integer maxVisitors) {
-        this.maxVisitors = maxVisitors;
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
     }
 
     public Integer getGap() {
@@ -120,7 +120,7 @@ public class ChangeRequest implements Serializable {
         return "ChangeRequest{" +
                 "parkName='" + parkName + '\'' +
                 ", parkNumber=" + parkNumber +
-                ", maxVisitors=" + maxVisitors +
+                ", capacity=" + capacity +
                 ", gap=" + gap +
                 ", staytime=" + staytime +
                 ", approved=" + approved +

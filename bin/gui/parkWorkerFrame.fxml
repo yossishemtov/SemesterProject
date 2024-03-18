@@ -1,25 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.Pane?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParkWorkerController">
-   <children>
-      <Label layoutX="137.0" layoutY="184.0" text="Name:" />
-      <Label layoutX="137.0" layoutY="212.0" text="LastName:" />
-      <Label layoutX="137.0" layoutY="239.0" text="Role:" />
-      <Button fx:id="availableSpaceBtn" layoutX="312.0" layoutY="207.0" mnemonicParsing="false" onAction="#availableSpaceBtnAction" text="Update Available Space" />
-      <Button fx:id="PresentABillBtn" layoutX="312.0" layoutY="275.0" mnemonicParsing="false" onAction="#presentBillBtnAction" text="Present A Bill" />
-      <Label fx:id="nametextlabel" layoutX="181.0" layoutY="184.0" text="Nametext" />
-      <Label fx:id="lastnametextlabel" layoutX="207.0" layoutY="212.0" text="LastNameTest" />
-      <Label fx:id="roletextlabel" layoutX="173.0" layoutY="239.0" text="RoleText" />
-      <Label layoutX="136.0" layoutY="266.0" text="Park:" />
-      <Label fx:id="parktextlabel" layoutX="173.0" layoutY="266.0" text="ParkText" />
-      <Button fx:id="backBtn" layoutX="592.0" layoutY="485.0" mnemonicParsing="false" onAction="#backBtnAction" text="back" textFill="RED" />
-      <Label layoutX="312.0" layoutY="184.0" prefHeight="17.0" prefWidth="138.0" text="Available Space:" />
-      <Label fx:id="availableSpaceLabel" layoutX="426.0" layoutY="184.0" />
-      <StackPane prefHeight="150.0" prefWidth="200.0" />
-   </children>
-</Pane>
+<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParkWorkerController">
+   <top>
+      <AnchorPane fx:id="anchorPane" prefHeight="68.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text layoutX="333.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Park Worker Screen">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+   </top>
+   <left>
+      <StackPane fx:id="stackPane" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox fx:id="vbox" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <JFXButton fx:id="profileBtn" alignment="CENTER" contentDisplay="CENTER" onAction="#loadProfileOfWorker" prefHeight="139.0" prefWidth="209.0" text="Profile" textAlignment="CENTER">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></JFXButton>
+                  <JFXButton fx:id="availableSpaceBtn" alignment="CENTER" contentDisplay="CENTER" onAction="#availableSpaceBtnAction" prefHeight="162.0" prefWidth="253.0" text="Check Available Space" textAlignment="CENTER">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></JFXButton>
+                  <JFXButton fx:id="entrenceControlBtn" alignment="CENTER" contentDisplay="CENTER" onAction="#entrenceControlAction" prefHeight="163.0" prefWidth="229.0" text="Entrence Control" textAlignment="CENTER">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></JFXButton>
+                  <JFXButton fx:id="unorderedVisitAction" prefHeight="169.0" prefWidth="224.0" text="Unordered Visit" />
+                  <JFXButton fx:id="backBtn" alignment="CENTER" contentDisplay="CENTER" onAction="#backBtnAction" prefHeight="160.0" prefWidth="210.0" text="Logout" textAlignment="CENTER">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></JFXButton>
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+   </left>
+</BorderPane>
