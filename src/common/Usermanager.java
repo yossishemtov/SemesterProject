@@ -11,7 +11,8 @@ public class Usermanager implements Serializable {
     private static Traveler currentTraveler;
     // Flags to indicate whether a worker or traveler is connected
     private static boolean isWorkerConnected = false;
-    private static boolean isTravelerConnected = false;
+    private static boolean isTravelerConnected = false;	
+	private static boolean isNewTraveler;
 
     public static GeneralParkWorker getCurrentWorker() {
         return currentWorker;
@@ -41,4 +42,12 @@ public class Usermanager implements Serializable {
     public static boolean isTravelerConnected() {
         return isTravelerConnected;
     }
+
+	public static boolean GetisNewTraveler() {
+		return isNewTraveler;
+	}
+
+	public static void setNewTraveler(boolean isNewTraveler) {
+		Usermanager.isNewTraveler = isNewTraveler;
+	}
 }

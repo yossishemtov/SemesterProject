@@ -97,8 +97,8 @@ public class ParkmanagerCreateUsageReportController implements Initializable {
 																							// label top-center within
 																							// its cell
 			lblDayName.setMaxWidth(Double.MAX_VALUE); // Allow the label to grow and fill the cell width
-			GridPane.setMargin(lblDayName, new Insets(0, 0, 0, 0)); // Adjust margins if needed to move closer to the
-																	// top
+			GridPane.setMargin(lblDayName, new Insets(0, 0, 0, 0)); 
+																	
 
 			gridPaneUsageReport.add(lblDayName, i, 0); // Adding to the first row
 		}
@@ -124,7 +124,7 @@ public class ParkmanagerCreateUsageReportController implements Initializable {
 
 			Integer occupancy = dailyUsage.getOrDefault(dayOfMonth, 0);
 			int parkCapacity = usageReport.getParkCapacity();
-			rect.setFill(occupancy >= parkCapacity ? Color.RED : Color.GREEN); // Adjust colors as needed
+			rect.setFill(occupancy >= parkCapacity ? Color.GREEN :Color.RED ); 
 
 			Label dayLabel = new Label(String.valueOf(dayOfMonth));
 			dayLabel.setTextFill(Color.WHITE);
@@ -159,7 +159,7 @@ public class ParkmanagerCreateUsageReportController implements Initializable {
 			ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
 
 			if (ClientController.data.getFlag()) {
-				Alerts erorAlert = new Alerts(Alerts.AlertType.CONFIRMATION, "Confirmtion", "",
+				Alerts erorAlert = new Alerts(Alerts.AlertType.INFORMATION, "Confirmtion", "",
 						"The report was successfully saved.");
 				erorAlert.showAndWait();
 

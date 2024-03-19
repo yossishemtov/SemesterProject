@@ -79,6 +79,7 @@ public class TravelerLoginController {
 		        	// if traveler does not have an order in the system
 		        	if (TravelerFromServer == null) {
 		        		// open order a visit screen 
+		        		Usermanager.setNewTraveler(false);
 		        		NavigationManager.openPage("OrderVisit.fxml", click, "order A visit Screen", true);
 		        	}	
 		        }
