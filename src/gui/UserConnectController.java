@@ -67,7 +67,7 @@ public class UserConnectController implements Initializable {
 			
 			try {				
 			ClientUI.clientControllerInstance = new ClientController(IpAddressFieldValue, portAddressFieldValue);
-			Parent root = new FXMLLoader().load(getClass().getResource("HomePageFrame.fxml"));
+			Parent root = new FXMLLoader().load(getClass().getResource("OrderVisit.fxml"));
 			Stage stage = (Stage)((Node)click.getSource()).getScene().getWindow(); //hiding primary window
 			Scene scene = new Scene(root);	
 			

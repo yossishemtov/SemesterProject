@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TravelerFrameController">
+   <top>
+      <AnchorPane fx:id="topBorder" prefHeight="83.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="userLabel" layoutX="475.0" layoutY="19.0" text="Traveler">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </top>
+   <left>
+      <StackPane fx:id="leftBorder" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <JFXButton fx:id="travelerProfile" onAction="#travelerProfile" prefHeight="106.0" prefWidth="213.0" text="Profile">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="USER" />
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton fx:id="orderBtn" onAction="#orderBtn" prefHeight="112.0" prefWidth="210.0" text="Order A Visit">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="FILE" />
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton fx:id="waitingListBtn" onAction="#waitingListBtn" prefHeight="106.0" prefWidth="213.0" text="View Waiting List">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="TABLE" />
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton fx:id="messages" onAction="#messages" prefHeight="106.0" prefWidth="213.0" text="View Messages">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="ENVELOPE" />
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton fx:id="logoutBtn" onAction="#logoutBtn" prefHeight="106.0" prefWidth="213.0" text="Logout">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="SIGN_OUT" />
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+   </left>
+</BorderPane>
