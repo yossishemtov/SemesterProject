@@ -17,11 +17,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.stage.Stage;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -42,79 +46,98 @@ public class ParkmanagerCreateUsageReportController implements Initializable {
 	private JFXButton ClosePagebth;
 	@FXML
 	private GridPane GridPane;
-	
+
 	private UsageReport usageReport;
-    @FXML
-    private JFXTextArea CommentTextArea;
+	@FXML
+	private JFXTextArea CommentTextArea;
 
 	@FXML
 	private JFXButton SaveReportbth;
-
 
 	private Map<Integer, Integer> dailyUsage;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		loadUsageReport(); 
+		loadUsageReport();
 		populateGridPane();
 	}
 
 	private void loadUsageReport() {
-		 usageReport=(UsageReport) ClientUI.clientControllerInstance.getData().getDataTransfered();
-		 dailyUsage=usageReport.getDailyUsage();
+		usageReport = (UsageReport) ClientUI.clientControllerInstance.getData().getDataTransfered();
 
 	}
 
-	   private void populateGridPane() {
-	        if (usageReport == null) return; // Ensure we have a report to work with
+	private void populateGridPane() {
+		if (usageReport == null)
+			return; // Ensure we have a report to work with
 
-	        // Setup for the names of the days
-	        String[] dayNames = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+		String[] dayNames = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 
-	        // Clear any existing column constraints and set new ones for centering
-	        gridPaneUsageReport.getColumnConstraints().clear();
-	        for (int i = 0; i < 7; i++) {
-	            ColumnConstraints column = new ColumnConstraints();
-	            column.setHalignment(HPos.CENTER);
-	            gridPaneUsageReport.getColumnConstraints().add(column);
-	        }
+		// Clearing existing content and column constraints from the grid
+		gridPaneUsageReport.getChildren().clear();
+		gridPaneUsageReport.getColumnConstraints().clear();
+		gridPaneUsageReport.getRowConstraints().clear(); // Clear any existing row constraints
 
-	        // Adding the day names at the top of each column
-	        for (int i = 0; i < dayNames.length; i++) {
-	            Label lblDayName = new Label(dayNames[i]);
-	            lblDayName.setAlignment(Pos.CENTER);
-	            GridPane.setHalignment(lblDayName, HPos.CENTER); // Ensure label is centered in its cell
-	            gridPaneUsageReport.add(lblDayName, i, 0);
-	        }
+		// Setting up column and first row constraints for alignment
+		for (int i = 0; i < 7; i++) {
+			ColumnConstraints column = new ColumnConstraints();
+			column.setHalignment(HPos.CENTER); // Ensure horizontal alignment within the column
+			gridPaneUsageReport.getColumnConstraints().add(column);
+		}
 
-	        int reportMonth = usageReport.getMonth();
-	        int reportYear = usageReport.getDate().getYear();
+		// Set constraints for the first row where day names will be
+		RowConstraints rowConstraintsForDayNames = new RowConstraints();
+		rowConstraintsForDayNames.setValignment(VPos.TOP); // Align to the top of the row
+		gridPaneUsageReport.getRowConstraints().add(rowConstraintsForDayNames); // Apply to the first row
 
-	        YearMonth yearMonth = YearMonth.of(reportYear, reportMonth);
-	        LocalDate firstDayOfMonth = yearMonth.atDay(1);
-	        LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
+		// Adding day names in the first row, aligned to the top center of their cells
+		for (int i = 0; i < dayNames.length; i++) {
+			Label lblDayName = new Label(dayNames[i]);
+			lblDayName.setStyle("-fx-text-alignment: center; -fx-alignment: top-center;"); // Center text and align
+																							// label top-center within
+																							// its cell
+			lblDayName.setMaxWidth(Double.MAX_VALUE); // Allow the label to grow and fill the cell width
+			GridPane.setMargin(lblDayName, new Insets(0, 0, 0, 0)); // Adjust margins if needed to move closer to the
+																	// top
 
-	        int dayOfWeekOffset = firstDayOfMonth.getDayOfWeek().getValue() % 7;
-	        for (LocalDate date = firstDayOfMonth; !date.isAfter(lastDayOfMonth); date = date.plusDays(1)) {
-	            int dayOfMonth = date.getDayOfMonth();
-	            int rowIndex = (dayOfWeekOffset + dayOfMonth - 1) / 7 + 1;
-	            int columnIndex = (dayOfWeekOffset + dayOfMonth - 1) % 7;
+			gridPaneUsageReport.add(lblDayName, i, 0); // Adding to the first row
+		}
 
-	            Rectangle rect = new Rectangle(50, 50);
-	            rect.setStroke(Color.BLACK);
+		Map<Integer, Integer> dailyUsage = usageReport.getDailyUsage();
+		int reportMonth = usageReport.getMonth();
+		int reportYear = usageReport.getDate().getYear();
 
-	            Integer occupancy = dailyUsage.getOrDefault(dayOfMonth, 0);
-	            int parkCapacity = usageReport.getParkCapacity();
-	            rect.setFill(occupancy >= parkCapacity ? Color.GREEN : Color.RED);
+		YearMonth yearMonth = YearMonth.of(reportYear, reportMonth);
+		LocalDate firstDayOfMonth = yearMonth.atDay(1);
+		LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
 
-	            Label dayLabel = new Label(String.valueOf(dayOfMonth));
-	            dayLabel.setTextFill(Color.WHITE);
-	            StackPane stackPane = new StackPane(rect, dayLabel);
-	            stackPane.setAlignment(Pos.CENTER);
+		int firstDayWeekValue = firstDayOfMonth.getDayOfWeek().getValue() % 7;
+		for (LocalDate date = firstDayOfMonth; !date.isAfter(lastDayOfMonth); date = date.plusDays(1)) {
+			int dayOfMonth = date.getDayOfMonth();
+			// Calculating rowIndex considering the first day's offset, starting from the
+			// second row for dates
+			int rowIndex = ((firstDayWeekValue + dayOfMonth - 1) / 7) + 1;
+			int columnIndex = (firstDayWeekValue + dayOfMonth - 1) % 7;
 
-	            gridPaneUsageReport.add(stackPane, columnIndex, rowIndex);
-	        }
-	    }
+			Rectangle rect = new Rectangle(50, 50);
+			rect.setStroke(Color.BLACK);
+
+			Integer occupancy = dailyUsage.getOrDefault(dayOfMonth, 0);
+			int parkCapacity = usageReport.getParkCapacity();
+			rect.setFill(occupancy >= parkCapacity ? Color.RED : Color.GREEN); // Adjust colors as needed
+
+			Label dayLabel = new Label(String.valueOf(dayOfMonth));
+			dayLabel.setTextFill(Color.WHITE);
+			StackPane stackPane = new StackPane(rect, dayLabel);
+			stackPane.setAlignment(Pos.CENTER);
+
+			gridPaneUsageReport.add(stackPane, columnIndex, rowIndex);
+		}
+
+		// Optionally add blank cells for a uniform look if the month does not fill the
+		// last row
+
+	}
 
 	@FXML
 	void ClosePageAction(ActionEvent event) {
@@ -125,13 +148,10 @@ public class ParkmanagerCreateUsageReportController implements Initializable {
 		stage.close();
 	}
 
-	
-
 	@FXML
 	void SaveReportAction(ActionEvent event) {
 		if (usageReport != null) {
-			if (CommentTextArea.getText() !=null)
-			{
+			if (CommentTextArea.getText() != null) {
 				usageReport.setComment(CommentTextArea.getText());
 			}
 			ClientServerMessage<?> messageForServer = new ClientServerMessage<>(usageReport,

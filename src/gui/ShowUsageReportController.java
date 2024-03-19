@@ -16,10 +16,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.stage.Stage;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 
 import java.time.LocalDate;
@@ -68,23 +71,36 @@ public class ShowUsageReportController implements Initializable {
 		dailyUsage = usageReport.getDailyUsage();
 		CommentTextArea.setText(usageReport.getComment());
 
-		// Setup for the names of the days
 		String[] dayNames = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 
-		// Clear any existing column constraints and set new ones for centering
+		// Clearing existing content and column constraints from the grid
+		gridPaneUsageReport.getChildren().clear();
 		gridPaneUsageReport.getColumnConstraints().clear();
+		gridPaneUsageReport.getRowConstraints().clear(); // Clear any existing row constraints
+
+		// Setting up column and first row constraints for alignment
 		for (int i = 0; i < 7; i++) {
 			ColumnConstraints column = new ColumnConstraints();
-			column.setHalignment(HPos.CENTER);
+			column.setHalignment(HPos.CENTER); // Ensure horizontal alignment within the column
 			gridPaneUsageReport.getColumnConstraints().add(column);
 		}
 
-		// Adding the day names at the top of each column
+		// Set constraints for the first row where day names will be
+		RowConstraints rowConstraintsForDayNames = new RowConstraints();
+		rowConstraintsForDayNames.setValignment(VPos.TOP); // Align to the top of the row
+		gridPaneUsageReport.getRowConstraints().add(rowConstraintsForDayNames); // Apply to the first row
+
+		// Adding day names in the first row, aligned to the top center of their cells
 		for (int i = 0; i < dayNames.length; i++) {
 			Label lblDayName = new Label(dayNames[i]);
-			lblDayName.setAlignment(Pos.CENTER);
-			GridPane.setHalignment(lblDayName, HPos.CENTER); // Ensure label is centered in its cell
-			gridPaneUsageReport.add(lblDayName, i, 0);
+			lblDayName.setStyle("-fx-text-alignment: center; -fx-alignment: top-center;"); // Center text and align
+																							// label top-center within
+																							// its cell
+			lblDayName.setMaxWidth(Double.MAX_VALUE); // Allow the label to grow and fill the cell width
+			GridPane.setMargin(lblDayName, new Insets(0, 0, 0, 0)); // Adjust margins if needed to move closer to the
+																	// top
+
+			gridPaneUsageReport.add(lblDayName, i, 0); // Adding to the first row
 		}
 
 		int reportMonth = usageReport.getMonth();
