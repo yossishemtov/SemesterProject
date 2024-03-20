@@ -30,10 +30,10 @@
                   <Accordion layoutX="112.0" layoutY="113.0" />
                   <ImageView fitHeight="78.0" fitWidth="241.0" layoutX="159.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../Desktop/פרוייקט/לוגו%20ראשון.png" />
+                        <Image url="@../common/images/OrderStage.png" />
                      </image>
                   </ImageView>
-                  <JFXTextField fx:id="txtName" focusColor="#121920" layoutX="159.0" layoutY="161.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Enter Fullname" styleClass="txtField" unFocusColor="#a3a3a3">
+                  <JFXTextField fx:id="txtName" focusColor="#121920" layoutX="159.0" layoutY="161.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Enter Fullname" styleClass="txtField" unFocusColor="#a3a3a3">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -96,16 +96,16 @@
                      <graphic>
                         <ImageView fitHeight="34.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../common/images/BackButton.png" />
+                              <Image url="@../common/images/BackButton1.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Pane fx:id="PaneConfirmation" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="584.0" prefWidth="582.0" style="-fx-background-color: #ffffff;">
+                  <Pane fx:id="PaneConfirmation" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="584.0" prefWidth="582.0" style="-fx-background-color: #ffffff;">
                      <children>
                         <ImageView fitHeight="112.0" fitWidth="189.0" layoutX="209.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../Desktop/פרוייקט/לוגו%20שני.png" />
+                              <Image url="@../common/images/OrderStage2.png" />
                            </image>
                         </ImageView>
                         <Label layoutX="223.0" layoutY="117.0" styleClass="labelBold" text="Thank you for your order" textFill="SEAGREEN">

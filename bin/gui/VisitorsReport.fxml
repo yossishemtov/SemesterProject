@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.VisitorsReportController">
+    <Label text="Visitors Report" style="-fx-font-size: 20px;" />
+    <PieChart fx:id="visitorsChart" prefHeight="500.0" prefWidth="500.0">
+        <!-- PieChart data will be populated in the controller -->
+    </PieChart>
+</VBox>

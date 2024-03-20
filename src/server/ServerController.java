@@ -188,7 +188,9 @@ public class ServerController {
 		IPCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getIp()));
 		StatusCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getStatus()));
 		StTimeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getStartTime()));
-
+		PortTxt.setText("5555");
+		DBUserNameTxt.setText("root");
+		PasswordTxt.setText("Aa123456");
 		ObservableList<ClientConnectionStatus> connectionStatuses = FXCollections.observableArrayList();
 		connStatusTable.setItems(connectionStatuses);
 

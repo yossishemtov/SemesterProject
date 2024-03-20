@@ -73,7 +73,7 @@ public class OrderFrameController {
 	public void setOrderDetails(Order order) {
 		// sets the order detailes
 		
-        parkNumberLabel.setText("Park Number: " + order.getParkNumber());
+        parkNumberLabel.setText("Park Number: " + order.getParkName());
         amountOfVisitorsLabel.setText("Amount of Visitors: " + order.getAmountOfVisitors());
         orderIdLabel.setText("Order ID: " + order.getOrderId());
         orderTypeLabel.setText("Order Type: " + order.getTypeOfOrder());

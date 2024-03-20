@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Order implements Serializable{
+public class Order implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private Integer parkNumber;
 	private Integer amountOfVisitors;
@@ -14,59 +15,66 @@ public class Order implements Serializable{
 	private String visitorEmail;
 	private LocalDate date;
 	private LocalTime visitTime;
-	private String telephoneNumber; // Added TelephoneNumber field
+	private String telephoneNumber;
 	private status orderStatus;
 	private typeOfOrder orderType;
+	private String parkName;
 
 	private enum status {
 
-		PENDING, NOTARRIVED, INPARK, CONFIRM, CANCEL,COMPLETED
+		PENDING, NOTARRIVED, INPARK, CONFIRM, CANCEL, COMPLETED, WAITING
 	}
 
 	private enum typeOfOrder {
 		SOLO, FAMILY, GUIDEDGROUP
 	}
 
-	// Adjusted constructor to include typeOfOrderStr and telephoneNumber
 	public Order(Integer orderId, Integer visitorId, Integer parkNumber, Integer amountOfVisitors, Float price,
 			String visitorEmail, LocalDate date, LocalTime visitTime, String statusStr, String typeOfOrderStr,
-			String telephoneNumber) {
-		
+			String telephoneNumber, String parkName) {
 		this.orderId = orderId;
 		this.visitorId = visitorId;
 		this.parkNumber = parkNumber;
 		this.amountOfVisitors = amountOfVisitors;
+		this.price = price;
 		this.visitorEmail = visitorEmail;
 		this.date = date;
 		this.visitTime = visitTime;
-		this.telephoneNumber = telephoneNumber; // Set the telephone number
+		this.telephoneNumber = telephoneNumber;
+		this.setParkName(parkName);
 
-		
 		// Convert the String status to the enum status
-		if(statusStr!= null) {
+		if (statusStr != null) {
 			try {
 				this.orderStatus = Order.status.valueOf(statusStr.toUpperCase());
 			} catch (IllegalArgumentException e) {
 				this.orderStatus = Order.status.PENDING; // Default to PENDING if conversion fails
 			}
-		}else {
+		} else {
 			this.orderStatus = null;
 		}
 
 		// Convert the String typeOfOrder to the enum typeOfOrder
-		
-		if(typeOfOrderStr != null) {
-			
+
+		if (typeOfOrderStr != null) {
+
 			try {
 				this.orderType = Order.typeOfOrder.valueOf(typeOfOrderStr.toUpperCase().trim());
 			} catch (IllegalArgumentException e) {
-			
+
 				this.orderType = Order.typeOfOrder.SOLO;
 			}
-			
-		}else {
+
+		} else {
 			this.orderType = null;
 		}
+	}
+
+	public Integer getVisitorId() {
+		return visitorId;
+	}
+	public Integer getParkNumber() {
+		return parkNumber;
 	}
 
 	public String getTelephoneNumber() {
@@ -77,35 +85,28 @@ public class Order implements Serializable{
 		this.telephoneNumber = telephoneNumber;
 	}
 
-
 	public void setOrderType(String orderTypeStr) {
 		try {
 			this.orderType = Order.typeOfOrder.valueOf(orderTypeStr.toUpperCase());
 		} catch (IllegalArgumentException e) {
-			// Handle the case where the provided string does not match any enum constants
-			// For simplicity, defaulting to SOLO here
 			this.orderType = Order.typeOfOrder.SOLO;
 		}
-	} 
+	}
 
 	public String getTypeOfOrder() {
 		return orderType.name();
 	}
 
-	// Getter for orderStatus that returns a String
 	public String getOrderStatus() {
-		return orderStatus.name(); // Convert the enum to String
+		return orderStatus.name();
 	}
 
-
-
-	public Integer getVisitorId() {
-		return visitorId;
-	}
-
-
-	public void setParkNumber(Integer parkNumber) {
-		this.parkNumber = parkNumber;
+	public void setStatus(String orderStatusStr) {
+		try {
+			this.orderStatus = Order.status.valueOf(orderStatusStr.toUpperCase());
+		} catch (IllegalArgumentException e) {
+			this.orderStatus = Order.status.PENDING;
+		}
 	}
 
 	public Integer getAmountOfVisitors() {
@@ -121,8 +122,11 @@ public class Order implements Serializable{
 	}
 
 	public Integer getOrderId() {
-
 		return orderId;
+	}
+
+	public void setOrderId(Integer orderId) {
+		this.orderId = orderId;
 	}
 
 	public void setPrice(Float price) {
@@ -136,7 +140,6 @@ public class Order implements Serializable{
 	public void setVisitorEmail(String visitorEmail) {
 		this.visitorEmail = visitorEmail;
 	}
-
 
 	public LocalDate getDate() {
 		return date;
@@ -154,9 +157,23 @@ public class Order implements Serializable{
 		this.visitTime = visitTime;
 	}
 
-	public Integer getParkNumber() {
-		// TODO Auto-generated method stub
-		return parkNumber;
+	@Override
+	public String toString() {
+		return "Order{" + "parkNumber='" + parkNumber + '\'' + ", amountOfVisitors=" + amountOfVisitors + ", orderId="
+				+ orderId + ", visitorId=" + visitorId + ", price=" + price + ", visitorEmail='" + visitorEmail + '\''
+				+ ", date=" + date + ", visitTime=" + visitTime + ", telephoneNumber='" + telephoneNumber + '\''
+				+ ", orderStatus=" + orderStatus + ", orderType=" + orderType + '}';
 	}
 
+	public void setParkNumber(Integer parkNumber) {
+		this.parkNumber = parkNumber;
+	}
+
+	public String getParkName() {
+		return parkName;
+	}
+
+	public void setParkName(String parkName) {
+		this.parkName = parkName;
+	}
 }

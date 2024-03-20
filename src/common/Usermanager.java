@@ -1,7 +1,10 @@
 package common;
 
 import java.io.Serializable;
+
+import client.ClientUI;
 import common.worker.GeneralParkWorker;
+import gui.OrderAVisitController;
 
 public class Usermanager implements Serializable {
 
@@ -14,6 +17,8 @@ public class Usermanager implements Serializable {
     private static boolean isTravelerConnected = false;	
 	private static boolean isNewTraveler;
 
+
+	
     public static GeneralParkWorker getCurrentWorker() {
         return currentWorker;
     }

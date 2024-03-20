@@ -13,7 +13,7 @@ public class Alerts extends Alert {
 
     final String errorIcon = "/common/images/errorIcon.png";
     final String warningIcon = "/common/images/warningIcon.png";
-    final String informationIcon = "/common/images/confirmationIcon.png";
+    final String informationIcon = "/common/images/informationIcon.png";
     final String confirmationIcon = "/common/images/confirmationIcon.png";
 
     public Alerts(AlertType alertType, String title, String header, String content) {

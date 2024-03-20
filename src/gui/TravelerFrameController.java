@@ -1,4 +1,5 @@
 package gui;
+<<<<<<< HEAD
 import java.awt.TextField;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,8 @@ import common.Operation;
 import common.Usermanager;
 import client.NavigationManager;
 import common.Message;
+=======
+>>>>>>> origin/emanuel2branch
 
 
 import java.io.IOException;
@@ -47,9 +50,12 @@ public class TravelerFrameController implements Initializable {
     private Label userLabel;
 
     @FXML
+<<<<<<< HEAD
     private JFXButton viewOrdersbutton;
     
     @FXML
+=======
+>>>>>>> origin/emanuel2branch
     private StackPane leftBorder;
 
     @FXML
@@ -70,7 +76,13 @@ public class TravelerFrameController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     	Traveler currentTraveler = Usermanager.getCurrentTraveler();
+<<<<<<< HEAD
 //    	System.out.println(currentTraveler.getEmail()); 	
+=======
+//    	System.out.println(currentTraveler.getEmail());
+    	
+    	
+>>>>>>> origin/emanuel2branch
     }
     
     @FXML
@@ -81,6 +93,10 @@ public class TravelerFrameController implements Initializable {
 			 System.out.print("Something went wrong while trying view service traveler profile, check stack trace");
 			 e.printStackTrace();
 		 }
+<<<<<<< HEAD
+=======
+    	
+>>>>>>> origin/emanuel2branch
     }
     
     @FXML
@@ -91,6 +107,7 @@ public class TravelerFrameController implements Initializable {
 			 System.out.print("Something went wrong while clicking on order a visit button, check stack trace");
 			 e.printStackTrace();
     	}
+<<<<<<< HEAD
     }
     
     public void viewOrdersbutton(ActionEvent event) throws Exception {
@@ -100,6 +117,9 @@ public class TravelerFrameController implements Initializable {
 			 System.out.print("Something went wrong while clicking on view orders button, check stack trace");
 			 e.printStackTrace();
     	}
+=======
+    	
+>>>>>>> origin/emanuel2branch
     }
     
     @FXML
@@ -125,6 +145,7 @@ public class TravelerFrameController implements Initializable {
     @FXML
     public void logoutBtn(ActionEvent event) throws Exception {
     	try {
+<<<<<<< HEAD
     		
     		if(Usermanager.getCurrentTraveler() != null) {
 				ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentTraveler(), Operation.PATCH_TRAVELER_SIGNEDOUT);
@@ -132,10 +153,13 @@ public class TravelerFrameController implements Initializable {
 				
 			}
     		
+=======
+>>>>>>> origin/emanuel2branch
 			NavigationManager.openPage("HomePageFrame.fxml", event, "User Menu", true);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+<<<<<<< HEAD
 			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when trying to return to main menu");
 			somethingWentWrong.showAndWait();
 		}
@@ -182,6 +206,37 @@ public class TravelerFrameController implements Initializable {
 		
 	}
 		
+=======
+		}
+    }
+    
+    public void viewOrders(ActionEvent click) throws Exception {
+
+        try {
+            NavigationManager.openPage("OrdersFrame.fxml", click, "Orders", true);
+        } catch(Exception e) {
+             System.out.print("Something went wrong while clicking on view messages button, check stack trace");
+             e.printStackTrace();
+        }
+    }
+   
+	    
+	    
+//	    public void editOrderBtn(ActionEvent click) throws Exception {
+//	    	
+//	    	
+//	    	String orderID = OrderID.getText(); // get the order ID
+//		    Alerts alertID = InputValidation.ValidateVisitorID(orderID); // get the right alert
+//		    Boolean isSuccessful = alertID.getAlertType().toString().equals("INFORMATION");
+//		    
+//		    if (isSuccessful) { // if entered the right order ID
+//		        try {
+//		            NavigationManager.openPage("OrderFrame.fxml", click, "test", true);
+//		        }
+//		    }
+//	    }
+
+>>>>>>> origin/emanuel2branch
 
 //	public void viewMessages(ActionEvent click) throws Exception {
 
@@ -205,7 +260,10 @@ public class TravelerFrameController implements Initializable {
 //
 //		messagesTextArea.setText(messagesText.toString());
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/emanuel2branch
 	
 
 }

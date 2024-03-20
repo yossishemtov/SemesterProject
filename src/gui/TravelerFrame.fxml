@@ -23,7 +23,11 @@
       </AnchorPane>
    </top>
    <left>
+<<<<<<< HEAD
       <StackPane fx:id="leftBorder" prefHeight="507.0" prefWidth="204.0" BorderPane.alignment="CENTER">
+=======
+      <StackPane fx:id="leftBorder" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+>>>>>>> origin/emanuel2branch
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
@@ -43,11 +47,14 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </JFXButton>
+<<<<<<< HEAD
                   <JFXButton fx:id="viewOrdersbutton" onAction="#viewOrdersbutton" prefHeight="121.0" prefWidth="200.0" text="View Orders">
                      <graphic>
                         <FontAwesomeIconView glyphName="LIST_UL" />
                      </graphic>
                   </JFXButton>
+=======
+>>>>>>> origin/emanuel2branch
                   <JFXButton fx:id="waitingListBtn" onAction="#waitingListBtn" prefHeight="106.0" prefWidth="213.0" text="View Waiting List">
                      <graphic>
                         <FontAwesomeIconView glyphName="TABLE" />
@@ -77,4 +84,8 @@
          </children>
       </StackPane>
    </left>
+<<<<<<< HEAD
 </BorderPane>
+=======
+</BorderPane>
+>>>>>>> origin/emanuel2branch

@@ -74,7 +74,7 @@ public class ParkWorkerEntrenceControlController {
 	        	Integer orderIdInteger = Integer.parseInt(orderIdText);
 	        	
 	        	//Send the orderId within an order dummy object to the server
-	        	Order dummyOrder = new Order(orderIdInteger, null, currentWorkerPark, null, null, null, today, null, null, null, null);
+	        	Order dummyOrder = new Order(orderIdInteger, null, currentWorkerPark, null, null, null, today, null, null, null, null, orderIdText);
 	        	ClientServerMessage requestOrderInformation = new ClientServerMessage(dummyOrder, Operation.GET_ORDER_BY_ID_AND_PARK_NUMBER_DATE);
 	        	ClientUI.clientControllerInstance.sendMessageToServer(requestOrderInformation);
 	        	
