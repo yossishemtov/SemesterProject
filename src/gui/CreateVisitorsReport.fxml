@@ -10,13 +10,13 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CreateVisitorsReportController">
    <children>
-      <Label layoutX="438.0" layoutY="37.0" prefHeight="49.0" prefWidth="111.0" text=" Visitor report">
+      <Label fx:id="titlelLabal" layoutX="378.0" layoutY="38.0" prefHeight="49.0" prefWidth="236.0" text=" Visitor report">
          <font>
-            <Font size="16.0" />
+            <Font size="18.0" />
          </font>
       </Label>
       <PieChart fx:id="visitorsChart" layoutX="310.0" layoutY="108.0" prefHeight="312.0" prefWidth="366.0" />
-      <JFXButton fx:id="savereportbth" layoutX="503.0" layoutY="513.0" onAction="#saveVisitorReportAction" prefHeight="34.0" prefWidth="119.0" text="Save report">
+      <JFXButton fx:id="savereportbth" layoutX="450.0" layoutY="513.0" onAction="#saveVisitorReportAction" prefHeight="34.0" prefWidth="119.0" text="Save report">
          <font>
             <Font size="14.0" />
          </font>
@@ -33,6 +33,6 @@
          </graphic>
       </JFXButton>
       <JFXTextArea fx:id="CommentTextArea" layoutX="365.0" layoutY="415.0" prefHeight="71.0" prefWidth="257.0" />
-      <Label fx:id="commentLabal" layoutX="228.0" layoutY="405.0" prefHeight="30.0" prefWidth="135.0" text="Comments to the report :" />
+      <Label fx:id="commentLabal" layoutX="220.0" layoutY="420.0" prefHeight="30.0" prefWidth="135.0" text="Comments to the report :" />
    </children>
 </AnchorPane>

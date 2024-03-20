@@ -65,7 +65,7 @@ public class DepartmentManagerReportsController implements Initializable {
 	private TableColumn<Report, Integer> parkIDCol;
 
 	@FXML
-	private TableColumn<Report, String> DateCol;
+	private TableColumn<Report, String> MonthCol;
 
 	@FXML
 	private TableColumn<Report, String> commentCol;
@@ -93,16 +93,19 @@ public class DepartmentManagerReportsController implements Initializable {
 	}
 
 	private void configureTableColumns() {
-		reportIDCol.setCellValueFactory(new PropertyValueFactory<>("reportID"));
-		reportTypeCol.setCellValueFactory(new PropertyValueFactory<>("reportType"));
-		parkIDCol.setCellValueFactory(new PropertyValueFactory<>("parkID"));
-		DateCol.setCellValueFactory(cellData -> {
-			LocalDate date = cellData.getValue().getDate();
-			return new javafx.beans.property.SimpleStringProperty(
-					date != null ? date.format(DateTimeFormatter.ofPattern("MMMM yyyy")) : "");
-		});
-		commentCol.setCellValueFactory(new PropertyValueFactory<>("comment"));
+	    reportIDCol.setCellValueFactory(new PropertyValueFactory<>("reportID"));
+	    reportTypeCol.setCellValueFactory(new PropertyValueFactory<>("reportType"));
+	    parkIDCol.setCellValueFactory(new PropertyValueFactory<>("parkID"));
+	    
+	    // Adjust this column to use the month field
+	    MonthCol.setCellValueFactory(cellData -> {
+	        int month = cellData.getValue().getMonth();
+	        return new javafx.beans.property.SimpleStringProperty(String.valueOf(month));
+	    });
+
+	    commentCol.setCellValueFactory(new PropertyValueFactory<>("comment"));
 	}
+
 
 	@FXML
 	void ShowReportparkIdAction(ActionEvent event) {

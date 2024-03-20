@@ -62,7 +62,7 @@ public class ParkmanagerReportController implements Initializable {
 	private TableColumn<Report, Integer> parkIDCol;
 
 	@FXML
-	private TableColumn<Report, String> DateCol;
+	private TableColumn<Report, String> MonthCol;
 
 	@FXML
 	private TableColumn<Report, String> commentCol;
@@ -76,7 +76,7 @@ public class ParkmanagerReportController implements Initializable {
 		for (int month = 1; month <= 12; month++) {
 			monthCombobox.getItems().add(String.valueOf(month));
 			// Initialize report types
-			ReportTypeCombobox.setItems(FXCollections.observableArrayList("Visit Report", "Usage Report"));
+			ReportTypeCombobox.setItems(FXCollections.observableArrayList("Visitors Report", "Usage Report"));
 
 		}
 
@@ -100,16 +100,19 @@ public class ParkmanagerReportController implements Initializable {
 	}
 
 	private void configureTableColumns() {
-		reportIDCol.setCellValueFactory(new PropertyValueFactory<>("reportID"));
-		reportTypeCol.setCellValueFactory(new PropertyValueFactory<>("reportType"));
-		parkIDCol.setCellValueFactory(new PropertyValueFactory<>("parkID"));
-		DateCol.setCellValueFactory(cellData -> {
-			LocalDate date = cellData.getValue().getDate();
-			return new javafx.beans.property.SimpleStringProperty(
-					date != null ? date.format(DateTimeFormatter.ofPattern("MMMM yyyy")) : "");
-		});
-		commentCol.setCellValueFactory(new PropertyValueFactory<>("comment"));
+	    reportIDCol.setCellValueFactory(new PropertyValueFactory<>("reportID"));
+	    reportTypeCol.setCellValueFactory(new PropertyValueFactory<>("reportType"));
+	    parkIDCol.setCellValueFactory(new PropertyValueFactory<>("parkID"));
+	    
+	    // Adjust this column to use the month field
+	    MonthCol.setCellValueFactory(cellData -> {
+	        int month = cellData.getValue().getMonth();
+	        return new javafx.beans.property.SimpleStringProperty(String.valueOf(month));
+	    });
+
+	    commentCol.setCellValueFactory(new PropertyValueFactory<>("comment"));
 	}
+
 
 	private void ShowReportparkIdAction() {
 		Integer parkId = Usermanager.getCurrentWorker().getWorksAtPark();
@@ -206,7 +209,7 @@ public class ParkmanagerReportController implements Initializable {
 
 			// React based on the selected report type
 			switch (selectedReportType) {
-			case "Visit Report":
+			case "Visitors Report":
 				VisitorsReport visitorReportToServer = new VisitorsReport(0, // Assuming 0 is a placeholder for the
 																				// report ID
 						null, // Assuming this is for ReportType, which you might want to specify

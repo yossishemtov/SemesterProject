@@ -36,6 +36,8 @@ public class CreateVisitorsReportController {
 	private JFXButton CloseWindowBth;
 	@FXML
 	private Label commentLabal;
+	@FXML
+	private Label titlelLabal;
 
 	@FXML
 	void CloseWindowAction(ActionEvent event) {
@@ -89,6 +91,8 @@ public class CreateVisitorsReportController {
 	}
 
 	private void updateChart(VisitorsReport report) {
+		titlelLabal.setText("Visitors Report for month " + visitorReport.getMonth());
+
 		// Fixed ObservableList creation to properly store PieChart.Data objects only
 		ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
 				new PieChart.Data("Individual " + report.getTotalIndividualVisitors(),

@@ -31,6 +31,8 @@ public class ShowVisitorsReportController {
 	@FXML
 	private JFXButton CloseWindowBth;
 	@FXML
+	private Label titlelLabal;
+	@FXML
 	private Label commentLabal;
 
 	@FXML
@@ -53,6 +55,8 @@ public class ShowVisitorsReportController {
 		visitorReport = (VisitorsReport) ClientController.data.getDataTransfered();
 		System.out.println(visitorReport.toString());
 		if (visitorReport != null) {
+			titlelLabal.setText("Visitors Report for month "+visitorReport.getMonth());
+
 			updateChart(visitorReport);
 			if (visitorReport.getComment() != null) {
 				CommentTextArea.setText(visitorReport.getComment());

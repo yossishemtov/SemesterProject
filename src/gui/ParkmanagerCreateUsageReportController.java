@@ -49,6 +49,8 @@ public class ParkmanagerCreateUsageReportController implements Initializable {
 
 	private UsageReport usageReport;
 	@FXML
+	private Label titlelLabal;
+	@FXML
 	private JFXTextArea CommentTextArea;
 
 	@FXML
@@ -69,7 +71,8 @@ public class ParkmanagerCreateUsageReportController implements Initializable {
 
 	private void populateGridPane() {
 		if (usageReport == null)
-			return; // Ensure we have a report to work with
+			return;
+		titlelLabal.setText("Usage Report for month " + usageReport.getMonth());
 
 		String[] dayNames = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 
@@ -97,8 +100,7 @@ public class ParkmanagerCreateUsageReportController implements Initializable {
 																							// label top-center within
 																							// its cell
 			lblDayName.setMaxWidth(Double.MAX_VALUE); // Allow the label to grow and fill the cell width
-			GridPane.setMargin(lblDayName, new Insets(0, 0, 0, 0)); 
-																	
+			GridPane.setMargin(lblDayName, new Insets(0, 0, 0, 0));
 
 			gridPaneUsageReport.add(lblDayName, i, 0); // Adding to the first row
 		}
@@ -124,7 +126,7 @@ public class ParkmanagerCreateUsageReportController implements Initializable {
 
 			Integer occupancy = dailyUsage.getOrDefault(dayOfMonth, 0);
 			int parkCapacity = usageReport.getParkCapacity();
-			rect.setFill(occupancy >= parkCapacity ? Color.GREEN :Color.RED ); 
+			rect.setFill(occupancy >= parkCapacity ? Color.GREEN : Color.RED);
 
 			Label dayLabel = new Label(String.valueOf(dayOfMonth));
 			dayLabel.setTextFill(Color.WHITE);
@@ -134,17 +136,11 @@ public class ParkmanagerCreateUsageReportController implements Initializable {
 			gridPaneUsageReport.add(stackPane, columnIndex, rowIndex);
 		}
 
-		// Optionally add blank cells for a uniform look if the month does not fill the
-		// last row
-
 	}
 
 	@FXML
 	void ClosePageAction(ActionEvent event) {
-
-		// Get the current stage using the event source
 		Stage stage = (Stage) ClosePagebth.getScene().getWindow();
-		// Close the current stage
 		stage.close();
 	}
 

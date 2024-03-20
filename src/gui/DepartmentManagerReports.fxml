@@ -20,7 +20,7 @@
           <TableColumn fx:id="reportIDCol" prefWidth="75.0" text="Report ID" />
           <TableColumn fx:id="reportTypeCol" prefWidth="75.0" text="Report Type" />
             <TableColumn fx:id="parkIDCol" prefWidth="75.0" text="Park ID" />
-            <TableColumn fx:id="DateCol" prefWidth="75.0" text="Date" />
+            <TableColumn fx:id="MonthCol" prefWidth="75.0" text="Month" />
             <TableColumn fx:id="commentCol" prefWidth="75.0" text="Comment" />
         </columns>
          <columnResizePolicy>
@@ -31,11 +31,11 @@
          <font>
             <Font size="14.0" />
          </font></Label>
-      <Label layoutX="406.0" layoutY="449.0" text="Generate Report:" underline="true" />
+      <Label layoutX="418.0" layoutY="456.0" text="Generate Report:" underline="true" />
       <Label layoutX="167.0" layoutY="402.0" text="Enter park id" />
       <JFXTextField fx:id="ParkIdField" layoutX="247.0" layoutY="398.0" prefHeight="25.0" prefWidth="68.0" />
       <JFXButton fx:id="ShowReportBth" layoutX="319.0" layoutY="398.0" onAction="#ShowReportparkIdAction" text="Show report" />
-      <Label layoutX="556.0" layoutY="495.0" text="Choose a month">
+      <Label layoutX="548.0" layoutY="494.0" text="Choose a month">
          <font>
             <Font size="14.0" />
          </font>
@@ -46,8 +46,8 @@
          </font>
       </Label>
       <JFXComboBox fx:id="ReportTypeCombobox" layoutX="303.0" layoutY="492.0" />
-      <JFXComboBox fx:id="monthCombobox" layoutX="679.0" layoutY="492.0" />
-      <JFXButton fx:id="Createbth" layoutX="420.0" layoutY="526.0" onAction="#CreateReportAction" text="Create">
+      <JFXComboBox fx:id="monthCombobox" layoutX="686.0" layoutY="492.0" />
+      <JFXButton fx:id="Createbth" layoutX="431.0" layoutY="526.0" onAction="#CreateReportAction" text="Create">
          <font>
             <Font size="15.0" />
          </font>

@@ -36,7 +36,7 @@
             <TableColumn fx:id="reportIDCol" prefWidth="75.0" text="Report ID" />
             <TableColumn fx:id="reportTypeCol" prefWidth="75.0" text="Report Type" />
             <TableColumn fx:id="parkIDCol" prefWidth="75.0" text="Park ID" />
-            <TableColumn fx:id="DateCol" prefWidth="75.0" text="Date" />
+            <TableColumn fx:id="MonthCol" prefWidth="75.0" text="Month" />
             <TableColumn fx:id="commentCol" prefWidth="75.0" text="Comment" />
          </columns>
          <columnResizePolicy>

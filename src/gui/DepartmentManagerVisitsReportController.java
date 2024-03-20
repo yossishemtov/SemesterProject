@@ -53,13 +53,12 @@ public class DepartmentManagerVisitsReportController implements Initializable {
 
 	@FXML
 	private NumberAxis yAxis;
-	
+
+	@FXML
+	private Label titlelLabal;
 
 	@FXML
 	private JFXButton Closebth;
-
-
-
 
 	// This is a placeholder for your VisitReport object
 	private VisitReport Visitreport;
@@ -68,7 +67,7 @@ public class DepartmentManagerVisitsReportController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		loadUsageReport(); // Mock method to load report data
 		populateLineChart();
-		
+
 	}
 
 	private void loadUsageReport() {
@@ -76,25 +75,29 @@ public class DepartmentManagerVisitsReportController implements Initializable {
 		this.Visitreport = (VisitReport) ClientUI.clientControllerInstance.getData().getDataTransfered();
 
 	}
-	 private void populateLineChart() {
-		 VisitLineChart.getData().clear();
-	        xAxis.setLabel("Hour of Day");
-	        yAxis.setLabel("Number of Visits");
 
-	        // Group visits by TypeOfOrder and hour
-	        Visitreport.getVisits().stream().collect(Collectors.groupingBy(VisitData::getTypeOfOrder)).forEach((type, visits) -> {
-	            XYChart.Series<String, Number> series = new XYChart.Series<>();
-	            series.setName(type.toString());
+	private void populateLineChart() {
+		titlelLabal.setText("Visit Report for month "+Visitreport.getMonthNumber());
+		VisitLineChart.getData().clear();
+		xAxis.setLabel("Hour of Day");
+		yAxis.setLabel("Number of Visits");
 
-	            // Assuming the list of visits is not too large to make this inefficient
-	            IntStream.rangeClosed(1, 24).forEach(hour -> {
-	                long count = visits.stream().filter(visit -> visit.getEnteringTime().getHour() == hour).count();
-	                series.getData().add(new XYChart.Data<>(String.valueOf(hour), count));
-	            });
+		// Group visits by TypeOfOrder and hour
+		Visitreport.getVisits().stream().collect(Collectors.groupingBy(VisitData::getTypeOfOrder))
+				.forEach((type, visits) -> {
+					XYChart.Series<String, Number> series = new XYChart.Series<>();
+					series.setName(type.toString());
 
-	            VisitLineChart.getData().add(series);
-	        });
-	    }
+					// Assuming the list of visits is not too large to make this inefficient
+					IntStream.rangeClosed(1, 24).forEach(hour -> {
+						long count = visits.stream().filter(visit -> visit.getEnteringTime().getHour() == hour).count();
+						series.getData().add(new XYChart.Data<>(String.valueOf(hour), count));
+					});
+
+					VisitLineChart.getData().add(series);
+				});
+	}
+
 	@FXML
 	void ClosepageAction(ActionEvent event) {
 		// Get the current stage using the event source

@@ -48,6 +48,8 @@ public class ShowUsageReportController implements Initializable {
 	private UsageReport usageReport;
 	@FXML
 	private JFXTextArea CommentTextArea;
+	@FXML
+	private Label titlelLabal;
 
 
 
@@ -68,6 +70,8 @@ public class ShowUsageReportController implements Initializable {
 	private void populateGridPane() {
 		if (usageReport == null)
 			return; // Ensure we have a report to work with
+		titlelLabal.setText("Usage Report for month "+usageReport.getMonth());
+
 		dailyUsage = usageReport.getDailyUsage();
 		CommentTextArea.setText(usageReport.getComment());
 
