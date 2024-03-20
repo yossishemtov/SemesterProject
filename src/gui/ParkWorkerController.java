@@ -90,7 +90,7 @@ public void loadProfileOfWorker(ActionEvent click) throws Exception{
     	try {
    		 NavigationManager.openPageInCenter(mainPane,"ParkWorkerAvailableSpace.fxml");
    	 } catch(Exception e) {
-   		 Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when loading profile");
+   		 Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when loading checking available space");
    			somethingWentWrong.showAndWait();
    		 e.printStackTrace();
    	 }
@@ -103,10 +103,21 @@ public void loadProfileOfWorker(ActionEvent click) throws Exception{
     	try {
       		 NavigationManager.openPageInCenter(mainPane,"ParkWorkerEntrenceControl.fxml");
       	 } catch(Exception e) {
-      		 Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when loading profile");
+      		 Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when loading parkworker entrence control");
       			somethingWentWrong.showAndWait();
       		 e.printStackTrace();
       	 }
+    }
+    
+    public void unorderedVisitAction(ActionEvent click) throws Exception{
+    	//Loading unordered visit system page
+    	try {
+     		 NavigationManager.openPageInCenter(mainPane,"ParkWorkerUnorderedVisit.fxml");
+     	 } catch(Exception e) {
+     		 Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when loading unordered visit system");
+     			somethingWentWrong.showAndWait();
+     		 e.printStackTrace();
+     	 }
     }
 
     

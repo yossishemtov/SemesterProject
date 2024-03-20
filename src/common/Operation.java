@@ -88,4 +88,17 @@ public abstract class Operation {
     public final static String PATCH_CHANGE_REQUEST_STATUS = "Patch change request status";
     
     
+    
+    
+    
+    public final static String GET_PARK_UNORDEREDVISITS = "Get unordered visits from the park";
+
+  
+   
+    public final static String PATCH_ORDER_STATUS_TO_COMPLETED = "Patch an order to be COMPLETED status";
+    public final static String PATCH_PARK_VISITORS_DEDUCT = "Patch a park visitors number - deduct";
+    public final static String PATCH_PARK_UNORDEREDVISITS = "Patch the amount of unordered visits";
+    
+ 
+
 }

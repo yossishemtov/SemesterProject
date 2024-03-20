@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXTextField;
 
 import client.ClientUI;
 import client.InputValidation;
+import client.NavigationManager;
 import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
@@ -62,47 +63,13 @@ public class ParkWorkerEntrenceControlController {
     		Alerts alertIndication = InputValidation.validateOrderNumber(orderIdText);
         	Boolean checkIfNoError = alertIndication.getAlertType().toString().equals("INFORMATION");
         	
-        	//Get the park where the worker works at
-        	GeneralParkWorker currentWorkerAccount = Usermanager.getCurrentWorker();
-        	Integer currentWorkerPark = currentWorkerAccount.getWorksAtPark();
         	
-        	//Get current date of today
-        	LocalDate today = LocalDate.now();
         	
+     
         	if(checkIfNoError) {
-        		
-	        	Integer orderIdInteger = Integer.parseInt(orderIdText);
+        		//Renderes the order to the screen
+        		renderInformationAboutOrder(Integer.parseInt(orderIdText));
 	        	
-	        	//Send the orderId within an order dummy object to the server
-	        	Order dummyOrder = new Order(orderIdInteger, null, currentWorkerPark, null, null, null,null, today,  null, null, null, orderIdText);
-	        	ClientServerMessage requestOrderInformation = new ClientServerMessage(dummyOrder, Operation.GET_ORDER_BY_ID_AND_PARK_NUMBER_DATE);
-	        	ClientUI.clientControllerInstance.sendMessageToServer(requestOrderInformation);
-	        	
-	        	
-	        	Order receivedOrderFromServer = (Order) ClientUI.clientControllerInstance.getData().getDataTransfered();
-        	if(receivedOrderFromServer != null) {
-        		orderToEnterOrExit = receivedOrderFromServer;
-        		
-        		//Receiving information to parse to the screen
-        		Integer orderIdReceived = receivedOrderFromServer.getOrderId();
-        		Integer travelerIdReceived = receivedOrderFromServer.getVisitorId();
-        		Integer amountOfVisitorsReceived = receivedOrderFromServer.getAmountOfVisitors();
-        		LocalDate dateReceived = receivedOrderFromServer.getDate();
-        		LocalTime timeReceived = receivedOrderFromServer.getVisitTime();
-        		String orderStatus = receivedOrderFromServer.getOrderStatus();
- 
-        		//Sets the labels placeholders to the recived information
-        		orderIdLabel.setText(Integer.toString(orderIdReceived));
-        		TravelerIdLabel.setText(Integer.toString(travelerIdReceived));
-        		amountOfVisitorsLabel.setText(Integer.toString(amountOfVisitorsReceived));
-        		dateLabel.setText(dateReceived.toString());
-        		visitTimeLabel.setText(timeReceived.toString());
-        		orderStatusLabel.setText(orderStatus);
-        		
-        	}else {
-        		Alerts noOrderIdExists = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "No such order exists for your park for today!");
-        		noOrderIdExists.showAndWait();
-        	}
         }else {
         	//If validation fails (user didnt enter only numbers)
         	alertIndication.showAndWait();
@@ -116,20 +83,20 @@ public class ParkWorkerEntrenceControlController {
 
     }
     
-    public void entrenceControlAction(ActionEvent event) {
+    public void entrenceControlAction(ActionEvent click) {
     	System.out.print(orderToEnterOrExit);
     	if(orderToEnterOrExit != null) {
 
     		
     		//Checks if the order wasn't already entered to the park
-    		if(orderToEnterOrExit.getOrderStatus() == "NOTARRIVED") {
+    		if(orderToEnterOrExit.getOrderStatus().toString().equals("CONFIRMED")) {
     			try {
     				
 	    			ClientServerMessage changeStateOfOrder = new ClientServerMessage(orderToEnterOrExit, Operation.PATCH_ORDER_STATUS_TO_INPARK);
 		        	ClientUI.clientControllerInstance.sendMessageToServer(changeStateOfOrder);
 	    			
 		        	//Get park details from server
-	    			ClientServerMessage getParkDetails = new ClientServerMessage(orderToEnterOrExit.getParkNumber(), Operation.GET_PARK_DETAILS);
+	    			ClientServerMessage getParkDetails = new ClientServerMessage(Usermanager.getCurrentWorker().getWorksAtPark(), Operation.GET_PARK_DETAILS);
 	    			ClientUI.clientControllerInstance.sendMessageToServer(getParkDetails);
 		        	
 	    			//Change Park amount of visitors
@@ -139,6 +106,7 @@ public class ParkWorkerEntrenceControlController {
 		        	
 	    			ClientServerMessage changeAmountOfVisitors = new ClientServerMessage(receivedParkInformationFromServer, Operation.PATCH_PARK_VISITORS_APPEND);
 	    			ClientUI.clientControllerInstance.sendMessageToServer(changeAmountOfVisitors);
+	    			orderToEnterOrExit.setOrderType("INPARK");
 	    			
 	    			//Create a new visit in the visit table
 	    			LocalDate currentDate = orderToEnterOrExit.getDate();
@@ -152,7 +120,11 @@ public class ParkWorkerEntrenceControlController {
 	    			ClientServerMessage addNewVisitMessage = new ClientServerMessage(createVisitForEntrence ,Operation.POST_NEW_VISIT);
 	    			ClientUI.clientControllerInstance.sendMessageToServer(addNewVisitMessage);
 	    			
+	    			//Show Traveler bill
+	    			NavigationManager.openPage("ParkWorkerShowBill.fxml", click, "Traveler Bill", false);
+	    			
     			}catch (Exception e) {
+    				e.printStackTrace();
     				Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong with the entrence system");
         			somethingWentWrong.showAndWait();
     			}
@@ -169,6 +141,95 @@ public class ParkWorkerEntrenceControlController {
     		Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Please insert order to submit to park entrence system");
 			somethingWentWrong.showAndWait();
     	}
+    }
+    
+    
+    public void exitControlAction(ActionEvent click) {
+    	
+    	
+    	//Registering exit to traveler
+    	if(orderToEnterOrExit != null) {
+	    	
+    		if(orderToEnterOrExit.getOrderStatus() == "INPARK" || orderToEnterOrExit.getOrderStatus() == "UNORDERED" ) {    			
+    			//Get park details from server
+    			ClientServerMessage getParkDetails = new ClientServerMessage(orderToEnterOrExit.getParkNumber(), Operation.GET_PARK_DETAILS);
+    			ClientUI.clientControllerInstance.sendMessageToServer(getParkDetails);
+    			
+    			
+    			//Deduct amount of visitors from park
+    			//Change Park amount of visitors
+	        	Park receivedParkInformationFromServer = (Park) ClientUI.clientControllerInstance.getData().getDataTransfered();
+	        	Integer visitorsWithAppendedWelcomedVisitors = receivedParkInformationFromServer.getCurrentVisitors() - orderToEnterOrExit.getAmountOfVisitors();
+	        	receivedParkInformationFromServer.setCurrentVisitors(visitorsWithAppendedWelcomedVisitors);
+	        	
+	        	//handles when Unordered visit has occured (append the visits to the unorderedvisits of a park)
+	        	if(orderToEnterOrExit.getOrderStatus() == "UNORDERED") {
+	        		Integer newUnorderedVisits = receivedParkInformationFromServer.getUnorderedVisits() + orderToEnterOrExit.getAmountOfVisitors();
+	        		receivedParkInformationFromServer.setUnorderedVisits(newUnorderedVisits);
+	    			ClientServerMessage changeParkUnorderedVisitors = new ClientServerMessage(receivedParkInformationFromServer, Operation.PATCH_PARK_UNORDEREDVISITS);
+	    			ClientUI.clientControllerInstance.sendMessageToServer(changeParkUnorderedVisitors);
+	        	}
+	        	
+	        	//Change state of Order to COMPLETED
+    			ClientServerMessage changeStateCompleted = new ClientServerMessage(orderToEnterOrExit, Operation.PATCH_ORDER_STATUS_TO_COMPLETED);
+    			ClientUI.clientControllerInstance.sendMessageToServer(changeStateCompleted);
+	        	
+    			//Change amount of visitors and unordered visitors for unordered visit of park
+	        	ClientServerMessage changeAmountOfVisitors = new ClientServerMessage(receivedParkInformationFromServer, Operation.PATCH_PARK_VISITORS_APPEND);
+    			ClientUI.clientControllerInstance.sendMessageToServer(changeAmountOfVisitors);
+    			
+    			//Parse indormation about updated order to the screen
+    			renderInformationAboutOrder((orderToEnterOrExit.getOrderId()));
+	        	Alerts successExiting = new Alerts(Alerts.AlertType.CONFIRMATION, "Success","", "Thank you for visiting our park :)");
+	        	successExiting.showAndWait();
+    		}else {
+    			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Order is not in state INPARK");
+    			somethingWentWrong.showAndWait();
+    		}
+    }else {
+		Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Please insert order to submit to park entrence system");
+		somethingWentWrong.showAndWait();
+		}
+	  }
+    
+    public void renderInformationAboutOrder(Integer orderNumberToParse) {
+    	//Renders an order based on an ordernumber
+    	
+    	//Get the park where the worker works at
+    	GeneralParkWorker currentWorkerAccount = Usermanager.getCurrentWorker();
+    	Integer currentWorkerPark = currentWorkerAccount.getWorksAtPark();
+    	
+    	//Send the orderId within an order dummy object to the server
+    	Order dummyOrder = new Order(orderNumberToParse, null, currentWorkerPark, null, null, null, LocalDate.now(), null, null, null, null,null);
+    	ClientServerMessage requestOrderInformation = new ClientServerMessage(dummyOrder, Operation.GET_ORDER_BY_ID_AND_PARK_NUMBER_DATE);
+    	ClientUI.clientControllerInstance.sendMessageToServer(requestOrderInformation);
+    	
+    	
+    	Order receivedOrderFromServer = (Order) ClientUI.clientControllerInstance.getData().getDataTransfered();
+	if(receivedOrderFromServer != null) {
+		orderToEnterOrExit = receivedOrderFromServer;
+		
+		//Receiving information to parse to the screen
+		Integer orderIdReceived = receivedOrderFromServer.getOrderId();
+		Integer travelerIdReceived = receivedOrderFromServer.getVisitorId();
+		Integer amountOfVisitorsReceived = receivedOrderFromServer.getAmountOfVisitors();
+		LocalDate dateReceived = receivedOrderFromServer.getDate();
+		LocalTime timeReceived = receivedOrderFromServer.getVisitTime();
+		String orderStatus = receivedOrderFromServer.getOrderStatus();
+
+		//Sets the labels placeholders to the recived information
+		orderIdLabel.setText(Integer.toString(orderIdReceived));
+		TravelerIdLabel.setText(Integer.toString(travelerIdReceived));
+		amountOfVisitorsLabel.setText(Integer.toString(amountOfVisitorsReceived));
+		dateLabel.setText(dateReceived.toString());
+		visitTimeLabel.setText(timeReceived.toString());
+		orderStatusLabel.setText(orderStatus);
+		
+	}else {
+		//If no order exists for today or for the park
+		Alerts noOrderIdExists = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "No such order exists for your park for today!");
+		noOrderIdExists.showAndWait();
+	}
     }
     
     

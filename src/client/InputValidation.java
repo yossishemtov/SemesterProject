@@ -42,6 +42,17 @@ public class InputValidation {
 	    }
 	}
 	
+	public static Alerts validateFamilyVisitors(String amountOfVisitors) {
+		//Checks if order visitors is between 1-6
+		if (!amountOfVisitors.matches("[1-6]")) {
+	        return new Alerts(Alerts.AlertType.ERROR, "Invalid Visitors Number", "", "Amount of visitors for family order must be between 1-6");
+		}else {
+			return new Alerts(Alerts.AlertType.INFORMATION, "Valid Amount Of Visitors", "", "Valid Amount Of Visitors");
+		}
+		
+		
+	}
+	
 	// function for validate worker password
 	 public static Alerts validatePassword(String password) {
 	        // Check if password is empty
@@ -65,6 +76,15 @@ public class InputValidation {
 	            return new Alerts(Alerts.AlertType.ERROR, "Invalid Order Id", "", "Order id must only contain numbers and not exceed 8 characters");
 		 }else {
 	        	return new Alerts(Alerts.AlertType.INFORMATION, "Order Id Validation", "", "Order Id Validation");
+	        }
+	 }
+	 
+	 public static Alerts validatePhoneNumber(String phoneNumber) {
+		 //Check for a valid phone number (10 digits)
+		 if(!phoneNumber.matches("^[0-9]{10}$")) {
+	            return new Alerts(Alerts.AlertType.ERROR, "Invalid Phone Number", "", "Phone number must contain valid 10 digits");
+		 }else {
+	        	return new Alerts(Alerts.AlertType.INFORMATION, "valid Phone Number", "", "valid Phone Number");
 	        }
 	 }
 	 

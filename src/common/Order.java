@@ -22,7 +22,7 @@ public class Order implements Serializable {
 
     public enum status {
 
-		PENDING, NOTARRIVED, INPARK, CONFIRMED, CANCELED, COMPLETED, WAITING
+		PENDING, NOTARRIVED, INPARK, CONFIRMED, CANCELED, COMPLETED, WAITING,
 	}
 
 	public enum typeOfOrder {

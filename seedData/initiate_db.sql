@@ -289,9 +289,11 @@ CREATE TABLE `park` (
   `managerId` int DEFAULT NULL,
   `workingTime` int DEFAULT NULL,
   `gap` int DEFAULT NULL,
+  `unorderedvisits` int DEFAULT 0, -- Assuming default is 0, indicating no unordered visits initially
   PRIMARY KEY (`parkNumber`),
   KEY `managerId` (`managerId`),
   CONSTRAINT `park_ibfk_1` FOREIGN KEY (`managerId`) REFERENCES `generalparkworker` (`workerId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

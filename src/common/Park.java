@@ -16,6 +16,7 @@ public class Park  implements Serializable {
 	private Integer managerID;
 	private Integer gap;
 	private Integer workingTime;
+	private Integer unorderedVisits;
 	
 	public Park(String name, Integer parkNumber, Integer maxVisitors, Integer capacity, Integer currentVisitors,
 			String location, Integer staytime, Integer workersAmount,Integer gap, Integer managerID, Integer workingTime) {
@@ -40,6 +41,13 @@ public class Park  implements Serializable {
     public void setGap(Integer gap) {
         this.gap = gap;
     }
+	public Integer getUnorderedVisits() {
+		return unorderedVisits;
+	}
+
+	public void setUnorderedVisits(Integer unorderedVisits) {
+		this.unorderedVisits = unorderedVisits;
+	}
 	
 	
 	public String getName() {

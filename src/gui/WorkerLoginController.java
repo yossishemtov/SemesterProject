@@ -93,7 +93,7 @@ public class WorkerLoginController {
 						System.out.println("in Park Manager");
 						NavigationManager.openPage("ParkManager.fxml", click, "parkManagerScreen", true);
 						break;
-					case "Worker":
+					case "Park Worker":
 						System.out.println("in Worker");
 						NavigationManager.openPage("ParkWorkerFrame.fxml", click, "workerScreen", true);
 

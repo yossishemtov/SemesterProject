@@ -32,7 +32,7 @@
       <Label fx:id="dateLabel" layoutX="274.0" layoutY="300.0" text="Label" />
       <Label fx:id="visitTimeLabel" layoutX="313.0" layoutY="335.0" text="Label" />
       <JFXButton fx:id="etnerVisitorsAction" buttonType="RAISED" layoutX="355.0" layoutY="381.0" onAction="#entrenceControlAction" text="Enter Visitors And Present Bill" textFill="#51a450" />
-      <JFXButton fx:id="exitVisitorsAction" layoutX="374.0" layoutY="425.0" text="Exit Visitors From Park" textFill="#b21818" />
+      <JFXButton fx:id="exitVisitorsAction" layoutX="374.0" layoutY="425.0" onAction="#exitControlAction" text="Exit Visitors From Park" textFill="#b21818" />
       <Text fill="#222157" layoutX="432.0" layoutY="276.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Status:" textAlignment="CENTER" wrappingWidth="74.08984786272049" />
       <Label fx:id="orderStatusLabel" layoutX="513.0" layoutY="263.0" text="Label" />
    </children>

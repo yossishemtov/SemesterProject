@@ -38,7 +38,7 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></JFXButton>
-                  <JFXButton fx:id="unorderedVisitAction" prefHeight="169.0" prefWidth="224.0" text="Unordered Visit" />
+                  <JFXButton fx:id="unorderedVisitAction" onAction="#unorderedVisitAction" prefHeight="169.0" prefWidth="224.0" text="Unordered Visit" />
                   <JFXButton fx:id="backBtn" alignment="CENTER" contentDisplay="CENTER" onAction="#backBtnAction" prefHeight="160.0" prefWidth="210.0" text="Logout" textAlignment="CENTER">
                      <cursor>
                         <Cursor fx:constant="HAND" />

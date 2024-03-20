@@ -569,6 +569,25 @@ public class DatabaseController {
 
 		return false;
 	}
+	public Boolean patchParkUnorderedVisits(Park parkWithIdAndNewUnorderedVisits) {
+		//change the unordered visits amount
+    	
+    	String query = "UPDATE `park` SET unorderedvisits = ? WHERE parkNumber = ?";
+    	System.out.print(parkWithIdAndNewUnorderedVisits.getUnorderedVisits());
+    	try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
+            pstmt.setInt(1, parkWithIdAndNewUnorderedVisits.getUnorderedVisits());
+            pstmt.setInt(2, parkWithIdAndNewUnorderedVisits.getParkNumber());
+
+            int affectedRows = pstmt.executeUpdate();
+
+            // Check if the update was successful
+            return affectedRows > 0;
+            
+        } catch (SQLException e) {
+            System.err.println("SQLException: " + e.getMessage());
+            return false;
+        } 
+	}
 
 	// Method to get a Park object by parkNumber
 	public Park getParkDetails(int parkNumber) {
@@ -582,7 +601,7 @@ public class DatabaseController {
 
 			if (resultSet.next()) {
 				System.out.println("in");
- 
+
 				String name = resultSet.getString("name");
 				Integer maxVisitors = resultSet.getInt("maxVisitors");
 				Integer capacity = resultSet.getInt("capacity");
@@ -593,15 +612,144 @@ public class DatabaseController {
 				Integer managerID = resultSet.getInt("managerId");
 				Integer workingTime = resultSet.getInt("workingTime");
 				Integer gap = resultSet.getInt("gap"); // Retrieve gap from resultSet
+				Integer unorderedvisits = resultSet.getInt("unorderedvisits");
 
 				park = new Park(name, parkNumber, maxVisitors, capacity, currentVisitors, location, staytime,
 						workersAmount, gap, managerID, workingTime);
+				park.setUnorderedVisits(unorderedvisits);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return park;
 	}
+	/**
+	 * Get amount of unordered visits from a park
+	 *
+	 * @param parkid of a Park
+	 * @return Integer unorderedvisits allowed
+	 */
+	public Integer getUnorderedVists(int parkNumber) {
+		Integer numberOfUnorderedVisits = null;
+		String query = "SELECT unorderedvisits FROM `park` WHERE parkNumber = ?";
+
+
+		try (PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
+			preparedStatement.setInt(1, parkNumber);
+
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				 numberOfUnorderedVisits = resultSet.getInt("unorderedvisits");
+	
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return numberOfUnorderedVisits;
+		
+	}
+	  /**
+     * Get order information and change its state to COMPLETED
+     * @param Order object that contains a valid orderId
+     * @return True if success or False if not
+     */	
+    public Boolean patchOrderStatusToCompleted(Order receivedOrder) {
+    	String query = "UPDATE `order` SET orderStatus = 'COMPLETED' WHERE orderId = ?";
+    	
+    	
+    	try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
+            pstmt.setInt(1, receivedOrder.getOrderId());
+
+            int affectedRows = pstmt.executeUpdate();
+
+            // Check if the update was successful
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.err.println("SQLException: " + e.getMessage());
+            return false;
+        } 
+    }
+    /**
+     * Change park current amount of visitors
+     * @param Park object with new amount of visitors
+     * @return True if success or False if not
+     */	
+    public Boolean patchParkVisitorsNumber(Park parkToAppend) {
+    	//Append the visitors to the park currentvisitors
+    	
+    	String query = "UPDATE `park` SET currentVisitors = ? WHERE parkNumber = ?";
+    	
+    	try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
+            pstmt.setInt(1, parkToAppend.getCurrentVisitors());
+            pstmt.setInt(2, parkToAppend.getParkNumber());
+
+            int affectedRows = pstmt.executeUpdate();
+
+            // Check if the update was successful
+            return affectedRows > 0;
+            
+        } catch (SQLException e) {
+            System.err.println("SQLException: " + e.getMessage());
+            return false;
+        } 
+    }
+    
+  
+	
+    /**
+     * Get order information based on the orderId, park number and date provided
+     * @param Order object that contains a valid orderId, parknumber and date
+     * @return Order object containing all the information about the order
+     */	
+    public Order getOrderInformationByOrderIdAndParkNumber(Order receivedOrderId) {
+    	String query = "SELECT * FROM `order` WHERE orderId = ? AND parkNumber = ? AND date = ?";
+    	Order orderInformation = null;
+    	
+    	try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+    		ps.setInt(1, receivedOrderId.getOrderId());
+    		ps.setInt(2, receivedOrderId.getParkNumber());
+    		ps.setObject(3, java.sql.Date.valueOf(receivedOrderId.getDate()));
+            ResultSet rs = ps.executeQuery(); // Use executeQuery for SELECT statements
+            
+            
+  
+                if (rs.next()) { // Use if instead of while if you expect or require a single result
+                	
+                	//Parsing special object such of type localDate and LocalTime
+    	            LocalDate orderDate = rs.getObject("date", LocalDate.class);
+    	            LocalTime visitTime = rs.getObject("visitTime", LocalTime.class);
+    	            float price = rs.getFloat("price");
+    	            
+                	orderInformation = new Order(
+                        rs.getInt("orderId"), 
+                        rs.getInt("travlerId"), 
+                        rs.getInt("parkNumber"), 
+                        rs.getInt("amountOfVisitors"), 
+                        price, 
+                        rs.getString("visitorEmail"), 
+                        orderDate, 
+                        visitTime, // Assuming you have a column for gap in your DB
+                        rs.getString("orderStatus"), // Assuming managerID is stored directly as an integer
+                        rs.getString("typeOfOrder"),
+                        rs.getString("TelephoneNumber")
+                    ,null);
+                }
+            }
+         catch (SQLException e) {
+            e.printStackTrace();
+            return orderInformation;
+            // Consider logging this exception or handling it more gracefully
+        }
+    	
+    	return orderInformation;
+    }
+    
+    
+
+
+
 	/**
 	 * Retrieves all waiting lists for a given traveler from the database.
 	 * 
@@ -1105,7 +1253,7 @@ public class DatabaseController {
 	     * @return True if success or False if not
 	     */	
 	    public Boolean addNewVisit(Visit newVisitToAdd) {
-	    	String query = "INSERT INTO `visit` (visitDate, enteringTime, exitingTime, parkNumber, orderId) VALUES (?, ?, ?, ?, ?)";
+	    	String query = "INSERT INTO `visit` (visitDate, enteringTime, exitingTime, parkNumber, orderNumber) VALUES (?, ?, ?, ?, ?)";
 
 		    try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 		        // Set parameters based on the Order object fields, in the order specified
