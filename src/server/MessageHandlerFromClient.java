@@ -6,6 +6,7 @@ import common.worker.GeneralParkWorker;
 import common.worker.ParkWorker;
 import common.worker.Report;
 import common.worker.UsageReport;
+import common.worker.VisitReport;
 import common.worker.VisitorsReport;
 
 import java.io.IOException;
@@ -566,6 +567,22 @@ public class MessageHandlerFromClient {
 				messageFromClient.setflagFalse();
 			}
 
+			client.sendToClient(messageFromClient);
+			break;
+		case Operation.GET_NEW_VISIT_REPORT:
+			//Append the number of visitors to the park
+			VisitReport VisitReportFromClient = (VisitReport) messageFromClient.getDataTransfered();
+			
+			VisitReportFromClient= dbControllerInstance.getVisitReport(VisitReportFromClient);
+			
+			if(VisitReportFromClient !=null) {
+				messageFromClient.setflagTrue();
+				messageFromClient.setDataTransfered(VisitReportFromClient);
+				
+			}else {
+				messageFromClient.setflagFalse();
+			}
+			
 			client.sendToClient(messageFromClient);
 			break;
 			

@@ -223,11 +223,19 @@ public class ParkmanagerReportController implements Initializable {
 				ClientServerMessage<?> messageForServer = new ClientServerMessage<>(visitorReportToServer,
 						Operation.GET_NEW_VISITORS_REPORT);
 				ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
-				try {
-					NavigationManager.openPage("CreateVisitorsReport.fxml", event, "", false);
-				} catch (IOException e) {
-					e.printStackTrace();
+				if (ClientController.data.getFlag()) {
+					try {
+						NavigationManager.openPage("CreateVisitorsReport.fxml", event, "", false);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
 				}
+				else {
+					Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "", "Error to load Visitor report .");
+					warningalert.showAndWait();
+				}
+				
 
 				System.out.println("Creating Visit Report for Month: " + selectedMonthString);
 				break;

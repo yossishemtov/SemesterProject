@@ -57,6 +57,9 @@ public abstract class Operation {
     public final static String POST_USAGE_REPORT = "post usage report and general report from park maneger";
     public final static String GET_NEW_USAGE_REPORT = "Get new usage report";
 
+    //visit report 
+    public final static String GET_NEW_VISIT_REPORT = "Get new visit report for park deparment";
+
     
     // Operations related to Change Requests
     public final static String GET_MAX_CHANGE_REQUEST_ID = "Get max change request ID";

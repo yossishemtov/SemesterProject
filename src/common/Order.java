@@ -58,10 +58,9 @@ public class Order implements Serializable{
 		if(typeOfOrderStr != null) {
 			
 			try {
-				this.orderType = Order.typeOfOrder.valueOf(typeOfOrderStr.toUpperCase());
+				this.orderType = Order.typeOfOrder.valueOf(typeOfOrderStr.toUpperCase().trim());
 			} catch (IllegalArgumentException e) {
-				// Handle the error or default case here
-				// For example, default to SOLO if the conversion fails
+			
 				this.orderType = Order.typeOfOrder.SOLO;
 			}
 			

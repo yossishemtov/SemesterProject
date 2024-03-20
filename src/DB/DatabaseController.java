@@ -34,6 +34,37 @@ public class DatabaseController {
 		this.connector = new MySqlConnector(username, password);
 		connectionToDatabase = this.connector.getDbConnection();
 	}
+	
+	public VisitReport getVisitReport(VisitReport report) {
+	    String query = "SELECT v.enteringTime, TIMESTAMPDIFF(MINUTE, v.enteringTime, v.exitingTime) AS duration, o.typeOfOrder " +
+	            "FROM `visit` v JOIN `order` o ON v.orderNumber = o.orderId " +
+	            "WHERE MONTH(v.visitDate) = ? AND v.parkNumber = ? AND o.orderStatus = 'COMPLETED'";
+
+	    try (PreparedStatement ps = this.connectionToDatabase.prepareStatement(query)) {
+	        ps.setInt(1, report.getMonthNumber());
+	        ps.setInt(2, report.getParkNumber());
+	        ResultSet rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            String enteringTimeStr = rs.getString("enteringTime");
+	            long duration = rs.getLong("duration");
+	            String typeOfOrderStr = rs.getString("typeOfOrder");
+
+	            report.addVisit(enteringTimeStr, duration, typeOfOrderStr);
+	            // Print each row to see what we're getting back
+	            System.out.println("Visit data: Entering Time: " + enteringTimeStr + ", Duration: " + duration + ", Type of Order: " + typeOfOrderStr);
+
+	        }
+
+	        System.out.println("Report successfully populated with visits data for park number " + report.getParkNumber() + " and month " + report.getMonthNumber() + ". " + report);
+	    } catch (SQLException e) {
+	        System.err.println("An error occurred while populating the report: " + e.getMessage());
+	        e.printStackTrace();
+	    }
+
+	    return report;
+	}
+
 
 	public List<HourlyVisitData> getHourlyVisitDataForPark(int parkNumber) {
 		// Initialize a List to hold HourlyVisitData objects
