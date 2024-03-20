@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.layout.Pane?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="405.0" layoutY="53.0" text="My Messages" />
+      <JFXTreeTableView layoutX="199.0" layoutY="101.0" prefHeight="398.0" prefWidth="502.0">
+         <columns>
+            <TreeTableColumn fx:id="messageCol" prefWidth="331.0" text="Message" />
+            <TreeTableColumn fx:id="statusCol" prefWidth="170.0" text="Status" />
+         </columns>
+      </JFXTreeTableView>
+      <JFXButton fx:id="cancelBtn" layoutX="265.0" layoutY="544.0" text="Cancel">
+         <graphic>
+            <FontAwesomeIconView fill="#eb0e0e" glyphName="CLOSE" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="confirmBtm" layoutX="538.0" layoutY="544.0" text="Confirm">
+         <graphic>
+            <FontAwesomeIconView fill="#2cdd43" glyphName="CHECK" />
+         </graphic>
+      </JFXButton>
+   </children>
+</Pane>

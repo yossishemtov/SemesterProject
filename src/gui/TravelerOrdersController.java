@@ -1,15 +1,15 @@
 package gui;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXButton;
-
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import client.ClientController;
 import client.ClientUI;
 import client.NavigationManager;
 import common.Alerts;
@@ -20,7 +20,6 @@ import common.Traveler;
 import common.Usermanager;
 import common.worker.ChangeRequest;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -35,25 +34,25 @@ public class TravelerOrdersController implements Initializable {
 
 	
     @FXML
-    private TableView<?> TravelerOrders;
+    private TableView<Order> TravelerOrders;
 
     @FXML
-    private TableColumn<Order, String> orderIDCol;
+    private TableColumn<Order, Integer> orderIDCol;
+    
+	@FXML
+	private TableColumn<Order, String> parkNameCol;
 
     @FXML
-    private TableColumn<Order, String> ParkIDCol;
+    private TableColumn<Order, Integer> AmtOfVisitorsCol;
 
     @FXML
-    private TableColumn<Order, String> AmtOfVisitorsCol;
+    private TableColumn<Order, Float> PriceCol;
 
     @FXML
-    private TableColumn<Order, String> PriceCol;
+    private TableColumn<Order, LocalDate> DateCol;
 
     @FXML
-    private TableColumn<Order, String> DateCol;
-
-    @FXML
-    private TableColumn<Order, String> VisitTimeCol;
+    private TableColumn<Order, LocalTime> VisitTimeCol;
 
     @FXML
     private TableColumn<Order, String> StatusCol;
@@ -62,90 +61,29 @@ public class TravelerOrdersController implements Initializable {
     private TableColumn<Order, String> TypeOfVisitCol;
 
     @FXML
-    private JFXButton camcelOrder;
+    private JFXButton cancelOrder;
 
     @FXML
     private JFXButton ConfirmOrder;
-//	@FXML
-//	private TextField OrderID;
-//
-//	@FXML
-//	private Button editOrderBtn;
-//
-//	@FXML
-//	private Button backbtn;
-//
-//	@FXML
-//	private TableColumn<Order, String> orderIdCol;
-//	
-//	@FXML
-//	private TableColumn<Order, String> travelerIdCol;
-//	
-//	@FXML
-//	private TableColumn<Order, String> travelerEmailCol;
-//	
-//	@FXML
-//	private TableColumn<Order, String> telephoneNumberCol;
-//
-//	@FXML
-//	private TableColumn<Order, String> parkNumberCol;
-//
-//	@FXML
-//	private TableColumn<Order, String> amountOfVisitorsCol;
-//
-//	@FXML
-//	private TableColumn<Order, String> priceCol;
-//
-//	@FXML
-//	private TableColumn<Order, String> dateCol;
-//
-//	@FXML
-//	private TableColumn<Order, String> visitTimeCol;
-//
-//	@FXML
-//	private TableColumn<Order, String> orderStatusCol;
-//
-//	@FXML
-//	private TableColumn<Order, String> orderTypeCol;
-//	
-//	@FXML
-//	private TableView<Order> OrdersTable;
+    
+    
 
-	static HashMap<Integer, Order> orderHashMap = new HashMap<>();
+//	static HashMap<Integer, Order> orderHashMap = new HashMap<>();
 
-	private Order orderToOpen;
+//	private Order orderToOpen;
 	
+    private Traveler currentTraveler;
 	private ObservableList<Order> ordersData = FXCollections.observableArrayList();
 	
-	private Traveler currentTraveler;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// Load orders data from the database and initialize the table
-		//currentTraveler = Usermanager.getCurrentTraveler();
-		System.out.println("1");
-		currentTraveler = new Traveler(1214214, null, null, null, null, null, null);
+		currentTraveler = Usermanager.getCurrentTraveler() ;
 		System.out.println(currentTraveler.getId());
-		System.out.println("1");
 		setupTableColumns();
-		System.out.println("1");
-		loadOrdersFromDatabase();
-	}
-
-	private void loadOrdersFromDatabase() {
-		ClientServerMessage<?> clientServerMessage = new ClientServerMessage<>(currentTraveler,Operation.GET_ALL_ORDERS);
-		System.out.println("1");
-		ClientUI.clientControllerInstance.sendMessageToServer(clientServerMessage);
-		System.out.println("1");
-		waitForServerResponse();
-
-		/*try {
-			// The client controller receives the command to pass it further
-			// (It stops the execution flow for the client until the answer is received)
-			loadOrdersData(ClientUI.clientControllerInstance.getData());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
+		// load Traveler orders and present them in a table
+		loadOrdersFromDatabase(currentTraveler);
 	}
 	
 	/**
@@ -153,18 +91,22 @@ public class TravelerOrdersController implements Initializable {
      */
     private void setupTableColumns() {
         // Binding table columns to ChangeRequest properties
-    	orderIdCol.setCellValueFactory(new PropertyValueFactory<>("orderId"));
-    	travelerIdCol.setCellValueFactory(new PropertyValueFactory<>("travelerId"));
-		parkNumberCol.setCellValueFactory(new PropertyValueFactory<>("parkNumber"));
-		amountOfVisitorsCol.setCellValueFactory(new PropertyValueFactory<>("amountOfVisitors"));
-		priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
-		travelerEmailCol.setCellValueFactory(new PropertyValueFactory<>("travelerEmail"));
-		dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
-		telephoneNumberCol.setCellValueFactory(new PropertyValueFactory<>("telephoneNumber"));
-		visitTimeCol.setCellValueFactory(new PropertyValueFactory<>("visitTime"));
-		orderStatusCol.setCellValueFactory(new PropertyValueFactory<>("orderStatus"));
-		orderTypeCol.setCellValueFactory(new PropertyValueFactory<>("orderType"));
+    	orderIDCol.setCellValueFactory(new PropertyValueFactory<>("orderId"));
+    	parkNameCol.setCellValueFactory(new PropertyValueFactory<>("parkName"));
+    	AmtOfVisitorsCol.setCellValueFactory(new PropertyValueFactory<>("amountOfVisitors"));
+    	PriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+		DateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
+		VisitTimeCol.setCellValueFactory(new PropertyValueFactory<>("visitTime"));
+		TypeOfVisitCol.setCellValueFactory(new PropertyValueFactory<>("typeOfOrder"));
+		StatusCol.setCellValueFactory(new PropertyValueFactory<>("orderStatus"));
+		
     }
+
+	private void loadOrdersFromDatabase(Traveler currentTraveler) {
+		ClientServerMessage<?> clientServerMessage = new ClientServerMessage<>(currentTraveler,Operation.GET_ALL_ORDERS);
+		ClientUI.clientControllerInstance.sendMessageToServer(clientServerMessage);
+		waitForServerResponse();
+	}
 	
 	/**
      * Waits for a server response asynchronously and updates the UI with the fetched data.
@@ -175,19 +117,13 @@ public class TravelerOrdersController implements Initializable {
                 Thread.sleep(10); // Simulated wait for server response
                 // Check server response and update UI accordingly
                 ClientServerMessage<?> servermsg = ClientUI.clientControllerInstance.getData();
-                System.out.println("1");
+
                 if (servermsg.getFlag()) {
                     List<Order> ordersList = (List<Order>) servermsg.getDataTransfered();
-                    System.out.println("1");
-                    // Iterating through the list of orders and adding them to the HashMap
-                    // Clear the existing HashMap
-            		orderHashMap.clear();
-        			for (Order order : ordersList) {
-        				orderHashMap.put(order.getOrderId(), order);
-        			}
+                    System.out.println(ordersList.get(0).getPrice());
                     Platform.runLater(() -> {
-                        ordersData.setAll(ordersList);
-                        OrdersTable.setItems(ordersData);
+                    	ordersData.setAll(ordersList);
+                    	TravelerOrders.setItems(ordersData);
                     });
                 }
             } catch (InterruptedException e) {
@@ -196,78 +132,125 @@ public class TravelerOrdersController implements Initializable {
         }).start();
     }
 
-	public Order getOrderById(Integer orderId) {
-		return orderHashMap.get(orderId);
+	// function for confirm order
+	public void ConfirmTravelerOrder(ActionEvent click) throws Exception {
+	    // Get the selected order from the TableView
+	    Order selectedRequest = TravelerOrders.getSelectionModel().getSelectedItem();
+	    
+	    // Check if an order is selected
+	    if (selectedRequest != null) {
+	        try {
+	            // Check if the selected order's status is PENDING
+	            if (selectedRequest.getOrderStatus().equals("PENDING")) {
+	                // Update the order status to CONFIRMED
+	                selectedRequest.setStatus("CONFIRMED");
+	                System.out.println("New order status: " + selectedRequest.getOrderStatus());
+
+	                // Create a message to send to the server to update the order status
+	                ClientServerMessage<?> messageForServer = new ClientServerMessage<>(selectedRequest, Operation.PATCH_ORDER_STATUS);
+	                ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
+
+	                // Handle the response from the server
+	                if (ClientController.data.getFlag()) {
+	                    // If the order status is successfully updated in the database
+	                    // Show a confirmation message
+	                    Alerts infoalert = new Alerts(Alerts.AlertType.CONFIRMATION, "CONFIRMATION", "",
+	                            "You just confirmed your visit");
+	                    infoalert.showAndWait();
+	                    
+	                    // Remove the updated order from the TableView
+	                    ordersData.remove(selectedRequest);
+	                    // Refresh the TableView to reflect the changes
+	                    TravelerOrders.refresh();
+	                    // Reload orders from the database to update the TableView with the latest data
+	                    loadOrdersFromDatabase(currentTraveler); 
+	                } else {
+	                    // If there was an error updating the order status in the database
+	                    Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
+	                            "Approved your visit was not successfully executed on database");
+	                    somethingWentWrong.showAndWait();
+	                }
+	            } else {
+	                // If the selected order's status is not PENDING, display a warning
+	                Alerts notPendingAlert = new Alerts(Alerts.AlertType.WARNING, "WARNING", "",
+	                        "Only orders with status PENDING can be confirmed.");
+	                notPendingAlert.showAndWait();
+	            }
+	        } catch (Exception e) {
+	            // If an error occurs during the process, display an error message
+	            System.err.println("Error occurred while confirming order:");
+	            e.printStackTrace();
+	            Alerts errorAlert = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
+	                    "An error occurred while confirming your visit. Please try again later.");
+	            errorAlert.showAndWait();
+	        }
+	    } else {
+	        // If no order is selected, display a warning
+	        Alerts noOrderSelectedAlert = new Alerts(Alerts.AlertType.WARNING, "WARNING", "",
+	                "Please select an order to confirm.");
+	        noOrderSelectedAlert.showAndWait();
+	    }    
 	}
-
-	public void btnBack(ActionEvent click) throws Exception {
-
-		NavigationManager.openPage("VisitorFrame.fxml", click, "Visitor frame", true);
-
-	}
-
 	
-	/*public <T> void loadOrdersData(ClientServerMessage<T> allOrders) throws Exception {
+	// Function for canceling an order
+	public void CancelTravelerOrder(ActionEvent click) throws Exception {
+	    // Get the selected order from the TableView
+	    Order selectedRequest = TravelerOrders.getSelectionModel().getSelectedItem();
+	    
+	    // Check if an order is selected
+	    if (selectedRequest != null) {
+	        try {
+	            // Check if the selected order's status is PENDING or CONFIRMED
+	        	if (selectedRequest.getOrderStatus().equals("PENDING") || selectedRequest.getOrderStatus().equals("CONFIRMED")) {
+	                // Update the order status to CANCELED
+	                selectedRequest.setStatus("CANCELED");
+	                System.out.println("New order status: " + selectedRequest.getOrderStatus());
 
-	//ArrayList<Order> ordersList = (ArrayList<Order>) allOrders.convertDataToArrayList();
+	                // Create a message to send to the server to update the order status
+	                ClientServerMessage<?> messageForServer = new ClientServerMessage<>(selectedRequest, Operation.PATCH_ORDER_STATUS);
+	                ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
 
-	// Clear the existing HashMap
-	//orderHashMap.clear();
-
-	try {
-		// Iterating through the list of orders and adding them to the HashMap
-		//for (Order order : ordersList) {
-		//	orderHashMap.put(order.getOrderId(), order);
-		//}
-
-		orderIdCol.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getOrderId())));
-		parkNumberCol.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getParkNumber())));
-		amountOfVisitorsCol.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getAmountOfVisitors())));
-		priceCol.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getPrice())));
-		dateCol.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getDate())));
-		visitTimeCol.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getVisitTime())));
-		orderStatusCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getOrderStatus()));
-		orderTypeCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTypeOfOrder()));
-
-		// Populate the TableView with data
-		//ObservableList<Order> ordersObservableList = FXCollections.observableArrayList(ordersList);
-		//OrdersTable.setItems(ordersObservableList);
-	} catch (Exception e) {
-		e.printStackTrace();
+	                // Handle the response from the server
+	                if (ClientController.data.getFlag()) {
+	                    // If the order status is successfully updated in the database
+	                    // Show a confirmation message
+	                    Alerts infoalert = new Alerts(Alerts.AlertType.CONFIRMATION, "CONFIRMATION", "",
+	                            "You just canceled your visit");
+	                    infoalert.showAndWait();
+	                    
+	                    // Remove the updated order from the TableView
+	                    ordersData.remove(selectedRequest);
+	                    // Refresh the TableView to reflect the changes
+	                    TravelerOrders.refresh();
+	                    // Reload orders from the database to update the TableView with the latest data
+	                    loadOrdersFromDatabase(currentTraveler); 
+	                } else {
+	                    // If there was an error updating the order status in the database
+	                    Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
+	                            "Canceling your visit was not successfully executed on database");
+	                    somethingWentWrong.showAndWait();
+	                }
+	            } else {
+	                // If the selected order's status is not PENDING or CONFIRMED, display a warning
+	                Alerts notPendingOrConfirmedAlert = new Alerts(Alerts.AlertType.WARNING, "WARNING", "",
+	                        "Only orders with status PENDING or CONFIRMED can be canceled.");
+	                notPendingOrConfirmedAlert.showAndWait();
+	            }
+	        } catch (Exception e) {
+	            // If an error occurs during the process, display an error message
+	            System.err.println("Error occurred while canceling order:");
+	            e.printStackTrace();
+	            Alerts errorAlert = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
+	                    "An error occurred while canceling your visit. Please try again later.");
+	            errorAlert.showAndWait();
+	        }
+	    } else {
+	        // If no order is selected, display a warning
+	        Alerts noOrderSelectedAlert = new Alerts(Alerts.AlertType.WARNING, "WARNING", "",
+	                "Please select an order to cancel.");
+	        noOrderSelectedAlert.showAndWait();
+	    }    
 	}
-
-}*/
-	
-	public void editOrderBtn(ActionEvent click) throws Exception {
-
-	String orderID = OrderID.getText(); // get the order ID
-
-	if (orderID != null) {
-		// find the right order to open
-		orderToOpen = getOrderById(Integer.parseInt(orderID));
-
-	}
-
-	else {
-		// Display the error alert for missing order ID
-        Alerts alertID = new Alerts(AlertType.ERROR, "Error", "Missing Order ID", "Please enter the order ID.");
-        alertID.showAndWait();
-        return;
-	}
-
-	if (orderToOpen != null) {
-		// if entered the right order ID
-		OrderFrameController orderFrameController = new OrderFrameController(orderToOpen);
-		NavigationManager.openPage("OrderFrame.fxml", click, "Order", true);
-
-	}
-
-	else {
-		// Display the error alert for order not found
-        Alerts alertNotFound = new Alerts(AlertType.ERROR, "Error", "Order Not Found", "The entered order ID was not found.");
-        alertNotFound.showAndWait();
-	}
-
 }
 
-}
+

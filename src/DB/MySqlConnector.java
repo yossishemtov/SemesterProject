@@ -40,7 +40,7 @@ public class MySqlConnector {
         try {
             // Attempt to establish a connection to the specified MySQL database
             Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost/project?serverTimezone=IST", username, password);
+                    "jdbc:mysql://localhost/project?serverTimezone=Israel", username, password);
             System.out.println("SQL connection succeed");
             return conn;
         } catch (SQLException ex) {

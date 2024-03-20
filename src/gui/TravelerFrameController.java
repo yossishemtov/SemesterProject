@@ -105,7 +105,7 @@ public class TravelerFrameController implements Initializable {
     @FXML
     public void waitingListBtn(ActionEvent event) throws Exception {
     	try {
-    		NavigationManager.openPageInCenter(pane, "WaintingList.fxml");
+    		NavigationManager.openPageInCenter(pane, "TravelerWaitingLists.fxml");
     	} catch(Exception e) {
 			 System.out.print("Something went wrong while clicking on view waiting list button, check stack trace");
 			 e.printStackTrace();
@@ -115,7 +115,7 @@ public class TravelerFrameController implements Initializable {
     @FXML
     public void messages(ActionEvent event) throws Exception {
     	try {
-    		NavigationManager.openPageInCenter(pane, "TravelerMessages.fxml");
+    		NavigationManager.openPageInCenter(pane, "TravelerMessagesFrame.fxml");
     	} catch(Exception e) {
 			 System.out.print("Something went wrong while clicking on view messages button, check stack trace");
 			 e.printStackTrace();

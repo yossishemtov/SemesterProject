@@ -33,7 +33,7 @@
             <Font size="33.0" />
          </font>
       </Text>
-      <JFXButton fx:id="WorkerLoginBtn" buttonType="RAISED" layoutX="376.0" layoutY="278.0" onAction="#WorkerLoginBtn" text="Worker Login">
+      <JFXButton fx:id="WorkerLoginBtn" buttonType="RAISED" layoutX="365.0" layoutY="280.0" onAction="#WorkerLoginBtn" text="Worker Login">
          <font>
             <Font size="20.0" />
          </font>
@@ -51,7 +51,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <JFXButton fx:id="TravelerLoginBtn" buttonType="RAISED" layoutX="374.0" layoutY="217.0" onAction="#TravelerLoginBtn" text="Traveler Login">
+      <JFXButton fx:id="TravelerLoginBtn" buttonType="RAISED" layoutX="362.0" layoutY="217.0" onAction="#TravelerLoginBtn" text="Traveler Login">
          <font>
             <Font size="20.0" />
          </font>
@@ -74,17 +74,17 @@
             <Font size="17.0" />
          </font>
       </Text>
-      <ImageView fitHeight="262.0" fitWidth="251.0" layoutX="593.0" layoutY="351.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="Yosemite" fitHeight="262.0" fitWidth="251.0" layoutX="593.0" layoutY="351.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../common/images/Yosemite.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="169.0" fitWidth="164.0" layoutX="408.0" layoutY="392.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="YellowStone" fitHeight="169.0" fitWidth="164.0" layoutX="408.0" layoutY="392.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../common/images/YellowStone.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="221.0" fitWidth="331.0" layoutX="88.0" layoutY="366.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="MountRainier" fitHeight="221.0" fitWidth="331.0" layoutX="88.0" layoutY="366.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../common/images/Mount_Rainier.png" />
          </image>

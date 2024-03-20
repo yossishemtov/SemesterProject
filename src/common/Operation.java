@@ -8,7 +8,8 @@ public abstract class Operation {
     public final static String GET_ALL_ORDERS = "Get all orders";
     public final static String GET_TRAVLER_INFO = "Get traveler information";
     public final static String GET_TRAVLER_LOGIN_DETAILS = "Get traveler login details";
-    
+    public final static String GET_ALL_WAITING_LISTS = "Get all waiting Lists";
+    public static final String DELETE_EXISTING_WAITING_LIST = "Delete an existing waiting List";
     public final static String GET_GENERAL_PARK_WORKER_DETAILS = "Get GeneralParkWorker details";
     public final static String GET_PARK_DETAILS = "Get Park details";
     public final static String GET_ALL_REPORTS = "Get all reports";

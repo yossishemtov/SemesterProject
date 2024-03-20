@@ -6,10 +6,15 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class HomePageController {
+public class HomePageController  {
 	@FXML
     private Button ExitBtn;
 
@@ -19,6 +24,39 @@ public class HomePageController {
     @FXML
     private JFXButton TravelerLoginBtn;
 
+    @FXML
+    private ImageView MountRainier;
+    
+    @FXML
+    private ImageView YellowStone;
+
+    @FXML
+    private ImageView Yosemite;
+
+    @FXML
+    void initialize() {
+        // Add event handlers to images
+    	MountRainier.setOnMouseClicked(event -> playYouTubeVideo("https://www.youtube.com/embed/kQY3fgSkVnI?si=qlrX2_P-K84fgej9"));
+    	YellowStone.setOnMouseClicked(event -> playYouTubeVideo("https://www.youtube.com/embed/bme0rs75Z3E?si=hlM9hYCsrLXw5aE0"));
+    	Yosemite.setOnMouseClicked(event -> playYouTubeVideo("https://www.youtube.com/embed/9fJEFi3ccwI?si=TaKcZo4Rov7VNs96"));
+
+    }
+
+    private void playYouTubeVideo(String videoId) {
+        // Create a new stage to display the YouTube video
+        Stage videoStage = new Stage();
+        WebView webView = new WebView();
+        WebEngine webEngine = webView.getEngine();
+        webEngine.load(videoId);
+
+        // Set up the layout and scene
+        videoStage.initModality(Modality.APPLICATION_MODAL);
+        videoStage.setScene(new Scene(webView, 640, 480));
+        videoStage.setTitle("YouTube Video");
+        videoStage.show();
+    }
+    
+    
 	public void start(Stage primaryStage) throws Exception {
 
 		// Starting the root scene of the HomePage
