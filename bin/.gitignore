@@ -1,4 +1,3 @@
-/.DS_Store
 /DB/
 /client/
 /clientEntities/
@@ -6,3 +5,4 @@
 /entities/
 /gui/
 /server/
+/styles/

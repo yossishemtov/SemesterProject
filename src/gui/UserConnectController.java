@@ -2,6 +2,7 @@ package gui;
 
 import client.ClientController;
 import client.ClientUI;
+import client.NavigationManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,7 +44,7 @@ public class UserConnectController implements Initializable {
 	            System.out.println("Could not determine IP address.");
 	        }
 	    }
-
+	    
 	    public void start(Stage primaryStage) throws Exception {
 			
 			//Starting the root scene of the userInterface
@@ -51,7 +52,7 @@ public class UserConnectController implements Initializable {
 			try {			
 				Parent root = FXMLLoader.load(getClass().getResource("userConnectingFrame.fxml"));
 				Scene scene = new Scene(root);
-
+				NavigationManager.setStyle(root, "/styles/styles.css");
 				primaryStage.setTitle("User Connection");
 				primaryStage.setScene(scene);
 				primaryStage.show();
