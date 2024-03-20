@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TravelerWaitingListsController">
+   <children>
+      <TableView fx:id="waitingListsTable" layoutX="13.0" layoutY="73.0" prefHeight="321.0" prefWidth="872.0">
+        <columns>
+          <TableColumn fx:id="waitingListIdCol" prefWidth="120.0" text="Waiting List ID" />
+          <TableColumn fx:id="placeInListCol" prefWidth="101.0" text="Place In List" />
+            <TableColumn fx:id="parkNameCol" prefWidth="117.0" text="Park Name" />
+            <TableColumn fx:id="amountOfVisitorsCol" prefWidth="154.0" text="Amount Of Visitors" />
+            <TableColumn fx:id="priceCol" prefWidth="70.0" text="Price" />
+            <TableColumn fx:id="dateCol" prefWidth="89.0" text="Date" />
+            <TableColumn fx:id="visitTimeCol" prefWidth="120.0" text="Visit Time" />
+            <TableColumn fx:id="orderTypeCol" prefWidth="100.0" text="Order Type" />
+        </columns>
+      </TableView>
+      <JFXButton fx:id="exitWaitingListBtn" layoutX="387.0" layoutY="495.0" onAction="#exitWaitingList" text="Exit Waiting List">
+         <graphic>
+            <FontAwesomeIconView fill="#eb0e0e" glyphName="CLOSE" />
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <Label layoutX="395.0" layoutY="31.0" text="My Waiting Lists" />
+      <Label layoutX="352.0" layoutY="444.0" text="Select Waiting List  to exit from:" />
+   </children>
+</Pane>

@@ -59,7 +59,8 @@ public abstract class Operation {
     public final static String PATCH_TRAVELER_SIGNEDOUT = "Patch traveler to signed out";
     public final static String PATCH_ORDER_STATUS_TO_INPARK = "Patch an order to be INPARK status";
     public final static String PATCH_PARK_VISITORS_APPEND = "Patch a park visitors number - append";
-    
+    public final static String GET_ALL_WAITING_LISTS = "Get all waiting Lists";
+    public static final String DELETE_EXISTING_WAITING_LIST = "Delete an existing waiting List";
     // DELETE COMMANDS
     public final static String DELETE_EXISTING_ORDER = "Delete an existing order";
     public final static String RESPONSE_ALL_ORDER = "server send all order";

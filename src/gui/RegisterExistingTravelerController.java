@@ -25,11 +25,11 @@ public class RegisterExistingTravelerController {
     	Alerts alertID = InputValidation.ValidateVisitorID(TravelerID);
     	Boolean validID = alertID.getAlertType().toString().equals("INFORMATION");
     	if (validID) {
-    		try {
+    		try {  
     			// create new instance of traveler that is group guide
 	    		Traveler MakingTravelerGroupGuide = new Traveler(Integer.parseInt(TravelerID), null, null, null, null, 1, 0);
 	    		System.out.println(TravelerID);
-	    		// send to server in order to check if traveler id exists in the system
+	    		// send to server in order to check if traveler  id exists in the system
 	    		ClientServerMessage<?> validTravelerID = new ClientServerMessage<>(MakingTravelerGroupGuide, Operation.GET_TRAVLER_INFO);
 			    ClientUI.clientControllerInstance.sendMessageToServer(validTravelerID);
 			    Traveler TravelerFromServer = (Traveler) ClientController.data.getDataTransfered();

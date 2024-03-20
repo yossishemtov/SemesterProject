@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.DepartmentManagerReportsController">
+   <children>
+      <Label fx:id="headerLabel" layoutX="380.0" layoutY="43.0" text="Parks Reports">
+         <font>
+            <Font size="17.0" />
+         </font></Label>
+      <TableView fx:id="ReportsTableView" layoutX="167.0" layoutY="120.0" onMouseClicked="#ShowReportTableClickAction" prefHeight="255.0" prefWidth="566.0">
+        <columns>
+          <TableColumn fx:id="reportIDCol" prefWidth="75.0" text="Report ID" />
+          <TableColumn fx:id="reportTypeCol" prefWidth="75.0" text="Report Type" />
+            <TableColumn fx:id="parkIDCol" prefWidth="75.0" text="Park ID" />
+            <TableColumn fx:id="MonthCol" prefWidth="75.0" text="Month" />
+            <TableColumn fx:id="commentCol" prefWidth="75.0" text="Comment" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <Label alignment="CENTER" layoutX="148.0" layoutY="86.0" prefHeight="20.0" prefWidth="566.0" text="Reports from park managers:" underline="true">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <Label layoutX="418.0" layoutY="456.0" text="Generate Report:" underline="true" />
+      <Label layoutX="167.0" layoutY="402.0" text="Enter park id" />
+      <JFXTextField fx:id="ParkIdField" layoutX="247.0" layoutY="398.0" prefHeight="25.0" prefWidth="68.0" />
+      <JFXButton fx:id="ShowReportBth" layoutX="319.0" layoutY="398.0" onAction="#ShowReportparkIdAction" text="Show report" />
+      <Label layoutX="548.0" layoutY="494.0" text="Choose a month">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="157.0" layoutY="494.0" text="Select report type">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="ReportTypeCombobox" layoutX="303.0" layoutY="492.0" />
+      <JFXComboBox fx:id="monthCombobox" layoutX="686.0" layoutY="492.0" />
+      <JFXButton fx:id="Createbth" layoutX="431.0" layoutY="526.0" onAction="#CreateReportAction" text="Create">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </JFXButton>
+   </children>
+</AnchorPane>

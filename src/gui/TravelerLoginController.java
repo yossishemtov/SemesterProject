@@ -34,7 +34,7 @@ public class TravelerLoginController {
 
 	 @FXML
 	 private JFXTextField TravelerID;
-	
+	 
 	
 	public void LoginBtn(ActionEvent click) throws Exception {
 	    String visitorID = TravelerID.getText(); // get the id

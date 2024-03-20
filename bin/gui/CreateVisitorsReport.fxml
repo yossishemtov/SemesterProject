@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CreateVisitorsReportController">
+   <children>
+      <Label fx:id="titlelLabal" layoutX="378.0" layoutY="38.0" prefHeight="49.0" prefWidth="236.0" text=" Visitor report">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <PieChart fx:id="visitorsChart" layoutX="310.0" layoutY="108.0" prefHeight="312.0" prefWidth="366.0" />
+      <JFXButton fx:id="savereportbth" layoutX="450.0" layoutY="513.0" onAction="#saveVisitorReportAction" prefHeight="34.0" prefWidth="119.0" text="Save report">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <graphic>
+            <FontAwesomeIconView glyphName="SAVE" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="CloseWindowBth" layoutX="220.0" layoutY="515.0" onAction="#CloseWindowAction" text="Close window">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <graphic>
+            <FontAwesomeIconView glyphName="CLOSE" />
+         </graphic>
+      </JFXButton>
+      <JFXTextArea fx:id="CommentTextArea" layoutX="365.0" layoutY="415.0" prefHeight="71.0" prefWidth="257.0" />
+      <Label fx:id="commentLabal" layoutX="220.0" layoutY="420.0" prefHeight="30.0" prefWidth="135.0" text="Comments to the report :" />
+   </children>
+</AnchorPane>

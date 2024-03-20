@@ -15,7 +15,7 @@ public class GetInstance {
 	public OrderAVisitController getOrderC() {
 		return OrderC;
 	}
-
+ 
 	public void setOrderC(OrderAVisitController orderC) {
 		OrderC = orderC;
 	}

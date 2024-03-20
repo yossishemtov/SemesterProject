@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParkmanagerReportController">
+   <children>
+      <Label layoutX="376.0" layoutY="89.0" text="Creating reports screen">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="ReportTypeCombobox" layoutX="368.0" layoutY="438.0" />
+      <JFXComboBox fx:id="monthCombobox" layoutX="696.0" layoutY="438.0" />
+      <JFXButton fx:id="Createbth" layoutX="466.0" layoutY="496.0" onAction="#CreateReportAction" text="Create">
+         <font>
+            <Font size="15.0" />
+         </font></JFXButton>
+      <Label layoutX="214.0" layoutY="440.0" text="Select report type">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="566.0" layoutY="441.0" text="Choose a month">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <TableView fx:id="ReportsTableView" layoutX="214.0" layoutY="153.0" onMouseClicked="#ShowReportTableClickAction" prefHeight="255.0" prefWidth="566.0">
+         <columns>
+            <TableColumn fx:id="reportIDCol" prefWidth="75.0" text="Report ID" />
+            <TableColumn fx:id="reportTypeCol" prefWidth="75.0" text="Report Type" />
+            <TableColumn fx:id="parkIDCol" prefWidth="75.0" text="Park ID" />
+            <TableColumn fx:id="MonthCol" prefWidth="75.0" text="Month" />
+            <TableColumn fx:id="commentCol" prefWidth="75.0" text="Comment" />
+         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </children>
+</AnchorPane>

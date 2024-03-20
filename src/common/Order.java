@@ -8,71 +8,62 @@ public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer parkNumber;
-	private Integer amountOfVisitors;
-	private Integer orderId;
-	private Integer visitorId;
-	private Float price;
-	private String visitorEmail;
-	private LocalDate date;
-	private LocalTime visitTime;
-	private String telephoneNumber;
-	private status orderStatus;
-	private typeOfOrder orderType;
-	private String parkName;
+    private Integer amountOfVisitors;
+    private Integer orderId;
+    private Integer visitorId;
+    private Float price;
+    private String visitorEmail;
+    private LocalDate date;
+    private LocalTime visitTime;
+    private String telephoneNumber; // Added TelephoneNumber field
+    private String parkName;
+    private status orderStatus;
+    private typeOfOrder orderType;
 
-	private enum status {
+    public enum status {
 
-		PENDING, NOTARRIVED, INPARK, CONFIRM, CANCEL, COMPLETED, WAITING
+		PENDING, NOTARRIVED, INPARK, CONFIRMED, CANCELED, COMPLETED, WAITING
 	}
 
-	private enum typeOfOrder {
-		SOLO, FAMILY, GUIDEDGROUP
+	public enum typeOfOrder {
+		SOLO, FAMILY, GUIDEDGROUP 
 	}
 
-	public Order(Integer orderId, Integer visitorId, Integer parkNumber, Integer amountOfVisitors, Float price,
-			String visitorEmail, LocalDate date, LocalTime visitTime, String statusStr, String typeOfOrderStr,
-			String telephoneNumber, String parkName) {
-		this.orderId = orderId;
-		this.visitorId = visitorId;
-		this.parkNumber = parkNumber;
-		this.amountOfVisitors = amountOfVisitors;
-		this.price = price;
-		this.visitorEmail = visitorEmail;
-		this.date = date;
-		this.visitTime = visitTime;
-		this.telephoneNumber = telephoneNumber;
-		this.setParkName(parkName);
+	// Adjusted constructor to include typeOfOrderStr and telephoneNumber
+    public Order(Integer orderId, Integer visitorId, Integer parkNumber, String parkName, Integer amountOfVisitors, Float price,
+            String visitorEmail, LocalDate date, LocalTime visitTime, String statusStr, String typeOfOrderStr,
+            String telephoneNumber) {
 
-		// Convert the String status to the enum status
-		if (statusStr != null) {
-			try {
-				this.orderStatus = Order.status.valueOf(statusStr.toUpperCase());
-			} catch (IllegalArgumentException e) {
-				this.orderStatus = Order.status.PENDING; // Default to PENDING if conversion fails
-			}
-		} else {
-			this.orderStatus = null;
-		}
+        this.orderId = orderId;
+        this.visitorId = visitorId;
+        this.parkNumber = parkNumber;
+        this.parkName = parkName;
+        this.amountOfVisitors = amountOfVisitors;
+        this.visitorEmail = visitorEmail;
+        this.price = price;
+        this.date = date;
+        this.visitTime = visitTime;
+        this.telephoneNumber = telephoneNumber; // Set the telephone number
 
-		// Convert the String typeOfOrder to the enum typeOfOrder
+          try {
+                this.orderStatus = (statusStr != null) ? Order.status.valueOf(statusStr.toUpperCase())
+                        : Order.status.PENDING;
+            } catch (IllegalArgumentException e) {
+                this.orderStatus = Order.status.PENDING;
+            }
 
-		if (typeOfOrderStr != null) {
-
-			try {
-				this.orderType = Order.typeOfOrder.valueOf(typeOfOrderStr.toUpperCase().trim());
-			} catch (IllegalArgumentException e) {
-
-				this.orderType = Order.typeOfOrder.SOLO;
-			}
-
-		} else {
-			this.orderType = null;
-		}
-	}
+            try {
+                this.orderType = (typeOfOrderStr != null) ? Order.typeOfOrder.valueOf(typeOfOrderStr.toUpperCase())
+                        : Order.typeOfOrder.SOLO;
+            } catch (IllegalArgumentException e) {
+                this.orderType = Order.typeOfOrder.SOLO;
+            }
+    }
 
 	public Integer getVisitorId() {
 		return visitorId;
 	}
+
 	public Integer getParkNumber() {
 		return parkNumber;
 	}

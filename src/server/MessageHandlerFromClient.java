@@ -39,7 +39,7 @@ public class MessageHandlerFromClient {
 
 				client.sendToClient(null);
 			} catch (IOException e) {
-				e.printStackTrace();
+				e.printStackTrace(); 
 			}
 			return;
 		}
@@ -68,9 +68,19 @@ public class MessageHandlerFromClient {
 				try {
 		        // Placeholder for checking full days in the park
 				Integer parkToCheck = (Integer) messageFromClient.getDataTransfered();
-		        
+		        Park park=dbControllerInstance.getParkDetails(parkToCheck);
+		        if (park!=null) {
+		        	messageFromClient.setDataTransfered(park);
+		        	messageFromClient.setflagTrue();
+		        	
+		        }
+		        else
+		        { 
+		        	messageFromClient.setflagFalse();
+		        	
+		        }
 		        // Create a message to send to the client
-		        messageFromClient.setDataTransfered(dbControllerInstance.getParkDetails(parkToCheck));
+		        
 		        // Send the message to the client
 		        client.sendToClient(messageFromClient);
 		    } catch (Exception e) {
@@ -83,7 +93,18 @@ public class MessageHandlerFromClient {
 		case Operation.GET_ALL_ORDERS:
 			// Placeholder for getting all orders from the database
 			Traveler dataTraveler = (Traveler) messageFromClient.getDataTransfered();
-			messageFromClient.setDataTransfered(dbControllerInstance.getOrdersDataFromDatabase(dataTraveler));
+			ArrayList<Order> orderForTraveler=dbControllerInstance.getOrdersDataFromDatabase(dataTraveler);
+		
+			if (orderForTraveler != null)
+			{
+				messageFromClient.setDataTransfered(orderForTraveler);
+				messageFromClient.setflagTrue();
+				
+			}
+			else
+			{
+				messageFromClient.setflagFalse();
+			}
 			client.sendToClient(messageFromClient);
 			break;
 
@@ -128,16 +149,16 @@ public class MessageHandlerFromClient {
 			// Placeholder for getting messages
 			break;
 		
-		case Operation.GET_ORDER_BY_ID_AND_PARK_NUMBER_DATE:
-			//Get order information by orderId
-			Order orderInformation = (Order) messageFromClient.getDataTransfered();
-			Order receivedOrderInformationFromDb = dbControllerInstance.getOrderInformationByOrderIdAndParkNumber(orderInformation);
-			
-			messageFromClient.setDataTransfered(receivedOrderInformationFromDb);
-			
-			client.sendToClient(messageFromClient);
-			
-			break;
+//		case Operation.GET_ORDER_BY_ID_AND_PARK_NUMBER_DATE:
+//			//Get order information by orderId
+//			Order orderInformation = (Order) messageFromClient.getDataTransfered();
+//			Order receivedOrderInformationFromDb = dbControllerInstance.getOrderInformationByOrderIdAndParkNumber(orderInformation);
+//			
+//			messageFromClient.setDataTransfered(receivedOrderInformationFromDb);
+//			
+//			client.sendToClient(messageFromClient);
+//			
+//			break;
 		
 		case Operation.GET_TRAVELER_SIGNED:
 			//Get status if traveler is already signedin
@@ -409,45 +430,55 @@ public class MessageHandlerFromClient {
 			break;
 
 		case Operation.PATCH_ORDER_STATUS:
-			// Placeholder for patching order status
+            // Placeholder for patching order status
 
-			ArrayList<Order> travelerorder = (ArrayList<Order>) messageFromClient.getDataTransfered();
+            Order order = (Order) messageFromClient.getDataTransfered();
 
-			if (dbControllerInstance.updateOrderStatus((Order) travelerorder.get(0))) {
-				messageFromClient.setflagTrue();
-			} else {
-				messageFromClient.setflagFalse();
+            if (dbControllerInstance.updateOrderStatus(order)) {
+                messageFromClient.setflagTrue();
+            } else {
+                messageFromClient.setflagFalse();
+            }
+            client.sendToClient(messageFromClient);
 
-			}
+            break;
+        case Operation.GET_ALL_WAITING_LISTS:
+            // Placeholder for getting all orders from the database
+            Traveler dataTravelerWaitingList = (Traveler) messageFromClient.getDataTransfered();
+            messageFromClient.setDataTransfered(dbControllerInstance.getWaitingListsDataFromDatabase(dataTravelerWaitingList));
+            client.sendToClient(messageFromClient);
 
-			client.sendToClient(messageFromClient);
+            break;
+        case Operation.DELETE_EXISTING_WAITING_LIST:
+            WaitingList waitingListToDelete = (WaitingList) messageFromClient.getDataTransfered();
+            Integer waitingListId = waitingListToDelete.getWaitingListId();
 
-			break;
+            try {
 
-		case Operation.DELETE_EXISTING_ORDER:
-			Order orderToDelete = ((ArrayList<Order>) messageFromClient.getDataTransfered()).get(0);
+                if(dbControllerInstance.deleteWaitingList(waitingListId)) {
+                    messageFromClient.setflagTrue();
+                }else {
+                    messageFromClient.setflagFalse();
+                }
+            }catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
+            }
 
-			if (dbControllerInstance.deleteOrder(orderToDelete.getOrderId())) {
-				messageFromClient.setflagTrue();
-			} else {
-				messageFromClient.setflagFalse();
+            client.sendToClient(messageFromClient);
+            break;
 
-			}
-
-			client.sendToClient(messageFromClient);
-
-			break;
+	
 			
 			
-		case Operation.GET_LAST_ORDER_ID: //Emanuel
-		    Integer lastOrder = dbControllerInstance.getLastOrderId();
-		    
-		    // Create a message to send to the client
-		    ClientServerMessage<?> lastOrderMessage = new ClientServerMessage<>(lastOrder, Operation.GET_LAST_ORDER_ID);
-		    
-		    // Send the message to the client
-		    client.sendToClient(lastOrderMessage);
-		    break;
+//		case Operation.GET_LAST_ORDER_ID: //Emanuel
+//		    Integer lastOrder = dbControllerInstance.getLastOrderId();
+//		    
+//		    // Create a message to send to the client
+//		    ClientServerMessage<?> lastOrderMessage = new ClientServerMessage<>(lastOrder, Operation.GET_LAST_ORDER_ID);
+//		    
+//		    // Send the message to the client
+//		    client.sendToClient(lastOrderMessage);
+//		    break;
 
 		case Operation.POST_NEW_CHANGE_REQUEST:
 			// Placeholder for posting a new change request
@@ -599,37 +630,37 @@ public class MessageHandlerFromClient {
 			
 
 		    
-		case Operation.CHECK_IF_ORDER_VALID: //Emanuel
-		    Order orderToCheckValidity = (Order) messageFromClient.getDataTransfered();
-
-		    try {
-		        if (dbControllerInstance.checkIfOrderisValid(orderToCheckValidity)) {
-		            messageFromClient.setflagTrue();  // Order is valid
-		        } else {
-		            messageFromClient.setflagFalse(); // Order is not valid
-		        }
-		        client.sendToClient(messageFromClient);
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		        // Handle the exception according to your needs
-		    }
-		    break;
+//		case Operation.CHECK_IF_ORDER_VALID: //Emanuel
+//		    Order orderToCheckValidity = (Order) messageFromClient.getDataTransfered();
+//
+//		    try {
+//		        if (dbControllerInstance.checkIfOrderisValid(orderToCheckValidity)) {
+//		            messageFromClient.setflagTrue();  // Order is valid
+//		        } else {
+//		            messageFromClient.setflagFalse(); // Order is not valid
+//		        }
+//		        client.sendToClient(messageFromClient);
+//		    } catch (Exception e) {
+//		        e.printStackTrace();
+//		        // Handle the exception according to your needs
+//		    }
+//		    break;
 		    
-		case Operation.GET_PARK_BY_NAME: //Emanuel
-			try {
-		        // Placeholder for checking full days in the park
-				String parkToCheck = (String) messageFromClient.getDataTransfered();
-		        
-		        // Create a message to send to the client
-		        messageFromClient.setDataTransfered(dbControllerInstance.findParkByName(parkToCheck));
-		        // Send the message to the client
-		        client.sendToClient(messageFromClient);
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		        // Handle the exception according to your needs
-		    }
-		    break;
-		    
+//		case Operation.GET_PARK_BY_NAME: //Emanuel
+//			try {
+//		        // Placeholder for checking full days in the park
+//				String parkToCheck = (String) messageFromClient.getDataTransfered();
+//		        
+//		        // Create a message to send to the client
+//		        messageFromClient.setDataTransfered(dbControllerInstance.findParkByName(parkToCheck));
+//		        // Send the message to the client
+//		        client.sendToClient(messageFromClient);
+//		    } catch (Exception e) {
+//		        e.printStackTrace();
+//		        // Handle the exception according to your needs
+//		    }
+//		    break;
+//		    
 //		case Operation.CHECK_PARK_FULL_DAYS: 
 //		    try {
 //		        // Placeholder for checking full days in the park
@@ -646,108 +677,108 @@ public class MessageHandlerFromClient {
 //		    }
 //		    break;
 		  
-		case Operation.GET_RECENT_ID_TRAVELER: //emanuel
-			try {
-		        // Placeholder for checking full days in the park
-				Integer recentId = (Integer) messageFromClient.getDataTransfered();
-		        
-		        // Create a message to send to the client
-		        messageFromClient.setDataTransfered(dbControllerInstance.getTravelerRecentOrder(recentId));
-		        
-		        // Send the message to the client
-		        client.sendToClient(messageFromClient);
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		        // Handle the exception according to your needs
-		    }
-		    break;
+//		case Operation.GET_RECENT_ID_TRAVELER: //emanuel
+//			try {
+//		        // Placeholder for checking full days in the park
+//				Integer recentId = (Integer) messageFromClient.getDataTransfered();
+//		        
+//		        // Create a message to send to the client
+//		        messageFromClient.setDataTransfered(dbControllerInstance.getTravelerRecentOrder(recentId));
+//		        
+//		        // Send the message to the client
+//		        client.sendToClient(messageFromClient);
+//		    } catch (Exception e) {
+//		        e.printStackTrace();
+//		        // Handle the exception according to your needs
+//		    }
+//		    break;
+//		    
+//		case Operation.FIND_ORDERS_WITHIN_DATES: //emanuel
+//			try {
+//		        List<Order> orderToCheck = (List<Order>) messageFromClient.getDataTransfered();
+//		        ArrayList<Order> orderList = new ArrayList<>(orderToCheck);
+//		        // Create a message to send to the client
+//		        messageFromClient.setDataTransfered(dbControllerInstance.findOrdersWithinDates(orderList));
+//		        // Send the message to the client
+//		        client.sendToClient(messageFromClient);
+//		    } catch (Exception e) {
+//		        e.printStackTrace();
+//		        // Handle the exception according to your needs
+//		    }
+//		    break;
+//		    
+//		case Operation.GET_PARKS_INFO: //emanuel
+//			try {
+//		        
+//		        // Create a message to send to the client
+//		        messageFromClient.setDataTransfered(dbControllerInstance.getParksInfo());
+//		        
+//		        // Send the message to the client
+//		        client.sendToClient(messageFromClient);
+//		    } catch (Exception e) {
+//		        e.printStackTrace();
+//		        // Handle the exception according to your needs
+//		    }
+//		    break;
 		    
-		case Operation.FIND_ORDERS_WITHIN_DATES: //emanuel
-			try {
-		        List<Order> orderToCheck = (List<Order>) messageFromClient.getDataTransfered();
-		        ArrayList<Order> orderList = new ArrayList<>(orderToCheck);
-		        // Create a message to send to the client
-		        messageFromClient.setDataTransfered(dbControllerInstance.findOrdersWithinDates(orderList));
-		        // Send the message to the client
-		        client.sendToClient(messageFromClient);
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		        // Handle the exception according to your needs
-		    }
-		    break;
+//		case Operation.POST_NEW_WAITING_LIST:
+//			
+//		    WaitingList waitingToAdd = (WaitingList) messageFromClient.getDataTransfered();
+//
+//		    try {
+//		        if (dbControllerInstance.insertWaitingList(waitingToAdd)) {
+//		            messageFromClient.setflagTrue();  
+//		        } else {
+//		            messageFromClient.setflagFalse(); 
+//		        }
+//		        client.sendToClient(messageFromClient);
+//		    } catch (Exception e) {
+//		        e.printStackTrace();
+//		        // Handle the exception according to your needs
+//		    }
+//		    break;
 		    
-		case Operation.GET_PARKS_INFO: //emanuel
-			try {
-		        
-		        // Create a message to send to the client
-		        messageFromClient.setDataTransfered(dbControllerInstance.getParksInfo());
-		        
-		        // Send the message to the client
-		        client.sendToClient(messageFromClient);
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		        // Handle the exception according to your needs
-		    }
-		    break;
+//		case Operation.POST_NEW_TRAVLER:
+//		
+//		    Traveler TravelerToAdd = (Traveler) messageFromClient.getDataTransfered();
+//
+//		    try {
+//		        if (dbControllerInstance.insertNewTraveler(TravelerToAdd)) {
+//		            messageFromClient.setflagTrue();  
+//		        } else {
+//		            messageFromClient.setflagFalse(); 
+//		        }
+//		        client.sendToClient(messageFromClient);
+//		    } catch (Exception e) {
+//		        e.printStackTrace();
+//		        // Handle the exception according to your needs
+//		    }
+//		    break;
 		    
-		case Operation.POST_NEW_WAITING_LIST:
-			
-		    WaitingList waitingToAdd = (WaitingList) messageFromClient.getDataTransfered();
+//		case Operation.GET_LAST_WAITINGLIST: //Emanuel
+//		    Integer lastWaiting = dbControllerInstance.getLastWaitingId();
+//		    
+//		    // Create a message to send to the client
+//		    ClientServerMessage<?> lastWaitingMsg = new ClientServerMessage<>(lastWaiting, Operation.GET_LAST_WAITINGLIST);
+//		    
+//		    // Send the message to the client
+//		    client.sendToClient(lastWaitingMsg);
+//		    break;
 
-		    try {
-		        if (dbControllerInstance.insertWaitingList(waitingToAdd)) {
-		            messageFromClient.setflagTrue();  
-		        } else {
-		            messageFromClient.setflagFalse(); 
-		        }
-		        client.sendToClient(messageFromClient);
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		        // Handle the exception according to your needs
-		    }
-		    break;
-		    
-		case Operation.POST_NEW_TRAVLER:
-		
-		    Traveler TravelerToAdd = (Traveler) messageFromClient.getDataTransfered();
-
-		    try {
-		        if (dbControllerInstance.insertNewTraveler(TravelerToAdd)) {
-		            messageFromClient.setflagTrue();  
-		        } else {
-		            messageFromClient.setflagFalse(); 
-		        }
-		        client.sendToClient(messageFromClient);
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		        // Handle the exception according to your needs
-		    }
-		    break;
-		    
-		case Operation.GET_LAST_WAITINGLIST: //Emanuel
-		    Integer lastWaiting = dbControllerInstance.getLastWaitingId();
-		    
-		    // Create a message to send to the client
-		    ClientServerMessage<?> lastWaitingMsg = new ClientServerMessage<>(lastWaiting, Operation.GET_LAST_WAITINGLIST);
-		    
-		    // Send the message to the client
-		    client.sendToClient(lastWaitingMsg);
-		    break;
-
-		case Operation.FIND_PLACE_IN_WAITING_LIST: //emanuel
-			try {
-		        List<Order> findPlace = (List<Order>) messageFromClient.getDataTransfered();
-		        ArrayList<Order> placeArr = new ArrayList<>(findPlace);
-		        // Create a message to send to the client
-		        messageFromClient.setDataTransfered(dbControllerInstance.findPlaceWaiting(placeArr));
-		        // Send the message to the client
-		        client.sendToClient(messageFromClient);
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		        // Handle the exception according to your needs
-		    }
-		    break;
-		    
+//		case Operation.FIND_PLACE_IN_WAITING_LIST: //emanuel
+//			try {
+//		        List<Order> findPlace = (List<Order>) messageFromClient.getDataTransfered();
+//		        ArrayList<Order> placeArr = new ArrayList<>(findPlace);
+//		        // Create a message to send to the client
+//		        messageFromClient.setDataTransfered(dbControllerInstance.findPlaceWaiting(placeArr));
+//		        // Send the message to the client
+//		        client.sendToClient(messageFromClient);
+//		    } catch (Exception e) {
+//		        e.printStackTrace();
+//		        // Handle the exception according to your needs
+//		    }
+//		    break;
+//		    
 
 		default:
 			System.out.println("default");

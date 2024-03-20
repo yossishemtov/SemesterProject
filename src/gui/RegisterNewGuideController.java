@@ -26,7 +26,7 @@ public class RegisterNewGuideController {
 	@FXML
 	private JFXTextField PhoneNumber;
 	
-	 
+	  
 	
 	
 	public void SubmitRegister(ActionEvent click) throws Exception {

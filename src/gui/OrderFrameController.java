@@ -22,7 +22,7 @@ import gui.UserOrdersController;
 
 public class OrderFrameController {
 	
-	private Order order = new Order(null, null, null, null, null, null, null, null, null, null, null);
+	//private Order order = new Order(null, null, null, null, null, null, null, null, null, null, null, null);
 	
 	ClientController clientController = new ClientController(null, 0);
 	@FXML
@@ -107,7 +107,7 @@ public class OrderFrameController {
 
     public void confirmVisit(ActionEvent click) throws Exception {
     	// sends a request to the server to change the order status in the DB
-    	
+    	 
     	//order.setStatus("CONFIRM");
     	ClientServerMessage<?> messageToServer = new ClientServerMessage(orderToOpen , Operation.PATCH_ORDER_STATUS );
     	ClientUI.clientControllerInstance.sendMessageToServer(messageToServer);

@@ -1,5 +1,5 @@
 package gui;
-<<<<<<< HEAD
+
 import java.awt.TextField;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,24 +18,20 @@ import common.Operation;
 import common.Usermanager;
 import client.NavigationManager;
 import common.Message;
-=======
->>>>>>> origin/emanuel2branch
+
 
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
-import common.Traveler;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
+
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import common.Usermanager;
-import client.NavigationManager;
+
 
 
 public class TravelerFrameController implements Initializable {
@@ -44,18 +40,17 @@ public class TravelerFrameController implements Initializable {
     private BorderPane pane;
 
     @FXML
-    private AnchorPane topBorder;
+    private AnchorPane topBorder; 
 
     @FXML
     private Label userLabel;
 
     @FXML
-<<<<<<< HEAD
+
     private JFXButton viewOrdersbutton;
     
     @FXML
-=======
->>>>>>> origin/emanuel2branch
+
     private StackPane leftBorder;
 
     @FXML
@@ -76,13 +71,7 @@ public class TravelerFrameController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     	Traveler currentTraveler = Usermanager.getCurrentTraveler();
-<<<<<<< HEAD
-//    	System.out.println(currentTraveler.getEmail()); 	
-=======
-//    	System.out.println(currentTraveler.getEmail());
-    	
-    	
->>>>>>> origin/emanuel2branch
+
     }
     
     @FXML
@@ -93,10 +82,7 @@ public class TravelerFrameController implements Initializable {
 			 System.out.print("Something went wrong while trying view service traveler profile, check stack trace");
 			 e.printStackTrace();
 		 }
-<<<<<<< HEAD
-=======
-    	
->>>>>>> origin/emanuel2branch
+
     }
     
     @FXML
@@ -107,25 +93,23 @@ public class TravelerFrameController implements Initializable {
 			 System.out.print("Something went wrong while clicking on order a visit button, check stack trace");
 			 e.printStackTrace();
     	}
-<<<<<<< HEAD
+
     }
     
     public void viewOrdersbutton(ActionEvent event) throws Exception {
     	try {
-    		NavigationManager.openPageInCenter(pane, "OrderFrame.fxml");
+    		NavigationManager.openPageInCenter(pane, "TravelerOrdersFrame.fxml");
     	} catch(Exception e) {
 			 System.out.print("Something went wrong while clicking on view orders button, check stack trace");
 			 e.printStackTrace();
     	}
-=======
-    	
->>>>>>> origin/emanuel2branch
+
     }
     
     @FXML
     public void waitingListBtn(ActionEvent event) throws Exception {
     	try {
-    		NavigationManager.openPageInCenter(pane, "WaintingList.fxml");
+    		NavigationManager.openPageInCenter(pane, "TravelerWaitingLists.fxml");
     	} catch(Exception e) {
 			 System.out.print("Something went wrong while clicking on view waiting list button, check stack trace");
 			 e.printStackTrace();
@@ -145,7 +129,7 @@ public class TravelerFrameController implements Initializable {
     @FXML
     public void logoutBtn(ActionEvent event) throws Exception {
     	try {
-<<<<<<< HEAD
+
     		
     		if(Usermanager.getCurrentTraveler() != null) {
 				ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentTraveler(), Operation.PATCH_TRAVELER_SIGNEDOUT);
@@ -153,13 +137,12 @@ public class TravelerFrameController implements Initializable {
 				
 			}
     		
-=======
->>>>>>> origin/emanuel2branch
+
 			NavigationManager.openPage("HomePageFrame.fxml", event, "User Menu", true);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-<<<<<<< HEAD
+
 			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when trying to return to main menu");
 			somethingWentWrong.showAndWait();
 		}
@@ -175,11 +158,7 @@ public class TravelerFrameController implements Initializable {
 
 	}
 
-	public void viewOrders(ActionEvent click) throws Exception {
 
-		NavigationManager.openPage("OrdersFrame.fxml", click, "Orders", true);
-
-	}
 
 	public void viewWaitingList(ActionEvent click) throws Exception {
 
@@ -191,7 +170,7 @@ public class TravelerFrameController implements Initializable {
 	public void exit(ActionEvent click) throws Exception {
 		//Exit button, logs out the traveler without going to main menu
 		try {
-			
+			 
 			if(Usermanager.getCurrentTraveler() != null) {
 				ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentTraveler(), Operation.PATCH_TRAVELER_SIGNEDOUT);
 				ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
@@ -206,9 +185,9 @@ public class TravelerFrameController implements Initializable {
 		
 	}
 		
-=======
-		}
-    }
+
+		
+    
     
     public void viewOrders(ActionEvent click) throws Exception {
 
@@ -236,7 +215,7 @@ public class TravelerFrameController implements Initializable {
 //		    }
 //	    }
 
->>>>>>> origin/emanuel2branch
+
 
 //	public void viewMessages(ActionEvent click) throws Exception {
 
@@ -260,10 +239,5 @@ public class TravelerFrameController implements Initializable {
 //
 //		messagesTextArea.setText(messagesText.toString());
 
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/emanuel2branch
-	
 
 }

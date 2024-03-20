@@ -20,7 +20,7 @@ public class Usermanager implements Serializable {
 
 	
     public static GeneralParkWorker getCurrentWorker() {
-        return currentWorker;
+        return currentWorker; 
     }
 
     public static void setCurrentWorker(GeneralParkWorker worker) {

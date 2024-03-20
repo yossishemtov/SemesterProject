@@ -12,11 +12,9 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.UpdateParametersController">
    <children>
-<<<<<<< HEAD
+
       <GridPane layoutX="278.0" layoutY="114.0" prefHeight="277.0" prefWidth="181.0">
-=======
-      <GridPane layoutX="278.0" layoutY="105.0" prefHeight="286.0" prefWidth="156.0">
->>>>>>> origin/emanuel2branch
+
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="112.0" minWidth="10.0" prefWidth="112.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="249.5" minWidth="10.0" prefWidth="40.0" />
@@ -27,11 +25,8 @@
             <RowConstraints maxHeight="124.0" minHeight="10.0" prefHeight="123.5" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-<<<<<<< HEAD
             <Label text="Capacity">
-=======
-            <Label text="Max Visitors:">
->>>>>>> origin/emanuel2branch
+
                <font>
                   <Font size="14.0" />
                </font></Label>
@@ -43,11 +38,9 @@
                <font>
                   <Font size="14.0" />
                </font></Label>
-<<<<<<< HEAD
+
             <Label fx:id="CapacityLabel" text="0" GridPane.columnIndex="1">
-=======
-            <Label fx:id="maxvisitorLabel" text="0" GridPane.columnIndex="1">
->>>>>>> origin/emanuel2branch
+
                <font>
                   <Font size="14.0" />
                </font></Label>
@@ -66,7 +59,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-<<<<<<< HEAD
+
       <JFXButton fx:id="SendRequestbth" layoutX="508.0" layoutY="449.0" onAction="#SendRequestAction" prefHeight="35.0" prefWidth="122.0" text="Send request">
          <font>
             <Font size="14.0" />
@@ -75,22 +68,14 @@
             <FontAwesomeIconView glyphName="SEND" />
          </graphic></JFXButton>
       <Label layoutX="302.0" layoutY="454.0" prefHeight="25.0" prefWidth="66.0" text="Park name">
-=======
-      <JFXButton fx:id="SendRequestbth" layoutX="527.0" layoutY="449.0" onAction="#SendRequestAction" prefHeight="35.0" prefWidth="103.0" text="Send request">
-         <font>
-            <Font size="14.0" />
-         </font></JFXButton>
-      <Label layoutX="290.0" layoutY="454.0" prefHeight="25.0" prefWidth="66.0" text="Park name">
->>>>>>> origin/emanuel2branch
+
          <font>
             <Font size="14.0" />
          </font></Label>
       <Label fx:id="parkNameLabel" layoutX="403.0" layoutY="458.0" text="0" />
-<<<<<<< HEAD
+
       <GridPane layoutX="508.0" layoutY="98.0" prefHeight="287.0" prefWidth="213.0">
-=======
-      <GridPane layoutX="507.0" layoutY="91.0" prefHeight="300.0" prefWidth="245.0">
->>>>>>> origin/emanuel2branch
+
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -105,14 +90,7 @@
                <font>
                   <Font size="14.0" />
                </font></Label>
-<<<<<<< HEAD
-=======
-            <TextField fx:id="NewMaxVisitorsField" prefHeight="25.0" prefWidth="120.0" GridPane.columnIndex="1">
-               <font>
-                  <Font size="1.0" />
-               </font>
-            </TextField>
->>>>>>> origin/emanuel2branch
+
             <Label text="Enter new value" GridPane.rowIndex="1">
                <font>
                   <Font size="14.0" />
@@ -123,10 +101,9 @@
                <font>
                   <Font size="14.0" />
                </font></Label>
-<<<<<<< HEAD
+
             <TextField fx:id="CapacityField" GridPane.columnIndex="1" />
-=======
->>>>>>> origin/emanuel2branch
+
          </children>
       </GridPane>
    </children>

@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TravelerFrameController">
+<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TravelerFrameController">
    <top>
       <AnchorPane fx:id="topBorder" prefHeight="83.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="userLabel" layoutX="475.0" layoutY="19.0" text="Traveler">
+            <Label fx:id="userLabel" layoutX="536.0" layoutY="19.0" text="Traveler">
                <font>
                   <Font size="30.0" />
                </font>
@@ -23,11 +23,7 @@
       </AnchorPane>
    </top>
    <left>
-<<<<<<< HEAD
-      <StackPane fx:id="leftBorder" prefHeight="507.0" prefWidth="204.0" BorderPane.alignment="CENTER">
-=======
-      <StackPane fx:id="leftBorder" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
->>>>>>> origin/emanuel2branch
+      <StackPane fx:id="leftBorder" prefHeight="637.0" prefWidth="175.0" BorderPane.alignment="CENTER">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
@@ -47,14 +43,14 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </JFXButton>
-<<<<<<< HEAD
-                  <JFXButton fx:id="viewOrdersbutton" onAction="#viewOrdersbutton" prefHeight="121.0" prefWidth="200.0" text="View Orders">
+                  <JFXButton fx:id="viewOrdersbutton" onAction="#viewOrdersbutton" prefHeight="118.0" prefWidth="182.0" text="View Orders">
                      <graphic>
                         <FontAwesomeIconView glyphName="LIST_UL" />
                      </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </JFXButton>
-=======
->>>>>>> origin/emanuel2branch
                   <JFXButton fx:id="waitingListBtn" onAction="#waitingListBtn" prefHeight="106.0" prefWidth="213.0" text="View Waiting List">
                      <graphic>
                         <FontAwesomeIconView glyphName="TABLE" />
@@ -84,8 +80,4 @@
          </children>
       </StackPane>
    </left>
-<<<<<<< HEAD
 </BorderPane>
-=======
-</BorderPane>
->>>>>>> origin/emanuel2branch

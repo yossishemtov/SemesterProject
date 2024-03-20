@@ -102,7 +102,7 @@ public class ViewRequestsForChangesController implements Initializable {
             cancelRequestBtn.setVisible(true);
             cancelRequestBtn.setManaged(true);
         }
-    }
+    } 
 
  
     /**
