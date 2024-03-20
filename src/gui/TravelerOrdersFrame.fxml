@@ -7,31 +7,31 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TravelerOrdersController">
    <children>
-      <Label layoutX="417.0" layoutY="51.0" text="My Orders" />
-      <TableView fx:id="TravelerOrders" layoutX="74.0" layoutY="95.0" prefHeight="288.0" prefWidth="752.0">
+      <Label layoutX="417.0" layoutY="41.0" text="My Orders" />
+      <TableView fx:id="TravelerOrders" layoutX="38.0" layoutY="80.0" prefHeight="317.0" prefWidth="825.0">
         <columns>
-          <TableColumn fx:id="orderIDCol" prefWidth="75.0" text="Order ID" />
-            <TableColumn fx:id="ParkIDCol" prefWidth="75.0" text="Park ID" />
-            <TableColumn fx:id="AmtOfVisitorsCol" prefWidth="150.0" text="Amount Of Visitors" />
-            <TableColumn fx:id="PriceCol" minWidth="0.0" prefWidth="76.0" text="Price" />
-            <TableColumn fx:id="DateCol" prefWidth="91.0" text="Date" />
-            <TableColumn fx:id="VisitTimeCol" prefWidth="93.0" text="Visit Time" />
-            <TableColumn fx:id="StatusCol" prefWidth="82.0" text="Status" />
-            <TableColumn fx:id="TypeOfVisitCol" prefWidth="108.0" text="Type Of Visit" />
+          <TableColumn fx:id="orderIDCol" prefWidth="75.0" style="-fx-text-align: center;" text="Order ID" />
+            <TableColumn fx:id="parkNameCol" prefWidth="95.0" text="Park Name" />
+            <TableColumn fx:id="AmtOfVisitorsCol" prefWidth="147.0" text="Amount Of Visitors" />
+            <TableColumn fx:id="PriceCol" minWidth="0.0" prefWidth="70.0" text="Price" />
+            <TableColumn fx:id="DateCol" prefWidth="105.0" text="Date" />
+            <TableColumn fx:id="VisitTimeCol" prefWidth="96.0" text="Visit Time" />
+            <TableColumn fx:id="TypeOfVisitCol" prefWidth="117.0" text="Type Of Visit" />
+            <TableColumn fx:id="StatusCol" prefWidth="119.0" text="Status" />
         </columns>
       </TableView>
-      <JFXButton fx:id="camcelOrder" layoutX="260.0" layoutY="501.0" text="Cancel Order">
+      <JFXButton fx:id="cancelOrder" layoutX="253.0" layoutY="501.0" onAction="#CancelTravelerOrder" text="Cancel Order">
          <graphic>
-            <FontAwesomeIconView glyphName="CLOSE" />
+            <FontAwesomeIconView fill="#eb0e0e" glyphName="CLOSE" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="ConfirmOrder" layoutX="509.0" layoutY="501.0" text="Confirm Order">
+      <JFXButton fx:id="ConfirmOrder" layoutX="518.0" layoutY="501.0" onAction="#ConfirmTravelerOrder" text="Confirm Order">
          <graphic>
-            <FontAwesomeIconView glyphName="CHECK" />
+            <FontAwesomeIconView fill="#2cdd43" glyphName="CHECK" />
          </graphic>
       </JFXButton>
-      <Label layoutX="392.0" layoutY="450.0" text="Selected Request:" />
+      <Label layoutX="341.0" layoutY="465.0" text="Select Order to confirm or cancel:" />
    </children>
 </Pane>
