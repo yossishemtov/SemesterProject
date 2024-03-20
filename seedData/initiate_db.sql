@@ -94,6 +94,46 @@ CREATE TABLE `order` (
 -- Dumping data for table `order`
 --
 SET foreign_key_checks = 0;
+SET foreign_key_checks = 0;
+DROP TABLE IF EXISTS waitinglist;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE waitinglist (
+  orderId int NOT NULL,
+  travlerId int NOT NULL,
+  parkNumber int NOT NULL,
+  amountOfVisitors int NOT NULL,
+  price float NOT NULL,
+  visitorEmail varchar(255) DEFAULT NULL,
+  date date NOT NULL,
+  TelephoneNumber varchar(15) DEFAULT NULL,
+  visitTime time NOT NULL,
+  orderStatus varchar(255) DEFAULT NULL,
+  typeOfOrder varchar(255) DEFAULT NULL,
+  parkName varchar(255) DEFAULT NULL,
+  waitingListId int NOT NULL,
+  placeInList int NOT NULL,
+  KEY waitinglist_ibfk_1 (`travlerId`),
+  KEY waitinglist_ibfk_2 (`parkNumber`),
+  CONSTRAINT waitinglist_ibfk_1 FOREIGN KEY (`travlerId`) REFERENCES travler (`id`),
+  CONSTRAINT waitinglist_ibfk_2 FOREIGN KEY (`parkNumber`) REFERENCES park (`parkNumber`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table waitinglist
+--
+
+LOCK TABLES waitinglist WRITE;
+/*!40000 ALTER TABLE waitinglist DISABLE KEYS */;
+INSERT INTO waitinglist VALUES (1,1214214,1,5,50,'alice@example.com','2024-07-04','054-7376231','09:00:00','PENDING','FAMILY','Mount Rainier',1,1),(2,2654456,2,3,30,'bob@example.com','2024-07-05','052-7355231','14:00:00','CONFIRMED','FAMILY\r','Yellowstone',2,1),(9,1214214,1,1,85,'asd@walla.com','2024-07-04','1231231231','09:00:00','PENDING','SOLO','Mount Rainier',3,1),(10,1214214,1,1,85,'asd@walla.com','2024-07-04','1231231231','09:00:00','PENDING','SOLO','Mount Rainier',4,2),(14,1214214,1,2,170,'asd@walla.com','2024-03-21','1231231231','09:00:00','PENDING','FAMILY','Mount Rainier',5,1);
+/*!40000 ALTER TABLE waitinglist ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+SET foreign_key_checks = 1;
+
+
+
 
 LOCK TABLES `order` WRITE;
 INSERT INTO `order` (orderId, travlerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder) VALUES
@@ -372,33 +412,6 @@ INSERT INTO `visit` (visitId, orderNumber, visitDate, enteringTime, exitingTime,
 
 
 
---
--- Table structure for table `waitinglist`
---
-
-DROP TABLE IF EXISTS `waitinglist`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `waitinglist` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `count` int NOT NULL,
-  `travelerId` int NOT NULL,
-  `parkNumber` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `travelerId` (`travelerId`),
-  KEY `parkNumber` (`parkNumber`),
-  CONSTRAINT `waitinglist_ibfk_1` FOREIGN KEY (`travelerId`) REFERENCES `travler` (`id`),
-  CONSTRAINT `waitinglist_ibfk_2` FOREIGN KEY (`parkNumber`) REFERENCES `park` (`parkNumber`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `waitinglist`
---
-
-LOCK TABLES `waitinglist` WRITE;
-/*!40000 ALTER TABLE `waitinglist` DISABLE KEYS */;
-INSERT INTO `waitinglist` VALUES (1,3,1214214,1),(2,2,2654456,2),(3,1,4643544,3),(4,4,2654456,2);
 /*!40000 ALTER TABLE `waitinglist` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -410,5 +423,6 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
 
 -- Dump completed on 2024-03-16  0:18:58

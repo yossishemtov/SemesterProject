@@ -39,7 +39,7 @@ public class OrderChecker {
 		}
 
 		if (numberOfVisitors + order.getAmountOfVisitors() >= park.getMaxVisitors()
-				- park.getGap()) {
+				) {
 
 			return false;
 		}

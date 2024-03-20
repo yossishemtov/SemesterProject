@@ -29,10 +29,9 @@ public class Order implements Serializable {
 		SOLO, FAMILY, GUIDEDGROUP 
 	}
 
-	// Adjusted constructor to include typeOfOrderStr and telephoneNumber
-    public Order(Integer orderId, Integer visitorId, Integer parkNumber, String parkName, Integer amountOfVisitors, Float price,
+	public Order(Integer orderId, Integer visitorId, Integer parkNumber, Integer amountOfVisitors, Float price,
             String visitorEmail, LocalDate date, LocalTime visitTime, String statusStr, String typeOfOrderStr,
-            String telephoneNumber) {
+            String telephoneNumber, String parkName) {
 
         this.orderId = orderId;
         this.visitorId = visitorId;
