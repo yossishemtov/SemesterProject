@@ -77,6 +77,8 @@ public class DepartmentManagerReportsController implements Initializable {
 	private JFXComboBox<String> monthCombobox; // Changed to String for display purposes
 	@FXML
 	private JFXComboBox<String> ReportTypeCombobox; // Changed to String for display purposes
+    @FXML
+    private JFXComboBox<String> parkNumberComboBox;
 
 	@FXML
 	private JFXButton ShowReportBth;
@@ -85,6 +87,10 @@ public class DepartmentManagerReportsController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		for (int month = 1; month <= 12; month++) {
 			monthCombobox.getItems().add(String.valueOf(month));
+			if (month<4)
+			{
+				parkNumberComboBox.getItems().add(String.valueOf(month));
+			}
 			// Initialize report types
 			ReportTypeCombobox.setItems(FXCollections.observableArrayList("Visit Report", "Cancellation Report"));
 
@@ -197,19 +203,22 @@ public class DepartmentManagerReportsController implements Initializable {
 		System.out.println("in CreateReportAction ");
 		String selectedMonthString = monthCombobox.getSelectionModel().getSelectedItem();
 		String selectedReportType = ReportTypeCombobox.getSelectionModel().getSelectedItem();
+		String selectedparkString = parkNumberComboBox.getSelectionModel().getSelectedItem();
+		
 
 		// Validate that both selections are not null (i.e., a selection has been made)
-		if (selectedMonthString == null || selectedReportType == null) {
+		if (selectedMonthString == null || selectedReportType == null || selectedparkString == null) {
 			Alert errorAlert = new Alerts(Alert.AlertType.ERROR, "Error", "",
-					"You must select a month and report type.");
+					"You must select a month ,report and park number 1-3 type.");
 			errorAlert.showAndWait();
 		} else {
 			int selectedMonth = Integer.parseInt(selectedMonthString);
+			int selectedpark=Integer.parseInt(selectedparkString);
 
 			// React based on the selected report type
 			switch (selectedReportType) {
 			case "Visit Report":
-				VisitReport visitReportToServer = new VisitReport(Usermanager.getCurrentWorker().getWorksAtPark(),
+				VisitReport visitReportToServer = new VisitReport(selectedpark,
 						selectedMonth);
 				System.out.println("in CVisit report ");
 
@@ -236,11 +245,9 @@ public class DepartmentManagerReportsController implements Initializable {
 
 				break;
 			case "Cancellation Report":
-				UsageReport usageReport = new UsageReport(0, Report.ReportType.USAGE,
-						Usermanager.getCurrentWorker().getWorksAtPark(), LocalDate.now(), selectedMonth, "", null, 0);
-				System.out.println(usageReport.toString());
+				CancellationReport usageReport = new CancellationReport(selectedpark, selectedMonth);
 				ClientServerMessage<?> messageForServerUsageReport = new ClientServerMessage<>(usageReport,
-						Operation.GET_NEW_USAGE_REPORT);
+						Operation.GET_CANCELLATION_REPORT);
 				ClientUI.clientControllerInstance.sendMessageToServer(messageForServerUsageReport);
 
 				try {
@@ -254,7 +261,7 @@ public class DepartmentManagerReportsController implements Initializable {
 						warningalert.showAndWait();
 					}
 
-					NavigationManager.openPage("ParkManagerCreateUsageReport.fxml", event, "", false);
+					NavigationManager.openPage("CancellationReportScreen.fxml", event, "", false);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					System.out.println("error Usage Report for Month: " + selectedMonthString);

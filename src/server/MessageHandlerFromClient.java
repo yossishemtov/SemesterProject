@@ -1,6 +1,7 @@
 package server;
 
 import common.*;
+import common.worker.CancellationReport;
 import common.worker.ChangeRequest;
 import common.worker.GeneralParkWorker;
 import common.worker.ParkWorker;
@@ -756,6 +757,19 @@ public class MessageHandlerFromClient {
 			// If query didnt returned any results, will return false, else the amount of
 			// unorderedvisits
 			messageFromClient.setDataTransfered(amountOfUnorderedVisitsAllowed);
+			client.sendToClient(messageFromClient);
+			break;
+			
+		case Operation.GET_CANCELLATION_REPORT:
+			CancellationReport cancellstionReportFromClient = (CancellationReport) messageFromClient.getDataTransfered();
+			cancellstionReportFromClient = dbControllerInstance.getCancellationReport(cancellstionReportFromClient);
+			if (cancellstionReportFromClient != null) {
+				messageFromClient.setflagTrue(); // Order is valid
+			} else {
+				messageFromClient.setflagFalse(); // Order is not valid
+			}
+		
+			messageFromClient.setDataTransfered(cancellstionReportFromClient);
 			client.sendToClient(messageFromClient);
 			break;
 		case Operation.GET_AMOUNT_OF_VISITORS_FOR_GENERALPARKWORKER:

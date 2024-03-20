@@ -71,6 +71,8 @@ public abstract class Operation {
     public final static String GET_NEW_VISITORS_REPORT = "Get new visitors report";
     public final static String GET_EXISTS_VISITORS_REPORT = "Get exists visitors  report";
     public final static String GET_GENERAL_REPORT = "Get exists general report ";
+    public final static String GET_CANCELLATION_REPORT = "Get Cancellation Report report ";
+
     
     //Usage report
     public final static String GET_EXISTS_USAGE_REPORT = "Get exists usage  report";
