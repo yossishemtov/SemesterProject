@@ -442,13 +442,13 @@ public class MessageHandlerFromClient {
             client.sendToClient(messageFromClient);
 
             break;
-//        case Operation.GET_ALL_WAITING_LISTS:
-//            // Placeholder for getting all orders from the database
-//            Traveler dataTravelerWaitingList = (Traveler) messageFromClient.getDataTransfered();
-//            messageFromClient.setDataTransfered(dbControllerInstance.getWaitingListsDataFromDatabase(dataTravelerWaitingList));
-//            client.sendToClient(messageFromClient);
-//
-//            break;
+        case Operation.GET_ALL_WAITING_LISTS:
+            // Placeholder for getting all orders from the database
+            Traveler dataTravelerWaitingList = (Traveler) messageFromClient.getDataTransfered();
+            messageFromClient.setDataTransfered(dbControllerInstance.getWaitingListsDataFromDatabase(dataTravelerWaitingList));
+            client.sendToClient(messageFromClient);
+
+            break;
         case Operation.DELETE_EXISTING_WAITING_LIST:
             WaitingList waitingListToDelete = (WaitingList) messageFromClient.getDataTransfered();
             Integer waitingListId = waitingListToDelete.getWaitingListId();
