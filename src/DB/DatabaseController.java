@@ -608,38 +608,40 @@ public class DatabaseController {
 	 * @param traveler The traveler whose orders are to be retrieved.
 	 * @return An ArrayList of waiting list objects.
 	 */
-//	public ArrayList<WaitingList> getWaitingListsDataFromDatabase(Traveler traveler) {
-//		ArrayList<WaitingList> waitingListDataForClient = new ArrayList<>();
-//		// Ensure the query reflects your actual database table and column names
-//		String query = "SELECT waitingListId, placeInList, parkName, amountOfVisitors, price, date, visitTime, typeOfOrder FROM waitingList WHERE travelerId = ?";
-//
-//		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-//			ps.setInt(1, traveler.getId());
-//			ResultSet rs = ps.executeQuery();
-//
-//			while (rs.next()) {
-//				Integer waitingListId = rs.getInt("waitingListId");
-//				Integer placeInList = rs.getInt("placeInList");
-//				String parkName = rs.getString("parkName");
-//				Integer amountOfVisitors = rs.getInt("amountOfVisitors");
-//				Float price = rs.getFloat("price");
-//				LocalDate date = rs.getDate("date").toLocalDate();
-//
-//				LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
-//				String typeOfOrderStr = rs.getString("typeOfOrder");
-//
-//				// Assuming WaitingList constructor is updated to accept all the necessary
-//				// fields
-//				WaitingList waitingList = new WaitingList(waitingListId, placeInList, null, null, null, parkName,
-//						amountOfVisitors, price, null, date, visitTime, null, typeOfOrderStr, null);
-//				waitingListDataForClient.add(waitingList);
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return waitingListDataForClient; // This will return an empty list if there were no records found or an error
-//											// occurred
-//	}
+	public ArrayList<WaitingList> getWaitingListsDataFromDatabase(Traveler traveler) {
+	    ArrayList<WaitingList> waitingListDataForClient = new ArrayList<>();
+	    // Assuming the table and column names are corrected to match Java conventions
+	    String query = "SELECT orderId, waitingListId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder, parkName, placeInList FROM waitinglist WHERE travlerId = ?";
+
+	    try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	        ps.setInt(1, traveler.getId());
+	        ResultSet rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            Integer orderId = rs.getInt("orderId");
+	            Integer waitingListId = rs.getInt("waitingListId");
+	            Integer parkNumber = rs.getInt("parkNumber");
+	            Integer amountOfVisitors = rs.getInt("amountOfVisitors");
+	            Float price = rs.getFloat("price");
+	            String visitorEmail = rs.getString("visitorEmail");
+	            LocalDate date = rs.getDate("date").toLocalDate();
+	            LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
+	            String statusStr = rs.getString("orderStatus");
+	            String typeOfOrderStr = rs.getString("typeOfOrder");
+	            String telephoneNumber = rs.getString("TelephoneNumber");
+	            String parkName = rs.getString("parkName");
+	            Integer placeInList = rs.getInt("placeInList");
+
+	            WaitingList waitingList = new WaitingList(orderId, traveler.getId(), parkNumber, amountOfVisitors, price,
+	                    visitorEmail, date, visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName, waitingListId, placeInList);
+	            waitingListDataForClient.add(waitingList);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return waitingListDataForClient;
+	}
+
 	/**
     
 	Deletes an existing waiting list from the database based on its ID.

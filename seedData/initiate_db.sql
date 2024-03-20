@@ -84,6 +84,7 @@ CREATE TABLE `order` (
   `visitTime` time NOT NULL,
   `orderStatus` varchar(255) DEFAULT NULL,
   `typeOfOrder` varchar(255) DEFAULT NULL,
+ `parkName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`orderId`),
   KEY `travlerId` (`travlerId`),
   CONSTRAINT `order_ibfk_1` FOREIGN KEY (`travlerId`) REFERENCES `travler` (`id`)
