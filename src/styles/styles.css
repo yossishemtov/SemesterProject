@@ -43,8 +43,8 @@
     -fx-border-color: #d32f2f;
 }
 
-.background-pane {
+/* .background-pane {
     -fx-background-image: url("../images/background.jpg");
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
-}
+} */
