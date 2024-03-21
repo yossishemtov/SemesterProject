@@ -4,7 +4,9 @@ package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import client.SystemClient;
@@ -20,7 +22,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.*;
-
 
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -60,66 +61,65 @@ public class DeparmentManegerController implements Initializable {
 
 	@FXML
 	private JFXButton logoutBtn;
-	
+
 	GeneralParkWorker departmentManager;
 
-	@FXML
-	void loadParkParameters(MouseEvent event) throws IOException {
-		NavigationManager.openPageInCenter(borderPane,"ParkParameters.fxml");
 
-	
-
-	}
-
-	@FXML
-	void loadProfile(MouseEvent event) throws IOException {
-		NavigationManager.openPageInCenter(borderPane,"Profile.fxml");
-
-	}
-
-	@FXML
-	void loadReports(MouseEvent event) throws IOException {
-		NavigationManager.openPageInCenter(borderPane,"DepartmentManagerReports.fxml");
-
-
-	}
-
-	@FXML
-	void loadViewRequests(MouseEvent event) throws IOException {
-		NavigationManager.openPageInCenter(borderPane,"ViewRequestsForChanges.fxml");
-
-
-	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// Cast the current worker to DepartmentManager if possible
 		departmentManager = Usermanager.getCurrentWorker();
 
+		
+
+	}
+
+	
+
+	@FXML
+	void loadParkParameters(MouseEvent event) throws IOException {
+		NavigationManager.openPageInCenter(borderPane, "ParkParameters.fxml");
+
+	}
+
+	@FXML
+	void loadProfile(MouseEvent event) throws IOException {
+		NavigationManager.openPageInCenter(borderPane, "Profile.fxml");
+
+	}
+
+	@FXML
+	void loadReports(MouseEvent event) throws IOException {
+		NavigationManager.openPageInCenter(borderPane, "DepartmentManagerReports.fxml");
+
+	}
+
+	@FXML
+	void loadViewRequests(MouseEvent event) throws IOException {
+		NavigationManager.openPageInCenter(borderPane, "ViewRequestsForChanges.fxml");
 
 	}
 
 	@FXML
 	void logOut(MouseEvent event) {
 		try {
-			
-			if(Usermanager.getCurrentWorker() != null) {
-    			ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentWorker(), Operation.PATCH_GENERALPARKWORKER_SIGNEDOUT);
-    			ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
-    			
-    		}
-			
+
+			if (Usermanager.getCurrentWorker() != null) {
+				ClientServerMessage<?> requestToLogout = new ClientServerMessage(Usermanager.getCurrentWorker(),
+						Operation.PATCH_GENERALPARKWORKER_SIGNEDOUT);
+				ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
+
+			}
+
 			NavigationManager.openPage("HomePageFrame.fxml", event, "User Menu", true);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when trying to return to main menu");
+			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
+					"Something went wrong when trying to return to main menu");
 			somethingWentWrong.showAndWait();
 		}
 	}
-
-	
-
-
 
 }

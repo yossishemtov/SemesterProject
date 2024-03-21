@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -26,7 +26,7 @@
       <Label fx:id="StayTimeLabel" layoutX="508.0" layoutY="347.0" text="0" />
       <Label layoutX="388.0" layoutY="387.0" text="location" />
       <Label fx:id="locationLabel" layoutX="508.0" layoutY="389.0" text="0" />
-      <TextField fx:id="parkNumberFiled" layoutX="441.0" layoutY="450.0" text="Enter park number" />
-      <JFXButton fx:id="getDatabth" layoutX="273.0" layoutY="450.0" onAction="#Getparkparameters" text="Get park parameters" />
+      <JFXButton fx:id="getDatabth" layoutX="303.0" layoutY="450.0" onAction="#Getparkparameters" text="Get park parameters" />
+      <JFXComboBox fx:id="parkNameComboBox" layoutX="487.0" layoutY="450.0" />
    </children>
 </AnchorPane>

@@ -389,33 +389,41 @@ public class DatabaseController {
 				+ "FROM `visit` v JOIN `order` o ON v.orderNumber = o.orderId "
 				+ "WHERE MONTH(v.visitDate) = ? AND v.parkNumber = ? AND o.orderStatus = 'COMPLETED'";
 
-		try (PreparedStatement ps = this.connectionToDatabase.prepareStatement(query)) {
-			ps.setInt(1, report.getMonthNumber());
-			ps.setInt(2, report.getParkNumber());
-			ResultSet rs = ps.executeQuery();
 
-			while (rs.next()) {
-				String enteringTimeStr = rs.getString("enteringTime");
-				long duration = rs.getLong("duration");
-				String typeOfOrderStr = rs.getString("typeOfOrder");
+	    boolean dataFound = false; // Flag to check if any data is found
 
-				report.addVisit(enteringTimeStr, duration, typeOfOrderStr);
-				// Print each row to see what we're getting back
-				System.out.println("Visit data: Entering Time: " + enteringTimeStr + ", Duration: " + duration
-						+ ", Type of Order: " + typeOfOrderStr);
+	    try (PreparedStatement ps = this.connectionToDatabase.prepareStatement(query)) {
+	        ps.setInt(1, report.getMonthNumber());
+	        ps.setInt(2, report.getParkNumber());
+	        ResultSet rs = ps.executeQuery();
 
-			}
+	        while (rs.next()) {
+	            dataFound = true; // Data is found, set the flag to true
 
-			System.out.println("Report successfully populated with visits data for park number "
-					+ report.getParkNumber() + " and month " + report.getMonthNumber() + ". " + report);
-		} catch (SQLException e) {
-			System.err.println("An error occurred while populating the report: " + e.getMessage());
-			e.printStackTrace();
-		}
+	            String enteringTimeStr = rs.getString("enteringTime");
+	            long duration = rs.getLong("duration");
+	            String typeOfOrderStr = rs.getString("typeOfOrder");
 
-		return report;
+	            report.addVisit(enteringTimeStr, duration, typeOfOrderStr);
+	            // Print each row to see what we're getting back
+	            System.out.println("Visit data: Entering Time: " + enteringTimeStr + ", Duration: " + duration
+	                    + ", Type of Order: " + typeOfOrderStr);
+	        }
+
+	        if (dataFound) {
+	            System.out.println("Report successfully populated with visits data for park number "
+	                    + report.getParkNumber() + " and month " + report.getMonthNumber() + ". " + report);
+	            return report;
+	        } else {
+	            System.out.println("No visit data found for park number " + report.getParkNumber() + " and month " + report.getMonthNumber());
+	            return null; // No data found, return null
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("An error occurred while populating the report: " + e.getMessage());
+	        e.printStackTrace();
+	        return null; // In case of an exception, you might also want to consider returning null or handling it differently
+	    }
 	}
-
 	
 
 	public boolean insertChangeRequest(ChangeRequest request) {

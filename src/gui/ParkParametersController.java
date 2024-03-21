@@ -1,8 +1,12 @@
 package gui;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
@@ -31,7 +35,7 @@ import common.Park;
  * This screen shows the parameters of a certain park
  *
  */
-public class ParkParametersController {
+public class ParkParametersController implements Initializable {
 
     @FXML
     private Label headerLabel;
@@ -64,61 +68,65 @@ public class ParkParametersController {
     @FXML
     private Label StayTimeLabel;
     
-    private Park parkData;
-    private GeneralParkWorker departmentManager;
+
     @FXML
-    void Getparkparameters(ActionEvent event) {
-        String parkNumberStr = parkNumberFiled.getText();
-        if (parkNumberStr != null && !parkNumberStr.isEmpty()) {
-            try {
-                int parkNumber = Integer.parseInt(parkNumberStr);
-                fetchParkDetails(parkNumber);
-            } catch (NumberFormatException e) {
-            	Alerts nullResponseAlert = new Alerts(Alert.AlertType.ERROR, "Error",
-    					"Error to load park parameters.", "Park number must be a valid number.");
-    			nullResponseAlert.showAndWait();
-                // Show an error message to the user
-            }
-        } else {
-            Alerts nullResponseAlert = new Alerts(Alert.AlertType.ERROR, "Error",
-					"Error to load park parameters.", "Park number cannot be empty.");
-			nullResponseAlert.showAndWait();
-            // Show an error message to the user
-        }
-
-    }
+	private JFXComboBox<String> parkNameComboBox;
 
 
-    private void fetchParkDetails(Integer parkNumber) {
-        // Construct and send a message to the server to fetch park details for the given park number
-        ClientServerMessage<?> messageForServer = new ClientServerMessage<>(parkNumber, Operation.GET_PARK_DETAILS);
-        ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
-        if (ClientController.data.getFlag()) {
-        
-        Park parkData = (Park) ClientController.data.getDataTransfered(); // This is assumed to be synchronous but typically isn't.
-        System.out.println(parkData.toString());
-        // Update UI labels with park data
-        updateLabels(parkData);
-        }
-        else {
-        	Alerts nullResponseAlert = new Alerts(Alert.AlertType.ERROR, "Error",
-					"Error to load park parameters.", "Not have park for this park number.");
-			nullResponseAlert.showAndWait();
-        }
-    }
 
-    private void updateLabels(Park parkData) {
-        if (parkData != null) {
-            parkNameLabel.setText(parkData.getName());
-            locationLabel.setText(parkData.getLocation());
-            maxvisitorLabel.setText(String.valueOf(parkData.getMaxVisitors()));
-            CapacityLabel.setText(String.valueOf(parkData.getCapacity()));
-            currentvistorLabel.setText(String.valueOf(parkData.getCurrentVisitors()));
-            StayTimeLabel.setText(String.valueOf(parkData.getStaytime()) + " hours");
-            allowedGapLabel.setText(String.valueOf(parkData.getGap()));
-            
-        }
+	private Map<String, Park> parkNamesToParkInfo;
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+
+		parkNamesToParkInfo = loadParkNamesToNumbersMap();
+		parkNameComboBox.setItems(FXCollections.observableArrayList(parkNamesToParkInfo.keySet()));
+
+
+		}
+
 	
 
+	private Map<String, Park> loadParkNamesToNumbersMap() {
+		ClientServerMessage<?> getParkInfoMsg = new ClientServerMessage(null, Operation.GET_PARKS_INFO);
+		ClientUI.clientControllerInstance.sendMessageToServer(getParkInfoMsg);
+		getParkInfoMsg = ClientUI.clientControllerInstance.getData();
 
-}}
+		List<Park> parks = (List<Park>) getParkInfoMsg.getDataTransfered();
+		Map<String, Park> parkNamesToNumbers = new HashMap<>();
+		for (Park park : parks) {
+			parkNamesToNumbers.put(park.getName(), park);
+		}
+
+		return parkNamesToNumbers;
+	}
+	
+	@FXML
+	void Getparkparameters(ActionEvent event) {
+	    String selectedParkName = parkNameComboBox.getSelectionModel().getSelectedItem();
+
+	    if (selectedParkName == null || !parkNamesToParkInfo.containsKey(selectedParkName)) {
+	        Alerts errorAlert = new Alerts(Alert.AlertType.ERROR, "Error", "", "You must choose a park name.");
+	        errorAlert.showAndWait();
+	    } else {
+	        Park selectedPark = parkNamesToParkInfo.get(selectedParkName);
+	        updateLabels(selectedPark);
+	    }
+	}
+
+	private void updateLabels(Park parkData) {
+	    if (parkData != null) {
+	        parkNameLabel.setText(parkData.getName());
+	        locationLabel.setText(parkData.getLocation());
+	        maxvisitorLabel.setText(String.valueOf(parkData.getMaxVisitors()));
+	        CapacityLabel.setText(String.valueOf(parkData.getCapacity()));
+	        currentvistorLabel.setText(String.valueOf(parkData.getCurrentVisitors()));
+	        StayTimeLabel.setText(parkData.getStaytime() + " hours");
+	        allowedGapLabel.setText(String.valueOf(parkData.getGap()));
+	    } else {
+	        Alerts nullResponseAlert = new Alerts(Alert.AlertType.ERROR, "Error",
+	                "Failed to load park parameters.", "There was an error processing the selected park.");
+	        nullResponseAlert.showAndWait();
+	    }
+	}
+}

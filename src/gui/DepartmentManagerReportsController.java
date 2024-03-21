@@ -6,6 +6,9 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -17,6 +20,7 @@ import client.NavigationManager;
 import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
+import common.Park;
 import common.Usermanager;
 import common.worker.ChangeRequest;
 import common.worker.*;
@@ -69,59 +73,80 @@ public class DepartmentManagerReportsController implements Initializable {
 
 	@FXML
 	private TableColumn<Report, String> commentCol;
-	@FXML
-	private JFXTextField ParkIdField;
+
 	@FXML
 	private JFXButton Createbth;
 	@FXML
 	private JFXComboBox<String> monthCombobox; // Changed to String for display purposes
 	@FXML
 	private JFXComboBox<String> ReportTypeCombobox; // Changed to String for display purposes
-    @FXML
-    private JFXComboBox<String> parkNumberComboBox;
+	@FXML
+	private JFXComboBox<String> parkNameComboBox;
+	@FXML
+	private JFXComboBox<String> parkNameComboBoxShowReport;
 
 	@FXML
 	private JFXButton ShowReportBth;
 
+	private Map<String, Integer> parkNamesToNumbers;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		configureTableColumns();
+		parkNamesToNumbers = loadParkNamesToNumbersMap();
+		parkNameComboBoxShowReport.setItems(FXCollections.observableArrayList(parkNamesToNumbers.keySet()));
+		parkNameComboBox.setItems(FXCollections.observableArrayList(parkNamesToNumbers.keySet()));
+
 		for (int month = 1; month <= 12; month++) {
 			monthCombobox.getItems().add(String.valueOf(month));
-			if (month<4)
-			{
-				parkNumberComboBox.getItems().add(String.valueOf(month));
-			}
 			// Initialize report types
 			ReportTypeCombobox.setItems(FXCollections.observableArrayList("Visit Report", "Cancellation Report"));
 
 		}
-		configureTableColumns();
+
+	}
+
+	private Map<String, Integer> loadParkNamesToNumbersMap() {
+		ClientServerMessage<?> getParkInfoMsg = new ClientServerMessage(null, Operation.GET_PARKS_INFO);
+		ClientUI.clientControllerInstance.sendMessageToServer(getParkInfoMsg);
+		getParkInfoMsg = ClientUI.clientControllerInstance.getData();
+
+		List<Park> parks = (List<Park>) getParkInfoMsg.getDataTransfered();
+		Map<String, Integer> parkNamesToNumbers = new HashMap<>();
+		for (Park park : parks) {
+			parkNamesToNumbers.put(park.getName(), park.getParkNumber());
+		}
+
+		return parkNamesToNumbers;
 	}
 
 	private void configureTableColumns() {
-	    reportIDCol.setCellValueFactory(new PropertyValueFactory<>("reportID"));
-	    reportTypeCol.setCellValueFactory(new PropertyValueFactory<>("reportType"));
-	    parkIDCol.setCellValueFactory(new PropertyValueFactory<>("parkID"));
-	    
-	    // Adjust this column to use the month field
-	    MonthCol.setCellValueFactory(cellData -> {
-	        int month = cellData.getValue().getMonth();
-	        return new javafx.beans.property.SimpleStringProperty(String.valueOf(month));
-	    });
+		reportIDCol.setCellValueFactory(new PropertyValueFactory<>("reportID"));
+		reportTypeCol.setCellValueFactory(new PropertyValueFactory<>("reportType"));
+		parkIDCol.setCellValueFactory(new PropertyValueFactory<>("parkID"));
 
-	    commentCol.setCellValueFactory(new PropertyValueFactory<>("comment"));
+		// Adjust this column to use the month field
+		MonthCol.setCellValueFactory(cellData -> {
+			int month = cellData.getValue().getMonth();
+			return new javafx.beans.property.SimpleStringProperty(String.valueOf(month));
+		});
+
+		commentCol.setCellValueFactory(new PropertyValueFactory<>("comment"));
 	}
-
 
 	@FXML
 	void ShowReportparkIdAction(ActionEvent event) {
-		String parkId = ParkIdField.getText().trim();
-		if (parkId.isEmpty()) {
-			Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "", "Park ID field cannot be empty.");
-			warningalert.showAndWait();
+		String selectedparkString = parkNameComboBoxShowReport.getSelectionModel().getSelectedItem();
+
+		// Validate that both selections are not null (i.e., a selection has been made)
+		if (!parkNamesToNumbers.containsKey(selectedparkString)) {
+			Alert errorAlert = new Alerts(Alert.AlertType.ERROR, "Error", "", "You have choose park name.");
+			errorAlert.showAndWait();
 		} else {
+			int selectedParkNumber = parkNamesToNumbers.get(selectedparkString);
+
 			// Here, send request to server to get reports by parkId
-			ObservableList<Report> reports = getReportsByParkId(Integer.parseInt(parkId));
+			ObservableList<Report> reports = getReportsByParkId(selectedParkNumber);
 			if (reports.isEmpty()) {
 				Alerts infoalert = new Alerts(Alert.AlertType.INFORMATION, "Information", "",
 						"Not have report to show.");
@@ -200,68 +225,65 @@ public class DepartmentManagerReportsController implements Initializable {
 
 	@FXML
 	void CreateReportAction(ActionEvent event) {
-		System.out.println("in CreateReportAction ");
+		Alerts infoalert;
 		String selectedMonthString = monthCombobox.getSelectionModel().getSelectedItem();
 		String selectedReportType = ReportTypeCombobox.getSelectionModel().getSelectedItem();
-		String selectedparkString = parkNumberComboBox.getSelectionModel().getSelectedItem();
-		
+		String selectedparkString = parkNameComboBox.getSelectionModel().getSelectedItem();
 
 		// Validate that both selections are not null (i.e., a selection has been made)
-		if (selectedMonthString == null || selectedReportType == null || selectedparkString == null) {
+		if (selectedMonthString == null || selectedReportType == null || selectedparkString == null
+				|| !parkNamesToNumbers.containsKey(selectedparkString)) {
 			Alert errorAlert = new Alerts(Alert.AlertType.ERROR, "Error", "",
-					"You must select a month ,report and park number 1-3 type.");
+					"You must select a month ,report and park name.");
 			errorAlert.showAndWait();
 		} else {
 			int selectedMonth = Integer.parseInt(selectedMonthString);
-			int selectedpark=Integer.parseInt(selectedparkString);
-
+			int selectedParkNumber = parkNamesToNumbers.get(selectedparkString);
 			// React based on the selected report type
 			switch (selectedReportType) {
 			case "Visit Report":
-				VisitReport visitReportToServer = new VisitReport(selectedpark,
-						selectedMonth);
-				System.out.println("in CVisit report ");
+				VisitReport visitReportToServer = new VisitReport(selectedParkNumber, selectedMonth);
 
 				ClientServerMessage<?> messageForServer = new ClientServerMessage<>(visitReportToServer,
 						Operation.GET_NEW_VISIT_REPORT);
-				System.out.println("out CVisit report ");
 
 				ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
 				if (ClientController.data.getFlag()) {
 					try {
-						   Alerts infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
-		                            "Report retrieved from database");
-		                    infoalert.showAndWait();
+						infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
+								"Report retrieved from database");
+						infoalert.showAndWait();
 						NavigationManager.openPage("VisitReport.fxml", event, "", false);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 
 				} else {
-					Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "",
-							"Error to load Visit report .");
-					warningalert.showAndWait();
+					infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
+							"Not have data for this month in database");
+					infoalert.showAndWait();
 				}
 
 				break;
 			case "Cancellation Report":
-				CancellationReport usageReport = new CancellationReport(selectedpark, selectedMonth);
+				CancellationReport usageReport = new CancellationReport(selectedParkNumber, selectedMonth);
 				ClientServerMessage<?> messageForServerUsageReport = new ClientServerMessage<>(usageReport,
 						Operation.GET_CANCELLATION_REPORT);
 				ClientUI.clientControllerInstance.sendMessageToServer(messageForServerUsageReport);
 
 				try {
 					if (ClientController.data.getFlag()) {
-						   Alerts infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
-		                            "Report retrieved from database");
-		                    infoalert.showAndWait();
+
+						infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
+								"Report retrieved from database");
+						infoalert.showAndWait();
+						NavigationManager.openPage("CancellationReportScreen.fxml", event, "", false);
 					} else {
-						Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "",
-								"Error to load park data .");
-						warningalert.showAndWait();
+						infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
+								"Not have data for this month in database");
+						infoalert.showAndWait();
 					}
 
-					NavigationManager.openPage("CancellationReportScreen.fxml", event, "", false);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					System.out.println("error Usage Report for Month: " + selectedMonthString);
@@ -271,11 +293,7 @@ public class DepartmentManagerReportsController implements Initializable {
 
 				System.out.println("Creating Usage Report for Month: " + selectedMonthString);
 				break;
-			default:
-				Alert infoAlert = new Alert(Alert.AlertType.INFORMATION, "Unknown report type selected.");
-				infoAlert.setHeaderText("Information");
-				infoAlert.showAndWait();
-				break;
+
 			}
 		}
 	}
