@@ -510,21 +510,7 @@ public class MessageHandlerFromClient {
 			client.sendToClient(messageFromClient);
 			break;
 
-		case Operation.GET_HOURLY_VISIT_DATA_FOR_PARK:
-			// Placeholder for updating the status of a change request
-			Integer parkID = (Integer) messageFromClient.getDataTransfered();
-			ArrayList<HourlyVisitData> listHoyrVisit = (ArrayList<HourlyVisitData>) dbControllerInstance
-					.getHourlyVisitDataForPark(parkID);
-			if (listHoyrVisit != null) {
-				messageFromClient.setflagTrue();
-				messageFromClient.setDataTransfered(listHoyrVisit);
-
-			} else {
-				messageFromClient.setflagFalse();
-			}
-			client.sendToClient(messageFromClient);
-			break;
-
+		
 		case Operation.PATCH_ORDER_STATUS_TO_INPARK:
 			// Changes the state of an order to INPARK
 			Order orderInformationToChangeStatus = (Order) messageFromClient.getDataTransfered();

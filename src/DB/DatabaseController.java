@@ -416,51 +416,7 @@ public class DatabaseController {
 		return report;
 	}
 
-	public List<HourlyVisitData> getHourlyVisitDataForPark(int parkNumber) {
-		// Initialize a List to hold HourlyVisitData objects
-		List<HourlyVisitData> hourlyDataList = new ArrayList<>();
-		for (int i = 0; i < 24; i++) {
-			hourlyDataList.add(new HourlyVisitData(String.format("%02d:00", i), 0, 0, 0));
-		}
-
-		String query = "SELECT HOUR(v.enteringTime) AS hour, o.typeOfOrder, COUNT(*) AS count "
-				+ "FROM visit v JOIN `order` o ON v.orderNumber = o.orderId "
-				+ "WHERE v.parkNumber = ? AND o.parkNumber = ? " + "GROUP BY HOUR(v.enteringTime), o.typeOfOrder";
-
-		try (PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
-			preparedStatement.setInt(1, parkNumber);
-			preparedStatement.setInt(2, parkNumber);
-
-			ResultSet resultSet = preparedStatement.executeQuery();
-
-			while (resultSet.next()) {
-				int hour = resultSet.getInt("hour");
-				String typeOfOrder = resultSet.getString("typeOfOrder");
-				int count = resultSet.getInt("count");
-
-				// Get the corresponding HourlyVisitData object from the list
-				HourlyVisitData hourlyData = hourlyDataList.get(hour);
-
-				// Update the HourlyVisitData object based on typeOfOrder
-				switch (typeOfOrder) {
-				case "GUIDEDGROUP":
-					hourlyData.setGuidedGroupCount(count);
-					break;
-				case "FAMILY":
-					hourlyData.setFamilyCount(count);
-					break;
-				case "SOLO":
-					hourlyData.setSoloCount(count);
-					break;
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			// Optionally, handle exception, e.g., log error or throw a custom exception
-		}
-
-		return hourlyDataList;
-	}
+	
 
 	public boolean insertChangeRequest(ChangeRequest request) {
 		String query = "INSERT INTO `changerequests` (parkName, parkNumber, capacity, gap, staytime, approved) VALUES (?, ?, ?, ?, ?, ?)";

@@ -30,7 +30,7 @@ import com.jfoenix.controls.JFXTextField;
 import client.ClientController;
 import client.ClientUI;
 import common.ClientServerMessage;
-import common.HourlyVisitData;
+
 import common.Operation;
 
 import javafx.scene.chart.CategoryAxis;
@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import common.worker.VisitReport;
+import common.worker.VisitReport.TypeOfOrder;
 import common.worker.VisitData;
 
 public class DepartmentManagerVisitsReportController implements Initializable {
@@ -77,25 +78,36 @@ public class DepartmentManagerVisitsReportController implements Initializable {
 	}
 
 	private void populateLineChart() {
-		titlelLabal.setText("Visit Report for month "+Visitreport.getMonthNumber());
-		VisitLineChart.getData().clear();
-		xAxis.setLabel("Hour of Day");
-		yAxis.setLabel("Number of Visits");
+	    titlelLabal.setText("Visit Report for month " + Visitreport.getMonthNumber());
+	    VisitLineChart.getData().clear();
+	    xAxis.setLabel("Hour of Day");
+	    yAxis.setLabel("Stay Time (Minutes)");
 
-		// Group visits by TypeOfOrder and hour
-		Visitreport.getVisits().stream().collect(Collectors.groupingBy(VisitData::getTypeOfOrder))
-				.forEach((type, visits) -> {
-					XYChart.Series<String, Number> series = new XYChart.Series<>();
-					series.setName(type.toString());
+	    // Group visits by TypeOfOrder and hour
+	    Map<TypeOfOrder, Map<Integer, Long>> groupedByTypeAndHour = new HashMap<>();
 
-					// Assuming the list of visits is not too large to make this inefficient
-					IntStream.rangeClosed(1, 24).forEach(hour -> {
-						long count = visits.stream().filter(visit -> visit.getEnteringTime().getHour() == hour).count();
-						series.getData().add(new XYChart.Data<>(String.valueOf(hour), count));
-					});
+	    // Iterate over each visit to group by TypeOfOrder and then by hour with total duration
+	    for (VisitData visit : Visitreport.getVisits()) {
+	        TypeOfOrder type = visit.getTypeOfOrder();
+	        int hour = visit.getEnteringTime().getHour();
+	        long duration = visit.getDurationMinutes();
 
-					VisitLineChart.getData().add(series);
-				});
+	        groupedByTypeAndHour.computeIfAbsent(type, k -> new HashMap<>()).merge(hour, duration, Long::sum);
+	    }
+
+	    // For each TypeOfOrder, create a series and add data points for each hour
+	    groupedByTypeAndHour.forEach((type, hourMap) -> {
+	        XYChart.Series<String, Number> series = new XYChart.Series<>();
+	        series.setName(type.toString());
+
+	        // Add data points for each hour, using 0 if no data exists for that hour
+	        IntStream.rangeClosed(0, 23).forEach(hour -> {
+	            long totalDuration = hourMap.getOrDefault(hour, 0L);
+	            series.getData().add(new XYChart.Data<>(String.valueOf(hour), totalDuration));
+	        });
+
+	        VisitLineChart.getData().add(series);
+	    });
 	}
 
 	@FXML
