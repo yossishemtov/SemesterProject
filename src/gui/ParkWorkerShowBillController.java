@@ -76,6 +76,8 @@ public class ParkWorkerShowBillController implements Initializable{
 			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when loading order information");
 			somethingWentWrong.showAndWait();
 		}
+		
+		ParkWorkerEntrenceControlController.orderToEnterOrExit = null;
 	}
 	
 	

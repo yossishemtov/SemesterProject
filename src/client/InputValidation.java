@@ -53,6 +53,19 @@ public class InputValidation {
 		
 	}
 	
+	//validates name and lastname
+	public static Alerts validateNameOrLastname(String amountOfVisitors) {
+		//Checks if order visitors is between 1-6
+		if (!amountOfVisitors.matches("^[a-zA-Z]{1,10}$")) {
+	        return new Alerts(Alerts.AlertType.ERROR, "Invalid Name Or Last Name", "", "Name and Last name must not exceed 10 letters and contain no numbers");
+		}else {
+			return new Alerts(Alerts.AlertType.INFORMATION, "Valid name or lastname", "", "Valid name or lastname");
+		}
+		
+		
+	}
+	
+	
 	// function for validate worker password
 	 public static Alerts validatePassword(String password) {
 	        // Check if password is empty
@@ -72,7 +85,7 @@ public class InputValidation {
 	 }
 	 
 	 public static Alerts validateOrderNumber(String orderId) {
-		 if(!orderId.matches("[1-9]\\d{0,4}|0")) {
+		 if(!orderId.matches("[1-9]\\d{0,8}|0")) {
 	            return new Alerts(Alerts.AlertType.ERROR, "Invalid Order Id", "", "Order id must only contain numbers and not exceed 8 characters");
 		 }else {
 	        	return new Alerts(Alerts.AlertType.INFORMATION, "Order Id Validation", "", "Order Id Validation");

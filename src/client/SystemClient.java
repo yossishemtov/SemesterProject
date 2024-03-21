@@ -125,10 +125,10 @@ public class SystemClient extends AbstractClient{
 		  
 		//Check if Traveler is logged in (if the user exited from Traveler signin page) and sign him off
 		  if(Usermanager.getCurrentTraveler() != null) {
-				ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentTraveler(), Operation.PATCH_TRAVELER_SIGNEDOUT);
+				ClientServerMessage requestToLogoutTraveler = new ClientServerMessage(Usermanager.getCurrentTraveler(), Operation.PATCH_TRAVELER_SIGNEDOUT);
 				
 				try {
-			        sendToServer(requestToLogout);
+			        sendToServer(requestToLogoutTraveler);
 			        awaitResponse = true; // Wait for the server to acknowledge disconnection
 
 			        // Wait for acknowledgment
