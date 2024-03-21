@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXTextField;
 
 import client.ClientUI;
 import client.InputValidation;
+import client.NavigationManager;
 import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
@@ -68,8 +69,7 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// Initialize the display of amount of allowed unordered visits 
-		
-		
+		updateScreenAllowedUnorderedVisits();
 	}
 	
 	public boolean chooseEntrencePlan(ActionEvent click) throws Exception{
@@ -108,8 +108,16 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 			//Parse Information about the order
 			String firstNameVisitor = firstNameField.getText();
 			String lastNameVisitor = lastNameField.getText();
-			Integer travelerId = Integer.parseInt(travelerIdField.getText());
-			Integer amountOfVisitors = Integer.parseInt(amountOfVisitorsField.getText());
+			
+			Integer travelerId = 11;
+			if(!travelerIdField.getText().isEmpty()) {				
+				travelerId = Integer.parseInt(travelerIdField.getText());
+			}
+			Integer amountOfVisitors = 10;
+			if(!amountOfVisitorsField.getText().isEmpty()) {				
+				amountOfVisitors = Integer.parseInt(amountOfVisitorsField.getText());
+			}
+			
 			String visitorEmail = (visitorEmailField.getText());
 			String phoneNumber = (phoneNumberField.getText());
 			String typeOfOrder = (menuField.getText());
@@ -128,14 +136,12 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 			Alerts checkLastName = InputValidation.validateNameOrLastname(lastNameVisitor);
 			
 			
-			//validates name and lastname 
-			if(!checkName.getAlertType().toString().equals("INFORMATION") || !checkName.getAlertType().toString().equals("INFORMATION")) {
-				checkName.showAndWait();
-				return;
-			}
-
 			
 			
+			
+		
+		//validates name and lastname 
+		if(checkName.getAlertType().toString().equals("INFORMATION") && checkLastName.getAlertType().toString().equals("INFORMATION")) {
 			
 			//validates id of traveler
 			if(alertID.getAlertType().toString().equals("INFORMATION")) {
@@ -176,6 +182,10 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 							ClientUI.clientControllerInstance.sendMessageToServer(lastOrderFromServMessage);
 							Integer lastOrderNumber = (Integer) ClientUI.clientControllerInstance.getData().getDataTransfered() + 1;
 							
+							//checks for family plan if visitor is more than 1
+							if(amountOfVisitors > 1) {
+								typeOfOrder = "FAMILY";
+							}
 							
 							//Creating new order
 							Float calculatedPrice = (float) (100*amountOfVisitors);
@@ -197,8 +207,10 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 								AppendUnorderedVisitsAndVisitorsToPark(newUnorderedOrder);
 								
 								//If process was successful
-								Alerts succeedRegistration = new Alerts(Alert.AlertType.CONFIRMATION, "Succeed to registrate","","Succeed to registrate");
-						    	 succeedRegistration.showAndWait();
+								ParkWorkerEntrenceControlController.orderToEnterOrExit = newUnorderedOrder;
+								
+								//Show Traveler bill
+				    			NavigationManager.openPage("ParkWorkerShowBill.fxml", click, "Traveler Bill", false);
 							}else {
 								//If posting visit wasn't successful
 								Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Could not post a visit for the unordered visit");
@@ -207,20 +219,23 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 							
 							
 							
+								
+							}else {
+								validPhoneNuber.showAndWait();
+							}
 							
 						}else {
-							validPhoneNuber.showAndWait();
+							emailValidation.showAndWait();
 						}
 						
 					}else {
-						emailValidation.showAndWait();
+						visitorsValidate.showAndWait();
 					}
-					
 				}else {
-					visitorsValidate.showAndWait();
+					alertID.showAndWait();
 				}
 			}else {
-				alertID.showAndWait();
+				checkName.showAndWait();
 			}
 			
 		}catch (Exception e) {

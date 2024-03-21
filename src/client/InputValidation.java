@@ -56,7 +56,7 @@ public class InputValidation {
 	//validates name and lastname
 	public static Alerts validateNameOrLastname(String amountOfVisitors) {
 		//Checks if order visitors is between 1-6
-		if (!amountOfVisitors.matches("\\\\b\\\\p{L}{1,10}\\\\b")) {
+		if (!amountOfVisitors.matches("^[a-zA-Z]{1,10}$")) {
 	        return new Alerts(Alerts.AlertType.ERROR, "Invalid Name Or Last Name", "", "Name and Last name must not exceed 10 letters and contain no numbers");
 		}else {
 			return new Alerts(Alerts.AlertType.INFORMATION, "Valid name or lastname", "", "Valid name or lastname");
