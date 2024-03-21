@@ -32,7 +32,7 @@
             <RowConstraints maxHeight="51.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Label fx:id="titlelLabal" layoutX="349.0" layoutY="39.0" prefHeight="28.0" prefWidth="203.0" text="Usage Report">
+      <Label fx:id="titlelLabal" layoutX="349.0" layoutY="39.0" prefHeight="28.0" prefWidth="306.0" text="Usage Report">
          <font>
             <Font size="18.0" />
          </font>

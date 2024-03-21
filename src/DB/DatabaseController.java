@@ -1362,7 +1362,7 @@ public class DatabaseController {
 	public VisitorsReport getNewVisitorsReport(VisitorsReport visitReport) {
 		System.out.println("in db getNewVisitorsReport...");
 		System.out.println(visitReport.toString());
-
+		boolean haveData=false;
 		String query = "SELECT typeOfOrder, SUM(amountOfVisitors) AS totalVisitors " + "FROM `order` "
 				+ "WHERE parkNumber = ? AND YEAR(date) = ? AND MONTH(date) = ? AND orderStatus = 'COMPLETED' "
 				+ "GROUP BY typeOfOrder";
@@ -1376,9 +1376,10 @@ public class DatabaseController {
 
 		// Prepare the database query
 		try (PreparedStatement statement = connectionToDatabase.prepareStatement(query)) {
+		
 			statement.setInt(1, parkNumber);
 			statement.setInt(2, reportDate.getYear());
-			statement.setInt(3, visitReport.getMonth());
+			statement.setInt(3, visitReport.getMonth()); 
 			// statement.setInt(3, reportDate.getMonthValue());
 			System.out.println("Executing query with parameters - Park Number: " + parkNumber + ", Year: "
 					+ reportDate.getYear() + ", Month: " + reportDate.getMonthValue());
@@ -1386,10 +1387,11 @@ public class DatabaseController {
 			// Execute the query and process the results
 			try (ResultSet resultSet = statement.executeQuery()) {
 				while (resultSet.next()) {
+					haveData=true;
 					String typeOfOrder = resultSet.getString("typeOfOrder").trim();
 					int visitors = resultSet.getInt("totalVisitors");
 
-					switch (typeOfOrder.toUpperCase()) {
+					switch (typeOfOrder.toUpperCase().trim()) {
 					case "SOLO":
 						totalIndividuals += visitors;
 						break;
@@ -1400,7 +1402,7 @@ public class DatabaseController {
 						totalFamilies += visitors;
 						break;
 					default:
-						// Optionally handle unexpected values
+						System.out.println(typeOfOrder.toUpperCase().trim());
 						break;
 					}
 				}
@@ -1411,9 +1413,15 @@ public class DatabaseController {
 					.println("An error occurred while fetching the total number of visitors report: " + e.getMessage());
 			e.printStackTrace();
 		}
+		if (!haveData)
+		{
+			System.out.println("not have data...");
+
+			return null;
+		}
 
 		// Construct and return the report
-		int month = reportDate.getMonthValue(); // Extract month from reportDate
+		int month = visitReport.getMonth(); // Extract month from reportDate
 		String comment = "Automatically generated report based on month and park ID.";
 
 		// Corrected to match the constructor's parameters
@@ -1591,12 +1599,12 @@ public class DatabaseController {
 	                               "AND orderStatus = 'CANCELED' " +
 	                               "GROUP BY DAY(date)";
 
-	    // Query to fetch daily unfulfilled orders
 	    String unfulfilledQuery = "SELECT DAY(date) AS dayOfMonth, COUNT(*) AS count " +
-	                              "FROM `order` " +
-	                              "WHERE parkNumber = ? AND YEAR(date) = ? AND MONTH(date) = ? " +
-	                              "AND orderStatus = 'CONFIRMED' AND date < CURRENT_DATE() " +
-	                              "GROUP BY DAY(date)";
+                "FROM `order` " +
+                "WHERE parkNumber = ? AND YEAR(date) = ? AND MONTH(date) = ? " +
+                "AND (orderStatus = 'CONFIRMED' OR orderStatus = 'NOTARRIVED') AND date < CURRENT_DATE() " +
+                "GROUP BY DAY(date)";
+
 
 	    // Process cancellations
 	    processQuery(dailyCancellations, parkNumber, reportDate, cancellationQuery);

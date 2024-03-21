@@ -39,7 +39,7 @@ public class CreateVisitorsReportController {
 	@FXML
 	private Label titlelLabal;
 
-	@FXML
+	@FXML 
 	void CloseWindowAction(ActionEvent event) {
 		// Get the current stage using the event source
 		Stage stage = (Stage) CloseWindowBth.getScene().getWindow();

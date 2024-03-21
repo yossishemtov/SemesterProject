@@ -158,7 +158,7 @@ public class DepartmentManagerReportsController implements Initializable {
 			}
 		}
 	}
-
+ 
 	@FXML
 	void ShowReportTableClickAction(MouseEvent event) {
 		if (event.getClickCount() == 2) { // Double click

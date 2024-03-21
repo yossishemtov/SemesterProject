@@ -68,7 +68,7 @@ public class ParkmanagerReportController implements Initializable {
 	private TableColumn<Report, String> commentCol;
 	@FXML
 	private JFXButton Createbth;
-	private Park park;
+	private Park park; 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -196,6 +196,7 @@ public class ParkmanagerReportController implements Initializable {
 
 	@FXML
 	void CreateReportAction(ActionEvent event) {
+		Alerts infoalert;
 		String selectedMonthString = monthCombobox.getSelectionModel().getSelectedItem();
 		String selectedReportType = ReportTypeCombobox.getSelectionModel().getSelectedItem();
 
@@ -226,8 +227,12 @@ public class ParkmanagerReportController implements Initializable {
 				ClientServerMessage<?> messageForServer = new ClientServerMessage<>(visitorReportToServer,
 						Operation.GET_NEW_VISITORS_REPORT);
 				ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
+
 				if (ClientController.data.getFlag()) {
 					try {
+						infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
+								"Report retrieved from database");
+						infoalert.showAndWait();
 						NavigationManager.openPage("CreateVisitorsReport.fxml", event, "", false);
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -235,8 +240,9 @@ public class ParkmanagerReportController implements Initializable {
 					
 				}
 				else {
-					Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "", "Error to load Visitor report .");
-					warningalert.showAndWait();
+					infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
+							"Not have data for this month in database");
+					infoalert.showAndWait();
 				}
 				
 
@@ -252,7 +258,9 @@ public class ParkmanagerReportController implements Initializable {
 
 				try {
 					if (ClientController.data.getFlag()) {
-						UsageReport usageReport1=(UsageReport) ClientUI.clientControllerInstance.getData().getDataTransfered();
+						infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
+								"Report retrieved from database");
+						infoalert.showAndWait();
 					}
 					else {
 						Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "", "Error to load park data .");

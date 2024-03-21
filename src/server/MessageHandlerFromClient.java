@@ -120,7 +120,7 @@ public class MessageHandlerFromClient {
 
 		case Operation.GET_ALL_REPORTS:
 			// Placeholder for getting all reports
-			break;
+			break; 
 
 		case Operation.GET_NEW_VISITORS_REPORT:
 			VisitorsReport NewVisitorReportFromClient = (VisitorsReport) messageFromClient.getDataTransfered();

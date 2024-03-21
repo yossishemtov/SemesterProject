@@ -3,6 +3,8 @@
 -- Host: localhost    Database: project
 -- ------------------------------------------------------
 -- Server version	8.3.0
+CREATE DATABASE  IF NOT EXISTS `project` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `project`;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -61,7 +63,19 @@ CREATE TABLE `generalparkworker` (
 
 LOCK TABLES `generalparkworker` WRITE;
 /*!40000 ALTER TABLE `generalparkworker` DISABLE KEYS */;
-INSERT INTO `generalparkworker` VALUES (1,'John','Doe','johndoe@example.com','Park Manager','johndoe123','password123',1,0),(2,'Jane','Smith','janesmith@example.com','Park Manager','janesmith456','password456',2,0),(3,'Michael','Johnson','michaeljohnson@example.com','Park Manager','michaelj','password789',3,0),(4,'Emily ','Williams','emilywilliams@example.com','Worker','emilyw','password123',1,0),(5,'Chavi','Alonso','ChaviAlonso@e.braude.ac.il','Worker','userchavi','123456a',2,0),(6,'Yossi','Hanoder','Yossihanoder@e.braude.ac.il','Worker','yossinoder','123456a',3,0),(7,'Emanuel','Braude','emanuelbraude@e.braude.ac.il','Department Manager','emanuelb','123456a',1,0),(8,'lil','bullet','lilbullet@e.braude.ac.il','Department Manager','lilbullet','123456a',2,0),(9,'Rosh','Tirosh','roshtirosh@e.braude.ac.il','Department Manager','roshtirosh','123456a',3,0),(10,'El','Salvador','elsalvador@e.braude.ac.il','Service Worker','salvador','123456a',1,0);
+INSERT INTO `generalparkworker` (`workerId`, `firstName`, `lastName`, `email`, `role`, `userName`, `password`, `worksAtPark`, `isloggedin`) VALUES
+(1, 'John', 'Doe', 'johndoe@example.com', 'Department Manager', 'joss', '123a', 1, 0),
+(2, 'Jane', 'Smith', 'janesmith@example.com', 'Park Manager', 'yos', '123a', 2, 0),
+(3, 'Alex', 'Johnson', 'alexjohnson@example.com', 'Park Worker', 'itay', '123a', 3, 0),
+(4, 'Emily', 'Williams', 'emilywilliams@example.com', 'Service Worker', 'shai', '123a', 1, 0),
+(5, 'Chris', 'Brown', 'chrisbrown@example.com', 'Department Manager', 'moti', '123a', 2, 0),
+(6, 'Pat', 'Green', 'patgreen@example.com', 'Park Manager', 'emanuel', '123a', 3, 0),
+(7, 'Taylor', 'Adams', 'tayloradams@example.com', 'Park Worker', 'daniel', '123a', 1, 0),
+(8, 'Jordan', 'Miller', 'jordanmiller@example.com', 'Service Worker', 'moshe', '123a', 2, 0),
+(9, 'Casey', 'Wilson', 'caseywilson@example.com', 'Department Manager', 'alon', '123a', 3, 0),
+(10, 'Morgan', 'Moore', 'morganmoore@example.com', 'Park Manager', 'mor', '123a', 1, 0),
+(11, 'Jamie', 'Taylor', 'jamietaylor@example.com', 'Park Worker', 'taylor', '123a', 2, 0),
+(12, 'Drew', 'Anderson', 'drewanderson@example.com', 'Service Worker', 'david', '123a', 3, 0);
 /*!40000 ALTER TABLE `generalparkworker` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -136,102 +150,167 @@ SET foreign_key_checks = 1;
 
 
 
-LOCK TABLES `order` WRITE;
-INSERT INTO `order` (orderId, travlerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder) VALUES
-(1, 101, 1, 5, 100.00, 'email1@example.com', '2024-03-12', '1234567890', '09:00:00', 'CONFIRMED', 'FAMILY'),
-(2, 102, 1, 3, 60.00, 'email2@example.com', '2024-03-13', '1234567891', '10:00:00', 'CONFIRMED', 'SOLO'),
-(3, 103, 1, 2, 40.00, 'email3@example.com', '2024-03-14', '1234567892', '11:00:00', 'CONFIRMED', 'GUIDEDGROUP'),
-(4, 104, 1, 4, 80.00, 'email4@example.com', '2024-03-15', '1234567893', '12:00:00', 'CONFIRMED', 'FAMILY'),
-(5, 105, 1, 5, 100.00, 'email5@example.com', '2024-03-16', '1234567894', '13:00:00', 'CONFIRMED', 'SOLO'),
-(6, 106, 1, 3, 60.00, 'email6@example.com', '2024-03-17', '1234567895', '14:00:00', 'CONFIRMED', 'GUIDEDGROUP'),
-(7, 107, 1, 2, 40.00, 'email7@example.com', '2024-03-18', '1234567896', '15:00:00', 'CONFIRMED', 'FAMILY'),
-(8, 108, 1, 4, 80.00, 'email8@example.com', '2024-03-19', '1234567897', '16:00:00', 'CONFIRMED', 'SOLO'),
-(9, 109, 1, 5, 100.00, 'email9@example.com', '2024-03-20', '1234567898', '09:30:00', 'CONFIRMED', 'GUIDEDGROUP'),
-(10, 110, 1, 3, 60.00, 'email10@example.com', '2024-03-21', '1234567899', '10:30:00', 'CONFIRMED', 'FAMILY'),
-(11, 111, 1, 2, 40.00, 'email11@example.com', '2024-03-22', '1234567800', '11:30:00', 'CONFIRMED', 'SOLO'),
-(12, 112, 1, 4, 80.00, 'email12@example.com', '2024-03-23', '1234567801', '12:30:00', 'CONFIRMED', 'GUIDEDGROUP'),
-(13, 113, 1, 5, 100.00, 'email13@example.com', '2024-03-24', '1234567802', '13:30:00', 'CONFIRMED', 'FAMILY'),
-(14, 114, 1, 3, 60.00, 'email14@example.com', '2024-03-25', '1234567803', '14:30:00', 'CONFIRMED', 'SOLO'),
-(15, 115, 1, 2, 40.00, 'email15@example.com', '2024-03-26', '1234567804', '15:30:00', 'CONFIRMED', 'GUIDEDGROUP'),
-(16, 116, 1, 4, 80.00, 'email16@example.com', '2024-03-27', '1234567805', '16:30:00', 'CONFIRMED', 'FAMILY'),
-(17, 117, 1, 5, 100.00, 'email17@example.com', '2024-03-28', '1234567806', '09:45:00', 'CONFIRMED', 'SOLO'),
-(18, 118, 1, 3, 60.00, 'email18@example.com', '2024-03-29', '1234567807', '10:45:00', 'CONFIRMED', 'GUIDEDGROUP'),
-(19, 119, 1, 2, 40.00, 'email19@example.com', '2024-03-30', '1234567808', '11:45:00', 'CONFIRMED', 'FAMILY'),
-(20, 120, 1, 4, 80.00, 'email20@example.com', '2024-03-31', '1234567809', '12:45:00', 'CONFIRMED', 'SOLO');
+LOCK TABLES `order` WRITE;SET foreign_key_checks = 0;
+ INSERT INTO `order` (`orderId`, `travelerId`, `parkNumber`, `amountOfVisitors`, `price`, `visitorEmail`, `date`, `TelephoneNumber`, `visitTime`, `orderStatus`, `typeOfOrder`, `parkName`) VALUES
+(1, 8521529, 1, 5, 150.0, 'traveler2@example.com', '2024-02-11', '555-1179', '15:50:00', 'CONFIRMED', 'GUIDEDGROUP', 'Mount Rainier'),
+(2, 8521529, 1, 5, 150.0, 'traveler2@example.com', '2024-02-11', '555-1179', '15:50:00', 'CONFIRMED', 'GUIDEDGROUP', 'Mount Rainier'),
+(3, 5561795, 3, 1, 30.0, 'traveler3@example.com', '2024-03-06', '555-9811', '13:07:00', 'NOTARRIVED', 'SOLO', 'Yosemite'),
+
+ (4, 1459530, 1, 1, 30.0, 'traveler4@example.com', '2024-03-27', '555-3733', '13:44:00', 'CONFIRMED', 'SOLO', 'Mount Rainier'),
+ (5, 9453513, 2, 1, 30.0, 'traveler5@example.com', '2024-01-04', '555-3331', '16:34:00', 'CONFIRMED', 'SOLO', 'Yellow Stone'),
+ (6, 4400742, 1, 1, 30.0, 'traveler6@example.com', '2024-03-16', '555-7637', '10:46:00', 'CONFIRMED', 'SOLO', 'Mount Rainier'),
+ (7, 8786577, 1, 1, 30.0, 'traveler7@example.com', '2024-02-27', '555-4775', '17:24:00', 'NOTARRIVED', 'SOLO', 'Mount Rainier'),
+ (8, 7255123, 1, 2, 60.0, 'traveler8@example.com', '2024-02-12', '555-8715', '16:12:00', 'PENDING', 'GUIDEDGROUP', 'Mount Rainier'),
+ (9, 7282710, 1, 2, 60.0, 'traveler9@example.com', '2024-03-05', '555-4831', '10:49:00', 'CONFIRMED', 'GUIDEDGROUP', 'Mount Rainier'),
+ (10, 9820734, 1, 2, 60.0, 'traveler10@example.com', '2024-02-18', '555-2174', '13:26:00', 'PENDING', 'FAMILY', 'Mount Rainier'),
+ (11, 4798188, 3, 1, 30.0, 'traveler11@example.com', '2024-01-11', '555-6433', '14:14:00', 'NOTARRIVED', 'GUIDEDGROUP', 'Yosemite'),
+ (12, 6460540, 1, 4, 120.0, 'traveler12@example.com', '2024-02-20', '555-6800', '15:46:00', 'NOTARRIVED', 'FAMILY', 'Mount Rainier'),
+ (13, 8144519, 1, 1, 30.0, 'traveler13@example.com', '2024-03-13', '555-5732', '18:56:00', 'PENDING', 'SOLO', 'Mount Rainier'),
+ (14, 1640012, 3, 1, 30.0, 'traveler14@example.com', '2024-01-20', '555-5401', '10:33:00', 'PENDING', 'SOLO', 'Yosemite'),
+ (15, 9530968, 3, 5, 150.0, 'traveler15@example.com', '2024-03-23', '555-9909', '14:44:00', 'PENDING', 'GUIDEDGROUP', 'Yosemite'),
+ (16, 4213045, 2, 1, 30.0, 'traveler16@example.com', '2024-01-20', '555-9357', '14:14:00', 'PENDING', 'SOLO', 'Yellow Stone'),
+ (17, 1917736, 1, 1, 30.0, 'traveler17@example.com', '2024-02-05', '555-2685', '14:34:00', 'CANCELED', 'SOLO', 'Mount Rainier'),
+ (18, 7767529, 1, 4, 120.0, 'traveler18@example.com', '2024-02-02', '555-2023', '09:35:00', 'CONFIRMED', 'FAMILY', 'Mount Rainier'),
+ (19, 1746104, 1, 5, 150.0, 'traveler19@example.com', '2024-03-08', '555-8263', '18:20:00', 'NOTARRIVED', 'FAMILY', 'Mount Rainier'),
+ (20, 6548853, 3, 3, 90.0, 'traveler20@example.com', '2024-02-18', '555-8634', '10:05:00', 'NOTARRIVED', 'GUIDEDGROUP', 'Yosemite'),
+ (21, 8417637, 1, 1, 30.0, 'traveler21@example.com', '2024-02-14', '555-2722', '12:14:00', 'PENDING', 'FAMILY', 'Mount Rainier'),
+ (22, 7487414, 1, 1, 30.0, 'traveler22@example.com', '2024-02-06', '555-1441', '14:03:00', 'CONFIRMED', 'SOLO', 'Mount Rainier'),
+ (23, 7745584, 3, 1, 30.0, 'traveler23@example.com', '2024-01-04', '555-1240', '15:25:00', 'NOTARRIVED', 'SOLO', 'Yosemite'),
+ (24, 7589809, 1, 1, 30.0, 'traveler24@example.com', '2024-01-31', '555-7709', '09:46:00', 'CANCELED', 'GUIDEDGROUP', 'Mount Rainier'),
+ (25, 3005829, 2, 1, 30.0, 'traveler25@example.com', '2024-03-23', '555-3234', '14:57:00', 'CONFIRMED', 'SOLO', 'Yellow Stone'),
+ (26, 2879468, 3, 1, 30.0, 'traveler26@example.com', '2024-02-14', '555-7428', '10:37:00', 'CANCELED', 'SOLO', 'Yosemite'),
+ (27, 4922396, 2, 5, 150.0, 'traveler27@example.com', '2024-03-23', '555-6171', '14:42:00', 'NOTARRIVED', 'FAMILY', 'Yellow Stone'),
+ (28, 1668064, 2, 1, 30.0, 'traveler28@example.com', '2024-03-11', '555-4234', '11:52:00', 'CONFIRMED', 'SOLO', 'Yellow Stone'),
+ (29, 8730038, 3, 5, 150.0, 'traveler29@example.com', '2024-02-07', '555-3474', '18:54:00', 'CONFIRMED', 'FAMILY', 'Yosemite'),
+ (30, 9070994, 3, 5, 150.0, 'traveler30@example.com', '2024-03-19', '555-1794', '16:06:00', 'NOTARRIVED', 'GUIDEDGROUP', 'Yosemite'),
+ (31, 3534268, 2, 1, 30.0, 'traveler31@example.com', '2024-01-24', '555-5694', '11:07:00', 'CONFIRMED', 'GUIDEDGROUP', 'Yellow Stone'),
+ (32, 4850083, 2, 4, 120.0, 'traveler32@example.com', '2024-02-16', '555-6248', '10:08:00', 'CANCELED', 'FAMILY', 'Yellow Stone'),
+ (33, 7630238, 2, 3, 90.0, 'traveler33@example.com', '2024-02-26', '555-8171', '16:19:00', 'CONFIRMED', 'FAMILY', 'Yellow Stone'),
+ (34, 1303740, 3, 2, 60.0, 'traveler34@example.com', '2024-01-25', '555-3473', '15:02:00', 'CONFIRMED', 'GUIDEDGROUP', 'Yosemite'),
+ (35, 3575435, 3, 4, 120.0, 'traveler35@example.com', '2024-02-11', '555-1167', '12:59:00', 'CANCELED', 'FAMILY', 'Yosemite'),
+ (36, 5038292, 3, 3, 90.0, 'traveler36@example.com', '2024-03-21', '555-1000', '18:29:00', 'PENDING', 'GUIDEDGROUP', 'Yosemite'),
+ (37, 5432820, 1, 2, 60.0, 'traveler37@example.com', '2024-01-12', '555-6482', '15:02:00', 'NOTARRIVED', 'GUIDEDGROUP', 'Mount Rainier'),
+ (38, 3925582, 1, 4, 120.0, 'traveler38@example.com', '2024-03-05', '555-2243', '13:37:00', 'CONFIRMED', 'GUIDEDGROUP', 'Mount Rainier'),
+ (39, 5980214, 2, 3, 90.0, 'traveler39@example.com', '2024-01-22', '555-3183', '16:14:00', 'NOTARRIVED', 'FAMILY', 'Yellow Stone'),
+ (40, 1710135, 2, 5, 150.0, 'traveler40@example.com', '2024-01-02', '555-4143', '16:59:00', 'NOTARRIVED', 'FAMILY', 'Yellow Stone'),
+ (41, 4757693, 3, 1, 30.0, 'traveler41@example.com', '2024-03-20', '555-8262', '13:53:00', 'PENDING', 'GUIDEDGROUP', 'Yosemite'),
+ (42, 3254852, 1, 4, 120.0, 'traveler42@example.com', '2024-03-12', '555-5749', '13:35:00', 'PENDING', 'GUIDEDGROUP', 'Mount Rainier'),
+ (43, 2044526, 2, 1, 30.0, 'traveler43@example.com', '2024-03-26', '555-7888', '16:28:00', 'CONFIRMED', 'SOLO', 'Yellow Stone'),
+ (44, 6192056, 1, 2, 60.0, 'traveler44@example.com', '2024-03-26', '555-7112', '16:53:00', 'NOTARRIVED', 'FAMILY', 'Mount Rainier'),
+ (45, 3928485, 1, 3, 90.0, 'traveler45@example.com', '2024-03-29', '555-4292', '10:45:00', 'CONFIRMED', 'GUIDEDGROUP', 'Mount Rainier'),
+ (46, 2410771, 1, 4, 120.0, 'traveler46@example.com', '2024-03-22', '555-2374', '11:15:00', 'PENDING', 'GUIDEDGROUP', 'Mount Rainier'),
+ (47, 2979552, 2, 1, 30.0, 'traveler47@example.com', '2024-02-07', '555-2829', '11:36:00', 'NOTARRIVED', 'SOLO', 'Yellow Stone'),
+ (48, 8598682, 3, 3, 90.0, 'traveler48@example.com', '2024-02-20', '555-9515', '14:59:00', 'PENDING', 'FAMILY', 'Yosemite'),
+ (49, 5867079, 3, 1, 30.0, 'traveler49@example.com', '2024-01-29', '555-2364', '09:38:00', 'PENDING', 'SOLO', 'Yosemite'),
+ (50, 2220055, 1, 3, 90.0, 'traveler50@example.com', '2024-03-06', '555-4206', '17:28:00', 'PENDING', 'FAMILY', 'Mount Rainier'),
+ (51, 2734644, 3, 3, 90.0, 'traveler51@example.com', '2024-01-31', '555-3576', '09:18:00', 'CANCELED', 'FAMILY', 'Yosemite'),
+ (52, 8219512, 3, 4, 120.0, 'traveler52@example.com', '2024-01-02', '555-7874', '18:52:00', 'CANCELED', 'GUIDEDGROUP', 'Yosemite'),
+ (53, 9130785, 3, 1, 30.0, 'traveler53@example.com', '2024-01-02', '555-1255', '12:28:00', 'NOTARRIVED', 'SOLO', 'Yosemite'),
+ (54, 8507876, 1, 1, 30.0, 'traveler54@example.com', '2024-01-04', '555-3503', '18:45:00', 'CANCELED', 'SOLO', 'Mount Rainier'),
+ (55, 4018632, 2, 1, 30.0, 'traveler55@example.com', '2024-01-11', '555-9643', '13:10:00', 'PENDING', 'SOLO', 'Yellow Stone'),
+ (56, 8378739, 2, 2, 60.0, 'traveler56@example.com', '2024-01-22', '555-4380', '11:41:00', 'PENDING', 'GUIDEDGROUP', 'Yellow Stone'),
+ (57, 8256824, 2, 2, 60.0, 'traveler57@example.com', '2024-02-09', '555-7029', '09:04:00', 'NOTARRIVED', 'GUIDEDGROUP', 'Yellow Stone'),
+ (58, 6139703, 3, 4, 120.0, 'traveler58@example.com', '2024-03-08', '555-9259', '12:11:00', 'NOTARRIVED', 'FAMILY', 'Yosemite'),
+ (59, 7500347, 2, 3, 90.0, 'traveler59@example.com', '2024-01-08', '555-8987', '12:19:00', 'NOTARRIVED', 'FAMILY', 'Yellow Stone'),
+ (60, 7352337, 2, 4, 120.0, 'traveler60@example.com', '2024-01-15', '555-2175', '15:14:00', 'CANCELED', 'GUIDEDGROUP', 'Yellow Stone'),
+ (61, 6311558, 2, 4, 120.0, 'traveler61@example.com', '2024-03-16', '555-4311', '14:36:00', 'PENDING', 'FAMILY', 'Yellow Stone'),
+ (62, 5506063, 1, 1, 30.0, 'traveler62@example.com', '2024-01-12', '555-6998', '09:00:00', 'NOTARRIVED', 'GUIDEDGROUP', 'Mount Rainier'),
+ (63, 6145157, 2, 4, 120.0, 'traveler63@example.com', '2024-01-11', '555-1053', '11:38:00', 'CONFIRMED', 'FAMILY', 'Yellow Stone'),
+ (64, 3910236, 3, 5, 150.0, 'traveler64@example.com', '2024-03-29', '555-1959', '10:51:00', 'NOTARRIVED', 'FAMILY', 'Yosemite'),
+ (65, 8773692, 1, 4, 120.0, 'traveler65@example.com', '2024-01-21', '555-8029', '17:55:00', 'PENDING', 'GUIDEDGROUP', 'Mount Rainier'),
+ (66, 9590670, 2, 4, 120.0, 'traveler66@example.com', '2024-02-13', '555-5646', '09:48:00', 'PENDING', 'GUIDEDGROUP', 'Yellow Stone'),
+ (67, 8171150, 1, 1, 30.0, 'traveler67@example.com', '2024-03-08', '555-9965', '13:14:00', 'CANCELED', 'GUIDEDGROUP', 'Mount Rainier'),
+ (68, 5874706, 3, 3, 90.0, 'traveler68@example.com', '2024-01-29', '555-4611', '16:13:00', 'CANCELED', 'GUIDEDGROUP', 'Yosemite'),
+ (69, 6229344, 3, 2, 60.0, 'traveler69@example.com', '2024-03-08', '555-7827', '10:56:00', 'NOTARRIVED', 'GUIDEDGROUP', 'Yosemite'),
+ (70, 5156273, 1, 2, 60.0, 'traveler70@example.com', '2024-03-28', '555-7310', '11:29:00', 'CANCELED', 'FAMILY', 'Mount Rainier'),
+ (71, 3267230, 3, 1, 30.0, 'traveler71@example.com', '2024-03-30', '555-2175', '12:00:00', 'PENDING', 'FAMILY', 'Yosemite'),
+ (72, 4116180, 3, 3, 90.0, 'traveler72@example.com', '2024-01-25', '555-8718', '10:04:00', 'NOTARRIVED', 'GUIDEDGROUP', 'Yosemite'),
+ (73, 4961625, 1, 1, 30.0, 'traveler73@example.com', '2024-03-01', '555-3247', '18:38:00', 'CANCELED', 'SOLO', 'Mount Rainier'),
+ (74, 1348739, 2, 4, 120.0, 'traveler74@example.com', '2024-01-22', '555-9438', '09:00:00', 'PENDING', 'FAMILY', 'Yellow Stone'),
+ (75, 6770984, 3, 4, 120.0, 'traveler75@example.com', '2024-03-07', '555-7151', '11:35:00', 'NOTARRIVED', 'FAMILY', 'Yosemite'),
+ (76, 9564900, 1, 4, 120.0, 'traveler76@example.com', '2024-03-15', '555-5502', '09:00:00', 'CONFIRMED', 'FAMILY', 'Mount Rainier'),
+ (77, 1680237, 3, 1, 30.0, 'traveler77@example.com', '2024-03-23', '555-8597', '12:03:00', 'NOTARRIVED', 'SOLO', 'Yosemite'),
+ (78, 4732209, 3, 2, 60.0, 'traveler78@example.com', '2024-01-02', '555-3220', '13:14:00', 'PENDING', 'GUIDEDGROUP', 'Yosemite'),
+ (79, 2331806, 1, 1, 30.0, 'traveler79@example.com', '2024-01-12', '555-4278', '17:39:00', 'PENDING', 'SOLO', 'Mount Rainier'),
+ (80, 4280838, 1, 3, 90.0, 'traveler80@example.com', '2024-01-07', '555-5621', '12:44:00', 'CANCELED', 'FAMILY', 'Mount Rainier'),
+ (81, 3779385, 1, 1, 30.0, 'traveler81@example.com', '2024-01-16', '555-9675', '11:47:00', 'PENDING', 'SOLO', 'Mount Rainier'),
+ (82, 9171032, 1, 1, 30.0, 'traveler82@example.com', '2024-01-29', '555-9698', '17:55:00', 'CANCELED', 'SOLO', 'Mount Rainier'),
+ (83, 7063637, 1, 5, 150.0, 'traveler83@example.com', '2024-02-10', '555-8526', '10:28:00', 'CONFIRMED', 'GUIDEDGROUP', 'Mount Rainier'),
+ (84, 4465294, 2, 1, 30.0, 'traveler84@example.com', '2024-01-02', '555-4672', '12:14:00', 'CONFIRMED', 'SOLO', 'Yellow Stone'),
+ (85, 2828936, 3, 1, 30.0, 'traveler85@example.com', '2024-01-01', '555-1406', '10:18:00', 'NOTARRIVED', 'GUIDEDGROUP', 'Yosemite'),
+ (86, 6429105, 1, 5, 150.0, 'traveler86@example.com', '2024-01-19', '555-9392', '16:17:00', 'NOTARRIVED', 'FAMILY', 'Mount Rainier'),
+ (87, 8031916, 2, 4, 120.0, 'traveler87@example.com', '2024-03-12', '555-2006', '11:04:00', 'NOTARRIVED', 'FAMILY', 'Yellow Stone'),
+ (88, 3395760, 2, 1, 30.0, 'traveler88@example.com', '2024-02-21', '555-3411', '14:02:00', 'CONFIRMED', 'FAMILY', 'Yellow Stone'),
+ (89, 4832064, 2, 1, 30.0, 'traveler89@example.com', '2024-03-04', '555-4951', '15:35:00', 'CONFIRMED', 'SOLO', 'Yellow Stone'),
+ (90, 7339652, 1, 1, 30.0, 'traveler90@example.com', '2024-03-11', '555-5381', '14:24:00', 'PENDING', 'SOLO', 'Mount Rainier'),
+ (91, 5121746, 2, 1, 30.0, 'traveler91@example.com', '2024-02-17', '555-4103', '13:18:00', 'CONFIRMED', 'FAMILY', 'Yellow Stone'),
+ (92, 7807897, 2, 5, 150.0, 'traveler92@example.com', '2024-03-21', '555-8372', '10:58:00', 'PENDING', 'FAMILY', 'Yellow Stone'),
+ (93, 7345042, 1, 2, 60.0, 'traveler93@example.com', '2024-01-25', '555-4031', '16:25:00', 'CANCELED', 'GUIDEDGROUP', 'Mount Rainier'),
+ (94, 7394710, 2, 1, 30.0, 'traveler94@example.com', '2024-02-20', '555-4018', '18:38:00', 'PENDING', 'SOLO', 'Yellow Stone'),
+ (95, 5232357, 1, 2, 60.0, 'traveler95@example.com', '2024-01-31', '555-5265', '15:56:00', 'PENDING', 'GUIDEDGROUP', 'Mount Rainier'),
+ (96, 8170373, 3, 1, 30.0, 'traveler96@example.com', '2024-01-27', '555-8149', '09:44:00', 'CONFIRMED', 'SOLO', 'Yosemite'),
+ (97, 6993154, 2, 5, 150.0, 'traveler97@example.com', '2024-01-27', '555-2995', '16:15:00', 'NOTARRIVED', 'FAMILY', 'Yellow Stone'),
+ (98, 6739314, 3, 5, 150.0, 'traveler98@example.com', '2024-01-25', '555-7144', '16:46:00', 'PENDING', 'FAMILY', 'Yosemite'),
+ (99, 2421875, 1, 3, 90.0, 'traveler99@example.com', '2024-03-27', '555-8754', '16:15:00', 'NOTARRIVED', 'GUIDEDGROUP', 'Mount Rainier'),
+ (100, 3885380, 2, 4, 120.0, 'traveler100@example.com', '2024-01-28', '555-7175', '17:18:00', 'PENDING', 'GUIDEDGROUP', 'Yellow Stone');
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-01-03' WHERE `orderId` = 2;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-01-04' WHERE `orderId` = 3;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-01-05' WHERE `orderId` = 4;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-01-06' WHERE `orderId` = 5;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-01-08' WHERE `orderId` = 7;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-01-09' WHERE `orderId` = 8;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-01-11' WHERE `orderId` = 10;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-01-13' WHERE `orderId` = 12;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-01-14' WHERE `orderId` = 13;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-01-16' WHERE `orderId` = 15;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-01-17' WHERE `orderId` = 16;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-01-19' WHERE `orderId` = 18;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-01-21' WHERE `orderId` = 20;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-01-24' WHERE `orderId` = 23;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-01-26' WHERE `orderId` = 25;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-01-28' WHERE `orderId` = 27;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-01-29' WHERE `orderId` = 28;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-01-30' WHERE `orderId` = 29;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-02-01' WHERE `orderId` = 31;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-02-02' WHERE `orderId` = 32;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-02-03' WHERE `orderId` = 33;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-02-05' WHERE `orderId` = 35;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-02-06' WHERE `orderId` = 36;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-02-07' WHERE `orderId` = 37;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-02-10' WHERE `orderId` = 40;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-02-11' WHERE `orderId` = 41;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-02-14' WHERE `orderId` = 44;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-02-15' WHERE `orderId` = 45;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-02-17' WHERE `orderId` = 47;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-02-19' WHERE `orderId` = 49;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-02-20' WHERE `orderId` = 50;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-02-25' WHERE `orderId` = 55;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-02-26' WHERE `orderId` = 56;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-02-27' WHERE `orderId` = 57;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-02-28' WHERE `orderId` = 58;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-03-02' WHERE `orderId` = 61;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-03-03' WHERE `orderId` = 62;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-03-05' WHERE `orderId` = 64;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-03-07' WHERE `orderId` = 66;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-03-12' WHERE `orderId` = 71;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-03-14' WHERE `orderId` = 73;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-03-16' WHERE `orderId` = 75;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-03-17' WHERE `orderId` = 76;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-03-18' WHERE `orderId` = 77;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-03-19' WHERE `orderId` = 78;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-03-22' WHERE `orderId` = 81;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-03-23' WHERE `orderId` = 82;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-03-25' WHERE `orderId` = 84;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-03-29' WHERE `orderId` = 88;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-04-01' WHERE `orderId` = 91;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-04-02' WHERE `orderId` = 92;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-04-04' WHERE `orderId` = 94;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-04-05' WHERE `orderId` = 95;
+UPDATE `order` SET `orderStatus` = 'COMPLETED', `date` = '2024-04-06' WHERE `orderId` = 96;
 
 
-INSERT INTO `order` (orderId, travlerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder) VALUES
-(21, 121, 1, 3, 60.00, 'email21@example.com', '2024-07-01', '1234567810', '10:00:00', 'COMPLETED', 'FAMILY'),
-(22, 122, 1, 4, 80.00, 'email22@example.com', '2024-07-02', '1234567811', '11:00:00', 'COMPLETED', 'SOLO'),
-(23, 123, 1, 2, 40.00, 'email23@example.com', '2024-07-03', '1234567812', '12:00:00', 'COMPLETED', 'GUIDEDGROUP'),
-(24, 124, 1, 5, 100.00, 'email24@example.com', '2024-07-04', '1234567813', '13:00:00', 'COMPLETED', 'FAMILY'),
-(25, 125, 1, 3, 60.00, 'email25@example.com', '2024-07-05', '1234567814', '14:00:00', 'COMPLETED', 'SOLO'),
-(26, 126, 1, 4, 80.00, 'email26@example.com', '2024-07-06', '1234567815', '09:00:00', 'COMPLETED', 'GUIDEDGROUP'),
-(27, 127, 1, 2, 40.00, 'email27@example.com', '2024-07-07', '1234567816', '10:30:00', 'COMPLETED', 'FAMILY'),
-(28, 128, 1, 5, 100.00, 'email28@example.com', '2024-07-08', '1234567817', '11:30:00', 'COMPLETED', 'SOLO'),
-(29, 129, 1, 3, 60.00, 'email29@example.com', '2024-07-09', '1234567818', '12:30:00', 'COMPLETED', 'GUIDEDGROUP'),
-(30, 130, 1, 4, 80.00, 'email30@example.com', '2024-07-10', '1234567819', '13:30:00', 'COMPLETED', 'FAMILY'),
-(31, 131, 1, 2, 40.00, 'email31@example.com', '2024-07-11', '1234567820', '14:30:00', 'COMPLETED', 'SOLO'),
-(32, 132, 1, 5, 100.00, 'email32@example.com', '2024-07-12', '1234567821', '15:30:00', 'COMPLETED', 'GUIDEDGROUP'),
-(33, 133, 1, 3, 60.00, 'email33@example.com', '2024-07-13', '1234567822', '16:30:00', 'COMPLETED', 'FAMILY'),
-(34, 134, 1, 4, 80.00, 'email34@example.com', '2024-07-14', '1234567823', '09:45:00', 'COMPLETED', 'SOLO'),
-(35, 135, 1, 2, 40.00, 'email35@example.com', '2024-07-15', '1234567824', '10:45:00', 'COMPLETED', 'GUIDEDGROUP'),
-(36, 136, 1, 5, 100.00, 'email36@example.com', '2024-07-16', '1234567825', '11:45:00', 'COMPLETED', 'FAMILY'),
-(37, 137, 1, 3, 60.00, 'email37@example.com', '2024-07-17', '1234567826', '12:45:00', 'COMPLETED', 'SOLO'),
-(38, 138, 1, 4, 80.00, 'email38@example.com', '2024-07-18', '1234567827', '13:45:00', 'COMPLETED', 'GUIDEDGROUP'),
-(39, 139, 1, 2, 40.00, 'email39@example.com', '2024-07-19', '1234567828', '14:45:00', 'COMPLETED', 'FAMILY'),
-(40, 140, 1, 5, 100.00, 'email40@example.com', '2024-07-20', '1234567829', '15:45:00', 'COMPLETED', 'SOLO'),
-(41, 141, 1, 3, 60.00, 'email41@example.com', '2024-07-21', '1234567830', '16:45:00', 'COMPLETED', 'GUIDEDGROUP'),
-(42, 142, 1, 4, 80.00, 'email42@example.com', '2024-07-22', '1234567831', '09:00:00', 'COMPLETED', 'FAMILY'),
-(43, 143, 1, 2, 40.00, 'email43@example.com', '2024-07-23', '1234567832', '10:00:00', 'COMPLETED', 'SOLO'),
-(44, 144, 1, 5, 100.00, 'email44@example.com', '2024-07-24', '1234567833', '11:00:00', 'COMPLETED', 'GUIDEDGROUP'),
-(45, 145, 1, 3, 60.00, 'email45@example.com', '2024-07-25', '1234567834', '12:00:00', 'COMPLETED', 'FAMILY'),
-(46, 146, 1, 4, 80.00, 'email46@example.com', '2024-07-26', '1234567835', '13:00:00', 'COMPLETED', 'SOLO'),
-(47, 147, 1, 2, 40.00, 'email47@example.com', '2024-07-27', '1234567836', '14:00:00', 'COMPLETED', 'GUIDEDGROUP'),
-(48, 148, 1, 5, 100.00, 'email48@example.com', '2024-07-28', '1234567837', '15:00:00', 'COMPLETED', 'FAMILY'),
-(49, 149, 1, 3, 60.00, 'email49@example.com', '2024-07-29', '1234567838', '16:00:00', 'COMPLETED', 'SOLO'),
-(50, 150, 1, 4, 80.00, 'email50@example.com', '2024-07-30', '1234567839', '09:30:00', 'COMPLETED', 'GUIDEDGROUP');
-(51, 151, 2, 2, 40.00, 'email51@example.com', '2024-01-10', '1234567901', '09:00:00', 'COMPLETED', 'FAMILY'),
-(52, 152, 2, 3, 60.00, 'email52@example.com', '2024-02-15', '1234567902', '10:00:00', 'COMPLETED', 'SOLO'),
-(53, 153, 2, 4, 80.00, 'email53@example.com', '2024-03-20', '1234567903', '11:00:00', 'COMPLETED', 'GUIDEDGROUP'),
-(54, 154, 3, 1, 20.00, 'email54@example.com', '2024-04-25', '1234567904', '12:00:00', 'COMPLETED', 'FAMILY'),
-(55, 155, 3, 2, 40.00, 'email55@example.com', '2024-05-30', '1234567905', '13:00:00', 'COMPLETED', 'SOLO'),
-(56, 156, 3, 3, 60.00, 'email56@example.com', '2024-06-04', '1234567906', '14:00:00', 'COMPLETED', 'GUIDEDGROUP'),
-(57, 157, 4, 4, 80.00, 'email57@example.com', '2024-07-09', '1234567907', '15:00:00', 'COMPLETED', 'FAMILY'),
-(58, 158, 4, 5, 100.00, 'email58@example.com', '2024-08-14', '1234567908', '16:00:00', 'COMPLETED', 'SOLO'),
-(59, 159, 4, 2, 40.00, 'email59@example.com', '2024-09-19', '1234567909', '17:00:00', 'COMPLETED', 'GUIDEDGROUP'),
-(60, 160, 4, 3, 60.00, 'email60@example.com', '2024-10-24', '1234567910', '18:00:00', 'COMPLETED', 'FAMILY'),
-(61, 161, 1, 1, 20.00, 'email61@example.com', '2024-11-29', '1234567911', '08:00:00', 'COMPLETED', 'SOLO'),
-(62, 162, 1, 4, 80.00, 'email62@example.com', '2024-12-04', '1234567912', '09:30:00', 'COMPLETED', 'GUIDEDGROUP'),
-(63, 163, 2, 5, 100.00, 'email63@example.com', '2024-02-07', '1234567913', '10:30:00', 'COMPLETED', 'FAMILY'),
-(64, 164, 2, 2, 40.00, 'email64@example.com', '2024-03-14', '1234567914', '11:30:00', 'COMPLETED', 'SOLO'),
-(65, 165, 3, 3, 60.00, 'email65@example.com', '2024-04-21', '1234567915', '12:30:00', 'COMPLETED', 'GUIDEDGROUP'),
-(66, 166, 3, 4, 80.00, 'email66@example.com', '2024-05-28', '1234567916', '13:30:00', 'COMPLETED', 'FAMILY'),
-(67, 167, 4, 1, 20.00, 'email67@example.com', '2024-07-05', '1234567917', '14:30:00', 'COMPLETED', 'SOLO'),
-(68, 168, 4, 2, 40.00, 'email68@example.com', '2024-08-12', '1234567918', '15:30:00', 'COMPLETED', 'GUIDEDGROUP'),
-(69, 169, 1, 3, 60.00, 'email69@example.com', '2024-09-19', '1234567919', '16:30:00', 'COMPLETED', 'FAMILY'),
-(70, 170, 1, 4, 80.00, 'email70@example.com', '2024-10-27', '1234567920', '17:30:00', 'COMPLETED', 'SOLO'),
-(71, 171, 2, 5, 100.00, 'email71@example.com', '2024-12-05', '1234567921', '18:30:00', 'COMPLETED', 'GUIDEDGROUP'),
-(72, 172, 2, 1, 20.00, 'email72@example.com', '2024-01-12', '1234567922', '08:30:00', 'COMPLETED', 'FAMILY'),
-(73, 173, 3, 2, 40.00, 'email73@example.com', '2024-02-18', '1234567923', '09:45:00', 'COMPLETED', 'SOLO'),
-(74, 174, 3, 3, 60.00, 'email74@example.com', '2024-03-26', '1234567924', '10:45:00', 'COMPLETED', 'GUIDEDGROUP'),
-(75, 175, 4, 4, 80.00, 'email75@example.com', '2024-05-03', '1234567925', '11:45:00', 'COMPLETED', 'FAMILY'),
-(76, 176, 4, 1, 20.00, 'email76@example.com', '2024-06-10', '1234567926', '12:45:00', 'COMPLETED', 'SOLO'),
-(77, 177, 1, 2, 40.00, 'email77@example.com', '2024-07-17', '1234567927', '13:45:00', 'COMPLETED', 'GUIDEDGROUP'),
-(78, 178, 1, 3, 60.00, 'email78@example.com', '2024-08-23', '1234567928', '14:45:00', 'COMPLETED', 'FAMILY'),
-(79, 179, 2, 4, 80.00, 'email79@example.com', '2024-09-29', '1234567929', '15:45:00', 'COMPLETED', 'SOLO'),
-(80, 180, 2, 5, 100.00, 'email80@example.com', '2024-11-04', '1234567930', '16:45:00', 'COMPLETED', 'GUIDEDGROUP'),
-(81, 181, 3, 1, 20.00, 'email81@example.com', '2024-12-10', '1234567931', '17:45:00', 'COMPLETED', 'FAMILY'),
-(82, 182, 3, 2, 40.00, 'email82@example.com', '2024-01-15', '1234567932', '18:45:00', 'COMPLETED', 'SOLO'),
-(83, 183, 4, 3, 60.00, 'email83@example.com', '2024-02-20', '1234567933', '08:45:00', 'COMPLETED', 'GUIDEDGROUP'),
-(84, 184, 4, 4, 80.00, 'email84@example.com', '2024-03-27', '1234567934', '09:55:00', 'COMPLETED', 'FAMILY'),
-(85, 185, 1, 1, 20.00, 'email85@example.com', '2024-05-01', '1234567935', '10:55:00', 'COMPLETED', 'SOLO'),
-(86, 186, 1, 2, 40.00, 'email86@example.com', '2024-06-07', '1234567936', '11:55:00', 'COMPLETED', 'GUIDEDGROUP'),
-(87, 187, 2, 3, 60.00, 'email87@example.com', '2024-07-13', '1234567937', '12:55:00', 'COMPLETED', 'FAMILY'),
-(88, 188, 2, 4, 80.00, 'email88@example.com', '2024-08-18', '1234567938', '13:55:00', 'COMPLETED', 'SOLO'),
-(89, 189, 3, 5, 100.00, 'email89@example.com', '2024-09-23', '1234567939', '14:55:00', 'COMPLETED', 'GUIDEDGROUP'),
-(90, 190, 3, 1, 20.00, 'email90@example.com', '2024-10-28', '1234567940', '15:55:00', 'COMPLETED', 'FAMILY');
 SET foreign_key_checks = 1;
+
 
 UNLOCK TABLES;
 
