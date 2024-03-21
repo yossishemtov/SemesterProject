@@ -53,9 +53,11 @@ public class TravelerLoginController {
 		        // Get traveler data from the server
 		        Traveler TravelerFromServer = (Traveler) ClientController.data.getDataTransfered();
 		        Usermanager.setCurrentTraveler(TravelerFromServer);
-		       
+
+
 		        // if traveler has an order in the system
 		        if(TravelerFromServer instanceof Traveler) {
+		        	Usermanager.setNewTraveler(true);
 	        		//Open visitor screen if traveler is registered and not logged in
 		        	ClientServerMessage checkIfNotLoggedIn = new ClientServerMessage(TravelerFromServer, Operation.GET_TRAVELER_SIGNED);
 		        	ClientUI.clientControllerInstance.sendMessageToServer(checkIfNotLoggedIn);
