@@ -176,6 +176,7 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 							ClientUI.clientControllerInstance.sendMessageToServer(lastOrderFromServMessage);
 							Integer lastOrderNumber = (Integer) ClientUI.clientControllerInstance.getData().getDataTransfered() + 1;
 							
+							
 							//Creating new order
 							Float calculatedPrice = (float) (100*amountOfVisitors);
 							Order newUnorderedOrder = new Order(lastOrderNumber, travelerId, currentParkDetails.getParkNumber(), amountOfVisitors, calculatedPrice,
@@ -185,8 +186,10 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 							ClientServerMessage postUnorderedorder = new ClientServerMessage(newUnorderedOrder, Operation.POST_TRAVLER_ORDER);
 							ClientUI.clientControllerInstance.sendMessageToServer(postUnorderedorder);
 							
+							//calculate time of exit from park
+							LocalTime timeToExit = LocalTime.now().plusHours(currentParkDetails.getStaytime());
 							//Post new visit in visits table
-							createAndPostToServerVisitForUnordered(newUnorderedOrder);
+							createAndPostToServerVisitForUnordered(newUnorderedOrder, timeToExit);
 							
 							if(ClientUI.clientControllerInstance.getData().getFlag() == true) {
 								
@@ -232,10 +235,9 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 	}
 	
 	//Create a new visit in the visit table
-	public void createAndPostToServerVisitForUnordered(Order unorderedOrder) {
+	public void createAndPostToServerVisitForUnordered(Order unorderedOrder, LocalTime timeOfExit) {
 		LocalDate currentDate = unorderedOrder.getDate();
 		LocalTime timeOfEnter = unorderedOrder.getVisitTime();
-		LocalTime timeOfExit = unorderedOrder.getVisitTime();
 		Integer parkNumberOfVisit = unorderedOrder.getParkNumber();
 		Integer orderIdOfVisit = unorderedOrder.getOrderId();
 		

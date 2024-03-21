@@ -111,9 +111,13 @@ public class ParkWorkerEntrenceControlController {
 	    			//Create a new visit in the visit table
 	    			LocalDate currentDate = orderToEnterOrExit.getDate();
 	    			LocalTime timeOfEnter = orderToEnterOrExit.getVisitTime();
-	    			LocalTime timeOfExit = orderToEnterOrExit.getVisitTime();
 	    			Integer parkNumberOfVisit = orderToEnterOrExit.getParkNumber();
 	    			Integer orderIdOfVisit = orderToEnterOrExit.getOrderId();
+	    			
+	    			//calculate exitTime
+	    			Integer timeOfStayOfPark = receivedParkInformationFromServer.getStaytime();
+	    			LocalTime timeOfExit = orderToEnterOrExit.getVisitTime().plusHours(timeOfStayOfPark);
+	    			
 	    			
 	    			//Post the visit to the db
 	    			Visit createVisitForEntrence = new Visit(currentDate, timeOfEnter, timeOfExit, parkNumberOfVisit, orderIdOfVisit);
@@ -169,6 +173,7 @@ public class ParkWorkerEntrenceControlController {
 	    			ClientServerMessage changeParkUnorderedVisitors = new ClientServerMessage(receivedParkInformationFromServer, Operation.PATCH_PARK_UNORDEREDVISITS);
 	    			ClientUI.clientControllerInstance.sendMessageToServer(changeParkUnorderedVisitors);
 	        	}
+	        	
 	        	
 	        	//Change state of Order to COMPLETED
     			ClientServerMessage changeStateCompleted = new ClientServerMessage(orderToEnterOrExit, Operation.PATCH_ORDER_STATUS_TO_COMPLETED);
@@ -231,6 +236,8 @@ public class ParkWorkerEntrenceControlController {
 			noOrderIdExists.showAndWait();
 		}
     }
+    
+    
     
     
 }
