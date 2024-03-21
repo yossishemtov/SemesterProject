@@ -104,7 +104,7 @@ public class ParkWorkerEntrenceControlController {
 		        	Integer visitorsWithAppendedWelcomedVisitors = receivedParkInformationFromServer.getCurrentVisitors() + orderToEnterOrExit.getAmountOfVisitors();
 		        	receivedParkInformationFromServer.setCurrentVisitors(visitorsWithAppendedWelcomedVisitors);
 		        	
-	    			ClientServerMessage changeAmountOfVisitors = new ClientServerMessage(receivedParkInformationFromServer, Operation.PATCH_PARK_VISITORS_APPEND);
+	    			ClientServerMessage changeAmountOfVisitors = new ClientServerMessage(receivedParkInformationFromServer, Operation.PATCH_PARK_VISITORS);
 	    			ClientUI.clientControllerInstance.sendMessageToServer(changeAmountOfVisitors);
 	    			orderToEnterOrExit.setOrderType("INPARK");
 	    			
@@ -175,7 +175,7 @@ public class ParkWorkerEntrenceControlController {
     			ClientUI.clientControllerInstance.sendMessageToServer(changeStateCompleted);
 	        	
     			//Change amount of visitors and unordered visitors for unordered visit of park
-	        	ClientServerMessage changeAmountOfVisitors = new ClientServerMessage(receivedParkInformationFromServer, Operation.PATCH_PARK_VISITORS_APPEND);
+	        	ClientServerMessage changeAmountOfVisitors = new ClientServerMessage(receivedParkInformationFromServer, Operation.PATCH_PARK_VISITORS);
     			ClientUI.clientControllerInstance.sendMessageToServer(changeAmountOfVisitors);
     			
     			//Parse indormation about updated order to the screen
@@ -206,30 +206,30 @@ public class ParkWorkerEntrenceControlController {
     	
     	
     	Order receivedOrderFromServer = (Order) ClientUI.clientControllerInstance.getData().getDataTransfered();
-	if(receivedOrderFromServer != null) {
-		orderToEnterOrExit = receivedOrderFromServer;
-		
-		//Receiving information to parse to the screen
-		Integer orderIdReceived = receivedOrderFromServer.getOrderId();
-		Integer travelerIdReceived = receivedOrderFromServer.getVisitorId();
-		Integer amountOfVisitorsReceived = receivedOrderFromServer.getAmountOfVisitors();
-		LocalDate dateReceived = receivedOrderFromServer.getDate();
-		LocalTime timeReceived = receivedOrderFromServer.getVisitTime();
-		String orderStatus = receivedOrderFromServer.getOrderStatus();
-
-		//Sets the labels placeholders to the recived information
-		orderIdLabel.setText(Integer.toString(orderIdReceived));
-		TravelerIdLabel.setText(Integer.toString(travelerIdReceived));
-		amountOfVisitorsLabel.setText(Integer.toString(amountOfVisitorsReceived));
-		dateLabel.setText(dateReceived.toString());
-		visitTimeLabel.setText(timeReceived.toString());
-		orderStatusLabel.setText(orderStatus);
-		
-	}else {
-		//If no order exists for today or for the park
-		Alerts noOrderIdExists = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "No such order exists for your park for today!");
-		noOrderIdExists.showAndWait();
-	}
+		if(receivedOrderFromServer != null) {
+			orderToEnterOrExit = receivedOrderFromServer;
+			
+			//Receiving information to parse to the screen
+			Integer orderIdReceived = receivedOrderFromServer.getOrderId();
+			Integer travelerIdReceived = receivedOrderFromServer.getVisitorId();
+			Integer amountOfVisitorsReceived = receivedOrderFromServer.getAmountOfVisitors();
+			LocalDate dateReceived = receivedOrderFromServer.getDate();
+			LocalTime timeReceived = receivedOrderFromServer.getVisitTime();
+			String orderStatus = receivedOrderFromServer.getOrderStatus();
+	
+			//Sets the labels placeholders to the recived information
+			orderIdLabel.setText(Integer.toString(orderIdReceived));
+			TravelerIdLabel.setText(Integer.toString(travelerIdReceived));
+			amountOfVisitorsLabel.setText(Integer.toString(amountOfVisitorsReceived));
+			dateLabel.setText(dateReceived.toString());
+			visitTimeLabel.setText(timeReceived.toString());
+			orderStatusLabel.setText(orderStatus);
+			
+		}else {
+			//If no order exists for today or for the park
+			Alerts noOrderIdExists = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "No such order exists for your park for today!");
+			noOrderIdExists.showAndWait();
+		}
     }
     
     

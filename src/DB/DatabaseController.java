@@ -1194,32 +1194,6 @@ public class DatabaseController {
 	}
 
 	/**
-	 * Change park current amount of visitors
-	 * 
-	 * @param Park object with new amount of visitors
-	 * @return True if success or False if not
-	 */
-	public Boolean patchParkVisitorsNumberAppend(Park parkToAppend) {
-		// Append the visitors to the park currentvisitors
-
-		String query = "UPDATE `park` SET currentVisitors = ? WHERE parkNumber = ?";
-
-		try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
-			pstmt.setInt(1, parkToAppend.getCurrentVisitors());
-			pstmt.setInt(2, parkToAppend.getParkNumber());
-
-			int affectedRows = pstmt.executeUpdate();
-
-			// Check if the update was successful
-			return affectedRows > 0;
-
-		} catch (SQLException e) {
-			System.err.println("SQLException: " + e.getMessage());
-			return false;
-		}
-	}
-
-	/**
 	 * Insert a visit based on provided Visit object
 	 * 
 	 * @param Visit object to insert

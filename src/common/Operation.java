@@ -25,6 +25,7 @@ public abstract class Operation {
     public final static String GET_GENERALPARKWORKER_SIGNED = "Get status of signed in or out of generalparkworker";
     public final static String GET_TRAVELER_SIGNED = "Get status of signed in or out of traveler";
     public final static String GET_AMOUNT_OF_VISITORS_FOR_GENERALPARKWORKER = "Get amount of visitors for park worker";
+    public final static String GET_ALL_WAITING_LISTS = "Get all waiting Lists";
 
     public final static String GET_ORDER_BY_ID_AND_PARK_NUMBER_DATE = "Get order information by id and park number and date";
 
@@ -58,10 +59,11 @@ public abstract class Operation {
     public final static String PATCH_TRAVELER_SIGNEDIN = "Patch traveler to signed in";
     public final static String PATCH_TRAVELER_SIGNEDOUT = "Patch traveler to signed out";
     public final static String PATCH_ORDER_STATUS_TO_INPARK = "Patch an order to be INPARK status";
-    public final static String PATCH_PARK_VISITORS_APPEND = "Patch a park visitors number - append";
-    public final static String GET_ALL_WAITING_LISTS = "Get all waiting Lists";
-    public static final String DELETE_EXISTING_WAITING_LIST = "Delete an existing waiting List";
+    public final static String PATCH_PARK_VISITORS = "Patch a park visitors number - append";
+    
+    
     // DELETE COMMANDS
+    public static final String DELETE_EXISTING_WAITING_LIST = "Delete an existing waiting List";
     public final static String DELETE_EXISTING_ORDER = "Delete an existing order";
     public final static String RESPONSE_ALL_ORDER = "server send all order";
     

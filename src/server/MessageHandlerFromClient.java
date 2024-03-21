@@ -374,8 +374,6 @@ public class MessageHandlerFromClient {
 
 			break;
 
-	
-
 		case Operation.POST_TRAVLER_ORDER: // Emanuel
 			// Placeholder for posting a new traveler order
 
@@ -526,11 +524,11 @@ public class MessageHandlerFromClient {
 			client.sendToClient(messageFromClient);
 			break;
 
-		case Operation.PATCH_PARK_VISITORS_APPEND:
+		case Operation.PATCH_PARK_VISITORS:
 			// Append the number of visitors to the park
 			Park parkToAppendVisitors = (Park) messageFromClient.getDataTransfered();
 
-			Boolean isChangesAmountSucessful = dbControllerInstance.patchParkVisitorsNumberAppend(parkToAppendVisitors);
+			Boolean isChangesAmountSucessful = dbControllerInstance.patchParkVisitorsNumber(parkToAppendVisitors);
 
 			if (isChangesAmountSucessful) {
 				messageFromClient.setflagTrue();

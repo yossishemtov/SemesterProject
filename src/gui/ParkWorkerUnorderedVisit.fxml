@@ -44,5 +44,9 @@
       </JFXButton>
       <Text layoutX="186.0" layoutY="393.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price:" />
       <Label fx:id="priceLabel" layoutX="224.0" layoutY="380.0" text="Label" />
+      <Text layoutX="477.0" layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name:" />
+      <Text layoutX="477.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name:" />
+      <JFXTextField fx:id="firstNameField" layoutX="554.0" layoutY="159.0" prefHeight="27.0" prefWidth="106.0" />
+      <JFXTextField fx:id="lastNameField" layoutX="554.0" layoutY="202.0" prefHeight="27.0" prefWidth="106.0" />
    </children>
 </Pane>
