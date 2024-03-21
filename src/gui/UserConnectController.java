@@ -18,13 +18,15 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXTextField;
+
 public class UserConnectController implements Initializable {
 	
 	    @FXML
-	    private TextField IpAddressField;
-
+	    private JFXTextField IpAddressField;
+	
 	    @FXML
-	    private TextField portAddressField;
+	    private JFXTextField portAddressField;
 
 	    @FXML
 	    private Button connectBtn;
@@ -52,7 +54,7 @@ public class UserConnectController implements Initializable {
 			try {			
 				Parent root = FXMLLoader.load(getClass().getResource("userConnectingFrame.fxml"));
 				Scene scene = new Scene(root);
-				NavigationManager.setStyle(root, "/styles/styles.css");
+//				NavigationManager.setStyleScene(scene, "/styles/styles.css");
 				primaryStage.setTitle("User Connection");
 				primaryStage.setScene(scene);
 				primaryStage.show();

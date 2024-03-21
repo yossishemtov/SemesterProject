@@ -77,25 +77,21 @@ public class NavigationManager {
         borderPane.setCenter(page); // Set the loaded page in the center of the BorderPane
     }
     
-    
-    /**
-     * Sets the CSS stylesheet for the specified root node.
-     * 
-     * @param root The root node of the scene graph to apply the CSS stylesheet to.
-     * @param path The path to the CSS file.
-     */
-    public static void setStyle(Parent root, String path) {
-        // Check if the root node is not null
-        if (root != null) {
-            // Add the CSS stylesheet to the root node's stylesheets
-            root.getStylesheets().add(NavigationManager.class.getResource(path).toExternalForm());
-        } else {
-            // Log an error message if the root node is null
-            System.err.println("Root node is null. Cannot set style.");
-        }
-    }
-
-
-
-
 }
+//    /**
+//     * Sets the CSS stylesheet for the specified root node.
+//     * 
+//     * @param root The root node of the scene graph to apply the CSS stylesheet to.
+//     * @param path The path to the CSS file.
+//     */
+//    public static void setStyleScene(Scene scene, String path) {
+//        // Check if the root node is not null
+//        if (scene != null) {
+//            // Add the CSS stylesheet to the root node's stylesheets
+//        	scene.getStylesheets().add(NavigationManager.class.getResource(path).toExternalForm());
+//        } else {
+//            // Log an error message if the root node is null
+//            System.err.println("Root node is null. Cannot set style.");
+//        }
+//    }
+
