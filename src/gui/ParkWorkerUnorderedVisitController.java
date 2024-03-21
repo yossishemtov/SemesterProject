@@ -69,21 +69,7 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// Initialize the display of amount of allowed unordered visits 
 		
-		//Receive amount of allowed unordered visits
-		Integer currentPark = Usermanager.getCurrentWorker().getWorksAtPark();
-		ClientServerMessage getParkAllowedUnorderedVists = new ClientServerMessage(currentPark, Operation.GET_PARK_UNORDEREDVISITS);
-		ClientUI.clientControllerInstance.sendMessageToServer(getParkAllowedUnorderedVists);
 		
-		//Received allowedUnorderedVists from the server
-		Integer allowedUnorderedVists = (Integer) ClientUI.clientControllerInstance.getData().getDataTransfered();
-		allowedVisitorsLabel.setText(Integer.toString(allowedUnorderedVists));
-		
-		//Get park details (needed to calculate cost of entrance)
-		ClientServerMessage parkVisitingDetails = new ClientServerMessage(currentPark, Operation.GET_PARK_DETAILS);
-		ClientUI.clientControllerInstance.sendMessageToServer(parkVisitingDetails);
-		
-		//Received Park Information
-		currentParkDetails = (Park) ClientUI.clientControllerInstance.getData().getDataTransfered();
 	}
 	
 	public boolean chooseEntrencePlan(ActionEvent click) throws Exception{
@@ -138,14 +124,30 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 			Alerts visitorsValidate = InputValidation.validateFamilyVisitors(amountOfVisitors.toString());
 			Alerts emailValidation = InputValidation.validateEmail(visitorEmail);
 			Alerts validPhoneNuber = InputValidation.validatePhoneNumber(phoneNumber);
+			Alerts checkName = InputValidation.validateNameOrLastname(firstNameVisitor);
+			Alerts checkLastName = InputValidation.validateNameOrLastname(lastNameVisitor);
 			
-			//Calculate price according to number of visitors
+			
+			//validates name and lastname 
+			if(!checkName.getAlertType().toString().equals("INFORMATION") || !checkName.getAlertType().toString().equals("INFORMATION")) {
+				checkName.showAndWait();
+				return;
+			}
+
+			
+			
 			
 			//validates id of traveler
 			if(alertID.getAlertType().toString().equals("INFORMATION")) {
 				
 				//Validates amount of visitors
 				if(visitorsValidate.getAlertType().toString().equals("INFORMATION")) {
+					
+					//Check if can perform unordered visit (if unordered visits amount in db is less than amount of visitors in order)
+					if((numberOfAllowedUnorderedVisits() < amountOfVisitors)) {
+						Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "This amount of visitors is more than allowed unordered visitors!");
+						return;
+					}
 					
 					//Validate email address
 					if(emailValidation.getAlertType().toString().equals("INFORMATION")) {
@@ -224,6 +226,9 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 			somethingWentWrong.showAndWait();
 		}
 		
+		//Updates number of allowed unordered visits to the screen
+		updateScreenAllowedUnorderedVisits();
+		
 	}
 	
 	//Create a new visit in the visit table
@@ -267,5 +272,34 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 		ClientUI.clientControllerInstance.sendMessageToServer(changeAmountOfVisitors);
 	}
     
+	//returnes the number of Unordered visits allowed
+	public Integer numberOfAllowedUnorderedVisits() {
+		Integer currentPark = Usermanager.getCurrentWorker().getWorksAtPark();
+		ClientServerMessage getParkAllowedUnorderedVists = new ClientServerMessage(currentPark, Operation.GET_PARK_UNORDEREDVISITS);
+		ClientUI.clientControllerInstance.sendMessageToServer(getParkAllowedUnorderedVists);
+		
+		//Received allowedUnorderedVists from the server
+		Integer allowedUnorderedVists = (Integer) ClientUI.clientControllerInstance.getData().getDataTransfered();
+		allowedVisitorsLabel.setText(Integer.toString(allowedUnorderedVists));
+
+		return allowedUnorderedVists;
+	}
+	
+	//Updates the amount of allowed unordered visits in the screen
+	public void updateScreenAllowedUnorderedVisits() {
+		//Receive amount of allowed unordered visits
+				Integer currentPark = Usermanager.getCurrentWorker().getWorksAtPark();
+				
+				//Received allowedUnorderedVists from the server
+				Integer allowedUnorderedVists = numberOfAllowedUnorderedVisits();
+				allowedVisitorsLabel.setText(Integer.toString(allowedUnorderedVists));
+				
+				//Get park details (needed to calculate cost of entrance)
+				ClientServerMessage parkVisitingDetails = new ClientServerMessage(currentPark, Operation.GET_PARK_DETAILS);
+				ClientUI.clientControllerInstance.sendMessageToServer(parkVisitingDetails);
+				
+				//Received Park Information
+				currentParkDetails = (Park) ClientUI.clientControllerInstance.getData().getDataTransfered();
+	}
     
 }

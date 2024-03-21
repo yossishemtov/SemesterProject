@@ -686,7 +686,7 @@ public class DatabaseController {
 			ps.setObject(3, java.sql.Date.valueOf(receivedOrderId.getDate()));
 			ResultSet rs = ps.executeQuery(); // Use executeQuery for SELECT statements
 
-			if (rs.next()) { // Use if instead of while if you expect or require a single result
+			if (rs.next()) { 
 
 				// Parsing special object such of type localDate and LocalTime
 				LocalDate orderDate = rs.getObject("date", LocalDate.class);
@@ -694,18 +694,10 @@ public class DatabaseController {
 				float price = rs.getFloat("price");
 
 				orderInformation = new Order(rs.getInt("orderId"), rs.getInt("travlerId"), rs.getInt("parkNumber"),
-						rs.getInt("amountOfVisitors"), price, rs.getString("visitorEmail"), orderDate, visitTime, // Assuming
-																													// you
-																													// have
-																													// a
-																													// column
-																													// for
-																													// gap
-																													// in
-																													// your
-																													// DB
+						rs.getInt("amountOfVisitors"), price, rs.getString("visitorEmail"), orderDate, visitTime,
 						rs.getString("orderStatus"), // Assuming managerID is stored directly as an integer
 						rs.getString("typeOfOrder"), rs.getString("TelephoneNumber"), null);
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

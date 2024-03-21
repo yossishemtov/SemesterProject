@@ -183,7 +183,7 @@ public class ParkWorkerEntrenceControlController {
 	        	Alerts successExiting = new Alerts(Alerts.AlertType.CONFIRMATION, "Success","", "Thank you for visiting our park :)");
 	        	successExiting.showAndWait();
     		}else {
-    			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Order is not in state INPARK");
+    			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Order is not in state INPARK or UNORDERED");
     			somethingWentWrong.showAndWait();
     		}
     }else {
