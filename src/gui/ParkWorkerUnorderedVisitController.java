@@ -190,7 +190,7 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 							//Creating new order
 							Float calculatedPrice = (float) (100*amountOfVisitors);
 							Order newUnorderedOrder = new Order(lastOrderNumber, travelerId, currentParkDetails.getParkNumber(), amountOfVisitors, calculatedPrice,
-									visitorEmail,LocalDate.now(), LocalTime.now(), orderStatus, typeOfOrder, phoneNumber,null);
+									visitorEmail,LocalDate.now(), LocalTime.now(), orderStatus, typeOfOrder, phoneNumber,currentParkDetails.getName());
 							
 							//Posting new order in the server
 							ClientServerMessage postUnorderedorder = new ClientServerMessage(newUnorderedOrder, Operation.POST_TRAVLER_ORDER);
