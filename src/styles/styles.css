@@ -1,50 +1,47 @@
 /* styles.css */
 
 /* Styling for TextFields */
-.text-field {
-    -fx-background-color: #f2f2f2;
-    -fx-border-color: #ccc;
-    -fx-border-width: 1px;
-    -fx-border-radius: 5px;
-    -fx-padding: 5px;
-}
+
 
 /* Styling for Text elements */
-.text {
+/* .text {
     -fx-font-size: 14px;
     -fx-fill: #333;
-}
+} */
 
 /* Styling for Buttons */
 .button {
-    -fx-background-color: #4CAF50; /* Green */
-    -fx-border-color: #4CAF50;
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-padding: 10px 20px;
-    -fx-border-radius: 5px;
+    -fx-background-color: #2f3136; 
+    -fx-border-color: #b3ffb3;
+    -fx-text-fill: #b3ffb3;
+    -fx-background-radius: 20.0px; 
+    -fx-border-radius: 20.0px;
+    -fx-padding: 10px 15px;
 }
 
 /* Hover effect for Buttons */
 .button:hover {
-    -fx-background-color: #45a049; /* Darker Green */
-    -fx-border-color: #45a049;
+    -fx-background-color: #b3ffb3; 
+    -fx-border-color: #b3ffb3;
+    -fx-text-fill: #2f3136;
+    -fx-background-radius: 20.0px; 
+    -fx-border-radius: 20.0px;
+    -fx-padding: 10px 15px;
 }
 
-/* Styling for Exit Button */
-#exitBtn {
-    -fx-background-color: #f44336; /* Red */
-    -fx-border-color: #f44336;
-}
 
-/* Hover effect for Exit Button */
-#exitBtn:hover {
-    -fx-background-color: #d32f2f; /* Darker Red */
-    -fx-border-color: #d32f2f;
-}
 
-.background-pane {
-    -fx-background-image: url("../images/background.jpg");
-    -fx-background-size: cover;
+
+.root {
+	-fx-background-color: #2f3136; 
+    /* -fx-background-image: url('../common/images/abstract-blur-green-nature.jpg'); */
     -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+}
+
+
+
+.text-field {
+    -fx-prompt-text-fill: #b3ffb3;
+    -fx-text-fill: #b3ffb3;
 }

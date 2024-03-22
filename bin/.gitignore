@@ -1,8 +1,5 @@
-/DB/
-/client/
-/clientEntities/
-/common/
-/entities/
-/gui/
-/server/
 /styles/
+/common/
+/server/
+/client/
+/gui/

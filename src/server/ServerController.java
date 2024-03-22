@@ -11,6 +11,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
+
+import client.NavigationManager;
 import common.Alerts;
 import entities.ClientConnectionStatus;
 import javafx.application.Platform;
@@ -38,57 +42,64 @@ import javafx.stage.Stage;
 public class ServerController {
 
 	BackEndServer sv;
-	private Map<String, ClientConnectionStatus> statusMap = new HashMap<>();
+//	private Map<String, ClientConnectionStatus> statusMap = new HashMap<>();
+	
+	 @FXML
+    private JFXTextField PortTxt;
 
-	@FXML
-	private TextField PortTxt, DBUserNameTxt, DBNameTxt;
+    @FXML
+    private JFXTextField DBUserNameTxt;
 
-	// ip address textFields
-	@FXML
-	private TextField ip1, ip2, ip3, ip4;
+    @FXML
+    private JFXTextField PasswordTxt;
 
-	private List<TextField> txtFields = new ArrayList<>();
-	@FXML
-	private Label serverMessagesUi;
+    @FXML
+    private VBox TableViewContainer;
 
-	@FXML
-	private Label serverMsgTxt, PortErrorLabel, ipErrorLabel, passwordErrorLabel, usernameErrorLabel;
+    @FXML
+    private TableView<ClientConnectionStatus> connStatusTable;
 
-	@FXML
-	private Label dbNameErrorLabel;
+    @FXML
+    private TableColumn<ClientConnectionStatus, String> IPCol;
 
-	@FXML
-	private PasswordField PasswordTxt;
+    @FXML
+    private TableColumn<ClientConnectionStatus, String> HostCol;
 
-	@FXML
-	private Button startserverBtn, stopServerBtn;
+    @FXML
+    private TableColumn<ClientConnectionStatus, String> StatusCol;
 
-	@FXML
-	private VBox TableViewContainer;
+    @FXML
+    private TableColumn<ClientConnectionStatus, String> StTimeCol;
 
-	@FXML
-	private ImageView closeAppBtn;
+    @FXML
+    private TextArea logTextArea;
 
-	@FXML
-	private TableView<ClientConnectionStatus> connStatusTable;
+    @FXML
+    private JFXButton startserverBtn;
 
-	@FXML
-	private TableColumn<ClientConnectionStatus, String> IPCol;
+    @FXML
+    private JFXButton StopserverBtn;
+    
+    @FXML
+    private ImageView logoImage;
+    
 
-	@FXML
-	private TableColumn<ClientConnectionStatus, String> HostCol;
+//	private List<TextField> txtFields = new ArrayList<>();
+//	@FXML
+//	private Label serverMessagesUi;
 
-	@FXML
-	private TextArea logTextArea;
+//	@FXML
+//	private Label serverMsgTxt, PortErrorLabel, ipErrorLabel, passwordErrorLabel, usernameErrorLabel;
 
-	@FXML
-	private TableColumn<ClientConnectionStatus, String> StatusCol;
+//	@FXML
+//	private Label dbNameErrorLabel;
 
-	@FXML
-	private TableColumn<ClientConnectionStatus, String> StTimeCol;
+//
+//	@FXML
+//	private ImageView closeAppBtn;
 
-	@FXML
-	private Circle serverStartedCircle;
+//	@FXML
+//	private Circle serverStartedCircle;
 
 	@FXML
 	void serveStopAction(ActionEvent event) {
@@ -107,8 +118,9 @@ public class ServerController {
 			FXMLLoader serverGui = new FXMLLoader(getClass().getResource("ServerGUI.fxml"));
 			Parent parent = serverGui.load();
 			ServerController control = serverGui.getController();
-
+			
 			Scene scene = new Scene(parent);
+//			NavigationManager.setStyleScene(scene, "/styles/styles.css");
 			primaryStage.setScene(scene);
 			primaryStage.setOnCloseRequest(e -> control.closeConnection());
 			primaryStage.setTitle("GoNature Server");
@@ -165,10 +177,13 @@ public class ServerController {
 			try {
 				// Start server
 				sv.listen();
-				System.out.println("server start listen");
+				logTextArea.setText("server start listen");
+//				System.out.println("server start listen");
 
 			} catch (IOException e) {
-				System.out.println("Server fail.");
+				
+				logTextArea.setText("Server fail.");
+//				System.out.println("Server fail.");
 				e.printStackTrace();
 			}
 		} 
