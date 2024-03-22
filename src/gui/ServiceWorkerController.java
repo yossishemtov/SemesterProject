@@ -52,7 +52,18 @@ public class ServiceWorkerController implements Initializable {
 	 public void initialize(URL location, ResourceBundle resources) {
 		 // get the current loggedin service worker
 		 GeneralParkWorker serviceWorker = Usermanager.getCurrentWorker();
+		 loadProfileImmediately();
 	 }
+	 
+	   private void loadProfileImmediately() {
+	        try {
+	        	viewProfile(null); 
+	        } 
+	         catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    }
 	 
 
 	 public void viewProfile(ActionEvent click) throws Exception{ 

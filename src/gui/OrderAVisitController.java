@@ -146,6 +146,8 @@ public class OrderAVisitController implements Initializable {
 			Pattern.CASE_INSENSITIVE);
 	public static final Pattern visitorAmountPattern = Pattern.compile("^[0-9]{0,3}$", Pattern.CASE_INSENSITIVE);
 	public static final Pattern phonePattern = Pattern.compile("^[0-9]{10}$", Pattern.CASE_INSENSITIVE);
+	public static final Pattern fullNamePattern = Pattern.compile("^[a-zA-Z ]+$", Pattern.CASE_INSENSITIVE);
+
 
 	
 	public Pane getPaneOrder() {
@@ -184,6 +186,7 @@ public class OrderAVisitController implements Initializable {
      * @param location The location used to resolve relative paths for the root object, or null if the location is not known.
      * @param resources The resources used to localize the root object, or null if the root object was not localized.
      */
+	@SuppressWarnings("static-access")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		Locale.setDefault(Locale.ENGLISH); //English-style formatting
@@ -207,7 +210,25 @@ public class OrderAVisitController implements Initializable {
 			WaitingListController.setSetDateFromWaitList(0);
 		}
 		
-		
+		if(!(NewTraveler.GetisNewTraveler())) {
+			Traveler traveler = NewTraveler.getCurrentTraveler();
+			String fullName = traveler.getFirstName() + " " + traveler.getLastName();
+			txtName.setText(fullName);
+			txtID.setText(traveler.getId()+"");
+			txtEmail.setText(traveler.getEmail());
+			txtPhone.setText(traveler.getPhoneNum().replace("-",""));
+			txtName.setDisable(true);
+			txtID.setDisable(true);
+			txtEmail.setDisable(true);
+			txtPhone.setDisable(true);
+			Back.setVisible(false);
+		}
+		else {
+			Traveler traveler = NewTraveler.getCurrentTraveler();
+			txtID.setText(traveler.getId()+"");
+			txtID.setDisable(true);
+
+		}
 		
 	}
 	
@@ -217,6 +238,7 @@ public class OrderAVisitController implements Initializable {
      * @param event The action event.
      * @throws IOException If an I/O error occurs.
      */
+	@SuppressWarnings("static-access")
 	@FXML
 	private void SubmitOrderButton(ActionEvent event) throws IOException {
 		/** We will continue to summary only if the input is valid */
@@ -234,14 +256,14 @@ public class OrderAVisitController implements Initializable {
 				
 				/**Insert new traveler to DB if needed*/
 				if(NewTraveler.GetisNewTraveler()) {
-			//		String[] travelerName = txtName.getText().split(" ");
-			//		String travelerFirstName = travelerName[0];
-			//		String travelerLastName = travelerName.length == 1 ? "" : travelerName[1];
-			//		traveler = new Traveler(order.getVisitorId(), travelerFirstName, travelerLastName, 
-			//				order.getVisitorEmail(), order.getTelephoneNumber(), 0 , 0);
+					String[] travelerName = txtName.getText().split(" ");
+					String travelerFirstName = travelerName[0];
+					String travelerLastName = travelerName.length == 1 ? "" : travelerName[1];
+					traveler = new Traveler(order.getVisitorId(), travelerFirstName, travelerLastName, 
+						order.getVisitorEmail(), order.getTelephoneNumber(), 0 , 0);
 					
-					//ClientServerMessage<?> AddTraveler = new ClientServerMessage<>(traveler, Operation.POST_NEW_TRAVLER);
-					//ClientUI.clientControllerInstance.sendMessageToServer(AddTraveler);
+					ClientServerMessage<?> AddTraveler = new ClientServerMessage<>(traveler, Operation.POST_NEW_TRAVLER);
+					ClientUI.clientControllerInstance.sendMessageToServer(AddTraveler);
 				}
 				
 				if(CheckIfOrderValid()) {
@@ -258,7 +280,6 @@ public class OrderAVisitController implements Initializable {
 						loader.setController(controller);
 						loader.load();
 						controller.setTimeLabel(order.getDate() + ", " + order.getVisitTime());
-						controller.setTraveler(traveler);
 						Parent p = loader.getRoot();
 						newStage.initModality(Modality.WINDOW_MODAL);
 						newStage.getIcons().add(new Image("common/images/Icon.png"));
@@ -449,6 +470,7 @@ public class OrderAVisitController implements Initializable {
 	 This function checks if the given input is valid
 	 */
 	private boolean isValidInput() {
+		String fullName = txtName.getText();
 		String visitorsNumber = txtVisitorsNum.getText();
 		String email = txtEmail.getText();
 		String parkName = new String();
@@ -460,10 +482,15 @@ public class OrderAVisitController implements Initializable {
 			if(TimeComboBox.getValue() != null)
 				Time = TimeComboBox.getValue().toString();
 
-		if (visitorsNumber.isEmpty() || email.isEmpty() || parkName.isEmpty() || TravelerId.isEmpty()
+		if (fullName.isEmpty() || visitorsNumber.isEmpty() || email.isEmpty() || parkName.isEmpty() || TravelerId.isEmpty()
 				|| Phone.isEmpty() || txtDate.getValue()==null || Time.isEmpty()) {
 			new Alerts(AlertType.ERROR, "Bad Input", "Bad Input", "Please all the required fields").showAndWait();
 		} 
+		
+		else if (fullName.split(" ").length != 2) {
+			new Alerts(AlertType.ERROR, "Bad Input", "Bad Input",
+					"Please enter first name + last name").showAndWait();
+		}
 		else if (!checkCurrentTime())
 			new Alerts(AlertType.ERROR, "Bad Input", "Bad Date Input", "Please select future date").showAndWait();
 		else if(TravelerId.length() != 7)
@@ -473,10 +500,20 @@ public class OrderAVisitController implements Initializable {
 			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
 					"Group order cannot exceed 15 visitors").showAndWait();
 		}
-//		else if(OrderComboBox.getValue()=="GUIDEDGROUP" && Usermanager.getCurrentTraveler().getIsGroupGuide() == 1) {
-//        	new Alerts(AlertType.ERROR, "Group guide", "Group guide",
-//        			"You're not group guide, order as SOLO or FAMILY").showAndWait();
-//		} בנתיים לא עובד
+		else if(OrderComboBox.getValue()=="GUIDEDGROUP" && Usermanager.getCurrentTraveler().getIsGroupGuide() == 0) {
+        	new Alerts(AlertType.ERROR, "Group guide", "Group guide",
+        			"You're not group guide, order as SOLO or FAMILY").showAndWait();
+		} 
+		else if(OrderComboBox.getValue()=="SOLO" && OrderComboBox.getValue()=="FAMILY"
+				&& Usermanager.getCurrentTraveler().getIsGroupGuide() == 1) {
+        	new Alerts(AlertType.ERROR, "Group guide", "Group guide",
+        			"You're a group guide, order as a Group guide").showAndWait();
+		} 
+		else if (!validInput("fullName", fullName)) {
+			new Alerts(AlertType.ERROR, "Bad Input", "Bad Input",
+					"Name must contain only letters").showAndWait();
+		}
+		
 		else if (Integer.parseInt(visitorsNumber) < 1) {
 			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
 					"Visitor's number must be positive number and atleast 1. ").showAndWait();
@@ -502,6 +539,7 @@ public class OrderAVisitController implements Initializable {
 			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Phone",
 					"Insert a valid Phone number please").showAndWait();
 		}
+		
 		else if (!validInput("AmountVisitor", txtVisitorsNum.getText())) {
 			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Visitors amount",
 					"Insert a valid visitors amount please").showAndWait();
@@ -574,6 +612,9 @@ public class OrderAVisitController implements Initializable {
 			matcher = visitorAmountPattern.matcher(txt);
 		} else if (nameMethod.equals("Phone")) {
 			matcher = phonePattern.matcher(txt);
+		}
+		else if (nameMethod.equals("fullName")) {
+			matcher = fullNamePattern.matcher(txt);
 		}
 		return matcher.find();
 	} 

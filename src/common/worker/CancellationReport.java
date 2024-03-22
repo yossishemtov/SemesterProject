@@ -26,7 +26,7 @@ public class CancellationReport implements Serializable {
         this.dailyUnfulfilledOrders = new HashMap<>(dailyUnfulfilledOrders);
     }
 
-	// Record a cancellation
+	// Record a cancellation 
 	public void recordCancellation(int dayOfMonth) {
 		dailyCancellations.merge(dayOfMonth, 1, Integer::sum);
 	}

@@ -62,18 +62,22 @@ public class DeparmentManegerController implements Initializable {
 	@FXML
 	private JFXButton logoutBtn;
 
-	GeneralParkWorker departmentManager;
+
 
 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// Cast the current worker to DepartmentManager if possible
-		departmentManager = Usermanager.getCurrentWorker();
-
-		
+		loadProfileImmediately();
 
 	}
+	   private void loadProfileImmediately() {
+	        try {
+	            loadProfile(null); 
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
 
 	
 

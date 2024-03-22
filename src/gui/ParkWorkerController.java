@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -71,6 +72,34 @@ public class ParkWorkerController implements Initializable {
     @FXML
     private VBox vbox;
 
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		//Render user information when coming to the parkWorkerFrame screen
+		
+		try {
+			loadProfileImmediately();
+			//Parsing worker information to the screen
+			GeneralParkWorker loggedInWorker = Usermanager.getCurrentWorker();
+		
+		}catch(Exception e) {
+			
+			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when loading user information");
+			somethingWentWrong.showAndWait();
+		
+		}
+		}
+
+	   private void loadProfileImmediately() {
+	        try {
+	        	loadProfileOfWorker(null); 
+	        } 
+	         catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    }
+
+
     
 public void loadProfileOfWorker(ActionEvent click) throws Exception{
 	//Loading profile of the current park worker
@@ -81,7 +110,7 @@ public void loadProfileOfWorker(ActionEvent click) throws Exception{
 			somethingWentWrong.showAndWait();
 		 e.printStackTrace();
 	 }
-    }
+    } 
 
     
     
@@ -140,20 +169,7 @@ public void loadProfileOfWorker(ActionEvent click) throws Exception{
     }
 
 
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		//Render user information when coming to the parkWorkerFrame screen
-		
-		try {
-			//Parsing worker information to the screen
-			GeneralParkWorker loggedInWorker = Usermanager.getCurrentWorker();
-		
-		}catch(Exception e) {
-			
-			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when loading user information");
-			somethingWentWrong.showAndWait();
-		}
 			
 	}
 
-}
+

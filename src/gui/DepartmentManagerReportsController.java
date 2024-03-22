@@ -285,7 +285,6 @@ public class DepartmentManagerReportsController implements Initializable {
 					}
 
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					System.out.println("error Usage Report for Month: " + selectedMonthString);
 
 					e.printStackTrace();

@@ -20,7 +20,7 @@ public class ClientConnectionStatus implements Comparable<ClientConnectionStatus
 
     // Getters
     public String getIp() { return ip; }
-    public String getHost() { return host; }
+    public String getHost() { return host; } 
     public String getStatus() { return status; }
     public String getStartTime() { return startTime; }
     public LocalDateTime getConnectionTime() { return connectionTime; }

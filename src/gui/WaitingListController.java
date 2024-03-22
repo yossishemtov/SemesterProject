@@ -13,27 +13,22 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXListView;
 
 import client.ClientUI;
-import common.Alerts;
 import common.ClientServerMessage;
 import common.GetInstance;
 import common.Operation;
 import common.Order;
 import common.OrderChecker;
-import common.Traveler;
 import common.WaitingList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 
@@ -50,6 +45,9 @@ public class WaitingListController implements Initializable {
 	private Button btnWaiting;
 
     @FXML
+    private Button Okay;
+    
+    @FXML
     private Label Timetxt;
     
 	@FXML
@@ -62,11 +60,30 @@ public class WaitingListController implements Initializable {
     private JFXListView<String> DatesToPick;
     
     @FXML
+    private Pane WaitingSucc;
+
+    @FXML
+    private Label summaryPark;
+
+    @FXML
+    private Label summaryDate;
+
+    @FXML
+    private Label summaryTime;
+
+    @FXML
+    private Label summaryVisitors;
+
+    @FXML
+    private Label summaryPrice;
+
+    @FXML
+    private Label placeList;
+    
+    @FXML
     private AnchorPane loadingPane;
 	
     private Order order;
-	private Traveler traveler; // For email,msgs usage
-	private static boolean isNewOrder;
 	private static ArrayList<Object> anotherDates = new ArrayList<>();
 	private static int setDateFromWaitList = 0;
 
@@ -101,6 +118,7 @@ public class WaitingListController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// Hide other elements initially
 	    DatesToPick.setVisible(false);
+    	WaitingSucc.setVisible(false);
 	    // Show loading pane
 	    loadingPane.setVisible(true);
 	    Task<Boolean> task = new Task<Boolean>() {
@@ -132,59 +150,60 @@ public class WaitingListController implements Initializable {
 	@FXML
 	void EnterWaitingList(ActionEvent event) throws IOException {
 
-		ClientServerMessage<?> OrderAttempt = new ClientServerMessage<>(order, Operation.POST_TRAVLER_ORDER);
-		ClientUI.clientControllerInstance.sendMessageToServer(OrderAttempt);
-	    ClientServerMessage<?> isNewOrderMsg = ClientUI.clientControllerInstance.getData();
-    	isNewOrder = (Boolean) isNewOrderMsg.getFlag();
-    	
-		if (isNewOrder) { //Checking if the traveler has an order already
-//			ClientServerMessage<?> TravelerID = new ClientServerMessage<>(traveler.getId(), Operation.GET_RECENT_ID_TRAVELER);
-//			ClientUI.clientControllerInstance.sendMessageToServer(TravelerID);
-//		    ClientServerMessage<?> TravelerMsg = ClientUI.clientControllerInstance.getData();
-//	    	recentOrder = (Order) TravelerMsg.getDataTransfered();
+	
+		String visitDate = order.getDate().toString();
+		String visitTime = order.getVisitTime().toString();
+		String parkName = order.getParkName();
+	    Integer waitingId = 1;
 
-		//	if (recentOrder != null) {
-			// מה שבהערות למעלה זה עבור שליחת הודעות ואימיילים
-			String visitDate = order.getDate().toString();
-			String visitTime = order.getVisitTime().toString();
-			String parkName = order.getParkName();
-		    Integer waitingId = 1;
-
-			ClientServerMessage<?> getLast = new ClientServerMessage<>(null, Operation.GET_LAST_WAITINGLIST);
-			ClientUI.clientControllerInstance.sendMessageToServer(getLast);
-			ClientServerMessage<?> waitingIdMsg = ClientUI.clientControllerInstance.getData();
-			waitingId = (Integer) waitingIdMsg.getDataTransfered();
-			if (waitingId != null) {
-				waitingId++;
-			}
-			
-			ClientServerMessage<?> findPlace = new ClientServerMessage<>(new ArrayList<String>
-			(Arrays.asList(parkName, visitDate, visitTime)), Operation.FIND_PLACE_IN_WAITING_LIST);
-			ClientUI.clientControllerInstance.sendMessageToServer(findPlace);
-		    ClientServerMessage<?> placeMsg = ClientUI.clientControllerInstance.getData();
-		    Integer rightPlace = (Integer) placeMsg.getDataTransfered();
-
-	    	
-			WaitingList waiting = new WaitingList(order.getOrderId(), order.getVisitorId(),
-					order.getParkNumber(), order.getAmountOfVisitors(), order.getPrice(),
-					order.getVisitorEmail(), order.getDate(), order.getVisitTime(), order.getOrderStatus(),
-					order.getTypeOfOrder(), order.getTelephoneNumber(), order.getParkName(), waitingId, rightPlace);
-
-			ClientServerMessage<?> waitingAttempt = new ClientServerMessage<>(waiting, Operation.POST_NEW_WAITING_LIST);
-			ClientUI.clientControllerInstance.sendMessageToServer(waitingAttempt);
-		    ClientServerMessage<?> isNewWaitingMsg = ClientUI.clientControllerInstance.getData();
-	    	Boolean isNewWaiting = (Boolean) isNewWaitingMsg.getFlag();
-			
-	    	if(isNewWaiting) {
-	        	new Alerts(AlertType.CONFIRMATION, "Waiting List", "Successfully entered waiting list",
-	        			"You're successfully entered waiting list ").showAndWait();
-	        	Stage stage = (Stage) btnWaiting.getScene().getWindow();
-	    		Parent root = FXMLLoader.load( getClass().getResource("/gui/HomePageFrame.fxml")); // תחליטו אתם לאן
-	    		stage.setScene(new Scene(root));
-	    	}
-
-			}
+		ClientServerMessage<?> getLast = new ClientServerMessage<>(null, Operation.GET_LAST_WAITINGLIST);
+		ClientUI.clientControllerInstance.sendMessageToServer(getLast);
+		ClientServerMessage<?> waitingIdMsg = ClientUI.clientControllerInstance.getData();
+		waitingId = (Integer) waitingIdMsg.getDataTransfered();
+		if (waitingId != null) {
+			waitingId++;
 		}
+		
+		ClientServerMessage<?> findPlace = new ClientServerMessage<>(new ArrayList<String>
+		(Arrays.asList(parkName, visitDate, visitTime)), Operation.FIND_PLACE_IN_WAITING_LIST);
+		ClientUI.clientControllerInstance.sendMessageToServer(findPlace);
+	    ClientServerMessage<?> placeMsg = ClientUI.clientControllerInstance.getData();
+	    Integer rightPlace = (Integer) placeMsg.getDataTransfered();
+
+    	
+		WaitingList waiting = new WaitingList(order.getOrderId(), order.getVisitorId(),
+				order.getParkNumber(), order.getAmountOfVisitors(), order.getPrice(),
+				order.getVisitorEmail(), order.getDate(), order.getVisitTime(), order.getOrderStatus(),
+				order.getTypeOfOrder(), order.getTelephoneNumber(), order.getParkName(), waitingId, rightPlace);
+
+		ClientServerMessage<?> waitingAttempt = new ClientServerMessage<>(waiting, Operation.POST_NEW_WAITING_LIST);
+		ClientUI.clientControllerInstance.sendMessageToServer(waitingAttempt);
+	    ClientServerMessage<?> isNewWaitingMsg = ClientUI.clientControllerInstance.getData();
+    	Boolean isNewWaiting = (Boolean) isNewWaitingMsg.getFlag();
+		
+    	if(isNewWaiting) {
+    		this.summaryPark.setText(order.getParkName());
+    		this.summaryDate.setText(order.getDate().toString());
+    		this.summaryTime.setText(order.getVisitTime().toString());
+    		this.summaryVisitors.setText(order.getAmountOfVisitors()+"");
+    		this.summaryPrice.setText(order.getPrice()+"");
+    		this.placeList.setText(waiting.getPlaceInList()+"");
+    		WaitingSucc.setVisible(true);
+
+    	}
+
+	}
+	
+
+	@FXML
+	void OkButton(ActionEvent event) throws IOException { 
+		Stage stage = (Stage) Okay.getScene().getWindow();
+	    stage.close(); // Close the current stage
+
+	    // Enable the OrderAVisit pane
+	    OrderAVisitController orderAVisitController = GetInstance.getInstance().getOrderC();
+	    orderAVisitController.getPaneOrder().setDisable(false);
+	}
 
 	/**
      * Retrieves alternative dates for the waiting list.
@@ -270,13 +289,6 @@ public class WaitingListController implements Initializable {
 		this.order = order;
 	}
 
-	/**
-     * Sets the traveler for the waiting list.
-     * @param traveler The traveler to set.
-     */
-	public void setTraveler(Traveler traveler) {
-		this.traveler = traveler;
-	}
 
 
 

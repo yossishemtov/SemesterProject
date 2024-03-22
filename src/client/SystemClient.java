@@ -4,10 +4,10 @@ import java.io.IOException;
 import server.BackEndServer;
 import java.util.ArrayList;
 
-import clientEntities.Reservation;
+
 import common.Alerts;
 import common.ClientServerMessage;
-import common.DisplayIF;
+
 import common.Operation;
 import common.Usermanager;
 import javafx.application.Platform;
@@ -74,9 +74,9 @@ public class SystemClient extends AbstractClient{
 		  awaitResponse = true;
 		  
 		//Send the message to the server and waiting for a response
-	    try
+	    try 
 		    {
-		    	sendToServer(messageToServer);
+		    	sendToServer(messageToServer); 
 		    	
 		    	while (awaitResponse) {
 					try {

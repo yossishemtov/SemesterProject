@@ -30,7 +30,7 @@ import javafx.stage.WindowEvent;
  * This is the main screen of the park manager
  *
  */
-public class ParkManagerController {
+public class ParkManagerController  implements Initializable {
 
 	@FXML
 	protected BorderPane borderPane;
@@ -61,6 +61,22 @@ public class ParkManagerController {
 
 	@FXML
 	private JFXButton RequeststatusBth;
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		loadProfileImmediately();
+
+	}
+	
+
+   private void loadProfileImmediately() {
+        try {
+            loadProfile(null); 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 	@FXML
 	void loadRequeststatus(MouseEvent event) throws IOException {
@@ -97,7 +113,7 @@ public class ParkManagerController {
 	void logOut(MouseEvent event) {
 		try {
 			if (Usermanager.getCurrentWorker() != null) {
-				ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentWorker(),
+				ClientServerMessage<?> requestToLogout = new ClientServerMessage(Usermanager.getCurrentWorker(),
 						Operation.PATCH_GENERALPARKWORKER_SIGNEDOUT);
 				ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
 

@@ -19,8 +19,6 @@ import common.Usermanager;
 import client.NavigationManager;
 import common.Message;
 
-
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,125 +30,129 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
-
-
 public class TravelerFrameController implements Initializable {
-	
+
 	@FXML
-    private BorderPane pane;
+	private BorderPane pane;
 
-    @FXML
-    private AnchorPane topBorder; 
+	@FXML
+	private AnchorPane topBorder;
 
-    @FXML
-    private Label userLabel;
+	@FXML
+	private Label userLabel;
 
-    @FXML
+	@FXML
 
-    private JFXButton viewOrdersbutton;
-    
-    @FXML
+	private JFXButton viewOrdersbutton;
 
-    private StackPane leftBorder;
+	@FXML
 
-    @FXML
-    private JFXButton travelerProfile;
+	private StackPane leftBorder;
 
-    @FXML
-    private JFXButton orderBtn;
+	@FXML
+	private JFXButton travelerProfile;
 
-    @FXML
-    private JFXButton waitingListBtn;
+	@FXML
+	private JFXButton orderBtn;
 
-    @FXML
-    private JFXButton messages;
+	@FXML
+	private JFXButton waitingListBtn;
 
-    @FXML
-    private JFXButton logoutBtn;
+	@FXML
+	private JFXButton messages;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-    	Traveler currentTraveler = Usermanager.getCurrentTraveler();
+	@FXML
+	private JFXButton logoutBtn;
 
-    }
-    
-    @FXML
-    public void travelerProfile(ActionEvent event) throws Exception {
-    	try {
-    		NavigationManager.openPageInCenter(pane,"Profile.fxml");
-    	}  catch(Exception e) {
-			 System.out.print("Something went wrong while trying view service traveler profile, check stack trace");
-			 e.printStackTrace();
-		 }
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		Traveler currentTraveler = Usermanager.getCurrentTraveler();
+		loadProfileImmediately();
 
-    }
-    
-    @FXML
-    public void orderBtn(ActionEvent event) throws Exception {
-    	try {
-    		NavigationManager.openPageInCenter(pane, "OrderVisit.fxml");
-    	} catch(Exception e) {
-			 System.out.print("Something went wrong while clicking on order a visit button, check stack trace");
-			 e.printStackTrace();
-    	}
+	}
 
-    }
-    
-    public void viewOrdersbutton(ActionEvent event) throws Exception {
-    	try {
-    		NavigationManager.openPageInCenter(pane, "TravelerOrdersFrame.fxml");
-    	} catch(Exception e) {
-			 System.out.print("Something went wrong while clicking on view orders button, check stack trace");
-			 e.printStackTrace();
-    	}
+	private void loadProfileImmediately() {
+		try {
+			travelerProfile(null);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
-    }
-    
-    @FXML
-    public void waitingListBtn(ActionEvent event) throws Exception {
-    	try {
-    		NavigationManager.openPageInCenter(pane, "TravelerWaitingLists.fxml");
-    	} catch(Exception e) {
-			 System.out.print("Something went wrong while clicking on view waiting list button, check stack trace");
-			 e.printStackTrace();
-    	}
-    }
-    
-    @FXML
-    public void messages(ActionEvent event) throws Exception {
-    	try {
-    		NavigationManager.openPageInCenter(pane, "TravelerMessages.fxml");
-    	} catch(Exception e) {
-			 System.out.print("Something went wrong while clicking on view messages button, check stack trace");
-			 e.printStackTrace();
-    	}
-    }
-    
-    @FXML
-    public void logoutBtn(ActionEvent event) throws Exception {
-    	try {
+	@FXML
+	public void travelerProfile(ActionEvent event) throws Exception {
+		try {
+			NavigationManager.openPageInCenter(pane, "Profile.fxml");
+		} catch (Exception e) {
+			System.out.print("Something went wrong while trying view service traveler profile, check stack trace");
+			e.printStackTrace();
+		}
 
-    		
-    		if(Usermanager.getCurrentTraveler() != null) {
-				ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentTraveler(), Operation.PATCH_TRAVELER_SIGNEDOUT);
+	}
+
+	@FXML
+	public void orderBtn(ActionEvent event) throws Exception {
+		try {
+			NavigationManager.openPageInCenter(pane, "OrderVisit.fxml");
+		} catch (Exception e) {
+			System.out.print("Something went wrong while clicking on order a visit button, check stack trace");
+			e.printStackTrace();
+		}
+
+	}
+
+	public void viewOrdersbutton(ActionEvent event) throws Exception {
+		try {
+			NavigationManager.openPageInCenter(pane, "TravelerOrdersFrame.fxml");
+		} catch (Exception e) {
+			System.out.print("Something went wrong while clicking on view orders button, check stack trace");
+			e.printStackTrace();
+		}
+
+	}
+
+	@FXML
+	public void waitingListBtn(ActionEvent event) throws Exception {
+		try {
+			NavigationManager.openPageInCenter(pane, "TravelerWaitingLists.fxml");
+		} catch (Exception e) {
+			System.out.print("Something went wrong while clicking on view waiting list button, check stack trace");
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	public void messages(ActionEvent event) throws Exception {
+		try {
+			NavigationManager.openPageInCenter(pane, "TravelerMessages.fxml");
+		} catch (Exception e) {
+			System.out.print("Something went wrong while clicking on view messages button, check stack trace");
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	public void logoutBtn(ActionEvent event) throws Exception {
+		try {
+
+			if (Usermanager.getCurrentTraveler() != null) {
+				ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentTraveler(),
+						Operation.PATCH_TRAVELER_SIGNEDOUT);
 				ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
-				
+
 			}
-    		
 
 			NavigationManager.openPage("HomePageFrame.fxml", event, "User Menu", true);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 
-			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when trying to return to main menu");
+			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
+					"Something went wrong when trying to return to main menu");
 			somethingWentWrong.showAndWait();
 		}
-    }
-    
-   
-
-	    
+	}
 
 	public void orderVisit(ActionEvent click) throws Exception {
 
@@ -158,49 +160,42 @@ public class TravelerFrameController implements Initializable {
 
 	}
 
-
-
 	public void viewWaitingList(ActionEvent click) throws Exception {
 
 		NavigationManager.openPage("WaitingListFrame.fxml", click, "Waiting list", true);
 
 	}
 
-
 	public void exit(ActionEvent click) throws Exception {
-		//Exit button, logs out the traveler without going to main menu
+		// Exit button, logs out the traveler without going to main menu
 		try {
-			 
-			if(Usermanager.getCurrentTraveler() != null) {
-				ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentTraveler(), Operation.PATCH_TRAVELER_SIGNEDOUT);
+
+			if (Usermanager.getCurrentTraveler() != null) {
+				ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentTraveler(),
+						Operation.PATCH_TRAVELER_SIGNEDOUT);
 				ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
-				
+
 			}
 			NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true);
-			
-		}catch(Exception e) {
-			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when trying to return to main menu");
+
+		} catch (Exception e) {
+			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
+					"Something went wrong when trying to return to main menu");
 			somethingWentWrong.showAndWait();
 		}
-		
+
 	}
-		
 
-		
-    
-    
-    public void viewOrders(ActionEvent click) throws Exception {
+	public void viewOrders(ActionEvent click) throws Exception {
 
-        try {
-            NavigationManager.openPage("OrdersFrame.fxml", click, "Orders", true);
-        } catch(Exception e) {
-             System.out.print("Something went wrong while clicking on view messages button, check stack trace");
-             e.printStackTrace();
-        }
-    }
-   
-	    
-	    
+		try {
+			NavigationManager.openPage("OrdersFrame.fxml", click, "Orders", true);
+		} catch (Exception e) {
+			System.out.print("Something went wrong while clicking on view messages button, check stack trace");
+			e.printStackTrace();
+		}
+	}
+
 //	    public void editOrderBtn(ActionEvent click) throws Exception {
 //	    	
 //	    	
@@ -214,8 +209,6 @@ public class TravelerFrameController implements Initializable {
 //		        }
 //		    }
 //	    }
-
-
 
 //	public void viewMessages(ActionEvent click) throws Exception {
 
@@ -238,6 +231,5 @@ public class TravelerFrameController implements Initializable {
 //		}
 //
 //		messagesTextArea.setText(messagesText.toString());
-
 
 }
