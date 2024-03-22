@@ -190,7 +190,7 @@ public class ServerController {
 		StTimeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getStartTime()));
 		PortTxt.setText("5555");
 		DBUserNameTxt.setText("root");
-		PasswordTxt.setText("Joss102010");
+		PasswordTxt.setText("root");
 		ObservableList<ClientConnectionStatus> connectionStatuses = FXCollections.observableArrayList();
 		connStatusTable.setItems(connectionStatuses);
 
