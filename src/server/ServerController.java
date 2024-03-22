@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import DB.DatabaseController;
+import DB.MySqlConnector;
 import common.Alerts;
 import entities.ClientConnectionStatus;
 import javafx.application.Platform;
@@ -39,6 +41,8 @@ public class ServerController {
 
 	BackEndServer sv;
 	private Map<String, ClientConnectionStatus> statusMap = new HashMap<>();
+    private NotifyThread notifyThread;
+    private MySqlConnector connectionForThread;
 
 	@FXML
 	private TextField PortTxt, DBUserNameTxt, DBNameTxt;
@@ -161,9 +165,13 @@ public class ServerController {
 
 		if (isVaiildLogin()) {
 			sv = new BackEndServer(port, this, dbUserName, dbPass);
-
 			try {
 				// Start server
+				connectionForThread = new MySqlConnector(dbUserName,dbPass);
+				notifyThread = new NotifyThread(connectionForThread.getDbConnection()); // You may need to pass any required parameters to the constructor
+		        Thread thread = new Thread(notifyThread);
+		        thread.setDaemon(true); // Set the thread as daemon so that it stops when the application exits
+		        thread.start();
 				sv.listen();
 				System.out.println("server start listen");
 

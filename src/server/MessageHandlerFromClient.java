@@ -815,6 +815,18 @@ public class MessageHandlerFromClient {
 			
 			client.sendToClient(messageFromClient);
 			break;
+			
+		case Operation.GET_STATUS_PENDING_EMAIL: // emanuel
+			ArrayList<Order> orderList = dbControllerInstance.getPendingEmailOrders();
+
+			// Create a message to send to the client
+			ClientServerMessage<?> orderListMsg = new ClientServerMessage<>(orderList,
+					Operation.GET_STATUS_PENDING_EMAIL);
+
+			// Send the message to the client
+			client.sendToClient(orderListMsg);
+			break;
+			
 
 		default:
 			System.out.println("default");

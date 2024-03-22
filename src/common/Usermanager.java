@@ -15,7 +15,7 @@ public class Usermanager implements Serializable {
     // Flags to indicate whether a worker or traveler is connected
     private static boolean isWorkerConnected = false;
     private static boolean isTravelerConnected = false;	
-	private static boolean isNewTraveler=false;
+	private static boolean isNewTraveler;
 
 
 	

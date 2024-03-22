@@ -57,7 +57,7 @@ public class TravelerLoginController {
 
 		        // if traveler has an order in the system
 		        if(TravelerFromServer instanceof Traveler) {
-		        	Usermanager.setNewTraveler(true);
+		        	Usermanager.setNewTraveler(false);
 	        		//Open visitor screen if traveler is registered and not logged in
 		        	ClientServerMessage checkIfNotLoggedIn = new ClientServerMessage(TravelerFromServer, Operation.GET_TRAVELER_SIGNED);
 		        	ClientUI.clientControllerInstance.sendMessageToServer(checkIfNotLoggedIn);
@@ -80,8 +80,10 @@ public class TravelerLoginController {
 		        else {
 		        	// if traveler does not have an order in the system
 		        	if (TravelerFromServer == null) {
+				        TryLoginVistor = new Traveler(Integer.parseInt(visitorID), null, null, null, null, 0,1);
+				        Usermanager.setCurrentTraveler(TryLoginVistor);
 		        		// open order a visit screen 
-		        		Usermanager.setNewTraveler(false);
+		        		Usermanager.setNewTraveler(true);
 		        		NavigationManager.openPage("OrderVisit.fxml", click, "order A visit Screen", true);
 		        	}	
 		        }

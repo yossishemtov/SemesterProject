@@ -20,6 +20,7 @@ public class Order implements Serializable {
     private status orderStatus;
     private typeOfOrder orderType;
 
+
     public enum status {
 
 		PENDING, NOTARRIVED, INPARK, CONFIRMED, CANCELED, COMPLETED, WAITING, PENDING_EMAIL_SENT, WAITING_HAS_SPOT
@@ -166,4 +167,5 @@ public class Order implements Serializable {
 	public void setParkName(String parkName) {
 		this.parkName = parkName;
 	}
+
 }

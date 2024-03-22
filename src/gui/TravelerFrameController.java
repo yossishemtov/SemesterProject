@@ -10,11 +10,14 @@ import client.InputValidation;
 import common.Traveler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Alert.AlertType;
 import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
+import common.Order;
 import common.Usermanager;
 import client.NavigationManager;
 import common.Message;
@@ -24,6 +27,9 @@ import common.Message;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javax.swing.JOptionPane;
+
 import com.jfoenix.controls.JFXButton;
 
 import javafx.fxml.Initializable;
@@ -71,6 +77,29 @@ public class TravelerFrameController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     	Traveler currentTraveler = Usermanager.getCurrentTraveler();
+    	
+    	ClientServerMessage<?> findPending = new ClientServerMessage<>(null, Operation.GET_STATUS_PENDING_EMAIL);
+		ClientUI.clientControllerInstance.sendMessageToServer(findPending);
+	    ClientServerMessage<?> pendingMsg = ClientUI.clientControllerInstance.getData();
+	    ArrayList<Order> pendingOrders = (ArrayList<Order>) pendingMsg.getDataTransfered();
+	    for (Order order : pendingOrders) {
+	    	if(currentTraveler.getId().equals(order.getVisitorId())) {
+	    		String parkName = order.getParkName();
+	    	    String orderDate = order.getDate().toString();
+	    	    String orderTime = order.getVisitTime().toString();
+	    	    int option = JOptionPane.showConfirmDialog(null, "Your order at " + parkName + " on " + orderDate + " at " + orderTime + " has been confirmed. Would you like to see more details?", "Order Confirmed", JOptionPane.YES_NO_OPTION);
+	    	    
+	    	    if (option == JOptionPane.YES_OPTION) {
+	    	        // Show more details about the confirmed order
+	    	        // You can customize this according to your requirements, such as opening a new window with order details
+	    	        // For simplicity, let's display a message dialog with order details
+	    	        String message = "Park: " + parkName + "\nDate: " + orderDate + "\nTime: " + orderTime;
+	    	        JOptionPane.showMessageDialog(null, message, "Order Details", JOptionPane.INFORMATION_MESSAGE);
+	    	        
+	    	    }
+	    	}
+
+	    }
 
     }
     
@@ -83,6 +112,14 @@ public class TravelerFrameController implements Initializable {
 			 e.printStackTrace();
 		 }
 
+    }
+    
+
+
+    // Method to display a cancellation message
+    private void showCancellationMessage() {
+    	new Alerts(AlertType.WARNING, "Cancellation", "Cancellation",
+				"Your visit has been cancelled.").showAndWait();
     }
     
     @FXML

@@ -24,8 +24,8 @@ public class OrderChecker {
 
 
 		String visitDate = order.getDate().toString();
-		String startTime = timeToCheck.minusHours(estimatedStayTime).toString();
-		String endTime = timeToCheck.plusHours(estimatedStayTime).toString();
+		String startTime = timeToCheck.minusHours(estimatedStayTime-1).toString();
+		String endTime = timeToCheck.plusHours(estimatedStayTime-1).toString();
 		
 		ClientServerMessage<?> findDates = new ClientServerMessage<>(new ArrayList<String>
 		(Arrays.asList(parkId, visitDate, startTime, endTime)), Operation.FIND_ORDERS_WITHIN_DATES);
@@ -38,9 +38,7 @@ public class OrderChecker {
 			numberOfVisitors += ord.getAmountOfVisitors();
 		}
 
-		if (numberOfVisitors + order.getAmountOfVisitors() >= park.getMaxVisitors()
-				) {
-
+		if (numberOfVisitors + order.getAmountOfVisitors() >= park.getMaxVisitors()) {
 			return false;
 		}
 

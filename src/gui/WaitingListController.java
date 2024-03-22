@@ -13,24 +13,18 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXListView;
 
 import client.ClientUI;
-import common.Alerts;
 import common.ClientServerMessage;
 import common.GetInstance;
 import common.Operation;
 import common.Order;
 import common.OrderChecker;
-import common.Traveler;
 import common.WaitingList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -90,7 +84,6 @@ public class WaitingListController implements Initializable {
     private AnchorPane loadingPane;
 	
     private Order order;
-	private static boolean isNewOrder;
 	private static ArrayList<Object> anotherDates = new ArrayList<>();
 	private static int setDateFromWaitList = 0;
 

@@ -210,7 +210,7 @@ public class OrderAVisitController implements Initializable {
 			WaitingListController.setSetDateFromWaitList(0);
 		}
 		
-		if(NewTraveler.GetisNewTraveler()) {
+		if(!(NewTraveler.GetisNewTraveler())) {
 			Traveler traveler = NewTraveler.getCurrentTraveler();
 			String fullName = traveler.getFirstName() + " " + traveler.getLastName();
 			txtName.setText(fullName);
@@ -221,6 +221,12 @@ public class OrderAVisitController implements Initializable {
 			txtID.setDisable(true);
 			txtEmail.setDisable(true);
 			txtPhone.setDisable(true);
+			Back.setVisible(false);
+		}
+		else {
+			Traveler traveler = NewTraveler.getCurrentTraveler();
+			txtID.setText(traveler.getId()+"");
+			txtID.setDisable(true);
 
 		}
 		
@@ -249,7 +255,7 @@ public class OrderAVisitController implements Initializable {
 			if (btnSubmit == event.getSource()) { 
 				
 				/**Insert new traveler to DB if needed*/
-				if(!(NewTraveler.GetisNewTraveler())) {
+				if(NewTraveler.GetisNewTraveler()) {
 					String[] travelerName = txtName.getText().split(" ");
 					String travelerFirstName = travelerName[0];
 					String travelerLastName = travelerName.length == 1 ? "" : travelerName[1];
@@ -480,6 +486,11 @@ public class OrderAVisitController implements Initializable {
 				|| Phone.isEmpty() || txtDate.getValue()==null || Time.isEmpty()) {
 			new Alerts(AlertType.ERROR, "Bad Input", "Bad Input", "Please all the required fields").showAndWait();
 		} 
+		
+		else if (fullName.split(" ").length != 2) {
+			new Alerts(AlertType.ERROR, "Bad Input", "Bad Input",
+					"Please enter first name + last name").showAndWait();
+		}
 		else if (!checkCurrentTime())
 			new Alerts(AlertType.ERROR, "Bad Input", "Bad Date Input", "Please select future date").showAndWait();
 		else if(TravelerId.length() != 7)
@@ -502,6 +513,7 @@ public class OrderAVisitController implements Initializable {
 			new Alerts(AlertType.ERROR, "Bad Input", "Bad Input",
 					"Name must contain only letters").showAndWait();
 		}
+		
 		else if (Integer.parseInt(visitorsNumber) < 1) {
 			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
 					"Visitor's number must be positive number and atleast 1. ").showAndWait();

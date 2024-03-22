@@ -1,117 +1,104 @@
 package server;
 
 import java.sql.Connection;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
 import DB.DatabaseController;
+import common.GetInstance;
 import common.Order;
-import common.Park;
+import gui.TravelerFrameController;
+
 
 /**
- * NotifyTravelers class implements Runnable.
+ * NotifyThread class implements Runnable.
  * 
  * This class handle all the automated functionality:
- *  Send reminder 24 hours before visit.
- *  Cancel the visit if the traveler did not confirmed within two hours.
- *  Notify the next in the waiting list
+ * Send reminder 24 hours before visit.
+ * Cancel the visit if the traveler did not confirmed within two hours.
+ * Notify the next in the waiting list
  *
  */
-public class NotifyTraveler implements Runnable {
+public class NotifyThread implements Runnable {
 
 	private final int second = 1000;
 	private final int minute = second * 60;
 	private DatabaseController DC;
-	
-	public NotifyTraveler(Connection mysqlconnection) {
+    private ArrayList<Order> ordersWithAlerts; // Array to store orders with alerts
+
+
+	public NotifyThread(Connection mysqlconnection) {
 		DC = new DatabaseController("root","Aa123456");
-		
+        ordersWithAlerts = new ArrayList<>(); // Initialize the array
+
 	}
 
+	/**
+	 * This function handle all the automated functionality:
+	 * Send reminder 24 hours before visit.
+	 * Cancel the visit if the traveler did not confirmed within two hours.
+	 * Notify the next in the waiting list
+	 */
 	@Override
 	public void run() {
 
 		while (true) {
-			System.out.println("Looking for relevant orders");
-			ArrayList<Order> orders = DC.getPendingOrders();
 
-			for (Order order : orders) {
-					runNotifySent(order);
+			ArrayList<Order> pendingOrders = DC.getPendingOrders();
+			for (Order order : pendingOrders) {
+				String status = "PENDING_EMAIL_SENT";
+				String orderId = String.valueOf(order.getOrderId());
+				DC.updateOrderStatusArray(new ArrayList<String>(Arrays.asList(status, orderId)));
+				/**Visitor has 2 hours to accept visit from now*/
+				order.setTimeOfFirstNotification(LocalTime.now()); 
+				order.setLastTimeToAcceptNotification(LocalTime.now().plusHours(2));
+				sendConfirmationMessage(order);
+				addOrderWithAlert(order);
 			}
-
+			CancelOrderAndNotify();
 			try {
 				Thread.sleep(1 * minute);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
-	/**
-	 * This function create thread that check if the traveler confirmed his order.
-	 * if he did not confirmed his order within two hours - the order canceled
-	 * automatically and we notify the first in the waiting list (if there is
-	 * someone)
-	 * 
+	private void addOrderWithAlert(Order order) {
+        ordersWithAlerts.add(order);
+    }
+	
+	private void CancelOrderAndNotify() {
+	    
+	    // Iterate through orders with alerts and cancel expired orders
+	    Iterator<Order> iterator = ordersWithAlerts.iterator();
+	    while (iterator.hasNext()) {
+	        Order order = iterator.next();
+	        if (isAlertExpired(order.getTimeOfFirstNotification(), order.getLastTimeToAcceptNotification())) {
+	            // Cancel the order
+	            DC.updateOrderStatusArray(new ArrayList<String>(Arrays.asList("CANCELED", String.valueOf(order.getOrderId()))));
+	            sendCancelMessage(order);
+	            //WaitingListControl.notifyPersonFromWaitingList(order);
+	            // Remove the canceled order from ordersWithAlerts
+	            iterator.remove();
+	        }
+	    }
+	}
+
+	private boolean isAlertExpired(LocalTime currentTime, LocalTime alertEndTime) {
+	    return currentTime.isAfter(alertEndTime);
+	}
+
+
+
+
+	/*
+	 * This message is for a person to approve his visit.
 	 */
-	private void runNotifySent(Order order) {
-		Thread notifySent = new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				String status = Order.status.PENDING_EMAIL_SENT.toString();
-				String orderId = String.valueOf(order.getOrderId());
-				DC.updateOrderStatus2(new ArrayList<String>(Arrays.asList(status, orderId)));
-
-				sendConfirmationMessage(order);
-
-				int totalSleep = 0;
-				Order updatedOrder = null;
-
-				while (totalSleep != 120) {
-					updatedOrder = DC.getOrderbyId(order.getOrderId());
-					/* NEED TO CHECK STATUS */
-					if (updatedOrder.getOrderStatus().equals(Order.status.CANCELED.toString())
-							|| updatedOrder.getOrderStatus().equals(Order.status.CONFIRMED.toString()))
-						break;
-
-					try {
-						Thread.sleep(1 * minute);
-						totalSleep += 1;
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-
-				if (!updatedOrder.getOrderStatus().equals(Order.status.CONFIRMED.toString())) {
-					status = Order.status.CANCELED.toString();
-					orderId = String.valueOf(updatedOrder.getOrderId());
-					DC.updateOrderStatus2(new ArrayList<String>(Arrays.asList(status, orderId)));
-
-					/* Need to Send cancel order msg */
-					sendCancelMessage(updatedOrder);
-
-					NotifyWaiting notifyWaitingList = new NotifyWaiting(order);
-					new Thread(notifyWaitingList).start();
-				}
-			}
-
-		});
-		notifySent.start();
-	}
-
-
 	private void sendConfirmationMessage(Order order) {
 	    String parkName = order.getParkName();
 	    String orderDate = order.getDate().toString();
@@ -125,10 +112,12 @@ public class NotifyTraveler implements Runnable {
 	        String message = "Park: " + parkName + "\nDate: " + orderDate + "\nTime: " + orderTime;
 	        JOptionPane.showMessageDialog(null, message, "Order Details", JOptionPane.INFORMATION_MESSAGE);
 	    }
+
 	}
 
-	
-	
+	/*
+	 * This message is for an canceled order.
+	 */
 	private void sendCancelMessage(Order order) {
 	    String parkName = order.getParkName();
 	    String orderDate = order.getDate().toString();
@@ -143,5 +132,10 @@ public class NotifyTraveler implements Runnable {
 	        JOptionPane.showMessageDialog(null, message, "Order Details", JOptionPane.INFORMATION_MESSAGE);
 	    }
 	}
+
+	/*
+	 * This message is for a person in the waiting list.
+	 */
+
 
 }

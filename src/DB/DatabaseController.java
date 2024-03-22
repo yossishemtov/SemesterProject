@@ -1763,18 +1763,18 @@ public class DatabaseController {
 	 */
 	public ArrayList<Order> getPendingOrders() {
 		ArrayList<Order> orders = new ArrayList<Order>();
-	    String query = "SELECT * FROM order WHERE orderStatus = ? AND CONCAT(date, ' ', visitTime) BETWEEN ? AND ?";
+	    String query = "SELECT * FROM `order` WHERE orderStatus = ? AND CONCAT(date, ' ', visitTime) BETWEEN ? AND ?";
 		
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
 			ps.setString(1, "PENDING");
-			ResultSet rs = ps.executeQuery();
 			// Calculate date and time range for the last 24 hours
-	        LocalDateTime twentyFourHoursAgo = LocalDateTime.now().minusHours(24);
+	        LocalDateTime twentyFourHoursAhead = LocalDateTime.now().plusHours(24);
 	        LocalDateTime now = LocalDateTime.now();
 	        
-	        ps.setString(2, twentyFourHoursAgo.toString());
-	        ps.setString(3, now.toString());
+	        ps.setString(2, now.toString());
+	        ps.setString(3, twentyFourHoursAhead.toString());
 	        
+	        ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Integer orderId = rs.getInt("orderId");
 				Integer travelerId = rs.getInt("travlerId");
@@ -1839,12 +1839,12 @@ public class DatabaseController {
 	}
 	
 	/**
-	 * Updates the status of an existing order in the database. יש כבר אחד כזה פשוט לא יודע אם עובד נכון
+	 * Updates the status of an existing order in the database. 
 	 * 
 	 * @param order The order object containing the order ID and the new status.
 	 * @return true if the update was successful, false otherwise.
 	 */
-	public Boolean updateOrderStatus2(ArrayList<?> info) {
+	public Boolean updateOrderStatusArray(ArrayList<?> info) {
 		String query = "UPDATE `order` SET orderStatus = ? WHERE orderId = ?";
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
@@ -1940,6 +1940,44 @@ public class DatabaseController {
 		}
 
 		return result;
+	}
+	
+	/**
+	 * Return's all the orders that their status is "PENDING" within 24hours from now.
+	 * 
+	 * @return ArrayList of orders.
+	 */
+	public ArrayList<Order> getPendingEmailOrders() {
+		ArrayList<Order> orders = new ArrayList<Order>();
+	    String query = "SELECT * FROM `order` WHERE orderStatus = ?";
+		
+		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
+			ps.setString(1, "PENDING_EMAIL_SENT");
+	        
+	        ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Integer orderId = rs.getInt("orderId");
+				Integer travelerId = rs.getInt("travlerId");
+	            Integer parkNumber = rs.getInt("parkNumber");
+	            Integer amountOfVisitors = rs.getInt("amountOfVisitors");
+	            Float price = rs.getFloat("price");
+	            String visitorEmail = rs.getString("visitorEmail");
+	            LocalDate date = rs.getDate("date").toLocalDate();
+	            LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
+	            String statusStr = rs.getString("orderStatus");
+	            String typeOfOrderStr = rs.getString("typeOfOrder");
+	            String telephoneNumber = rs.getString("TelephoneNumber");
+	            String parkName = rs.getString("parkName");
+				
+				Order order = new Order(orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail
+						,date, visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName);
+				orders.add(order);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return orders;
 	}
 
 }

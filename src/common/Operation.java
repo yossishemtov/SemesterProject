@@ -25,7 +25,7 @@ public abstract class Operation {
     public final static String GET_GENERALPARKWORKER_SIGNED = "Get status of signed in or out of generalparkworker";
     public final static String GET_TRAVELER_SIGNED = "Get status of signed in or out of traveler";
     public final static String GET_AMOUNT_OF_VISITORS_FOR_GENERALPARKWORKER = "Get amount of visitors for park worker";
-
+    public final static String GET_STATUS_PENDING_EMAIL = "Get orders with status PENDING_EMAIL_SENT"; //emanuel
     public final static String GET_ORDER_BY_ID_AND_PARK_NUMBER_DATE = "Get order information by id and park number and date";
 
     public static final String CHECK_SPOT_AVAILABILITY = "CHECK_SPOT_AVAILABILITY"; //emanuel

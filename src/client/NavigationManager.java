@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -51,13 +52,15 @@ public class NavigationManager {
         newStage.setScene(scene);
         newStage.setTitle(title);
 
+		newStage.getIcons().add(new Image("common/images/Icon.png"));
+
         if (currentStage != null && hideCurrent) {
             currentStage.hide(); // Hide the current stage
         }
         newStage.show(); // Show the new stage
 
         // Handling the closing of the window
-        newStage.setOnCloseRequest(e -> {
+        newStage.setOnCloseRequest(e -> {	
             // Perform any cleanup, including closing connections
             if (systemClient != null) {
                 systemClient.quit();
@@ -75,6 +78,7 @@ public class NavigationManager {
         FXMLLoader loader = new FXMLLoader(NavigationManager.class.getResource("/gui/" + pageFXML));
         Node page = loader.load(); // Load the page
         borderPane.setCenter(page); // Set the loaded page in the center of the BorderPane
+        
     }
 
 }
