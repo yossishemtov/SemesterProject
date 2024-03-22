@@ -78,7 +78,7 @@ public class NotifyWaiting implements Runnable {
 
 		String orderId = String.valueOf(order.getOrderId());
 		String status = "WAITING_HAS_SPOT";
-		DC.updateOrderStatus2(new ArrayList<String>(Arrays.asList(status, orderId)));
+		DC.updateOrderStatusArray(new ArrayList<String>(Arrays.asList(status, orderId)));
 		sendMessages(order);
 
 		int totalSleep = 0;
@@ -101,7 +101,7 @@ public class NotifyWaiting implements Runnable {
 		if (!updatedOrder.getOrderStatus().equals(Order.status.CONFIRMED.toString())) {
 			status = "CANCELED";
 			orderId = String.valueOf(updatedOrder.getOrderId());
-			DC.updateOrderStatus2(new ArrayList<String>(Arrays.asList(status, orderId)));
+			DC.updateOrderStatusArray(new ArrayList<String>(Arrays.asList(status, orderId)));
 
 			// Passing the orignal order that was canceled.
 			NotifyWaiting notifyWaitingList = new NotifyWaiting(this.order);

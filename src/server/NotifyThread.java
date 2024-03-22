@@ -1,6 +1,7 @@
 package server;
 
 import java.sql.Connection;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,9 +9,12 @@ import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
+import com.mysql.cj.xdevapi.DbDoc;
+
 import DB.DatabaseController;
 import common.GetInstance;
 import common.Order;
+import common.OrderNotification;
 import gui.TravelerFrameController;
 
 
@@ -26,13 +30,13 @@ import gui.TravelerFrameController;
 public class NotifyThread implements Runnable {
 
 	private final int second = 1000;
-	private final int minute = second * 60;
+	private final int minute = second * 10;
 	private DatabaseController DC;
-    private ArrayList<Order> ordersWithAlerts; // Array to store orders with alerts
+    private ArrayList<OrderNotification> ordersWithAlerts; // Array to store orders with alerts
 
 
 	public NotifyThread(Connection mysqlconnection) {
-		DC = new DatabaseController("root","Aa123456");
+		DC = new DatabaseController("root","root");
         ordersWithAlerts = new ArrayList<>(); // Initialize the array
 
 	}
@@ -48,16 +52,24 @@ public class NotifyThread implements Runnable {
 
 		while (true) {
 
-			ArrayList<Order> pendingOrders = DC.getPendingOrders();
+			ArrayList<Order> pendingOrders = DC.getOrdersByStatusInLastTwentyFourHours("PENDING");
+			ArrayList<OrderNotification> ordersAlreadyNotified= DC.getTodayNotifications();
+			
 			for (Order order : pendingOrders) {
 				String status = "PENDING_EMAIL_SENT";
 				String orderId = String.valueOf(order.getOrderId());
+				
+				//Change status of orders to PENDING_EMAIL_SENT
 				DC.updateOrderStatusArray(new ArrayList<String>(Arrays.asList(status, orderId)));
+				
 				/**Visitor has 2 hours to accept visit from now*/
-				order.setTimeOfFirstNotification(LocalTime.now()); 
-				order.setLastTimeToAcceptNotification(LocalTime.now().plusHours(2));
+				OrderNotification createNotification = new OrderNotification(Integer.parseInt(orderId), LocalDate.now(),
+						LocalTime.now(), LocalTime.now().plusHours(2));
+				
+				DC.postOrderNotification(createNotification);
+
 				sendConfirmationMessage(order);
-				addOrderWithAlert(order);
+				addOrderWithAlert(createNotification);
 			}
 			CancelOrderAndNotify();
 			try {
@@ -68,20 +80,21 @@ public class NotifyThread implements Runnable {
 		}
 	}
 
-	private void addOrderWithAlert(Order order) {
-        ordersWithAlerts.add(order);
+	private void addOrderWithAlert(OrderNotification orderNotificationDetails) {
+        ordersWithAlerts.add(orderNotificationDetails);
     }
 	
 	private void CancelOrderAndNotify() {
 	    
 	    // Iterate through orders with alerts and cancel expired orders
-	    Iterator<Order> iterator = ordersWithAlerts.iterator();
+	    Iterator<OrderNotification> iterator = ordersWithAlerts.iterator();
 	    while (iterator.hasNext()) {
-	        Order order = iterator.next();
-	        if (isAlertExpired(order.getTimeOfFirstNotification(), order.getLastTimeToAcceptNotification())) {
+	    	OrderNotification notificationOfSpecificOrder = iterator.next();
+	        if (isAlertExpired(LocalTime.now(), notificationOfSpecificOrder.getEndNotification())) {
 	            // Cancel the order
-	            DC.updateOrderStatusArray(new ArrayList<String>(Arrays.asList("CANCELED", String.valueOf(order.getOrderId()))));
-	            sendCancelMessage(order);
+	        	System.out.print("Caceled Order");
+	            DC.updateOrderStatusArray(new ArrayList<String>(Arrays.asList("CANCELED", String.valueOf(notificationOfSpecificOrder.getOrderId()))));
+	            sendCancelMessage(notificationOfSpecificOrder);
 	            //WaitingListControl.notifyPersonFromWaitingList(order);
 	            // Remove the canceled order from ordersWithAlerts
 	            iterator.remove();
@@ -118,10 +131,12 @@ public class NotifyThread implements Runnable {
 	/*
 	 * This message is for an canceled order.
 	 */
-	private void sendCancelMessage(Order order) {
-	    String parkName = order.getParkName();
-	    String orderDate = order.getDate().toString();
-	    String orderTime = order.getVisitTime().toString();
+	private void sendCancelMessage(OrderNotification orderNotification) {
+		System.out.print(orderNotification.getOrderId());
+		Order canceledOrder = DC.getOrderbyId(orderNotification.getOrderId());
+	    String parkName = canceledOrder.getParkName();
+	    String orderDate = canceledOrder.getDate().toString();
+	    String orderTime = canceledOrder.getVisitTime().toString();
 	    int option = JOptionPane.showConfirmDialog(null, "Your order at " + parkName + " on " + orderDate + " at " + orderTime + " has been canceled. Would you like to see more details?", "Order Canceled", JOptionPane.YES_NO_OPTION);
 	    
 	    if (option == JOptionPane.YES_OPTION) {

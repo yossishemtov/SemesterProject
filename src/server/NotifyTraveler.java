@@ -43,7 +43,7 @@ public class NotifyTraveler implements Runnable {
 
 		while (true) {
 			System.out.println("Looking for relevant orders");
-			ArrayList<Order> orders = DC.getPendingOrders();
+			ArrayList<Order> orders = DC.getOrdersByStatusInLastTwentyFourHours("PENDING");
 
 			for (Order order : orders) {
 					runNotifySent(order);
@@ -72,7 +72,7 @@ public class NotifyTraveler implements Runnable {
 			public void run() {
 				String status = Order.status.PENDING_EMAIL_SENT.toString();
 				String orderId = String.valueOf(order.getOrderId());
-				DC.updateOrderStatus2(new ArrayList<String>(Arrays.asList(status, orderId)));
+				DC.updateOrderStatusArray(new ArrayList<String>(Arrays.asList(status, orderId)));
 
 				sendConfirmationMessage(order);
 
@@ -97,7 +97,7 @@ public class NotifyTraveler implements Runnable {
 				if (!updatedOrder.getOrderStatus().equals(Order.status.CONFIRMED.toString())) {
 					status = Order.status.CANCELED.toString();
 					orderId = String.valueOf(updatedOrder.getOrderId());
-					DC.updateOrderStatus2(new ArrayList<String>(Arrays.asList(status, orderId)));
+					DC.updateOrderStatusArray(new ArrayList<String>(Arrays.asList(status, orderId)));
 
 					/* Need to Send cancel order msg */
 					sendCancelMessage(updatedOrder);

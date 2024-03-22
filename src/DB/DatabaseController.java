@@ -1754,19 +1754,56 @@ public class DatabaseController {
 
 	    return usageReport;
 	}
-
-
+	
 	/**
-	 * Return's all the orders that their status is "PENDING" within 24hours from now.
+	 * Return's all the orders that already been notified today
 	 * 
 	 * @return ArrayList of orders.
 	 */
-	public ArrayList<Order> getPendingOrders() {
+	public ArrayList<OrderNotification> getTodayNotifications(){
+		
+		//Gets all the notifications for orders of today by getting them from orderNotifications table
+		ArrayList<OrderNotification> ordersAlreadyNotified = new ArrayList<OrderNotification>();
+		String query = "SELECT * FROM orderNotifications " +
+                "WHERE dateOfNotification = ? ";
+		
+		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
+
+			ps.setDate(1, Date.valueOf(LocalDate.now()));
+			
+	        
+	        ResultSet rs = ps.executeQuery();
+	     // Process the results
+            while (rs.next()) {
+                // Retrieve data from the result set
+                int orderId = rs.getInt("orderId");
+                LocalDate dateOfNotification = rs.getDate("dateOfNotification").toLocalDate();
+                LocalTime startNotification = rs.getTime("startNotification").toLocalTime();
+                LocalTime endNotification = rs.getTime("endNotification").toLocalTime();
+
+                // Add notification to arraylist
+                ordersAlreadyNotified.add(new OrderNotification(orderId, dateOfNotification, startNotification, endNotification));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return ordersAlreadyNotified;
+        }
+		
+		return ordersAlreadyNotified;
+		
+	}
+
+	/**
+	 * Return's all the orders that their status is orderStatus within 24hours from now.
+	 * 
+	 * @return ArrayList of orders.
+	 */
+	public ArrayList<Order> getOrdersByStatusInLastTwentyFourHours(String orderStatus) {
 		ArrayList<Order> orders = new ArrayList<Order>();
 	    String query = "SELECT * FROM `order` WHERE orderStatus = ? AND CONCAT(date, ' ', visitTime) BETWEEN ? AND ?";
 		
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
-			ps.setString(1, "PENDING");
+			ps.setString(1, orderStatus);
 			// Calculate date and time range for the last 24 hours
 	        LocalDateTime twentyFourHoursAhead = LocalDateTime.now().plusHours(24);
 	        LocalDateTime now = LocalDateTime.now();
@@ -1799,6 +1836,27 @@ public class DatabaseController {
 		}
 		return orders;
 	}
+	
+	
+	public void postOrderNotification(OrderNotification notificationForAnOrder) {
+		//Add an order notification to the ordernotifications table
+		String query = "INSERT INTO `ordernotifications` (orderId, dateOfNotification, startNotification, endNotification) " +
+                 "VALUES (?, ?, ?, ?)";
+
+	  try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
+	      // Set values for the parameters
+	      pstmt.setInt(1, notificationForAnOrder.getOrderId());
+	      pstmt.setDate(2, Date.valueOf(notificationForAnOrder.getDateOfNotification()));
+	      pstmt.setTime(3, Time.valueOf(notificationForAnOrder.getStartNotification()));
+	      pstmt.setTime(4, Time.valueOf(notificationForAnOrder.getEndNotification()));
+	
+	      // Execute the query
+	      pstmt.executeUpdate();
+	  } catch (SQLException e) {
+	      e.printStackTrace();
+	  }
+}
+	
 
 
 	/**
