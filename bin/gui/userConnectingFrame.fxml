@@ -24,14 +24,14 @@
          <children>
             <HBox prefHeight="101.0" prefWidth="262.0">
                <children>
-                  <Text fill="#b3ffb3" strokeType="OUTSIDE" strokeWidth="0.0" text="Server Ip Address:" wrappingWidth="112.9453125" />
+                  <Text fill="#b3ffb3" strokeType="OUTSIDE" strokeWidth="0.0" text="Server Ip Address:" wrappingWidth="137.9453125" />
                   <JFXTextField fx:id="IpAddressField" focusColor="#b3ffb3" prefHeight="25.0" prefWidth="126.0" unFocusColor="WHITE" />
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Text fill="#b3ffb3" strokeType="OUTSIDE" strokeWidth="0.0" text="Server Port:" wrappingWidth="79.896484375" />
-                  <JFXTextField fx:id="portAddressField" focusColor="#b3ffb3" prefHeight="25.0" prefWidth="126.0" unFocusColor="WHITE" />
+                  <Text fill="#b3ffb3" strokeType="OUTSIDE" strokeWidth="0.0" text="Server Port:" wrappingWidth="97.896484375" />
+                  <JFXTextField fx:id="portAddressField" focusColor="#b3ffb3" prefHeight="31.0" prefWidth="182.0" unFocusColor="WHITE" />
                </children>
             </HBox>
          </children>

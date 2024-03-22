@@ -34,6 +34,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
@@ -111,17 +112,19 @@ public class ServerController {
 		// Refresh the table to ensure UI is up-to-date
 		connStatusTable.refresh();
 	}
-
+	
+	
 	public void start(Stage primaryStage) throws Exception {
 		try {
-
 			FXMLLoader serverGui = new FXMLLoader(getClass().getResource("ServerGUI.fxml"));
 			Parent parent = serverGui.load();
 			ServerController control = serverGui.getController();
 			
 			Scene scene = new Scene(parent);
-//			NavigationManager.setStyleScene(scene, "/styles/styles.css");
+			
+//			Image image = new Image("../common/images/1.png");
 			primaryStage.setScene(scene);
+			primaryStage.getIcons().add(new Image("/common/images/1.png"));
 			primaryStage.setOnCloseRequest(e -> control.closeConnection());
 			primaryStage.setTitle("GoNature Server");
 			primaryStage.show();

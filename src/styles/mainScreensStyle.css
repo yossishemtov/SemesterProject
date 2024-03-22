@@ -1,8 +1,3 @@
-/* styles.css */
-
-/* Styling for TextFields */
-
-
 .root {
 	-fx-background-color: #2f3136; 
 }
@@ -12,8 +7,6 @@
     -fx-background-color: #2f3136; 
     -fx-border-color: #b3ffb3;
     -fx-text-fill: #b3ffb3;
-    -fx-background-radius: 20.0px; 
-    -fx-border-radius: 20.0px;
     -fx-padding: 10px 15px;
 }
 
@@ -22,8 +15,6 @@
     -fx-background-color: #b3ffb3; 
     -fx-border-color: #b3ffb3;
     -fx-text-fill: #2f3136;
-    -fx-background-radius: 20.0px; 
-    -fx-border-radius: 20.0px;
     -fx-padding: 10px 15px;
 }
 
@@ -31,5 +22,12 @@
     -fx-prompt-text-fill: #b3ffb3;
     -fx-text-fill: white;
 }
-
-
+.text , .label {
+	-fx-text-fill: #b3ffb3;
+}
+.FontAwesome {
+	-fx-fill: #b3ffb3;
+}
+.FontAwesome:hover {
+	-fx-fill: #2f3136;
+}

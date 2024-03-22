@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -49,6 +50,7 @@ public class NavigationManager {
         
         Stage newStage = new Stage();
         newStage.setScene(scene);
+        newStage.getIcons().add(new Image("/common/images/1.png"));
         newStage.setTitle(title);
 
         if (currentStage != null && hideCurrent) {

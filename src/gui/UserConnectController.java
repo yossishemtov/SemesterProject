@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.fxml.Initializable;
 
@@ -54,9 +55,9 @@ public class UserConnectController implements Initializable {
 			try {			
 				Parent root = FXMLLoader.load(getClass().getResource("userConnectingFrame.fxml"));
 				Scene scene = new Scene(root);
-//				NavigationManager.setStyleScene(scene, "/styles/styles.css");
 				primaryStage.setTitle("User Connection");
 				primaryStage.setScene(scene);
+				primaryStage.getIcons().add(new Image("/common/images/1.png"));
 				primaryStage.show();
 			}catch(Exception e){
 				e.printStackTrace();
@@ -74,7 +75,7 @@ public class UserConnectController implements Initializable {
 			Stage stage = (Stage)((Node)click.getSource()).getScene().getWindow(); //hiding primary window
 			Scene scene = new Scene(root);	
 			
-			stage.setTitle("User Menu");
+			stage.setTitle("Home Page");
 			
 			stage.setScene(scene);		
 			stage.show();
