@@ -7,9 +7,9 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TravelerOrdersController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TravelerOrdersController">
    <children>
-      <Label layoutX="417.0" layoutY="41.0" text="My Orders" />
+      <Label layoutX="417.0" layoutY="41.0" text="My Orders" textFill="#b3ffb3" />
       <TableView fx:id="TravelerOrders" layoutX="38.0" layoutY="80.0" prefHeight="317.0" prefWidth="825.0">
         <columns>
           <TableColumn fx:id="orderIDCol" prefWidth="75.0" style="-fx-text-align: center;" text="Order ID" />
@@ -27,11 +27,11 @@
             <FontAwesomeIconView fill="#eb0e0e" glyphName="CLOSE" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="ConfirmOrder" layoutX="518.0" layoutY="501.0" onAction="#ConfirmTravelerOrder" text="Confirm Order">
+      <JFXButton fx:id="ConfirmOrder" layoutX="491.0" layoutY="501.0" onAction="#ConfirmTravelerOrder" text="Confirm Order">
          <graphic>
             <FontAwesomeIconView fill="#2cdd43" glyphName="CHECK" />
          </graphic>
       </JFXButton>
-      <Label layoutX="341.0" layoutY="465.0" text="Select Order to confirm or cancel:" />
+      <Label layoutX="341.0" layoutY="465.0" text="Select Order to confirm or cancel:" textFill="#b3ffb3" />
    </children>
 </Pane>

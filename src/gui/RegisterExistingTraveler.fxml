@@ -2,19 +2,13 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.RegisterExistingTravelerController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.RegisterExistingTravelerController">
    <children>
-      <Label layoutX="368.0" layoutY="93.0" text="Register Existing Traveler" />
-      <JFXTextField fx:id="travelerID" layoutX="354.0" layoutY="172.0" prefHeight="59.0" prefWidth="231.0" promptText="Enter Traveler ID" />
-      <JFXButton fx:id="submitBtn" layoutX="405.0" layoutY="285.0" onAction="#SubmitForm" prefHeight="59.0" prefWidth="97.0" text="Submit">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </JFXButton>
+      <Label layoutX="404.0" layoutY="78.0" text="Register Existing Traveler" textFill="#b3ffb3" />
+      <JFXTextField fx:id="travelerID" focusColor="#b3ffb3" layoutX="354.0" layoutY="172.0" prefHeight="59.0" prefWidth="231.0" promptText="Enter Traveler ID" unFocusColor="WHITE" />
+      <JFXButton fx:id="submitBtn" layoutX="435.0" layoutY="281.0" onAction="#SubmitForm" text="Submit" />
    </children>
 </Pane>
