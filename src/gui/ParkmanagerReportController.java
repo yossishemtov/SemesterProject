@@ -80,7 +80,7 @@ public class ParkmanagerReportController implements Initializable {
 
 		}
 
-		ClientServerMessage<Report> messageForServer = new ClientServerMessage<>(
+		ClientServerMessage<?> messageForServer = new ClientServerMessage<>(
 				Usermanager.getCurrentWorker().getWorksAtPark(), Operation.GET_PARK_DETAILS);
 		ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
 
@@ -247,7 +247,7 @@ public class ParkmanagerReportController implements Initializable {
 				
 
 				System.out.println("Creating Visit Report for Month: " + selectedMonthString);
-				break;
+				break; 
 			case "Usage Report":
 				UsageReport usageReport = new UsageReport(0, Report.ReportType.USAGE,
 						Usermanager.getCurrentWorker().getWorksAtPark(), LocalDate.now(), selectedMonth, "", null, park.getCapacity());

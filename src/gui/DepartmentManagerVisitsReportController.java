@@ -69,7 +69,7 @@ public class DepartmentManagerVisitsReportController implements Initializable {
 		loadUsageReport(); // Mock method to load report data
 		populateLineChart();
 
-	}
+	} 
 
 	private void loadUsageReport() {
 
@@ -101,7 +101,7 @@ public class DepartmentManagerVisitsReportController implements Initializable {
 	        series.setName(type.toString());
 
 	        // Add data points for each hour, using 0 if no data exists for that hour
-	        IntStream.rangeClosed(0, 23).forEach(hour -> {
+	        IntStream.rangeClosed(8, 18).forEach(hour -> {
 	            long totalDuration = hourMap.getOrDefault(hour, 0L);
 	            series.getData().add(new XYChart.Data<>(String.valueOf(hour), totalDuration));
 	        });

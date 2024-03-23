@@ -42,6 +42,12 @@ public class DepartmentManagerCancellationReportController implements Initializa
 
 	@FXML
 	private Label MedianUnfulfilledOrdersLabal;
+    @FXML
+    private Label TotalUnfulfilledLabal;
+
+    @FXML
+    private Label TotalCanceledLabal;
+
 
 	@FXML
 	private Label MedianCanceledOdersLabal;
@@ -100,6 +106,13 @@ public class DepartmentManagerCancellationReportController implements Initializa
 	        MedianCanceledOdersLabal.setText(String.format("%.2f", calculateMedian(report.getDailyCancellations())));
 	        AverageUnfulfilledOrderLabal.setText(String.format("%.2f", calculateAverage(report.getDailyUnfulfilledOrders())));
 	        MedianUnfulfilledOrdersLabal.setText(String.format("%.2f", calculateMedian(report.getDailyUnfulfilledOrders())));
+	        // Calculate totals
+	        int totalCancellations = report.getDailyCancellations().values().stream().mapToInt(Integer::intValue).sum();
+	        int totalUnfulfilledOrders = report.getDailyUnfulfilledOrders().values().stream().mapToInt(Integer::intValue).sum();
+	        
+	        // Update labels
+	        TotalCanceledLabal.setText(String.valueOf(totalCancellations));
+	        TotalUnfulfilledLabal.setText(String.valueOf(totalUnfulfilledOrders));
 	    }
 
 	    private double calculateAverage(Map<Integer, Integer> data) {

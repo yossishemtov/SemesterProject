@@ -389,42 +389,42 @@ public class DatabaseController {
 				+ "FROM `visit` v JOIN `order` o ON v.orderNumber = o.orderId "
 				+ "WHERE MONTH(v.visitDate) = ? AND v.parkNumber = ? AND o.orderStatus = 'COMPLETED'";
 
+		boolean dataFound = false; // Flag to check if any data is found
 
-	    boolean dataFound = false; // Flag to check if any data is found
+		try (PreparedStatement ps = this.connectionToDatabase.prepareStatement(query)) {
+			ps.setInt(1, report.getMonthNumber());
+			ps.setInt(2, report.getParkNumber());
+			ResultSet rs = ps.executeQuery();
 
-	    try (PreparedStatement ps = this.connectionToDatabase.prepareStatement(query)) {
-	        ps.setInt(1, report.getMonthNumber());
-	        ps.setInt(2, report.getParkNumber());
-	        ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				dataFound = true; // Data is found, set the flag to true
 
-	        while (rs.next()) {
-	            dataFound = true; // Data is found, set the flag to true
+				String enteringTimeStr = rs.getString("enteringTime");
+				long duration = rs.getLong("duration");
+				String typeOfOrderStr = rs.getString("typeOfOrder");
 
-	            String enteringTimeStr = rs.getString("enteringTime");
-	            long duration = rs.getLong("duration");
-	            String typeOfOrderStr = rs.getString("typeOfOrder");
+				report.addVisit(enteringTimeStr, duration, typeOfOrderStr);
+				// Print each row to see what we're getting back
+				System.out.println("Visit data: Entering Time: " + enteringTimeStr + ", Duration: " + duration
+						+ ", Type of Order: " + typeOfOrderStr);
+			}
 
-	            report.addVisit(enteringTimeStr, duration, typeOfOrderStr);
-	            // Print each row to see what we're getting back
-	            System.out.println("Visit data: Entering Time: " + enteringTimeStr + ", Duration: " + duration
-	                    + ", Type of Order: " + typeOfOrderStr);
-	        }
-
-	        if (dataFound) {
-	            System.out.println("Report successfully populated with visits data for park number "
-	                    + report.getParkNumber() + " and month " + report.getMonthNumber() + ". " + report);
-	            return report;
-	        } else {
-	            System.out.println("No visit data found for park number " + report.getParkNumber() + " and month " + report.getMonthNumber());
-	            return null; // No data found, return null
-	        }
-	    } catch (SQLException e) {
-	        System.err.println("An error occurred while populating the report: " + e.getMessage());
-	        e.printStackTrace();
-	        return null; // In case of an exception, you might also want to consider returning null or handling it differently
-	    }
+			if (dataFound) {
+				System.out.println("Report successfully populated with visits data for park number "
+						+ report.getParkNumber() + " and month " + report.getMonthNumber() + ". " + report);
+				return report;
+			} else {
+				System.out.println("No visit data found for park number " + report.getParkNumber() + " and month "
+						+ report.getMonthNumber());
+				return null; // No data found, return null
+			}
+		} catch (SQLException e) {
+			System.err.println("An error occurred while populating the report: " + e.getMessage());
+			e.printStackTrace();
+			return null; // In case of an exception, you might also want to consider returning null or
+							// handling it differently
+		}
 	}
-	
 
 	public boolean insertChangeRequest(ChangeRequest request) {
 		String query = "INSERT INTO `changerequests` (parkName, parkNumber, capacity, gap, staytime, approved) VALUES (?, ?, ?, ?, ?, ?)";
@@ -694,7 +694,7 @@ public class DatabaseController {
 			ps.setObject(3, java.sql.Date.valueOf(receivedOrderId.getDate()));
 			ResultSet rs = ps.executeQuery(); // Use executeQuery for SELECT statements
 
-			if (rs.next()) { 
+			if (rs.next()) {
 
 				// Parsing special object such of type localDate and LocalTime
 				LocalDate orderDate = rs.getObject("date", LocalDate.class);
@@ -812,56 +812,56 @@ public class DatabaseController {
 	// WorkerId | firstName | lastName | email | role | userName | password |
 	// worksAtPark
 	public GeneralParkWorker getGeneralParkWorkerDetails(GeneralParkWorker worker) {
-	    System.out.println("Starting to fetch GeneralParkWorker details from DB.");
-	    System.out.println("Credentials provided: " + worker.getUserName());
+		System.out.println("Starting to fetch GeneralParkWorker details from DB.");
+		System.out.println("Credentials provided: " + worker.getUserName());
 
-	    GeneralParkWorker generalParkWorker = null;
-	    String query = "SELECT * FROM `generalparkworker` WHERE userName = ? AND password= ?";
+		GeneralParkWorker generalParkWorker = null;
+		String query = "SELECT * FROM `generalparkworker` WHERE userName = ? AND password= ?";
 
-	    try (PreparedStatement preparedStatementInstance = connectionToDatabase.prepareStatement(query)) {
-	        // Set a timeout for the query to prevent it from running indefinitely
-	        preparedStatementInstance.setQueryTimeout(30); // Timeout in seconds
+		try (PreparedStatement preparedStatementInstance = connectionToDatabase.prepareStatement(query)) {
+			// Set a timeout for the query to prevent it from running indefinitely
+			preparedStatementInstance.setQueryTimeout(30); // Timeout in seconds
 
-	        preparedStatementInstance.setString(1, worker.getUserName());
-	        preparedStatementInstance.setString(2, worker.getPassword());
+			preparedStatementInstance.setString(1, worker.getUserName());
+			preparedStatementInstance.setString(2, worker.getPassword());
 
-	        ResultSet returnedStatement = preparedStatementInstance.executeQuery();
+			ResultSet returnedStatement = preparedStatementInstance.executeQuery();
 
-	        if (!returnedStatement.next()) {
-	            System.out.println("No matching GeneralParkWorker found.");
-	            return null; // Immediately return null if no data is found
-	        } else {
-	            // Move the cursor back to the beginning of the ResultSet
-	            returnedStatement.beforeFirst();
-	        }
+			if (!returnedStatement.next()) {
+				System.out.println("No matching GeneralParkWorker found.");
+				return null; // Immediately return null if no data is found
+			} else {
+				// Move the cursor back to the beginning of the ResultSet
+				returnedStatement.beforeFirst();
+			}
 
-	        while (returnedStatement.next()) {
-	            Integer workerId = returnedStatement.getInt(1);
-	            String firstName = returnedStatement.getString(2);
-	            String lastName = returnedStatement.getString(3);
-	            String email = returnedStatement.getString(4);
-	            String role = returnedStatement.getString(5);
-	            String userName = returnedStatement.getString(6);
-	            String password = returnedStatement.getString(7);
-	            Integer worksAtPark = returnedStatement.getInt(8);
+			while (returnedStatement.next()) {
+				Integer workerId = returnedStatement.getInt(1);
+				String firstName = returnedStatement.getString(2);
+				String lastName = returnedStatement.getString(3);
+				String email = returnedStatement.getString(4);
+				String role = returnedStatement.getString(5);
+				String userName = returnedStatement.getString(6);
+				String password = returnedStatement.getString(7);
+				Integer worksAtPark = returnedStatement.getInt(8);
 
-	            generalParkWorker = new GeneralParkWorker(workerId, firstName, lastName, email, role, userName, password, worksAtPark);
-	            System.out.println("Fetched details for: " + userName);
-	        }
-	    } catch (SQLException e) {
-	        System.err.println("SQLException occurred while fetching GeneralParkWorker details: " + e.getMessage());
-	        e.printStackTrace();
-	    }
+				generalParkWorker = new GeneralParkWorker(workerId, firstName, lastName, email, role, userName,
+						password, worksAtPark);
+				System.out.println("Fetched details for: " + userName);
+			}
+		} catch (SQLException e) {
+			System.err.println("SQLException occurred while fetching GeneralParkWorker details: " + e.getMessage());
+			e.printStackTrace();
+		}
 
-	    if (generalParkWorker != null) {
-	        System.out.println("Successfully fetched GeneralParkWorker details.");
-	    } else {
-	        System.out.println("Failed to fetch GeneralParkWorker details.");
-	    }
+		if (generalParkWorker != null) {
+			System.out.println("Successfully fetched GeneralParkWorker details.");
+		} else {
+			System.out.println("Failed to fetch GeneralParkWorker details.");
+		}
 
-	    return generalParkWorker;
+		return generalParkWorker;
 	}
-
 
 	/**
 	 * Retrieves all orders for a given traveler from the database.
@@ -1341,7 +1341,7 @@ public class DatabaseController {
 	public VisitorsReport getNewVisitorsReport(VisitorsReport visitReport) {
 		System.out.println("in db getNewVisitorsReport...");
 		System.out.println(visitReport.toString());
-		boolean haveData=false;
+		boolean haveData = false;
 		String query = "SELECT typeOfOrder, SUM(amountOfVisitors) AS totalVisitors " + "FROM `order` "
 				+ "WHERE parkNumber = ? AND YEAR(date) = ? AND MONTH(date) = ? AND orderStatus = 'COMPLETED' "
 				+ "GROUP BY typeOfOrder";
@@ -1355,10 +1355,10 @@ public class DatabaseController {
 
 		// Prepare the database query
 		try (PreparedStatement statement = connectionToDatabase.prepareStatement(query)) {
-		
+
 			statement.setInt(1, parkNumber);
 			statement.setInt(2, reportDate.getYear());
-			statement.setInt(3, visitReport.getMonth()); 
+			statement.setInt(3, visitReport.getMonth());
 			// statement.setInt(3, reportDate.getMonthValue());
 			System.out.println("Executing query with parameters - Park Number: " + parkNumber + ", Year: "
 					+ reportDate.getYear() + ", Month: " + reportDate.getMonthValue());
@@ -1366,7 +1366,7 @@ public class DatabaseController {
 			// Execute the query and process the results
 			try (ResultSet resultSet = statement.executeQuery()) {
 				while (resultSet.next()) {
-					haveData=true;
+					haveData = true;
 					String typeOfOrder = resultSet.getString("typeOfOrder").trim();
 					int visitors = resultSet.getInt("totalVisitors");
 
@@ -1392,8 +1392,7 @@ public class DatabaseController {
 					.println("An error occurred while fetching the total number of visitors report: " + e.getMessage());
 			e.printStackTrace();
 		}
-		if (!haveData)
-		{
+		if (!haveData) {
 			System.out.println("not have data...");
 
 			return null;
@@ -1552,86 +1551,82 @@ public class DatabaseController {
 
 		return reports;
 	}
+
 	public CancellationReport getCancellationReport(CancellationReport cancellationReport) {
-	    System.out.println("In db getUpdatedCancellationReport...");
-	    System.out.println(cancellationReport.toString());
+		System.out.println("In db getUpdatedCancellationReport...");
+		System.out.println(cancellationReport.toString());
 
-	    Map<Integer, Integer> dailyCancellations = new HashMap<>();
-	    Map<Integer, Integer> dailyUnfulfilledOrders = new HashMap<>();
+		Map<Integer, Integer> dailyCancellations = new HashMap<>();
+		Map<Integer, Integer> dailyUnfulfilledOrders = new HashMap<>();
 
-	    Integer parkNumber = cancellationReport.getParkNumber();
-	    Integer monthNumber = cancellationReport.getMonthNumber();
+		Integer parkNumber = cancellationReport.getParkNumber();
+		Integer monthNumber = cancellationReport.getMonthNumber();
 
-	    // Initialize both maps with all days of the month set to 0
-	    LocalDate reportDate = LocalDate.of(Year.now().getValue(), monthNumber, 1); 
-	    LocalDate startOfMonth = reportDate.with(TemporalAdjusters.firstDayOfMonth());
-	    LocalDate endOfMonth = reportDate.with(TemporalAdjusters.lastDayOfMonth());
-	    for (LocalDate date = startOfMonth; !date.isAfter(endOfMonth); date = date.plusDays(1)) {
-	        dailyCancellations.put(date.getDayOfMonth(), 0);
-	        dailyUnfulfilledOrders.put(date.getDayOfMonth(), 0);
-	    }
+		// Initialize both maps with all days of the month set to 0
+		LocalDate reportDate = LocalDate.of(Year.now().getValue(), monthNumber, 1);
+		LocalDate startOfMonth = reportDate.with(TemporalAdjusters.firstDayOfMonth());
+		LocalDate endOfMonth = reportDate.with(TemporalAdjusters.lastDayOfMonth());
+		for (LocalDate date = startOfMonth; !date.isAfter(endOfMonth); date = date.plusDays(1)) {
+			dailyCancellations.put(date.getDayOfMonth(), 0);
+			dailyUnfulfilledOrders.put(date.getDayOfMonth(), 0);
+		}
 
-	    // Query to fetch daily cancellations
-	    String cancellationQuery = "SELECT DAY(date) AS dayOfMonth, COUNT(*) AS count " +
-	                               "FROM `order` " +
-	                               "WHERE parkNumber = ? AND YEAR(date) = ? AND MONTH(date) = ? " +
-	                               "AND orderStatus = 'CANCELED' " +
-	                               "GROUP BY DAY(date)";
+		// Query to fetch daily cancellations
+		String cancellationQuery = "SELECT DAY(date) AS dayOfMonth, COUNT(*) AS count " + "FROM `order` "
+				+ "WHERE parkNumber = ? AND YEAR(date) = ? AND MONTH(date) = ? " + "AND orderStatus = 'CANCELED' "
+				+ "GROUP BY DAY(date)";
 
-	    String unfulfilledQuery = "SELECT DAY(date) AS dayOfMonth, COUNT(*) AS count " +
-                "FROM `order` " +
-                "WHERE parkNumber = ? AND YEAR(date) = ? AND MONTH(date) = ? " +
-                "AND (orderStatus = 'CONFIRMED' OR orderStatus = 'NOTARRIVED') AND date < CURRENT_DATE() " +
-                "GROUP BY DAY(date)";
+		String unfulfilledQuery = "SELECT DAY(date) AS dayOfMonth, COUNT(*) AS count " + "FROM `order` "
+				+ "WHERE parkNumber = ? AND YEAR(date) = ? AND MONTH(date) = ? "
+				+ "AND (orderStatus = 'CONFIRMED' OR orderStatus = 'NOTARRIVED') AND date < CURRENT_DATE() "
+				+ "GROUP BY DAY(date)";
 
+		// Process cancellations
+		processQuery(dailyCancellations, parkNumber, reportDate, cancellationQuery);
 
-	    // Process cancellations
-	    processQuery(dailyCancellations, parkNumber, reportDate, cancellationQuery);
+		// Process unfulfilled orders
+		processQuery(dailyUnfulfilledOrders, parkNumber, reportDate, unfulfilledQuery);
 
-	    // Process unfulfilled orders
-	    processQuery(dailyUnfulfilledOrders, parkNumber, reportDate, unfulfilledQuery);
+		// Check if both maps only contain zeros
+		boolean cancellationsEmpty = dailyCancellations.values().stream().allMatch(count -> count == 0);
+		boolean unfulfilledOrdersEmpty = dailyUnfulfilledOrders.values().stream().allMatch(count -> count == 0);
 
-	 // Check if both maps only contain zeros
-	    boolean cancellationsEmpty = dailyCancellations.values().stream().allMatch(count -> count == 0);
-	    boolean unfulfilledOrdersEmpty = dailyUnfulfilledOrders.values().stream().allMatch(count -> count == 0);
+		if (cancellationsEmpty && unfulfilledOrdersEmpty) {
+			System.out.println("No data available for the given criteria.");
+			return null; // Indicate no data is available
+		}
 
-	    if (cancellationsEmpty && unfulfilledOrdersEmpty) {
-	        System.out.println("No data available for the given criteria.");
-	        return null; // Indicate no data is available
-	    }
+		// Set the updated maps in the report
+		cancellationReport.setDailyCancellations(dailyCancellations);
+		cancellationReport.setDailyUnfulfilledOrders(dailyUnfulfilledOrders);
 
-	    // Set the updated maps in the report
-	    cancellationReport.setDailyCancellations(dailyCancellations);
-	    cancellationReport.setDailyUnfulfilledOrders(dailyUnfulfilledOrders);
-
-	    System.out.println(cancellationReport.toString());
-	    return cancellationReport;
+		System.out.println(cancellationReport.toString());
+		return cancellationReport;
 	}
 
 	private void processQuery(Map<Integer, Integer> dailyMap, Integer parkNumber, LocalDate reportDate, String query) {
-	    try (PreparedStatement statement = connectionToDatabase.prepareStatement(query)) {
-	        statement.setInt(1, parkNumber);
-	        statement.setInt(2, reportDate.getYear());
-	        statement.setInt(3, reportDate.getMonthValue());
+		try (PreparedStatement statement = connectionToDatabase.prepareStatement(query)) {
+			statement.setInt(1, parkNumber);
+			statement.setInt(2, reportDate.getYear());
+			statement.setInt(3, reportDate.getMonthValue());
 
-	        System.out.println("Query Prepared: " + statement.toString()); // Diagnostic
+			System.out.println("Query Prepared: " + statement.toString()); // Diagnostic
 
-	        try (ResultSet resultSet = statement.executeQuery()) {
-	            while (resultSet.next()) {
-	                int dayOfMonth = resultSet.getInt("dayOfMonth");
-	                int count = resultSet.getInt("count");
+			try (ResultSet resultSet = statement.executeQuery()) {
+				while (resultSet.next()) {
+					int dayOfMonth = resultSet.getInt("dayOfMonth");
+					int count = resultSet.getInt("count");
 
-	                System.out.println("Day: " + dayOfMonth + ", Count: " + count); // Diagnostic print
+					System.out.println("Day: " + dayOfMonth + ", Count: " + count); // Diagnostic print
 
-	                dailyMap.put(dayOfMonth, count);
-	            }
-	        }
-	    } catch (SQLException e) {
-	        System.err.println("An error occurred while fetching the report: " + e.getMessage());
-	        e.printStackTrace();
-	    }
+					dailyMap.put(dayOfMonth, count);
+				}
+			}
+		} catch (SQLException e) {
+			System.err.println("An error occurred while fetching the report: " + e.getMessage());
+			e.printStackTrace();
+		}
 	}
-
 
 	public UsageReport getNewUsageReport(UsageReport usageReport) {
 		System.out.println("In db getNewUsageReport...");
