@@ -47,24 +47,26 @@ public class WorkerLoginController {
 		Boolean passwordValid = alertPwd.getAlertType().toString().equals("INFORMATION");
 
 		// Proceed only if both username and password validations passed
-		if (usernameValid && passwordValid) {
+		if (usernameValid && passwordValid) { 
 			// Create a worker object to send to the server
 			GeneralParkWorker workerForServer = new GeneralParkWorker(null, null, null, null, null, workerUsername,
 					workerPassword, null);
 //			System.out.println("worker username: " + workerForServer.getUserName() + "worker password: " + workerForServer.getPassword());
-
+			System.out.println("Worker username:");
 			// Send worker object to server and request worker details
 			ClientServerMessage messageForServer = new ClientServerMessage(workerForServer,
 					Operation.GET_GENERAL_PARK_WORKER_DETAILS);
 			
 			ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
-			ClientServerMessage<?> retrieveInformationIfLoggedIn;
+			System.out.println("Worker username:");
+
+			ClientServerMessage<?> retrieveInformationIfLoggedIn=ClientController.data;
 			// Retrieve worker details from server
-			GeneralParkWorker workerFromServer = (GeneralParkWorker) ClientController.data.getDataTransfered();
+			
 
 			// Check if the server response is not null
-			if (workerFromServer != null) {
-
+			if (retrieveInformationIfLoggedIn.getFlag() ) {
+				GeneralParkWorker workerFromServer = (GeneralParkWorker) ClientController.data.getDataTransfered();
 				// Update the current worker in UserManager
 				Usermanager.setCurrentWorker(workerFromServer);
 				System.out.println("Worker username: " + workerFromServer.getUserName()+ "worker password: " + workerFromServer.getPassword());

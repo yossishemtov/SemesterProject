@@ -113,8 +113,18 @@ public class MessageHandlerFromClient {
 
 		case Operation.GET_GENERAL_PARK_WORKER_DETAILS:
 			GeneralParkWorker generalParkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
-			messageFromClient.setDataTransfered(dbControllerInstance.getGeneralParkWorkerDetails(generalParkWorker));
+			GeneralParkWorker generalParkWorkerToclient=dbControllerInstance.getGeneralParkWorkerDetails(generalParkWorker);
+			System.out.println("not :");
+ 
+			if (generalParkWorkerToclient !=null) {
+				System.out.println("not null:");
 
+				messageFromClient.setDataTransfered(generalParkWorkerToclient);
+				messageFromClient.setflagTrue();
+
+			} else {
+				messageFromClient.setflagFalse();
+			}
 			client.sendToClient(messageFromClient);
 			break;
 

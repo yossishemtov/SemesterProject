@@ -43,7 +43,7 @@ public class DatabaseController {
 	 * @return order
 	 */
 	public Order getTravelerRecentOrder(Integer travelerId) {
-		String query = "SELECT * FROM order WHERE travlerId = ? ORDER BY orderId DESC";
+		String query = "SELECT * FROM order WHERE travelerId = ? ORDER BY orderId DESC";
 		Order lastOrder = null;
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
@@ -54,7 +54,7 @@ public class DatabaseController {
 
 			while (rs.next()) {
 				Integer orderId = rs.getInt("orderId");
-				Integer traveler = rs.getInt("travlerId");
+				Integer traveler = rs.getInt("travelerId");
 				Integer parkNumber = rs.getInt("parkNumber");
 				Integer amountOfVisitors = rs.getInt("amountOfVisitors");
 				Float price = rs.getFloat("price");
@@ -94,7 +94,7 @@ public class DatabaseController {
 
 			while (rs.next()) {
 				Integer orderId = rs.getInt("orderId");
-				Integer travelerId = rs.getInt("travlerId");
+				Integer travelerId = rs.getInt("travelerId");
 				Integer parkNumber = rs.getInt("parkNumber");
 				Integer amountOfVisitors = rs.getInt("amountOfVisitors");
 				Float price = rs.getFloat("price");
@@ -197,7 +197,7 @@ public class DatabaseController {
 	 */
 	public Boolean insertWaitingList(WaitingList waiting) {
 
-		String query = "INSERT INTO `waitinglist` (orderId, travlerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, "
+		String query = "INSERT INTO `waitinglist` (orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, "
 				+ "visitTime, orderStatus, typeOfOrder,parkName, waitingListId, placeInList) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		System.out.println(waiting.toString());
@@ -239,7 +239,7 @@ public class DatabaseController {
 	 */
 	public boolean insertNewTraveler(Traveler traveler) {
 
-		String query = "INSERT INTO `travler` (id, firstName, lastName, email, phoneNumber, GroupGuide, isloggedin) VALUES (?, ?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO `traveler` (id, firstName, lastName, email, phoneNumber, GroupGuide, isloggedin) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 			ps.setInt(1, traveler.getId());
@@ -346,7 +346,7 @@ public class DatabaseController {
 		LocalDate date;
 		LocalTime time;
 		ArrayList<Order> orders = new ArrayList<>();
-		String query = "SELECT date, visitTime, parkNumber FROM `order` WHERE travlerId = ?";
+		String query = "SELECT date, visitTime, parkNumber FROM `order` WHERE travelerId = ?";
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 			// ps.setInt(1, traveler.getId()); גרסא נכונה
@@ -506,7 +506,7 @@ public class DatabaseController {
 	 */
 	public boolean ChangeTravelerToGuide(Traveler traveler) {
 
-		String query = "UPDATE `travler` SET GroupGuide = 1 WHERE id = ?";
+		String query = "UPDATE `traveler` SET GroupGuide = 1 WHERE id = ?";
 
 		try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
 			pstmt.setInt(1, traveler.getId());
@@ -524,7 +524,7 @@ public class DatabaseController {
 	public boolean insertNewGroupGuide(Traveler traveler) {
 		// Assuming you have a method getConnection() that returns a Connection object.
 
-		String query = "INSERT INTO `travler` (id, firstName, lastName, email, phoneNumber, GroupGuide, isloggedin) VALUES (?, ?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO `traveler` (id, firstName, lastName, email, phoneNumber, GroupGuide, isloggedin) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 		try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
 			pstmt.setInt(1, traveler.getId());
@@ -701,7 +701,7 @@ public class DatabaseController {
 				LocalTime visitTime = rs.getObject("visitTime", LocalTime.class);
 				float price = rs.getFloat("price");
 
-				orderInformation = new Order(rs.getInt("orderId"), rs.getInt("travlerId"), rs.getInt("parkNumber"),
+				orderInformation = new Order(rs.getInt("orderId"), rs.getInt("travelerId"), rs.getInt("parkNumber"),
 						rs.getInt("amountOfVisitors"), price, rs.getString("visitorEmail"), orderDate, visitTime,
 						rs.getString("orderStatus"), // Assuming managerID is stored directly as an integer
 						rs.getString("typeOfOrder"), rs.getString("TelephoneNumber"), null);
@@ -725,7 +725,7 @@ public class DatabaseController {
 	public ArrayList<WaitingList> getWaitingListsDataFromDatabase(Traveler traveler) {
 		ArrayList<WaitingList> waitingListDataForClient = new ArrayList<>();
 		// Assuming the table and column names are corrected to match Java conventions
-		String query = "SELECT orderId, waitingListId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder, parkName, placeInList FROM waitinglist WHERE travlerId = ?";
+		String query = "SELECT orderId, waitingListId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder, parkName, placeInList FROM waitinglist WHERE travelerId = ?";
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 			ps.setInt(1, traveler.getId());
@@ -780,7 +780,7 @@ public class DatabaseController {
 	}
 
 	public Traveler getTravelerDetails(Traveler travelerFromClient) {
-		String query = "SELECT firstName, lastName, email, phoneNumber, GroupGuide, isloggedin FROM `travler` WHERE id = ?";
+		String query = "SELECT firstName, lastName, email, phoneNumber, GroupGuide, isloggedin FROM `traveler` WHERE id = ?";
 		Traveler traveler = null; // Initialize to null
 
 		try (PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
@@ -812,43 +812,56 @@ public class DatabaseController {
 	// WorkerId | firstName | lastName | email | role | userName | password |
 	// worksAtPark
 	public GeneralParkWorker getGeneralParkWorkerDetails(GeneralParkWorker worker) {
-		// Removed unused ArrayList<Order>
-		System.out.println("in db");
-		System.out.println(worker.getPassword() + worker.getUserName());
-		GeneralParkWorker generalParkWorker = null;
+	    System.out.println("Starting to fetch GeneralParkWorker details from DB.");
+	    System.out.println("Credentials provided: " + worker.getUserName());
 
-		String query = "SELECT * FROM `generalparkworker` WHERE userName = ? AND password= ?";
+	    GeneralParkWorker generalParkWorker = null;
+	    String query = "SELECT * FROM `generalparkworker` WHERE userName = ? AND password= ?";
 
-		try (PreparedStatement preparedStatementInstance = connectionToDatabase.prepareStatement(query)) {
-			preparedStatementInstance.setString(1, worker.getUserName());
-			preparedStatementInstance.setString(2, worker.getPassword());
-			ResultSet returnedStatement = preparedStatementInstance.executeQuery();
+	    try (PreparedStatement preparedStatementInstance = connectionToDatabase.prepareStatement(query)) {
+	        // Set a timeout for the query to prevent it from running indefinitely
+	        preparedStatementInstance.setQueryTimeout(30); // Timeout in seconds
 
-			while (returnedStatement.next()) {
+	        preparedStatementInstance.setString(1, worker.getUserName());
+	        preparedStatementInstance.setString(2, worker.getPassword());
 
-				Integer workerId = returnedStatement.getInt(1);
-				String firstName = returnedStatement.getString(2);
-				String lastName = returnedStatement.getString(3);
-				String email = returnedStatement.getString(4);
-				String role = returnedStatement.getString(5);
-				String userName = returnedStatement.getString(6);
-				String password = returnedStatement.getString(7);
-				Integer worksAtPark = returnedStatement.getInt(8);
-				System.out.println(role);
+	        ResultSet returnedStatement = preparedStatementInstance.executeQuery();
 
-				generalParkWorker = new GeneralParkWorker(workerId, firstName, lastName, email, role, userName,
-						password, worksAtPark);
+	        if (!returnedStatement.next()) {
+	            System.out.println("No matching GeneralParkWorker found.");
+	            return null; // Immediately return null if no data is found
+	        } else {
+	            // Move the cursor back to the beginning of the ResultSet
+	            returnedStatement.beforeFirst();
+	        }
 
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null; // Consider throwing a custom exception
-		}
+	        while (returnedStatement.next()) {
+	            Integer workerId = returnedStatement.getInt(1);
+	            String firstName = returnedStatement.getString(2);
+	            String lastName = returnedStatement.getString(3);
+	            String email = returnedStatement.getString(4);
+	            String role = returnedStatement.getString(5);
+	            String userName = returnedStatement.getString(6);
+	            String password = returnedStatement.getString(7);
+	            Integer worksAtPark = returnedStatement.getInt(8);
 
-		System.out.println(generalParkWorker.toString());
+	            generalParkWorker = new GeneralParkWorker(workerId, firstName, lastName, email, role, userName, password, worksAtPark);
+	            System.out.println("Fetched details for: " + userName);
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("SQLException occurred while fetching GeneralParkWorker details: " + e.getMessage());
+	        e.printStackTrace();
+	    }
 
-		return generalParkWorker; // This will return an empty list if there were no records found
+	    if (generalParkWorker != null) {
+	        System.out.println("Successfully fetched GeneralParkWorker details.");
+	    } else {
+	        System.out.println("Failed to fetch GeneralParkWorker details.");
+	    }
+
+	    return generalParkWorker;
 	}
+
 
 	/**
 	 * Retrieves all orders for a given traveler from the database.
@@ -860,7 +873,7 @@ public class DatabaseController {
 	public ArrayList<Order> getOrdersDataFromDatabase(Traveler traveler) {
 		ArrayList<Order> orderDataForClient = new ArrayList<>();// Ensure the query reflects your actual database table
 																// and column names
-		String query = "SELECT orderId, parkName, amountOfVisitors, price, date, visitTime, orderStatus, typeOfOrder, TelephoneNumber FROM `order` WHERE travlerId = ?";
+		String query = "SELECT orderId, parkName, amountOfVisitors, price, date, visitTime, orderStatus, typeOfOrder, TelephoneNumber FROM `order` WHERE travelerId = ?";
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 			ps.setInt(1, traveler.getId());
@@ -903,7 +916,7 @@ public class DatabaseController {
 	 * @return true if insertion was successful, false otherwise.
 	 */
 	public Boolean insertTravelerOrder(Order order) {// Adjusting the query to match the database schema order provided
-		String query = "INSERT INTO `order` (orderId, travlerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder, parkName)"
+		String query = "INSERT INTO `order` (orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder, parkName)"
 				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 		System.out.println(order.toString());
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {// Set parameters based on the Order
@@ -1101,7 +1114,7 @@ public class DatabaseController {
 	 * @return true if the signedin was successful, false otherwise.
 	 */
 	public Boolean changedSignedInOfTraveler(Traveler signedTraveler) {
-		String query = "UPDATE travler SET isloggedin = 1 WHERE id = ?";
+		String query = "UPDATE traveler SET isloggedin = 1 WHERE id = ?";
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 			ps.setInt(1, signedTraveler.getId());
@@ -1122,7 +1135,7 @@ public class DatabaseController {
 	 * @return true if the signedout was successful, false otherwise.
 	 */
 	public Boolean changedSignedOutOfTraveler(Traveler signedTraveler) {
-		String query = "UPDATE travler SET isloggedin = 0 WHERE id = ?";
+		String query = "UPDATE traveler SET isloggedin = 0 WHERE id = ?";
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 			ps.setInt(1, signedTraveler.getId());
@@ -1144,7 +1157,7 @@ public class DatabaseController {
 	 */
 	public Boolean getSignedinStatusOfTraveler(Traveler signedTraveler) {
 		// Return the status of isloggedin of Traveler
-		String query = "SELECT isloggedin FROM travler WHERE id = ?";
+		String query = "SELECT isloggedin FROM traveler WHERE id = ?";
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 			ps.setInt(1, signedTraveler.getId());
@@ -1248,7 +1261,7 @@ public class DatabaseController {
 //	    	            
 //	                	orderInformation = new Order(
 //	                        rs.getInt("orderId"), 
-//	                        rs.getInt("travlerId"), 
+//	                        rs.getInt("travelerId"), 
 //	                        rs.getInt("parkNumber"), 
 //	                        rs.getInt("amountOfVisitors"), 
 //	                        price, 
