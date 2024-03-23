@@ -94,13 +94,13 @@ public class NotifyThread implements Runnable {
 	    	OrderNotification notificationOfSpecificOrder = iterator.next();
 	        if (isAlertExpired(LocalTime.now(), notificationOfSpecificOrder.getEndNotification())) {
 	            // Cancel the order
-	        	System.out.print("Caceled Order");
+	        	System.out.print("Cancel Order");
 	        	
 	        	//Change status in the ordernotification table
 	        	DC.changeStatusOfNotification(notificationOfSpecificOrder.getOrderId(), "PASSED");
 	        	
 	        	//Change status in the order table
-	            DC.updateOrderStatusArray(new ArrayList<String>(Arrays.asList("CANCELED", String.valueOf(notificationOfSpecificOrder.getOrderId()))));
+	            DC.updateOrderStatusArray(new ArrayList<String>(Arrays.asList("CANCELEDBYSERVER", String.valueOf(notificationOfSpecificOrder.getOrderId()))));
 	            sendCancelMessage(notificationOfSpecificOrder);
 	            //WaitingListControl.notifyPersonFromWaitingList(order);
 	            // Remove the canceled order from ordersWithAlerts

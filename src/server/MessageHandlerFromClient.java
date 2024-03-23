@@ -843,16 +843,28 @@ public class MessageHandlerFromClient {
 			client.sendToClient(orderListMsg);
 			break;
 			
-		case Operation.GET_STATUS_PENDING_EMAIL_BY_TRAVELERID: // emanuel
-			Integer idToLookForPendingEmails = (Integer) messageFromClient.getDataTransfered();
-			ArrayList<Order> orderListTravelerById = dbControllerInstance.getPendingEmailOrdersByID(idToLookForPendingEmails);
+		case Operation.GET_STATUS_PENDING_NOTIFICATION_BY_TRAVELERID: // emanuel
+			Integer idToLookForPendingNotifications = (Integer) messageFromClient.getDataTransfered();
+			ArrayList<Order> orderListTravelerById = dbControllerInstance.getPendingNotificationsOrdersByID(idToLookForPendingNotifications);
 
 			// Create a message to send to the client
 			ClientServerMessage<?> orderListOfPendingNotifications = new ClientServerMessage<>(orderListTravelerById,
-					Operation.GET_STATUS_PENDING_EMAIL_BY_TRAVELERID);
+					Operation.GET_STATUS_PENDING_NOTIFICATION_BY_TRAVELERID);
 
 			// Send the message to the client
 			client.sendToClient(orderListOfPendingNotifications);
+			break;
+			
+		case Operation.GET_STATUS_CANCELED_NOTIFICATION_BY_TRAVELERID:
+			Integer idToLookForCanceledNotifications = (Integer) messageFromClient.getDataTransfered();
+			ArrayList<Order> orderListTravelerByIdCanceled = dbControllerInstance.getCanceledNotificationsOrdersByID(idToLookForCanceledNotifications);
+
+			// Create a message to send to the client
+			ClientServerMessage<?> orderListTravelerByIdCanceledMessageToClient = new ClientServerMessage<>(orderListTravelerByIdCanceled,
+					Operation.GET_STATUS_PENDING_NOTIFICATION_BY_TRAVELERID);
+
+			// Send the message to the client
+			client.sendToClient(orderListTravelerByIdCanceledMessageToClient);
 			break;
 
 		default:

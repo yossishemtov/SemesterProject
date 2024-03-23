@@ -2069,7 +2069,44 @@ public class DatabaseController {
 	}
 	
 	
-	public ArrayList<Order> getPendingEmailOrdersByID(Integer travelerIdToCheckPendingNotifications) {
+	public ArrayList<Order>getCanceledNotificationsOrdersByID(Integer travelerIdToCheckCanceledNotifications){
+		//Checks if traveler has any Canceled notifications and return their orders
+		ArrayList<Order> orders = new ArrayList<Order>();
+	    String query = "SELECT * FROM `order` WHERE travlerId = ? AND orderStatus = ?";
+		
+		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
+			ps.setInt(1, travelerIdToCheckCanceledNotifications);
+			ps.setString(2, "CANCELEDBYSERVER");
+	        
+	        ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Integer orderId = rs.getInt("orderId");
+				Integer travelerId = rs.getInt("travlerId");
+	            Integer parkNumber = rs.getInt("parkNumber");
+	            Integer amountOfVisitors = rs.getInt("amountOfVisitors");
+	            Float price = rs.getFloat("price");
+	            String visitorEmail = rs.getString("visitorEmail");
+	            LocalDate date = rs.getDate("date").toLocalDate();
+	            LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
+	            String statusStr = rs.getString("orderStatus");
+	            String typeOfOrderStr = rs.getString("typeOfOrder");
+	            String telephoneNumber = rs.getString("TelephoneNumber");
+	            String parkName = rs.getString("parkName");
+				
+				Order order = new Order(orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail
+						,date, visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName);
+				orders.add(order);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return orders;
+	}
+	
+	
+	public ArrayList<Order> getPendingNotificationsOrdersByID(Integer travelerIdToCheckPendingNotifications) {
+		//Checks if traveler has any pending notifications and return their orders
 		ArrayList<Order> orders = new ArrayList<Order>();
 	    String query = "SELECT * FROM `order` WHERE travlerId = ? AND orderStatus = ?";
 		

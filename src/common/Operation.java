@@ -27,7 +27,8 @@ public abstract class Operation {
     public final static String GET_AMOUNT_OF_VISITORS_FOR_GENERALPARKWORKER = "Get amount of visitors for park worker";
     public final static String GET_STATUS_PENDING_EMAIL = "Get orders with status PENDING_EMAIL_SENT"; //emanuel
     public final static String GET_ORDER_BY_ID_AND_PARK_NUMBER_DATE = "Get order information by id and park number and date";
-    public final static String GET_STATUS_PENDING_EMAIL_BY_TRAVELERID = "Get orders with pending email by travelerID";
+    public final static String GET_STATUS_PENDING_NOTIFICATION_BY_TRAVELERID = "Get orders with pending email by travelerID";
+    public final static String GET_STATUS_CANCELED_NOTIFICATION_BY_TRAVELERID = "Get orders that were canceled by the server";
     
     public static final String CHECK_SPOT_AVAILABILITY = "CHECK_SPOT_AVAILABILITY"; //emanuel
     public final static String CHECK_IF_ORDER_VALID = "Checking order validity"; //emanuel

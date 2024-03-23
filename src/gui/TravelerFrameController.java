@@ -77,53 +77,8 @@ public class TravelerFrameController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    	Traveler currentTraveler = Usermanager.getCurrentTraveler();
-    	
-    	try {
-    		
-    	
-    	ClientServerMessage<?> findPendingNotificationsOfTravelerOrders = new ClientServerMessage<>(currentTraveler.getId(), Operation.GET_STATUS_PENDING_EMAIL_BY_TRAVELERID);
-		ClientUI.clientControllerInstance.sendMessageToServer(findPendingNotificationsOfTravelerOrders);
-		
-	    ClientServerMessage<?> pendingNotificationsOrders = ClientUI.clientControllerInstance.getData();
-	    ArrayList<Order> pendingOrders = (ArrayList<Order>) pendingNotificationsOrders.getDataTransfered();
-	    
-	    for (Order order : pendingOrders) {
-	    	if(currentTraveler.getId().equals(order.getVisitorId())) {
-	    		String parkName = order.getParkName();
-	    	    String orderDate = order.getDate().toString();
-	    	    String orderTime = order.getVisitTime().toString();
-	    	    int option = JOptionPane.showConfirmDialog(null, "Your order at " + parkName + " on " + orderDate + " at " + orderTime + " has been confirmed. Would you like to see more details?", "Order Confirmed", JOptionPane.YES_NO_OPTION);
-	    	    
-	    	    if (option == JOptionPane.YES_OPTION) {
-	    	        //change the orderStatus to confirmed
-	    	    	 ClientServerMessage<?> updateStatusConfirmed = new ClientServerMessage<>(new ArrayList<String>
-	                    (Arrays.asList("CONFIRMED",order.getOrderId()+"")), Operation.PATCH_ORDER_STATUS_ARRAYLIST);
-	                    ClientUI.clientControllerInstance.sendMessageToServer(updateStatusConfirmed);
-	    	    	//change notification status to passed
-	    	    	
-	    	        // For simplicity, let's display a message dialog with order details
-	    	        String message = "Park: " + parkName + "\nDate: " + orderDate + "\nTime: " + orderTime;
-	    	        JOptionPane.showMessageDialog(null, message, "Order Details", JOptionPane.INFORMATION_MESSAGE);
-	    	        
-	    	    }
-	    	    
-	    	    if (option == JOptionPane.NO_OPTION || option == JOptionPane.CLOSED_OPTION) {
-                    String message = "Park: " + parkName + "\nDate: " + orderDate + "\nTime: " + orderTime;
-                    JOptionPane.showMessageDialog(null, message, "Order Details", JOptionPane.INFORMATION_MESSAGE);
-
-                    ClientServerMessage<?> updateStatusCanceled = new ClientServerMessage<>(new ArrayList<String>
-                    (Arrays.asList("CANCELED",order.getOrderId()+"")), Operation.PATCH_ORDER_STATUS_ARRAYLIST);
-                    ClientUI.clientControllerInstance.sendMessageToServer(updateStatusCanceled);
-	                }
-		    	}
-	
-		    }
-	    
-    		}catch (Exception e) {
-    			new Alerts(AlertType.WARNING, "Something went wrong", "Cancellation",
-    					"Something went wrong with receiving notifications for orders").showAndWait();
-	    	}
+    	viewPendingNotifications();
+    	viewCanceledNotifications();
 
     }
     
@@ -260,7 +215,104 @@ public class TravelerFrameController implements Initializable {
         }
     }
    
+	
+    public void viewPendingNotifications(){
+    	//receive notifications about orders that are pending
+
+    	Traveler currentTraveler = Usermanager.getCurrentTraveler();
+    	
+    	try {
+    		
+    	
+    	ClientServerMessage<?> findPendingNotificationsOfTravelerOrders = new ClientServerMessage<>(currentTraveler.getId(), Operation.GET_STATUS_PENDING_NOTIFICATION_BY_TRAVELERID);
+		ClientUI.clientControllerInstance.sendMessageToServer(findPendingNotificationsOfTravelerOrders);
+		
+	    ClientServerMessage<?> pendingNotificationsOrders = ClientUI.clientControllerInstance.getData();
+	    ArrayList<Order> pendingOrders = (ArrayList<Order>) pendingNotificationsOrders.getDataTransfered();
 	    
+	    for (Order order : pendingOrders) {
+	    	if(currentTraveler.getId().equals(order.getVisitorId())) {
+	    		String parkName = order.getParkName();
+	    	    String orderDate = order.getDate().toString();
+	    	    String orderTime = order.getVisitTime().toString();
+	    	    int option = JOptionPane.showConfirmDialog(null, "Your order at " + parkName + " on " + orderDate + " at " + orderTime + " has been confirmed. Would you like to see more details?", "Order Confirmed", JOptionPane.YES_NO_OPTION);
+	    	    
+	    	    if (option == JOptionPane.YES_OPTION) {
+	    	        //change the orderStatus to confirmed
+	    	    	 ClientServerMessage<?> updateStatusConfirmed = new ClientServerMessage<>(new ArrayList<String>
+	                    (Arrays.asList("CONFIRMED",order.getOrderId()+"")), Operation.PATCH_ORDER_STATUS_ARRAYLIST);
+	                    ClientUI.clientControllerInstance.sendMessageToServer(updateStatusConfirmed);
+	    	    	//change notification status to passed
+	    	    	
+	    	        // For simplicity, let's display a message dialog with order details
+	    	        String message = "Park: " + parkName + "\nDate: " + orderDate + "\nTime: " + orderTime;
+	    	        JOptionPane.showMessageDialog(null, message, "Order Details", JOptionPane.INFORMATION_MESSAGE);
+	    	        
+	    	    }
+	    	    
+	    	    if (option == JOptionPane.NO_OPTION || option == JOptionPane.CLOSED_OPTION) {
+                    String message = "Park: " + parkName + "\nDate: " + orderDate + "\nTime: " + orderTime;
+                    JOptionPane.showMessageDialog(null, message, "Order Details", JOptionPane.INFORMATION_MESSAGE);
+
+                    ClientServerMessage<?> updateStatusCanceled = new ClientServerMessage<>(new ArrayList<String>
+                    (Arrays.asList("CANCELED",order.getOrderId()+"")), Operation.PATCH_ORDER_STATUS_ARRAYLIST);
+                    ClientUI.clientControllerInstance.sendMessageToServer(updateStatusCanceled);
+	                }
+		    	}
+	
+		    }
+	    
+    		}catch (Exception e) {
+    			new Alerts(AlertType.WARNING, "Something went wrong", "Cancellation",
+    					"Something went wrong with receiving notifications for Pending orders").showAndWait();
+	    	}
+    }
+    
+    
+    public void viewCanceledNotifications() {
+    	//receive notifications about orders that were canceled by the server
+    	Traveler currentTraveler = Usermanager.getCurrentTraveler();
+    	
+    	try {
+    		
+    		//Get all the notifications of orders that were canceled by the server
+	    	ClientServerMessage<?> findPendingNotificationsOfTravelerOrders = new ClientServerMessage<>(currentTraveler.getId(), Operation.GET_STATUS_CANCELED_NOTIFICATION_BY_TRAVELERID);
+			ClientUI.clientControllerInstance.sendMessageToServer(findPendingNotificationsOfTravelerOrders);
+			
+		    ClientServerMessage<?> canceledNotificationsOrders = ClientUI.clientControllerInstance.getData();
+		    ArrayList<Order> canceledOrders = (ArrayList<Order>) canceledNotificationsOrders.getDataTransfered();
+	    
+		//Displaying all the notifications with their cooresponding ordersr
+	    for (Order order : canceledOrders) {
+	    	if(currentTraveler.getId().equals(order.getVisitorId())) {
+	    		String parkName = order.getParkName();
+	    	    String orderDate = order.getDate().toString();
+	    	    String orderTime = order.getVisitTime().toString();
+	    	    int option = JOptionPane.showConfirmDialog(null, "Your order at " + parkName + " on " + orderDate + " at " + orderTime + " has been Canceled.", "Order Canceled", JOptionPane.YES_NO_OPTION);
+	    	    
+	    	    if (option == JOptionPane.YES_OPTION) {
+	    	        //change the orderStatus to confirmed
+	    	    	 ClientServerMessage<?> updateStatusConfirmed = new ClientServerMessage<>(new ArrayList<String>
+	                    (Arrays.asList("CANCELED",order.getOrderId()+"")), Operation.PATCH_ORDER_STATUS_ARRAYLIST);
+	                    ClientUI.clientControllerInstance.sendMessageToServer(updateStatusConfirmed);
+	    	        
+	    	    }
+	    	    
+	    	    if (option == JOptionPane.NO_OPTION || option == JOptionPane.CLOSED_OPTION) {
+
+                    ClientServerMessage<?> updateStatusCanceled = new ClientServerMessage<>(new ArrayList<String>
+                    (Arrays.asList("CANCELED",order.getOrderId()+"")), Operation.PATCH_ORDER_STATUS_ARRAYLIST);
+                    ClientUI.clientControllerInstance.sendMessageToServer(updateStatusCanceled);
+	                }
+		    	}
+	
+		    }
+	    
+    		}catch (Exception e) {
+    			new Alerts(AlertType.WARNING, "Something went wrong", "Cancellation",
+    					"Something went wrong with receiving notifications for Canceled orders").showAndWait();
+	    	}
+    }
 	    
 //	    public void editOrderBtn(ActionEvent click) throws Exception {
 //	    	
