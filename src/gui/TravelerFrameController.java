@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.TextField;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import client.ClientController;
@@ -78,10 +79,15 @@ public class TravelerFrameController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
     	Traveler currentTraveler = Usermanager.getCurrentTraveler();
     	
-    	ClientServerMessage<?> findPending = new ClientServerMessage<>(null, Operation.GET_STATUS_PENDING_EMAIL);
-		ClientUI.clientControllerInstance.sendMessageToServer(findPending);
-	    ClientServerMessage<?> pendingMsg = ClientUI.clientControllerInstance.getData();
-	    ArrayList<Order> pendingOrders = (ArrayList<Order>) pendingMsg.getDataTransfered();
+    	try {
+    		
+    	
+    	ClientServerMessage<?> findPendingNotificationsOfTravelerOrders = new ClientServerMessage<>(currentTraveler.getId(), Operation.GET_STATUS_PENDING_EMAIL_BY_TRAVELERID);
+		ClientUI.clientControllerInstance.sendMessageToServer(findPendingNotificationsOfTravelerOrders);
+		
+	    ClientServerMessage<?> pendingNotificationsOrders = ClientUI.clientControllerInstance.getData();
+	    ArrayList<Order> pendingOrders = (ArrayList<Order>) pendingNotificationsOrders.getDataTransfered();
+	    
 	    for (Order order : pendingOrders) {
 	    	if(currentTraveler.getId().equals(order.getVisitorId())) {
 	    		String parkName = order.getParkName();
@@ -90,16 +96,34 @@ public class TravelerFrameController implements Initializable {
 	    	    int option = JOptionPane.showConfirmDialog(null, "Your order at " + parkName + " on " + orderDate + " at " + orderTime + " has been confirmed. Would you like to see more details?", "Order Confirmed", JOptionPane.YES_NO_OPTION);
 	    	    
 	    	    if (option == JOptionPane.YES_OPTION) {
-	    	        // Show more details about the confirmed order
-	    	        // You can customize this according to your requirements, such as opening a new window with order details
+	    	        //change the orderStatus to confirmed
+	    	    	 ClientServerMessage<?> updateStatusConfirmed = new ClientServerMessage<>(new ArrayList<String>
+	                    (Arrays.asList("CONFIRMED",order.getOrderId()+"")), Operation.PATCH_ORDER_STATUS_ARRAYLIST);
+	                    ClientUI.clientControllerInstance.sendMessageToServer(updateStatusConfirmed);
+	    	    	//change notification status to passed
+	    	    	
 	    	        // For simplicity, let's display a message dialog with order details
 	    	        String message = "Park: " + parkName + "\nDate: " + orderDate + "\nTime: " + orderTime;
 	    	        JOptionPane.showMessageDialog(null, message, "Order Details", JOptionPane.INFORMATION_MESSAGE);
 	    	        
 	    	    }
-	    	}
+	    	    
+	    	    if (option == JOptionPane.NO_OPTION || option == JOptionPane.CLOSED_OPTION) {
+                    String message = "Park: " + parkName + "\nDate: " + orderDate + "\nTime: " + orderTime;
+                    JOptionPane.showMessageDialog(null, message, "Order Details", JOptionPane.INFORMATION_MESSAGE);
 
-	    }
+                    ClientServerMessage<?> updateStatusCanceled = new ClientServerMessage<>(new ArrayList<String>
+                    (Arrays.asList("CANCELED",order.getOrderId()+"")), Operation.PATCH_ORDER_STATUS_ARRAYLIST);
+                    ClientUI.clientControllerInstance.sendMessageToServer(updateStatusCanceled);
+	                }
+		    	}
+	
+		    }
+	    
+    		}catch (Exception e) {
+    			new Alerts(AlertType.WARNING, "Something went wrong", "Cancellation",
+    					"Something went wrong with receiving notifications for orders").showAndWait();
+	    	}
 
     }
     

@@ -27,7 +27,8 @@ public abstract class Operation {
     public final static String GET_AMOUNT_OF_VISITORS_FOR_GENERALPARKWORKER = "Get amount of visitors for park worker";
     public final static String GET_STATUS_PENDING_EMAIL = "Get orders with status PENDING_EMAIL_SENT"; //emanuel
     public final static String GET_ORDER_BY_ID_AND_PARK_NUMBER_DATE = "Get order information by id and park number and date";
-
+    public final static String GET_STATUS_PENDING_EMAIL_BY_TRAVELERID = "Get orders with pending email by travelerID";
+    
     public static final String CHECK_SPOT_AVAILABILITY = "CHECK_SPOT_AVAILABILITY"; //emanuel
     public final static String CHECK_IF_ORDER_VALID = "Checking order validity"; //emanuel
     public final static String CHECK_PARK_FULL_DAYS = "Checking when the park is full"; //emanuel
@@ -60,7 +61,9 @@ public abstract class Operation {
     public final static String PATCH_ORDER_STATUS_TO_INPARK = "Patch an order to be INPARK status";
     public final static String PATCH_PARK_VISITORS_APPEND = "Patch a park visitors number - append";
     public final static String GET_ALL_WAITING_LISTS = "Get all waiting Lists";
-    public static final String DELETE_EXISTING_WAITING_LIST = "Delete an existing waiting List";
+    public final static String DELETE_EXISTING_WAITING_LIST = "Delete an existing waiting List";
+    public final static String PATCH_ORDER_STATUS_ARRAYLIST = "Patch order status - arraylist";
+    
     // DELETE COMMANDS
     public final static String DELETE_EXISTING_ORDER = "Delete an existing order";
     public final static String RESPONSE_ALL_ORDER = "server send all order";

@@ -584,6 +584,22 @@ public class MessageHandlerFromClient {
 
 			client.sendToClient(messageFromClient);
 			break;
+			
+			
+		case Operation.PATCH_ORDER_STATUS_ARRAYLIST:
+            try {
+                List<Order> waitingToChange = (List<Order>) messageFromClient.getDataTransfered();
+                ArrayList<Order> waitingList = new ArrayList<>(waitingToChange);
+                // Create a message to send to the client
+                messageFromClient.setDataTransfered(dbControllerInstance.updateOrderStatusArray(waitingList));
+                // Send the message to the client
+            } catch (Exception e) {
+                e.printStackTrace();
+                // Handle the exception according to your needs
+            }
+            client.sendToClient(messageFromClient);
+            break;
+			
 		case Operation.GET_EXISTS_USAGE_REPORT:
 			Report generalReportFromClient = (Report) messageFromClient.getDataTransfered();
 			UsageReport UsageReportToClient = (UsageReport) dbControllerInstance
@@ -827,6 +843,17 @@ public class MessageHandlerFromClient {
 			client.sendToClient(orderListMsg);
 			break;
 			
+		case Operation.GET_STATUS_PENDING_EMAIL_BY_TRAVELERID: // emanuel
+			Integer idToLookForPendingEmails = (Integer) messageFromClient.getDataTransfered();
+			ArrayList<Order> orderListTravelerById = dbControllerInstance.getPendingEmailOrdersByID(idToLookForPendingEmails);
+
+			// Create a message to send to the client
+			ClientServerMessage<?> orderListOfPendingNotifications = new ClientServerMessage<>(orderListTravelerById,
+					Operation.GET_STATUS_PENDING_EMAIL_BY_TRAVELERID);
+
+			// Send the message to the client
+			client.sendToClient(orderListOfPendingNotifications);
+			break;
 
 		default:
 			System.out.println("default");
