@@ -9,14 +9,26 @@ public class OrderNotification implements Serializable{
 	private LocalDate dateOfNotification;
 	private LocalTime startNotification;
 	private LocalTime endNotification;
+	private String status;
 	
 	
 	public OrderNotification(Integer orderId, LocalDate dateOfNotification, LocalTime startNotification,
-			LocalTime endNotification) {
+			LocalTime endNotification, String status) {
 		this.orderId = orderId;
 		this.dateOfNotification = dateOfNotification;
 		this.startNotification = startNotification;
 		this.endNotification = endNotification;
+		this.status = status;
+	}
+
+
+	public String getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 

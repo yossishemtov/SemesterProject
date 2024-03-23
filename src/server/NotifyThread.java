@@ -53,7 +53,7 @@ public class NotifyThread implements Runnable {
 		while (true) {
 
 			ArrayList<Order> pendingOrders = DC.getOrdersByStatusInLastTwentyFourHours("PENDING");
-			ArrayList<OrderNotification> ordersAlreadyNotified= DC.getTodayNotifications();
+			ArrayList<OrderNotification> ordersAlreadyNotified= DC.getTodayNotificationsWithStatus("SENT");
 			
 			for (Order order : pendingOrders) {
 				String status = "PENDING_EMAIL_SENT";
@@ -64,13 +64,18 @@ public class NotifyThread implements Runnable {
 				
 				/**Visitor has 2 hours to accept visit from now*/
 				OrderNotification createNotification = new OrderNotification(Integer.parseInt(orderId), LocalDate.now(),
-						LocalTime.now(), LocalTime.now().plusHours(2));
+						LocalTime.now(), LocalTime.now().plusHours(2), "SENT");
 				
+				//Add notification to the orders notified arraylist
+				ordersAlreadyNotified.add(createNotification);
+				
+				//Posting the notification in the db
 				DC.postOrderNotification(createNotification);
 
-				sendConfirmationMessage(order);
-				addOrderWithAlert(createNotification);
+				sendConfirmationMessage(order);		
 			}
+			
+			ordersWithAlerts = ordersAlreadyNotified;
 			CancelOrderAndNotify();
 			try {
 				Thread.sleep(1 * minute);
@@ -80,9 +85,6 @@ public class NotifyThread implements Runnable {
 		}
 	}
 
-	private void addOrderWithAlert(OrderNotification orderNotificationDetails) {
-        ordersWithAlerts.add(orderNotificationDetails);
-    }
 	
 	private void CancelOrderAndNotify() {
 	    
@@ -93,6 +95,11 @@ public class NotifyThread implements Runnable {
 	        if (isAlertExpired(LocalTime.now(), notificationOfSpecificOrder.getEndNotification())) {
 	            // Cancel the order
 	        	System.out.print("Caceled Order");
+	        	
+	        	//Change status in the ordernotification table
+	        	DC.changeStatusOfNotification(notificationOfSpecificOrder.getOrderId(), "PASSED");
+	        	
+	        	//Change status in the order table
 	            DC.updateOrderStatusArray(new ArrayList<String>(Arrays.asList("CANCELED", String.valueOf(notificationOfSpecificOrder.getOrderId()))));
 	            sendCancelMessage(notificationOfSpecificOrder);
 	            //WaitingListControl.notifyPersonFromWaitingList(order);

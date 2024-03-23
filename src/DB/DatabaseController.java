@@ -1760,16 +1760,17 @@ public class DatabaseController {
 	 * 
 	 * @return ArrayList of orders.
 	 */
-	public ArrayList<OrderNotification> getTodayNotifications(){
+	public ArrayList<OrderNotification> getTodayNotificationsWithStatus(String status){
 		
 		//Gets all the notifications for orders of today by getting them from orderNotifications table
 		ArrayList<OrderNotification> ordersAlreadyNotified = new ArrayList<OrderNotification>();
 		String query = "SELECT * FROM orderNotifications " +
-                "WHERE dateOfNotification = ? ";
+                "WHERE dateOfNotification = ?  AND status = ?";
 		
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
 
 			ps.setDate(1, Date.valueOf(LocalDate.now()));
+			ps.setString(2, status);
 			
 	        
 	        ResultSet rs = ps.executeQuery();
@@ -1780,9 +1781,10 @@ public class DatabaseController {
                 LocalDate dateOfNotification = rs.getDate("dateOfNotification").toLocalDate();
                 LocalTime startNotification = rs.getTime("startNotification").toLocalTime();
                 LocalTime endNotification = rs.getTime("endNotification").toLocalTime();
+                String notificationStatus = rs.getString("status");
 
                 // Add notification to arraylist
-                ordersAlreadyNotified.add(new OrderNotification(orderId, dateOfNotification, startNotification, endNotification));
+                ordersAlreadyNotified.add(new OrderNotification(orderId, dateOfNotification, startNotification, endNotification, notificationStatus));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1791,6 +1793,33 @@ public class DatabaseController {
 		
 		return ordersAlreadyNotified;
 		
+	}
+	
+	
+	/**
+	 * Change the status of a notification based on the orderid and the status we want to change to
+	 * 
+	 * @return Boolean if succeeded or not
+	 */
+	public Boolean changeStatusOfNotification(Integer orderId ,String statusToChangeTo) {
+		String query = "UPDATE `orderNotifications` SET  " +
+                "status = ? WHERE orderId = ?";
+		
+		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+			ps.setString(1, statusToChangeTo); 
+			ps.setInt(2, orderId);
+
+			int affectedRows = ps.executeUpdate();
+			if (affectedRows > 0) {
+				System.out.println("Notification status updated successfully.");
+				return true;
+			} 
+			
+		} catch (SQLException e) {
+			System.out.println("An error occurred while updating the order status:");
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/**
@@ -1840,8 +1869,8 @@ public class DatabaseController {
 	
 	public void postOrderNotification(OrderNotification notificationForAnOrder) {
 		//Add an order notification to the ordernotifications table
-		String query = "INSERT INTO `ordernotifications` (orderId, dateOfNotification, startNotification, endNotification) " +
-                 "VALUES (?, ?, ?, ?)";
+		String query = "INSERT INTO `ordernotifications` (orderId, dateOfNotification, startNotification, endNotification, status) " +
+                 "VALUES (?, ?, ?, ?, ?)";
 
 	  try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
 	      // Set values for the parameters
@@ -1849,7 +1878,8 @@ public class DatabaseController {
 	      pstmt.setDate(2, Date.valueOf(notificationForAnOrder.getDateOfNotification()));
 	      pstmt.setTime(3, Time.valueOf(notificationForAnOrder.getStartNotification()));
 	      pstmt.setTime(4, Time.valueOf(notificationForAnOrder.getEndNotification()));
-	
+	      pstmt.setString(5, notificationForAnOrder.getStatus());
+	      
 	      // Execute the query
 	      pstmt.executeUpdate();
 	  } catch (SQLException e) {
@@ -1867,9 +1897,9 @@ public class DatabaseController {
 	 */
 	public Order getOrderbyId(Integer orderId) {
 		Order order = null;
-		String deleteQuery = "DELETE FROM `order` WHERE orderId = ?";
+		String selectQuery = "SELECT * FROM `order` WHERE orderId = ?";
 
-		try (PreparedStatement ps = connectionToDatabase.prepareStatement(deleteQuery)) {
+		try (PreparedStatement ps = connectionToDatabase.prepareStatement(selectQuery)) {
 			ps.setInt(1, orderId);
 			ResultSet rs = ps.executeQuery();
 
