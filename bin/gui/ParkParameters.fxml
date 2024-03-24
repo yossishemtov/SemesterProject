@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<<<<<<< HEAD
 <?import com.jfoenix.controls.JFXComboBox?>
+=======
+<?import com.jfoenix.controls.JFXTextField?>
+>>>>>>> shaibranch
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParkParametersController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParkParametersController">
    <children>
-      <Label fx:id="headerLabel" layoutX="350.0" layoutY="50.0" text="Park Parameters" AnchorPane.leftAnchor="347.0" AnchorPane.rightAnchor="347.0">
+      <Label fx:id="headerLabel" layoutX="350.0" layoutY="50.0" text="Park Parameters" textFill="#b3ffb3" AnchorPane.leftAnchor="347.0" AnchorPane.rightAnchor="347.0">
          <font>
             <Font size="24.0" />
          </font></Label>
+<<<<<<< HEAD
       <Label layoutX="385.0" layoutY="155.0" text="Current Visitors:" />
       <Label fx:id="currentvistorLabel" layoutX="508.0" layoutY="155.0" text="0" />
       <Label layoutX="385.0" layoutY="205.0" text="Max Visitors:" />
@@ -28,5 +33,23 @@
       <Label fx:id="locationLabel" layoutX="508.0" layoutY="389.0" text="0" />
       <JFXButton fx:id="getDatabth" layoutX="303.0" layoutY="450.0" onAction="#Getparkparameters" text="Get park parameters" />
       <JFXComboBox fx:id="parkNameComboBox" layoutX="487.0" layoutY="450.0" />
+=======
+      <Label layoutX="385.0" layoutY="155.0" text="Current Visitors:" textFill="#b3ffb3" />
+      <Label fx:id="currentvistorLabel" layoutX="508.0" layoutY="155.0" text="0" textFill="WHITE" />
+      <Label layoutX="385.0" layoutY="205.0" text="Max Visitors:" textFill="#b3ffb3" />
+      <Label fx:id="maxvisitorLabel" layoutX="508.0" layoutY="205.0" text="0" textFill="WHITE" />
+      <Label layoutX="385.0" layoutY="255.0" text="Allowed Gap" textFill="#b3ffb3" />
+      <Label fx:id="allowedGapLabel" layoutX="508.0" layoutY="255.0" text="0" textFill="WHITE" />
+      <Label layoutX="385.0" layoutY="305.0" text="Capacity" textFill="#b3ffb3" />
+      <Label fx:id="CapacityLabel" layoutX="508.0" layoutY="305.0" text="0" textFill="WHITE" />
+      <Label layoutX="386.0" layoutY="114.0" text="Park name" textFill="#b3ffb3" />
+      <Label fx:id="parkNameLabel" layoutX="508.0" layoutY="115.0" text="0" textFill="WHITE" />
+      <Label layoutX="385.0" layoutY="347.0" text="Stay time" textFill="#b3ffb3" />
+      <Label fx:id="StayTimeLabel" layoutX="508.0" layoutY="347.0" text="0" textFill="WHITE" />
+      <Label layoutX="388.0" layoutY="387.0" text="location" textFill="#b3ffb3" />
+      <Label fx:id="locationLabel" layoutX="508.0" layoutY="389.0" text="0" textFill="WHITE" />
+      <JFXButton fx:id="getDatabth" layoutX="273.0" layoutY="450.0" onAction="#Getparkparameters" text="Get park parameters" textFill="#b3ffb3" />
+      <JFXTextField fx:id="parkNumberFiled" focusColor="#b3ffb3" layoutX="448.0" layoutY="457.0" promptText="Enter Park Number" unFocusColor="WHITE" />
+>>>>>>> shaibranch
    </children>
 </AnchorPane>

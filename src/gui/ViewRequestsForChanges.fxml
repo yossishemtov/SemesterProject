@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ViewRequestsForChangesController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ViewRequestsForChangesController">
    <children>
       <TableView fx:id="parametersTable" layoutX="119.0" layoutY="133.0" prefHeight="318.0" prefWidth="720.0">
         <columns>
@@ -24,22 +24,22 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label fx:id="headerLabel" layoutX="355.0" layoutY="26.0" text="Review Requests">
+      <Label fx:id="headerLabel" layoutX="397.0" layoutY="28.0" text="Review Requests" textFill="#b3ffb3">
          <font>
             <Font size="16.0" />
          </font></Label>
-      <Label layoutX="385.0" layoutY="76.0" text="Park Parameters Requests">
+      <Label layoutX="353.0" layoutY="75.0" text="Park Parameters Requests" textFill="#b3ffb3">
          <font>
             <Font size="18.0" />
          </font></Label>
-      <Button fx:id="confirmRequestBtn" layoutX="472.0" layoutY="540.0" mnemonicParsing="false" onAction="#confirmRequestBtn" prefHeight="39.0" prefWidth="196.0" text="Confirm Request">
+      <Button fx:id="confirmRequestBtn" layoutX="460.0" layoutY="540.0" mnemonicParsing="false" onAction="#confirmRequestBtn" prefHeight="39.0" prefWidth="196.0" text="Confirm Request">
          <graphic>
-            <FontAwesomeIconView glyphName="CHECK" size="15" />
+            <FontAwesomeIconView fill="#2cdd43" glyphName="CHECK" size="15" />
          </graphic></Button>
-<Button fx:id="cancelRequestBtn" layoutX="264.0" layoutY="540.0" mnemonicParsing="false" onAction="#cancelRequestBtn" prefHeight="39.0" prefWidth="188.0" text="Cancel Request">
+<Button fx:id="cancelRequestBtn" layoutX="259.0" layoutY="540.0" mnemonicParsing="false" onAction="#cancelRequestBtn" prefHeight="39.0" prefWidth="188.0" text="Cancel Request">
          <graphic>
-            <FontAwesomeIconView glyphName="CLOSE" size="15" />
+            <FontAwesomeIconView fill="RED" glyphName="CLOSE" size="15" />
          </graphic></Button>
-      <Label fx:id="SelectLabal" layoutX="119.0" layoutY="466.0" text="Select a change request in the table for approval or cancellation" />
+      <Label fx:id="SelectLabal" layoutX="119.0" layoutY="466.0" text="Select a change request in the table for approval or cancellation" textFill="#b3ffb3" />
    </children>
 </Pane>

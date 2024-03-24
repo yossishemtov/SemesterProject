@@ -2,6 +2,7 @@ package gui;
 
 import client.ClientController;
 import client.ClientUI;
+import client.NavigationManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.fxml.Initializable;
 
@@ -17,13 +19,15 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXTextField;
+
 public class UserConnectController implements Initializable {
 	
 	    @FXML
-	    private TextField IpAddressField;
-
+	    private JFXTextField IpAddressField;
+	
 	    @FXML
-	    private TextField portAddressField;
+	    private JFXTextField portAddressField;
 
 	    @FXML
 	    private Button connectBtn;
@@ -43,7 +47,7 @@ public class UserConnectController implements Initializable {
 	            System.out.println("Could not determine IP address.");
 	        }
 	    }
-
+	    
 	    public void start(Stage primaryStage) throws Exception {
 			
 			//Starting the root scene of the userInterface
@@ -51,9 +55,9 @@ public class UserConnectController implements Initializable {
 			try {			
 				Parent root = FXMLLoader.load(getClass().getResource("userConnectingFrame.fxml"));
 				Scene scene = new Scene(root);
-
 				primaryStage.setTitle("User Connection");
 				primaryStage.setScene(scene);
+				primaryStage.getIcons().add(new Image("/common/images/1.png"));
 				primaryStage.show();
 			}catch(Exception e){
 				e.printStackTrace();
@@ -71,7 +75,7 @@ public class UserConnectController implements Initializable {
 			Stage stage = (Stage)((Node)click.getSource()).getScene().getWindow(); //hiding primary window
 			Scene scene = new Scene(root);	
 			
-			stage.setTitle("User Menu");
+			stage.setTitle("Home Page");
 			
 			stage.setScene(scene);		
 			stage.show();

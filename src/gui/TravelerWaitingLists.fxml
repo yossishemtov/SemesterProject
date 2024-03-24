@@ -8,7 +8,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TravelerWaitingListsController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TravelerWaitingListsController">
    <children>
       <TableView fx:id="waitingListsTable" layoutX="13.0" layoutY="73.0" prefHeight="321.0" prefWidth="872.0">
         <columns>
@@ -22,7 +22,7 @@
             <TableColumn fx:id="orderTypeCol" prefWidth="100.0" text="Order Type" />
         </columns>
       </TableView>
-      <JFXButton fx:id="exitWaitingListBtn" layoutX="387.0" layoutY="495.0" onAction="#exitWaitingList" text="Exit Waiting List">
+      <JFXButton fx:id="exitWaitingListBtn" layoutX="385.0" layoutY="488.0" onAction="#exitWaitingList" text="Exit Waiting List">
          <graphic>
             <FontAwesomeIconView fill="#eb0e0e" glyphName="CLOSE" />
          </graphic>
@@ -30,7 +30,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <Label layoutX="395.0" layoutY="31.0" text="My Waiting Lists" />
-      <Label layoutX="352.0" layoutY="444.0" text="Select Waiting List  to exit from:" />
+      <Label layoutX="395.0" layoutY="31.0" text="My Waiting Lists" textFill="#b3ffb3" />
+      <Label layoutX="365.0" layoutY="447.0" text="Select Waiting List  to exit from:" textFill="#b3ffb3" />
    </children>
 </Pane>

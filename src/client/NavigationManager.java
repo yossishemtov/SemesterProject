@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -46,9 +47,10 @@ public class NavigationManager {
         FXMLLoader loader = new FXMLLoader(NavigationManager.class.getResource("/gui/" + nameOfPage));
         Parent pane = loader.load();
         Scene scene = new Scene(pane);
-
+        
         Stage newStage = new Stage();
         newStage.setScene(scene);
+        newStage.getIcons().add(new Image("/common/images/1.png"));
         newStage.setTitle(title);
 
         if (currentStage != null && hideCurrent) {
@@ -76,5 +78,22 @@ public class NavigationManager {
         Node page = loader.load(); // Load the page
         borderPane.setCenter(page); // Set the loaded page in the center of the BorderPane
     }
-
+    
 }
+//    /**
+//     * Sets the CSS stylesheet for the specified root node.
+//     * 
+//     * @param root The root node of the scene graph to apply the CSS stylesheet to.
+//     * @param path The path to the CSS file.
+//     */
+//    public static void setStyleScene(Scene scene, String path) {
+//        // Check if the root node is not null
+//        if (scene != null) {
+//            // Add the CSS stylesheet to the root node's stylesheets
+//        	scene.getStylesheets().add(NavigationManager.class.getResource(path).toExternalForm());
+//        } else {
+//            // Log an error message if the root node is null
+//            System.err.println("Root node is null. Cannot set style.");
+//        }
+//    }
+

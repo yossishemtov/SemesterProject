@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 
 import client.ClientController;
 import client.ClientUI;
@@ -60,7 +61,7 @@ public class ParkParametersController implements Initializable {
    
 
     @FXML
-    private TextField parkNumberFiled;
+    private JFXTextField parkNumberFiled;
     
     @FXML
     private Label locationLabel;

@@ -1,6 +1,7 @@
 package DB;
 
 import java.sql.*;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Year;
@@ -854,11 +855,13 @@ public class DatabaseController {
 			e.printStackTrace();
 		}
 
+
 		if (generalParkWorker != null) {
 			System.out.println("Successfully fetched GeneralParkWorker details.");
 		} else {
 			System.out.println("Failed to fetch GeneralParkWorker details.");
 		}
+
 
 		return generalParkWorker;
 	}
