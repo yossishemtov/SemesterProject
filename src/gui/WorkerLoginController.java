@@ -99,7 +99,7 @@ public class WorkerLoginController {
 
 						break;
 					case "Service Worker":
-						NavigationManager.openPage("ServiceWorkerFrame.fxml", click, "workerScreen", true);
+						NavigationManager.openPage("ServiceWorkerFrame.fxml", click, "ServiceWorkerScreen", true);
 						break;
 					default:
 						System.out.println("Role not recognized. Unable to proceed.");

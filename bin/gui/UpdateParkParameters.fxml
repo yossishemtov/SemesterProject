@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.UpdateParametersController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.UpdateParametersController">
    <children>
 
       <GridPane layoutX="278.0" layoutY="114.0" prefHeight="277.0" prefWidth="181.0">
@@ -25,54 +25,54 @@
             <RowConstraints maxHeight="124.0" minHeight="10.0" prefHeight="123.5" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Capacity">
+            <Label text="Capacity" textFill="#b3ffb3">
 
                <font>
                   <Font size="14.0" />
                </font></Label>
-            <Label text="Allowed Gap" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+            <Label text="Allowed Gap" textFill="#b3ffb3" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                <font>
                   <Font size="14.0" />
                </font></Label>
-            <Label text="Stay time" GridPane.rowIndex="2">
+            <Label text="Stay time" textFill="#b3ffb3" GridPane.rowIndex="2">
                <font>
                   <Font size="14.0" />
                </font></Label>
 
-            <Label fx:id="CapacityLabel" text="0" GridPane.columnIndex="1">
+            <Label fx:id="CapacityLabel" text="0" textFill="WHITE" GridPane.columnIndex="1">
 
                <font>
                   <Font size="14.0" />
                </font></Label>
-            <Label fx:id="allowedGapLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label fx:id="allowedGapLabel" text="0" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <font>
                   <Font size="14.0" />
                </font></Label>
-            <Label fx:id="StayTimeLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Label fx:id="StayTimeLabel" text="0" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <font>
                   <Font size="14.0" />
                </font></Label>
          </children>
       </GridPane>
-      <Label fx:id="headerLabel" layoutX="335.0" layoutY="45.0" prefHeight="35.0" prefWidth="270.0" text="Update park parameters" AnchorPane.leftAnchor="335.0" AnchorPane.rightAnchor="295.0">
+      <Label fx:id="headerLabel" layoutX="335.0" layoutY="45.0" prefHeight="35.0" prefWidth="270.0" text="Update park parameters" textFill="#b3ffb3" AnchorPane.leftAnchor="335.0" AnchorPane.rightAnchor="295.0">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
 
-      <JFXButton fx:id="SendRequestbth" layoutX="508.0" layoutY="449.0" onAction="#SendRequestAction" prefHeight="35.0" prefWidth="122.0" text="Send request">
+      <JFXButton fx:id="SendRequestbth" layoutX="508.0" layoutY="449.0" onAction="#SendRequestAction" prefHeight="42.0" prefWidth="138.0" text="Send request">
          <font>
             <Font size="14.0" />
          </font>
          <graphic>
-            <FontAwesomeIconView glyphName="SEND" />
+            <FontAwesomeIconView fill="#b3ffb3" glyphName="SEND" />
          </graphic></JFXButton>
-      <Label layoutX="302.0" layoutY="454.0" prefHeight="25.0" prefWidth="66.0" text="Park name">
+      <Label layoutX="302.0" layoutY="454.0" prefHeight="25.0" prefWidth="66.0" text="Park name" textFill="#b3ffb3">
 
          <font>
             <Font size="14.0" />
          </font></Label>
-      <Label fx:id="parkNameLabel" layoutX="403.0" layoutY="458.0" text="0" />
+      <Label fx:id="parkNameLabel" layoutX="403.0" layoutY="458.0" text="0" textFill="WHITE" />
 
       <GridPane layoutX="508.0" layoutY="98.0" prefHeight="287.0" prefWidth="213.0">
 
@@ -86,18 +86,18 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label alignment="CENTER_RIGHT" text="Enter new value">
+            <Label alignment="CENTER_RIGHT" text="Enter new value" textFill="#b3ffb3">
                <font>
                   <Font size="14.0" />
                </font></Label>
 
-            <Label text="Enter new value" GridPane.rowIndex="1">
+            <Label text="Enter new value" textFill="#b3ffb3" GridPane.rowIndex="1">
                <font>
                   <Font size="14.0" />
                </font></Label>
             <TextField fx:id="NewAllowedGap" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="NewStayTime" prefHeight="25.0" prefWidth="115.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label text="Enter new value" GridPane.rowIndex="2">
+            <Label text="Enter new value" textFill="#b3ffb3" GridPane.rowIndex="2">
                <font>
                   <Font size="14.0" />
                </font></Label>

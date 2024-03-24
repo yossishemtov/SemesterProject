@@ -878,7 +878,9 @@ public class DatabaseController {
 			return null; // Consider throwing a custom exception
 		}
 
-		System.out.println(generalParkWorker.toString());
+		//***  remove this code because it stuck the worker login ****//
+		//System.out.println(generalParkWorker.toString());
+		//***  remove this code because it stuck the worker login ****//
 
 		return generalParkWorker; // This will return an empty list if there were no records found
 	}
