@@ -855,13 +855,11 @@ public class DatabaseController {
 			e.printStackTrace();
 		}
 
-
 		if (generalParkWorker != null) {
 			System.out.println("Successfully fetched GeneralParkWorker details.");
 		} else {
 			System.out.println("Failed to fetch GeneralParkWorker details.");
 		}
-
 
 		return generalParkWorker;
 	}

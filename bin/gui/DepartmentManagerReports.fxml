@@ -10,19 +10,13 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.DepartmentManagerReportsController">
    <children>
-<<<<<<< HEAD
-      <Label fx:id="headerLabel" layoutX="380.0" layoutY="33.0" text="Parks Reports">
-         <font>
-            <Font size="17.0" />
-         </font></Label>
-      <TableView fx:id="ReportsTableView" layoutX="167.0" layoutY="104.0" onMouseClicked="#ShowReportTableClickAction" prefHeight="255.0" prefWidth="566.0">
-=======
+
       <Label fx:id="headerLabel" layoutX="385.0" layoutY="25.0" text="Parks Reports" textFill="#b3ffb3">
          <font>
             <Font size="17.0" />
          </font></Label>
       <TableView fx:id="ReportsTableView" layoutX="172.0" layoutY="102.0" onMouseClicked="#ShowReportTableClickAction" prefHeight="255.0" prefWidth="566.0">
->>>>>>> shaibranch
+
         <columns>
           <TableColumn fx:id="reportIDCol" prefWidth="75.0" text="Report ID" />
           <TableColumn fx:id="reportTypeCol" prefWidth="75.0" text="Report Type" />
@@ -34,60 +28,44 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-<<<<<<< HEAD
-      <Label alignment="CENTER" layoutX="149.0" layoutY="72.0" prefHeight="20.0" prefWidth="566.0" text="Reports from park managers:" underline="true">
-         <font>
-            <Font size="14.0" />
-         </font></Label>
-      <Label layoutX="595.0" layoutY="384.0" text="Generate Report:" underline="true" />
-      <JFXButton fx:id="ShowReportBth" layoutX="327.0" layoutY="428.0" onAction="#ShowReportparkIdAction" text="Click to show report" />
-      <Label layoutX="509.0" layoutY="468.0" text="Choose a month :">
-=======
+
       <Label alignment="CENTER" layoutX="153.0" layoutY="68.0" prefHeight="20.0" prefWidth="566.0" text="Reports from park managers:" textFill="#b3ffb3" underline="true">
          <font>
             <Font size="14.0" />
          </font></Label>
-      <Label layoutX="423.0" layoutY="438.0" text="Generate Report:" textFill="#b3ffb3" underline="true" />
-      <Label layoutX="172.0" layoutY="384.0" text="Enter park id" textFill="#b3ffb3" />
-      <JFXTextField fx:id="ParkIdField" focusColor="#b3ffb3" layoutX="252.0" layoutY="380.0" prefHeight="25.0" prefWidth="68.0" unFocusColor="WHITE" />
-      <JFXButton fx:id="ShowReportBth" layoutX="337.0" layoutY="373.0" onAction="#ShowReportparkIdAction" text="Show report" />
-      <Label layoutX="553.0" layoutY="476.0" text="Choose a month" textFill="#b3ffb3">
->>>>>>> shaibranch
+      <Label layoutX="606.0" layoutY="384.0" text="Generate Report:" textFill="#b3ffb3" underline="true" />
+            <JFXButton fx:id="ShowReportBth" layoutX="327.0" layoutY="428.0" onAction="#ShowReportparkIdAction" text="Click to show report" />
+      <Label layoutX="543.0" layoutY="457.0" text="Choose a month" textFill="#b3ffb3">
+
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-<<<<<<< HEAD
-      <Label layoutX="508.0" layoutY="418.0" text="Select report type :">
-=======
-      <Label layoutX="162.0" layoutY="476.0" text="Select report type" textFill="#b3ffb3">
->>>>>>> shaibranch
+
+      <Label layoutX="539.0" layoutY="420.0" text="Select report type" textFill="#b3ffb3">
+
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-<<<<<<< HEAD
-      <JFXComboBox fx:id="ReportTypeCombobox" layoutX="650.0" layoutY="416.0" />
-      <JFXComboBox fx:id="monthCombobox" layoutX="650.0" layoutY="467.0" />
-      <JFXButton fx:id="Createbth" layoutX="752.0" layoutY="463.0" onAction="#CreateReportAction" text="Create">
-=======
-      <JFXComboBox fx:id="ReportTypeCombobox" focusColor="#b3ffb3" layoutX="308.0" layoutY="474.0" unFocusColor="WHITE" />
-      <JFXComboBox fx:id="monthCombobox" focusColor="#b3ffb3" layoutX="691.0" layoutY="474.0" unFocusColor="WHITE" />
-      <JFXButton fx:id="Createbth" layoutX="431.0" layoutY="526.0" onAction="#CreateReportAction" prefWidth="76.0" text="Create">
->>>>>>> shaibranch
+
+      <JFXComboBox fx:id="ReportTypeCombobox" focusColor="#b3ffb3" layoutX="679.0" layoutY="418.0" unFocusColor="WHITE" />
+      <JFXComboBox fx:id="monthCombobox" focusColor="#b3ffb3" layoutX="679.0" layoutY="455.0" unFocusColor="WHITE" />
+      <JFXButton fx:id="Createbth" layoutX="770.0" layoutY="459.0" onAction="#CreateReportAction" prefWidth="76.0" text="Create">
+
          <font>
             <Font size="15.0" />
          </font>
       </JFXButton>
-      <Label layoutX="509.0" layoutY="517.0" text="Choose park :">
+      <Label layoutX="552.0" layoutY="501.0" text="Choose park :" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <JFXComboBox fx:id="parkNameComboBox" layoutX="651.0" layoutY="511.0" />
-      <Label layoutX="191.0" layoutY="383.0" text="View existing reports" underline="true" />
+      <JFXComboBox fx:id="parkNameComboBox" layoutX="679.0" layoutY="499.0" />
+      <Label layoutX="253.0" layoutY="365.0" text="View existing reports" textFill="WHITE" underline="true" />
       <JFXComboBox fx:id="parkNameComboBoxShowReport" layoutX="212.0" layoutY="425.0" />
-      <Label layoutX="102.0" layoutY="430.0" text="Choose park">
+      <Label layoutX="102.0" layoutY="430.0" text="Choose park" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
