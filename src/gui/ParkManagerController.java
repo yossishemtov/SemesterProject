@@ -116,6 +116,8 @@ public class ParkManagerController  implements Initializable {
 				ClientServerMessage<?> requestToLogout = new ClientServerMessage(Usermanager.getCurrentWorker(),
 						Operation.PATCH_GENERALPARKWORKER_SIGNEDOUT);
 				ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
+				Usermanager.setCurrentWorker(null);
+
 
 			}
 

@@ -37,6 +37,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
@@ -44,46 +45,48 @@ public class ServerController {
 
 	BackEndServer sv;
 //	private Map<String, ClientConnectionStatus> statusMap = new HashMap<>();
-	
-	 @FXML
-    private JFXTextField PortTxt;
 
-    @FXML
-    private JFXTextField DBUserNameTxt;
+	@FXML
+	private JFXTextField PortTxt;
 
-    @FXML
-    private JFXTextField PasswordTxt;
+	@FXML
+	private JFXTextField DBUserNameTxt;
 
-    @FXML
-    private VBox TableViewContainer;
+	@FXML
+	private JFXTextField PasswordTxt;
 
-    @FXML
-    private TableView<ClientConnectionStatus> connStatusTable;
+	@FXML
+	private VBox TableViewContainer;
 
-    @FXML
-    private TableColumn<ClientConnectionStatus, String> IPCol;
+	@FXML
+	private TableView<ClientConnectionStatus> connStatusTable;
 
-    @FXML
-    private TableColumn<ClientConnectionStatus, String> HostCol;
+	@FXML
+	private TableColumn<ClientConnectionStatus, String> IPCol;
 
-    @FXML
-    private TableColumn<ClientConnectionStatus, String> StatusCol;
+	@FXML
+	private TableColumn<ClientConnectionStatus, String> HostCol;
 
-    @FXML
-    private TableColumn<ClientConnectionStatus, String> StTimeCol;
+	@FXML
+	private TableColumn<ClientConnectionStatus, String> StatusCol;
 
-    @FXML
-    private TextArea logTextArea;
+	@FXML
+	private TableColumn<ClientConnectionStatus, String> StTimeCol;
 
-    @FXML
-    private JFXButton startserverBtn;
+	@FXML
+	private TextArea logTextArea;
 
-    @FXML
-    private JFXButton StopserverBtn;
-    
-    @FXML
-    private ImageView logoImage;
-    
+	@FXML
+	private JFXButton startserverBtn;
+
+	@FXML
+	private JFXButton StopserverBtn;
+
+	@FXML
+	private ImageView logoImage;
+
+	@FXML
+	private Circle circleStatus;
 
 //	private List<TextField> txtFields = new ArrayList<>();
 //	@FXML
@@ -112,16 +115,15 @@ public class ServerController {
 		// Refresh the table to ensure UI is up-to-date
 		connStatusTable.refresh();
 	}
-	
-	
+
 	public void start(Stage primaryStage) throws Exception {
 		try {
 			FXMLLoader serverGui = new FXMLLoader(getClass().getResource("ServerGUI.fxml"));
 			Parent parent = serverGui.load();
 			ServerController control = serverGui.getController();
-			
+
 			Scene scene = new Scene(parent);
-			
+
 //			Image image = new Image("../common/images/1.png");
 			primaryStage.setScene(scene);
 			primaryStage.getIcons().add(new Image("/common/images/1.png"));
@@ -175,32 +177,32 @@ public class ServerController {
 		dbPass = this.getPasswordOfDB();
 
 		if (isVaiildLogin()) {
-			sv = new BackEndServer(port, this, dbUserName, dbPass);
-
 			try {
+				sv = new BackEndServer(port, this, dbUserName, dbPass);
+
 				// Start server
 				sv.listen();
+				circleStatus.setFill(Color.GREEN);
 				logTextArea.setText("server start listen");
 //				System.out.println("server start listen");
 
 			} catch (IOException e) {
-				
+			
+
 				logTextArea.setText("Server fail.");
 //				System.out.println("Server fail.");
 				e.printStackTrace();
 			}
-		} 
+		}
 
 	}
-	
 
 	@FXML
 	protected void initialize() {
 		PortTxt.setText("5555");
-	    DBUserNameTxt.setText("root"); // Assuming you might want to set the username to 'root' as well
+		DBUserNameTxt.setText("root"); // Assuming you might want to set the username to 'root' as well
 
-		
-        //redirectSystemStreams(); // Redirect System.out and System.err
+		// redirectSystemStreams(); // Redirect System.out and System.err
 
 		HostCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getHost()));
 		IPCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getIp()));
@@ -213,38 +215,39 @@ public class ServerController {
 		connStatusTable.setItems(connectionStatuses);
 
 	}
-	
-	   // Method to redirect output streams to the TextArea
-    private void redirectSystemStreams() {
-        OutputStream out = new OutputStream() {
-            @Override
-            public void write(int b) throws IOException {
-                appendText(String.valueOf((char) b));
-            }
 
-            @Override
-            public void write(byte[] b, int off, int len) throws IOException {
-                appendText(new String(b, off, len));
-            }
+	// Method to redirect output streams to the TextArea
+	private void redirectSystemStreams() {
+		OutputStream out = new OutputStream() {
+			@Override
+			public void write(int b) throws IOException {
+				appendText(String.valueOf((char) b));
+			}
 
-            @Override
-            public void write(byte[] b) throws IOException {
-                write(b, 0, b.length);
-            }
-        };
+			@Override
+			public void write(byte[] b, int off, int len) throws IOException {
+				appendText(new String(b, off, len));
+			}
 
-        System.setOut(new PrintStream(out, true));
-        System.setErr(new PrintStream(out, true));
-    }
+			@Override
+			public void write(byte[] b) throws IOException {
+				write(b, 0, b.length);
+			}
+		};
 
-    // Method to append text to the TextArea in a thread-safe manner
-    private void appendText(String str) {
-        Platform.runLater(() -> logTextArea.appendText(str));
-    }
+		System.setOut(new PrintStream(out, true));
+		System.setErr(new PrintStream(out, true));
+	}
+
+	// Method to append text to the TextArea in a thread-safe manner
+	private void appendText(String str) {
+		Platform.runLater(() -> logTextArea.appendText(str));
+	}
 
 	public void closeConnection() {
 		try {
 			if (sv != null && sv.isListening())
+				circleStatus.setFill(Color.RED);
 				sv.close();
 		} catch (IOException e) {
 			e.printStackTrace();

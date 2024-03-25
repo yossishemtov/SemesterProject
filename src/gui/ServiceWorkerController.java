@@ -82,6 +82,8 @@ public class ServiceWorkerController implements Initializable {
 			if(Usermanager.getCurrentWorker() != null) {
     			ClientServerMessage<?> requestToLogout = new ClientServerMessage<>(Usermanager.getCurrentWorker(), Operation.PATCH_GENERALPARKWORKER_SIGNEDOUT);
     			ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
+				Usermanager.setCurrentWorker(null);
+
     		}
 			// navigate back to home page
 			NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true);

@@ -138,6 +138,8 @@ public class ParkWorkerController implements Initializable {
 	    		if(Usermanager.getCurrentWorker() != null) {
 	    			ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentWorker(), Operation.PATCH_GENERALPARKWORKER_SIGNEDOUT);
 	    			ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
+					Usermanager.setCurrentWorker(null);
+
 	    		}
 	    		
 	    		//Changing page back to main menu
