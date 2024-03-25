@@ -1,0 +1,38 @@
+.root {
+	-fx-background-color: #2f3136; 
+}
+
+/* Styling for JFXButtons */
+.jfx-button {
+    -fx-background-color: #2f3136; 
+    -fx-border-color: #b3ffb3;
+    -fx-text-fill: #b3ffb3;
+    -fx-padding: 10px 15px;
+}
+
+/* Hover effect for JFXButtons */
+.jfx-button:hover {
+    -fx-background-color: #b3ffb3; 
+    -fx-border-color: #b3ffb3;
+    -fx-text-fill: #2f3136;
+    -fx-padding: 10px 15px;
+}
+
+.text-field {
+    -fx-prompt-text-fill: #b3ffb3;
+    -fx-text-fill: white;
+}
+/* .text , .label {
+	-fx-text-fill: #b3ffb3;
+} */
+
+
+
+/* Change icon color on button hover */
+.jfx-button .icon {
+    -fx-fill: #b3ffb3; /* Default color for icons */
+}
+
+.jfx-button:hover .icon {
+    -fx-fill: #2f3136; /* Color to change to on hover */
+}

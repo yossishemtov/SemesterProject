@@ -25,12 +25,16 @@ public abstract class Operation {
     public final static String GET_GENERALPARKWORKER_SIGNED = "Get status of signed in or out of generalparkworker";
     public final static String GET_TRAVELER_SIGNED = "Get status of signed in or out of traveler";
     public final static String GET_AMOUNT_OF_VISITORS_FOR_GENERALPARKWORKER = "Get amount of visitors for park worker";
-    public final static String GET_STATUS_PENDING_EMAIL = "Get orders with status PENDING_EMAIL_SENT"; //emanuel
+    public final static String GET_STATUS_PENDING_NOTIFICATION_BY_TRAVELERID = "Get orders with status PENDING_EMAIL_SENT";
+    public final static String GET_STATUS_CANCELED_NOTIFICATION_BY_TRAVELERID = "Get orders with status CANCELEDBYSERVER";
+
+    public final static String GET_STATUS_HAS_SPOT = "Get orders with status HAS_SPOT"; 
+
     public final static String GET_ORDER_BY_ID_AND_PARK_NUMBER_DATE = "Get order information by id and park number and date";
 
-    public static final String CHECK_SPOT_AVAILABILITY = "CHECK_SPOT_AVAILABILITY"; //emanuel
-    public final static String CHECK_IF_ORDER_VALID = "Checking order validity"; //emanuel
-    public final static String CHECK_PARK_FULL_DAYS = "Checking when the park is full"; //emanuel
+    public static final String CHECK_SPOT_AVAILABILITY = "CHECK_SPOT_AVAILABILITY"; 
+    public final static String CHECK_IF_ORDER_VALID = "Checking order validity"; 
+    public final static String CHECK_PARK_FULL_DAYS = "Checking when the park is full"; 
 
     
     public final static String GET_LAST_WAITINGLIST = "Get last waitingList Id";
@@ -46,13 +50,14 @@ public abstract class Operation {
     public final static String POST_TRAVLER_ORDER = "Post new traveler order";
     public final static String POST_NEW_REPORT = "Post a new report";
     public final static String POST_NEW_VISIT = "Post new visit";
-    
+    public final static String POST_ORDER_FROM_WAITING = "Post new order from waitingList";
     public final static String FIND_ORDERS_WITHIN_DATES = "Get all the orders within given dates"; //emanuel
 
     // PATCH COMMANDS
     public final static String PATCH_EXIST_ORDER = "Patch existing order";
     public final static String PATCH_PARK_PARAMETERS = "Patch park parameters";
     public final static String PATCH_ORDER_STATUS = "Patch order status";
+    public final static String PATCH_ORDER_STATUS_ARRAYLIST = "Patch order status with arraylist";
     public final static String PATCH_GENERALPARKWORKER_SIGNEDIN = "Patch generalparkworker to signed in";
     public final static String PATCH_GENERALPARKWORKER_SIGNEDOUT = "Patch generalparkworker to signed out";
     public final static String PATCH_TRAVELER_SIGNEDIN = "Patch traveler to signed in";
@@ -87,9 +92,7 @@ public abstract class Operation {
     public final static String GET_CHANGE_REQUESTS = "Get change requests ";
     public final static String PATCH_CHANGE_REQUEST_STATUS = "Patch change request status";
     
-    
-    
-    
+        
     
     public final static String GET_PARK_UNORDEREDVISITS = "Get unordered visits from the park";
 
@@ -98,7 +101,8 @@ public abstract class Operation {
     public final static String PATCH_ORDER_STATUS_TO_COMPLETED = "Patch an order to be COMPLETED status";
     public final static String PATCH_PARK_VISITORS_DEDUCT = "Patch a park visitors number - deduct";
     public final static String PATCH_PARK_UNORDEREDVISITS = "Patch the amount of unordered visits";
-    
+    public final static String PATCH_WAITING_STATUS = "Patch an waitinglist status";
+
  
 
 }

@@ -1,0 +1,70 @@
+/* styles.css */
+
+/* Styling for TextFields */
+
+
+.root {
+	-fx-background-color: #2f3136; 
+}
+
+/* Styling for Buttons */
+.button {
+    -fx-background-color: #2f3136; 
+    -fx-border-color: #b3ffb3;
+    -fx-text-fill: #b3ffb3;
+    -fx-background-radius: 20.0px; 
+    -fx-border-radius: 20.0px;
+    -fx-padding: 10px 15px;
+}
+
+.pnOrder {
+    -fx-background-color: #2f3136;
+}
+
+/* Hover effect for Buttons */
+.button:hover {
+    -fx-background-color: #b3ffb3; 
+    -fx-border-color: #b3ffb3;
+    -fx-text-fill: #2f3136;
+    -fx-background-radius: 20.0px; 
+    -fx-border-radius: 20.0px;
+    -fx-padding: 10px 15px;
+}
+
+.text-field {
+    -fx-prompt-text-fill: #b3ffb3;
+    -fx-text-fill: white;
+}
+
+/* .combo-box .text-input {
+    -fx-prompt-text-fill: #b3ffb3;
+    -fx-text-fill: white;
+
+} */
+.combo-box .list-cell:selected {
+    -fx-text-fill: white; /* Set the text color to white when an item is selected */
+}
+
+#asterisk {
+    -fx-text-fill: red;
+}
+
+.table-view {
+    -fx-background-color: #b3ffb3; /* light green */
+}
+
+.table-column {
+    -fx-alignment: CENTER;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2f3136; /* dark gray */
+}
+
+.table-row-cell {
+    -fx-background-color: #b3ffb3;
+    -fx-text-fill: #2f3136;
+}
+
+
+.table-row-cell:selected {
+    -fx-background-color: white; 
+}
