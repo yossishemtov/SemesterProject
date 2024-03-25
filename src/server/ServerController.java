@@ -183,8 +183,8 @@ public class ServerController {
 				// Start server
 				sv.listen();
 				circleStatus.setFill(Color.GREEN);
-				logTextArea.setText("server start listen");
-//				System.out.println("server start listen");
+				//logTextArea.setText("server start listen");
+				System.out.println("server start listen");
 
 			} catch (IOException e) {
 			
@@ -202,7 +202,7 @@ public class ServerController {
 		PortTxt.setText("5555");
 		DBUserNameTxt.setText("root"); // Assuming you might want to set the username to 'root' as well
 
-		// redirectSystemStreams(); // Redirect System.out and System.err
+		 redirectSystemStreams(); // Redirect System.out and System.err
 
 		HostCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getHost()));
 		IPCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getIp()));

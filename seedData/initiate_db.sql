@@ -95,7 +95,7 @@ INSERT INTO `traveler` VALUES
 (5634526,'Olivia','Wilde','olivia.wilde@example.com','055-3334455',1,0),
 (5634527,'Jake','Gyllenhaal','jake.g@example.com','055-4445566',0,0),
 (5634528,'Natalie','Portman','natalie.p@example.com','055-5556677',0,0),
-(5634529,'Chris','Pratt','chris.pratt@example.com','055-6667788',0,1),
+(5634529,'Chris','Pratt','chris.pratt@example.com','055-6667788',0,0),
 (5634530,'Zoe','Saldana','zoe.saldana@example.com','055-7778899',1,0),
 (5634531,'Bradley','Cooper','bradley.cooper@example.com','055-8889900',0,0),
 (5634532,'Vin','Diesel','vin.diesel@example.com','055-9990011',0,0),
