@@ -273,72 +273,73 @@ public class OrderAVisitController implements Initializable {
 					ClientServerMessage<?> AddTraveler = new ClientServerMessage<>(traveler, Operation.POST_NEW_TRAVLER);
 					ClientUI.clientControllerInstance.sendMessageToServer(AddTraveler);
 				}
-				/**Set new orderId*/
-				order.setOrderId(OrderChecker.getLastNumber());
+				if(CheckIfOrderValid()) {
+					/**Set new orderId*/
+					order.setOrderId(OrderChecker.getLastNumber());
 					
-		        if (!OrderChecker.isDateAvailable(order)) { // need to enter waiting list
-		        	new Alerts(AlertType.INFORMATION, "Park is full", "Park is full", "Reschedule or enter Waiting list").showAndWait();
-		        	PaneOrder.setDisable(true);
-		        	Stage newStage = new Stage();
-					FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/WaitingList.fxml"));
-					WaitingListController controller = new WaitingListController();
-					controller.setOrder(order);
-					loader.setController(controller);
-					loader.load();
-					controller.setTimeLabel(order.getDate() + ", " + order.getVisitTime());
-					Parent p = loader.getRoot();
-					newStage.initModality(Modality.WINDOW_MODAL);
-					newStage.getIcons().add(new Image("common/images/Icon.png"));
-
-
-					newStage.setTitle("Reschedule");
-					newStage.setScene(new Scene(p));
-					newStage.setResizable(false);
-					newStage.show();
-
-					newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-						@Override
-						public void handle(WindowEvent t) {
-
-							PaneOrder.setDisable(false);
-						}
-					});
-		        }
-			        
-		        else {
-			    	/**Registering NewOrder to DB*/
-					ClientServerMessage<?> OrderAttempt = new ClientServerMessage<>(order, Operation.POST_TRAVLER_ORDER);
-					ClientUI.clientControllerInstance.sendMessageToServer(OrderAttempt);
-					// Receive the response from the server
-				    ClientServerMessage<?> isNewOrderMsg = ClientUI.clientControllerInstance.getData();
-			        // Extract the data from the message
-			    	isNewOrder = (Boolean) isNewOrderMsg.getFlag();
-			        if (!isNewOrder) {
-						new Alerts(AlertType.ERROR, "DataBase fail", "DataBase fail", "try restarting the program").showAndWait();
+			        if (!OrderChecker.isDateAvailable(order)) { // need to enter waiting list
+			        	new Alerts(AlertType.INFORMATION, "Park is full", "Park is full", "Reschedule or enter Waiting list").showAndWait();
+			        	PaneOrder.setDisable(true);
+			        	Stage newStage = new Stage();
+						FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/WaitingList.fxml"));
+						WaitingListController controller = new WaitingListController();
+						controller.setOrder(order);
+						loader.setController(controller);
+						loader.load();
+						controller.setTimeLabel(order.getDate() + ", " + order.getVisitTime());
+						Parent p = loader.getRoot();
+						newStage.initModality(Modality.WINDOW_MODAL);
+						newStage.getIcons().add(new Image("common/images/Icon.png"));
+			
+			
+						newStage.setTitle("Reschedule");
+						newStage.setScene(new Scene(p));
+						newStage.setResizable(false);
+						newStage.show();
+			
+						newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+							@Override
+							public void handle(WindowEvent t) {
+			
+								PaneOrder.setDisable(false);
+							}
+						});
 			        }
-			        else { /** Order success*/
-						this.summaryPark.setText(ParkComboBox.getValue());
-						this.summaryDate.setText(order.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-						this.summaryVisitors.setText(order.getAmountOfVisitors() + "");
-						this.summaryTime.setText(order.getVisitTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-						this.summaryType.setText(order.getTypeOfOrder());
-						this.summaryStatus.setText(order.getOrderStatus());
-						this.summaryPrice.setText(String.format("%.1f", order.getPrice()) + " ₪");
-						this.summaryNum.setText(String.valueOf(order.getOrderId()));
-						order.setStatus("NOTARRIVED");
-						PaneOrder.setVisible(false);
-						PaneConfirmation.setVisible(true);
-					}
-		        
+				        
+			        else {
+				    	/**Registering NewOrder to DB*/
+						ClientServerMessage<?> OrderAttempt = new ClientServerMessage<>(order, Operation.POST_TRAVLER_ORDER);
+						ClientUI.clientControllerInstance.sendMessageToServer(OrderAttempt);
+						// Receive the response from the server
+					    ClientServerMessage<?> isNewOrderMsg = ClientUI.clientControllerInstance.getData();
+				        // Extract the data from the message
+				    	isNewOrder = (Boolean) isNewOrderMsg.getFlag();
+				        if (!isNewOrder) {
+							new Alerts(AlertType.ERROR, "DataBase fail", "DataBase fail", "try restarting the program").showAndWait();
+				        }
+				        else { /** Order success*/
+							this.summaryPark.setText(ParkComboBox.getValue());
+							this.summaryDate.setText(order.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+							this.summaryVisitors.setText(order.getAmountOfVisitors() + "");
+							this.summaryTime.setText(order.getVisitTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+							this.summaryType.setText(order.getTypeOfOrder());
+							this.summaryStatus.setText(order.getOrderStatus());
+							this.summaryPrice.setText(String.format("%.1f", order.getPrice()) + " ₪");
+							this.summaryNum.setText(String.valueOf(order.getOrderId()));
+							order.setStatus("NOTARRIVED");
+							PaneOrder.setVisible(false);
+							PaneConfirmation.setVisible(true);
+						}
 			        
+				        
+				    }
 			    }
-		    }
-			else {
-				new Alerts(AlertType.ERROR, "Already has order", "Already has order",
-						"You already have an order on this date and time").showAndWait();
+				else {
+					new Alerts(AlertType.ERROR, "Already has order", "Already has order",
+							"You already have an order on this date and time").showAndWait();
+				}
 			}
-		       
-		}
+	    }
 		
 	}
 	
@@ -364,7 +365,7 @@ public class OrderAVisitController implements Initializable {
     /**Handles the action event when the price button is clicked.*/
 	@FXML 
     private void handlePricingButton(ActionEvent event) {
-		String imagePath = "src/common/images/Pricing.jpg";
+		String imagePath = "src/common/images/Pricing.png";
 
         // Load the image and create an ImageView
         Image image = new Image("file:" + imagePath);
@@ -540,10 +541,10 @@ public class OrderAVisitController implements Initializable {
 			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Date",
 					"You can't order for more than a year in advance ").showAndWait();
 		}
-		else if (!CheckTooEarly()) {
-			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Visit Time",
-				"Ensure visit time is 24 hours ahead.").showAndWait();
-		}
+//		else if (!CheckTooEarly()) {
+//			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Visit Time",
+//				"Ensure visit time is 24 hours ahead.").showAndWait();
+//		}
 		else if (!validInput("Email", email)) {
 			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Email",
 					"Insert a valid Email please").showAndWait();
@@ -555,9 +556,6 @@ public class OrderAVisitController implements Initializable {
 		else if (!(PayParkBtn.isSelected() || PayNowBtn.isSelected())) {
 			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Payment Button",
 					"Please choose how you want to pay.").showAndWait();
-		}
-		else if (!(CheckIfOrderValid())) {
-			new Alerts(AlertType.ERROR, "Has Order", "Has Order ", "You already have an order on this day and hour").showAndWait();
 		}
 		
 		else if (!validInput("AmountVisitor", txtVisitorsNum.getText())) {

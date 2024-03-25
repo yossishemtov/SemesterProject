@@ -339,13 +339,13 @@ public class DatabaseController {
         }
         return lastOrder;
     }
+	
     /**
      * Checks if the order is valid based on traveler orders for the same date and hour
      * @param order
      * @return true if valid, else false
      */
     public Boolean checkIfOrderisValid(Order order) {
-        Traveler traveler = Usermanager.getCurrentTraveler();
         Integer parkNumber;
         LocalDate date;
         LocalTime time;
@@ -353,9 +353,8 @@ public class DatabaseController {
         String query = "SELECT date, visitTime, parkNumber FROM `order` WHERE travlerId = ?"; 
 
         try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-            // ps.setInt(1, traveler.getId()); גרסא נכונה
+            ps.setInt(1, order.getVisitorId()); 
 
-            ps.setInt(1, 1214214);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
