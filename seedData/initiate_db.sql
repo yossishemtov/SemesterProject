@@ -103,6 +103,7 @@ INSERT INTO `traveler` VALUES
 
 UNLOCK TABLES;
 
+
 --
 -- Table structure for table `order`
 --
@@ -1688,6 +1689,19 @@ SET foreign_key_checks = 1;
 
 
 UNLOCK TABLES;
+DROP TABLE IF EXISTS `ordernotifications`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ordernotifications` (
+  `orderId` int NOT NULL,
+  `dateOfNotification` date DEFAULT NULL,
+  `startNotification` time DEFAULT NULL,
+  `endNotification` time DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`orderId`),
+  CONSTRAINT `ordernotifications_ibfk_1` FOREIGN KEY (`orderId`) REFERENCES `order` (`orderId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 SET foreign_key_checks = 0;
 
 DROP TABLE IF EXISTS `park`;

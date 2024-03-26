@@ -8,56 +8,56 @@ public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer parkNumber;
-    private Integer amountOfVisitors;
-    private Integer orderId;
-    private Integer visitorId;
-    private Float price;
-    private String visitorEmail;
-    private LocalDate date;
-    private LocalTime visitTime;
-    private String telephoneNumber; // Added TelephoneNumber field
-    private String parkName;
-    private status orderStatus;
-    private typeOfOrder orderType;
+	private Integer amountOfVisitors;
+	private Integer orderId;
+	private Integer visitorId;
+	private Float price;
+	private String visitorEmail;
+	private LocalDate date;
+	private LocalTime visitTime;
+	private String telephoneNumber; // Added TelephoneNumber field
+	private String parkName;
+	private status orderStatus;
+	private typeOfOrder orderType;
 
-    public enum status {
+	public enum status {
 
-		PENDING, NOTARRIVED, INPARK, CONFIRMED, CANCELED, COMPLETED, WAITING, UNORDERED
+		PENDING, NOTARRIVED, INPARK, CONFIRMED, CANCELED, COMPLETED, PENDING_EMAIL_SENT, HAS_SPOT
 	}
 
 	public enum typeOfOrder {
-		SOLO, FAMILY, GUIDEDGROUP 
+		SOLO, FAMILY, GUIDEDGROUP
 	}
 
 	public Order(Integer orderId, Integer visitorId, Integer parkNumber, Integer amountOfVisitors, Float price,
-            String visitorEmail, LocalDate date, LocalTime visitTime, String statusStr, String typeOfOrderStr,
-            String telephoneNumber, String parkName) {
+			String visitorEmail, LocalDate date, LocalTime visitTime, String statusStr, String typeOfOrderStr,
+			String telephoneNumber, String parkName) {
 
-        this.orderId = orderId;
-        this.visitorId = visitorId;
-        this.parkNumber = parkNumber;
-        this.parkName = parkName;
-        this.amountOfVisitors = amountOfVisitors;
-        this.visitorEmail = visitorEmail;
-        this.price = price;
-        this.date = date;
-        this.visitTime = visitTime;
-        this.telephoneNumber = telephoneNumber; // Set the telephone number
+		this.orderId = orderId;
+		this.visitorId = visitorId;
+		this.parkNumber = parkNumber;
+		this.parkName = parkName;
+		this.amountOfVisitors = amountOfVisitors;
+		this.visitorEmail = visitorEmail;
+		this.price = price;
+		this.date = date;
+		this.visitTime = visitTime;
+		this.telephoneNumber = telephoneNumber; // Set the telephone number
 
-          try {
-                this.orderStatus = (statusStr != null) ? Order.status.valueOf(statusStr.toUpperCase())
-                        : Order.status.PENDING;
-            } catch (IllegalArgumentException e) {
-                this.orderStatus = Order.status.PENDING;
-            }
+		try {
+			this.orderStatus = (statusStr != null) ? Order.status.valueOf(statusStr.toUpperCase())
+					: Order.status.PENDING;
+		} catch (IllegalArgumentException e) {
+			this.orderStatus = Order.status.PENDING;
+		}
 
-            try {
-                this.orderType = (typeOfOrderStr != null) ? Order.typeOfOrder.valueOf(typeOfOrderStr.toUpperCase())
-                        : Order.typeOfOrder.SOLO;
-            } catch (IllegalArgumentException e) {
-                this.orderType = Order.typeOfOrder.SOLO;
-            }
-    }
+		try {
+			this.orderType = (typeOfOrderStr != null) ? Order.typeOfOrder.valueOf(typeOfOrderStr.toUpperCase())
+					: Order.typeOfOrder.SOLO;
+		} catch (IllegalArgumentException e) {
+			this.orderType = Order.typeOfOrder.SOLO;
+		}
+	}
 
 	public Integer getVisitorId() {
 		return visitorId;

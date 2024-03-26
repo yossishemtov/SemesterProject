@@ -29,9 +29,6 @@ public abstract class Operation {
 
     public final static String GET_ORDER_BY_ID_AND_PARK_NUMBER_DATE = "Get order information by id and park number and date";
 
-    public static final String CHECK_SPOT_AVAILABILITY = "CHECK_SPOT_AVAILABILITY"; //emanuel
-    public final static String CHECK_IF_ORDER_VALID = "Checking order validity"; //emanuel
-    public final static String CHECK_PARK_FULL_DAYS = "Checking when the park is full"; //emanuel
 
     
     public final static String GET_LAST_WAITINGLIST = "Get last waitingList Id";
@@ -102,6 +99,20 @@ public abstract class Operation {
     public final static String PATCH_ORDER_STATUS_TO_COMPLETED = "Patch an order to be COMPLETED status";
     public final static String PATCH_PARK_VISITORS_DEDUCT = "Patch a park visitors number - deduct";
     public final static String PATCH_PARK_UNORDEREDVISITS = "Patch the amount of unordered visits";
+    
+    
+    
+    public final static String GET_STATUS_PENDING_NOTIFICATION_BY_TRAVELERID = "Get orders with status PENDING_EMAIL_SENT";
+    public final static String GET_STATUS_CANCELED_NOTIFICATION_BY_TRAVELERID = "Get orders with status CANCELEDBYSERVER";
+
+    public final static String GET_STATUS_HAS_SPOT = "Get orders with status HAS_SPOT"; 
+    public static final String CHECK_SPOT_AVAILABILITY = "CHECK_SPOT_AVAILABILITY"; 
+    public final static String CHECK_IF_ORDER_VALID = "Checking order validity"; 
+    public final static String CHECK_PARK_FULL_DAYS = "Checking when the park is full"; 
+    public final static String POST_ORDER_FROM_WAITING = "Post new order from waitingList";
+    public final static String PATCH_ORDER_STATUS_ARRAYLIST = "Patch order status with arraylist";
+    public final static String PATCH_WAITING_STATUS = "Patch an waitinglist status";
+
     
  
 

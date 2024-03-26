@@ -14,6 +14,7 @@ import java.util.Map;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
+import DB.MySqlConnector;
 import client.NavigationManager;
 import common.Alerts;
 import entities.ClientConnectionStatus;
@@ -45,6 +46,8 @@ public class ServerController {
 
 	BackEndServer sv;
 //	private Map<String, ClientConnectionStatus> statusMap = new HashMap<>();
+    private NotifyThread notifyThread;
+    private MySqlConnector connectionForThread;
 
 	@FXML
 	private JFXTextField PortTxt;
@@ -179,6 +182,12 @@ public class ServerController {
 		if (isVaiildLogin()) {
 			try {
 				sv = new BackEndServer(port, this, dbUserName, dbPass);
+				connectionForThread = new MySqlConnector(dbUserName,dbPass);
+				notifyThread = new NotifyThread(connectionForThread.getDbConnection()); // You may need to pass any required parameters to the constructor
+		        Thread thread = new Thread(notifyThread);
+		        thread.setDaemon(true); // Set the thread as daemon so that it stops when the application exits
+		        thread.start();
+		
 
 				// Start server
 				sv.listen();

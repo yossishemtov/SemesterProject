@@ -823,6 +823,94 @@ public class MessageHandlerFromClient {
 			
 			client.sendToClient(messageFromClient);
 			break;
+	
+			
+		case Operation.PATCH_WAITING_STATUS:
+			try {
+				List<WaitingList> waitingToChange = (List<WaitingList>) messageFromClient.getDataTransfered();
+				ArrayList<WaitingList> waitingList = new ArrayList<>(waitingToChange);
+				// Create a message to send to the client
+				messageFromClient.setDataTransfered(dbControllerInstance.updateWaitingStatusArray(waitingList));
+			} catch (Exception e) {
+				e.printStackTrace();
+				// Handle the exception according to your needs
+			}
+			// Send the message to the client
+			client.sendToClient(messageFromClient);
+			break;
+			
+		case Operation.GET_STATUS_HAS_SPOT: 
+			ArrayList<WaitingList> waitingList = dbControllerInstance.getHasSpotOrders();
+
+			// Create a message to send to the client
+			ClientServerMessage<?> getSpotMsg = new ClientServerMessage<>(waitingList,
+					Operation.GET_STATUS_HAS_SPOT);
+
+			// Send the message to the client
+			client.sendToClient(getSpotMsg); 
+			break;
+			
+		case Operation.POST_ORDER_FROM_WAITING: // Emanuel
+			// Placeholder for posting a new traveler order
+
+			try {
+				WaitingList travelerOrder = (WaitingList) messageFromClient.getDataTransfered();
+
+				if (dbControllerInstance.insertWaitingOrder(travelerOrder)) {
+					messageFromClient.setflagTrue();
+
+				} else {
+					messageFromClient.setflagFalse();
+				}
+				client.sendToClient(messageFromClient);
+
+			} catch (IndexOutOfBoundsException e) {
+
+			}
+			client.sendToClient(messageFromClient);
+
+			break;
+			
+			
+		case Operation.GET_STATUS_PENDING_NOTIFICATION_BY_TRAVELERID: // emanuel
+			Integer idToLookForPendingNotifications = (Integer) messageFromClient.getDataTransfered();
+			ArrayList<Order> orderListTravelerById = dbControllerInstance.getPendingNotificationsOrdersByID(idToLookForPendingNotifications);
+
+			// Create a message to send to the client
+			ClientServerMessage<?> orderListOfPendingNotifications = new ClientServerMessage<>(orderListTravelerById,
+					Operation.GET_STATUS_PENDING_NOTIFICATION_BY_TRAVELERID);
+
+			// Send the message to the client
+			client.sendToClient(orderListOfPendingNotifications);
+			break;
+			
+			
+		case Operation.GET_STATUS_CANCELED_NOTIFICATION_BY_TRAVELERID:
+			Integer idToLookForCanceledNotifications = (Integer) messageFromClient.getDataTransfered();
+			ArrayList<Order> orderListTravelerByIdCanceled = dbControllerInstance.getCanceledNotificationsOrdersByID(idToLookForCanceledNotifications);
+
+			// Create a message to send to the client
+			ClientServerMessage<?> orderListTravelerByIdCanceledMessageToClient = new ClientServerMessage<>(orderListTravelerByIdCanceled,
+					Operation.GET_STATUS_PENDING_NOTIFICATION_BY_TRAVELERID);
+
+			// Send the message to the client
+			client.sendToClient(orderListTravelerByIdCanceledMessageToClient);
+			break;
+			
+		case Operation.PATCH_ORDER_STATUS_ARRAYLIST:
+            try {
+                List<Order> orderToChange = (List<Order>) messageFromClient.getDataTransfered();
+                ArrayList<Order> orderList = new ArrayList<>(orderToChange);
+                // Create a message to send to the client
+                messageFromClient.setDataTransfered(dbControllerInstance.updateOrderStatusArray(orderList));
+                // Send the message to the client
+            } catch (Exception e) {
+                e.printStackTrace();
+                // Handle the exception according to your needs
+            }
+            client.sendToClient(messageFromClient);
+            break;
+			
 
 		default:
 			System.out.println("default");

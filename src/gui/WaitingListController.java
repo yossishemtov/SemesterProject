@@ -18,6 +18,7 @@ import common.GetInstance;
 import common.Operation;
 import common.Order;
 import common.OrderChecker;
+import common.WaitingChecker;
 import common.WaitingList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -33,7 +34,7 @@ import javafx.stage.Stage;
 
 
 
-public class WaitingListController implements Initializable {
+public class WaitingListController implements Initializable { 
 
 	@FXML
 	private AnchorPane RePane;
@@ -124,7 +125,7 @@ public class WaitingListController implements Initializable {
 	    Task<Boolean> task = new Task<Boolean>() {
 			@Override
 			protected Boolean call() throws Exception {
-				getAlternativeDates();
+				getAvailableDatesList();
 				return true;
 			}
 		};
@@ -150,36 +151,26 @@ public class WaitingListController implements Initializable {
 	@FXML
 	void EnterWaitingList(ActionEvent event) throws IOException {
 
-	
+	 
 		String visitDate = order.getDate().toString();
 		String visitTime = order.getVisitTime().toString();
 		String parkName = order.getParkName();
 	    Integer waitingId = 1;
 
-		ClientServerMessage<?> getLast = new ClientServerMessage<>(null, Operation.GET_LAST_WAITINGLIST);
-		ClientUI.clientControllerInstance.sendMessageToServer(getLast);
-		ClientServerMessage<?> waitingIdMsg = ClientUI.clientControllerInstance.getData();
-		waitingId = (Integer) waitingIdMsg.getDataTransfered();
+		
+		waitingId = WaitingChecker.GetLastWaiting();
 		if (waitingId != null) {
 			waitingId++;
 		}
 		
-		ClientServerMessage<?> findPlace = new ClientServerMessage<>(new ArrayList<String>
-		(Arrays.asList(parkName, visitDate, visitTime)), Operation.FIND_PLACE_IN_WAITING_LIST);
-		ClientUI.clientControllerInstance.sendMessageToServer(findPlace);
-	    ClientServerMessage<?> placeMsg = ClientUI.clientControllerInstance.getData();
-	    Integer rightPlace = (Integer) placeMsg.getDataTransfered();
-
+		Integer rightPlace = WaitingChecker.FindRightPlaceInWaiting(visitDate, visitTime, parkName);
     	
 		WaitingList waiting = new WaitingList(order.getOrderId(), order.getVisitorId(),
 				order.getParkNumber(), order.getAmountOfVisitors(), order.getPrice(),
 				order.getVisitorEmail(), order.getDate(), order.getVisitTime(), order.getOrderStatus(),
 				order.getTypeOfOrder(), order.getTelephoneNumber(), order.getParkName(), waitingId, rightPlace);
 
-		ClientServerMessage<?> waitingAttempt = new ClientServerMessage<>(waiting, Operation.POST_NEW_WAITING_LIST);
-		ClientUI.clientControllerInstance.sendMessageToServer(waitingAttempt);
-	    ClientServerMessage<?> isNewWaitingMsg = ClientUI.clientControllerInstance.getData();
-    	Boolean isNewWaiting = (Boolean) isNewWaitingMsg.getFlag();
+    	Boolean isNewWaiting = WaitingChecker.PostNewWaitingList(waiting);
 		
     	if(isNewWaiting) {
     		this.summaryPark.setText(order.getParkName());
@@ -205,25 +196,16 @@ public class WaitingListController implements Initializable {
 	    orderAVisitController.getPaneOrder().setDisable(false);
 	}
 
-	/**
-     * Retrieves alternative dates for the waiting list.
-     */
-	private void getAlternativeDates() {
-
-		ArrayList<String> availableDatesList = getAvailableDatesList();
-		DatesToPick.getItems().addAll(availableDatesList);
-
-	}
 
 	/**
      * Gets the list of available alternative dates.
      * @return The list of available alternative dates.
      */
-	private ArrayList<String> getAvailableDatesList() {
+	private void getAvailableDatesList() {
 		Order tempOrder = new Order(order.getOrderId(), order.getVisitorId(), order.getParkNumber(), order.getAmountOfVisitors(),
 				order.getPrice(),order.getVisitorEmail(), order.getDate(), order.getVisitTime(), order.getOrderStatus(),
 				order.getTypeOfOrder(), order.getTelephoneNumber(), order.getParkName());
-		LocalDate originalDate = order.getDate();
+		LocalDate originalDate = order.getDate(); 
 
 
 		LocalTime currentTime = LocalTime.parse("08:00");
@@ -251,8 +233,8 @@ public class WaitingListController implements Initializable {
 			}
 
 		}
+		DatesToPick.getItems().addAll(availableDatesList);
 
-		return availableDatesList;
 	}
 	
 	/**
@@ -293,7 +275,6 @@ public class WaitingListController implements Initializable {
 
 
 }
-
 
 
 

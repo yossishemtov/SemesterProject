@@ -32,11 +32,8 @@
             <RowConstraints maxHeight="51.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-<<<<<<< HEAD
-      <Label fx:id="titlelLabal" layoutX="349.0" layoutY="39.0" prefHeight="28.0" prefWidth="306.0" text="Usage Report">
-=======
+
       <Label fx:id="titlelLabal" layoutX="424.0" layoutY="42.0" prefHeight="28.0" prefWidth="121.0" text="Usage Report" textFill="#b3ffb3">
->>>>>>> shaibranch
          <font>
             <Font size="18.0" />
          </font>

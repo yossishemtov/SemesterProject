@@ -8,6 +8,7 @@ import client.ClientController;
 import client.ClientUI;
 import client.InputValidation;
 import common.Traveler;
+import common.TravelerChecker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -65,7 +66,11 @@ public class TravelerFrameController implements Initializable {
 	private JFXButton logoutBtn;
 
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources) {
+    	TravelerChecker travelerChecker = new TravelerChecker();
+		travelerChecker.viewPendingNotifications();
+		travelerChecker.viewCanceledNotifications();
+		travelerChecker.viewWaitingNotifications();
 		Traveler currentTraveler = Usermanager.getCurrentTraveler();
 		loadProfileImmediately();
 
