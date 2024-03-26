@@ -33,8 +33,8 @@ public class NotifyThread implements Runnable {
     private ArrayList<OrderNotification> ordersWithAlerts; // Array to store orders with alerts
     private ArrayList<WaitingList> waitingArray;
 
-	public NotifyThread(Connection mysqlconnection) {
-		DC = new DatabaseController("root","Joss102010");
+	public NotifyThread(DatabaseController DBController) {
+		DC = DBController;
         ordersWithAlerts = new ArrayList<>(); // Initialize the array
         waitingArray = new ArrayList<>();
 	}

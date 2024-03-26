@@ -3,6 +3,7 @@ package server;
 // license found at www.lloseng.com 
 
 import java.io.*;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,8 @@ public class BackEndServer extends AbstractServer
   private static ServerController serverControllerInstance;
   public static  DatabaseController DBController;
   public static BackEndServer backEndServerInstance;
+  private Connection DbConnection;
+  private NotifyThread notifyThread;
   private Map<Long, ClientConnectionStatus> connectedClients;
   
   public BackEndServer(int port, ServerController serverControllerInstance, String userName, String password) {
@@ -31,8 +34,14 @@ public class BackEndServer extends AbstractServer
 	    //Initiating a servercontroller instance
 	    BackEndServer.serverControllerInstance = serverControllerInstance;
 	    
+	    this.DbConnection = new MySqlConnector(userName, password).getDbConnection();
 	    //Initiate a connection to the database
-	    BackEndServer.DBController = new DatabaseController(userName, password);
+	    DBController = new DatabaseController(DbConnection);
+	    
+	    notifyThread = new NotifyThread(DBController); // You may need to pass any required parameters to the constructor
+        Thread thread = new Thread(notifyThread);
+        thread.setDaemon(true); // Set the thread as daemon so that it stops when the application exits
+        thread.start();
 	    
 	    //Initiate a hashmap for the client connecitons
 	    this.connectedClients = new HashMap<>();

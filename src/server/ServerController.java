@@ -46,8 +46,7 @@ public class ServerController {
 
 	BackEndServer sv;
 //	private Map<String, ClientConnectionStatus> statusMap = new HashMap<>();
-    private NotifyThread notifyThread;
-    private MySqlConnector connectionForThread;
+
 
 	@FXML
 	private JFXTextField PortTxt;
@@ -91,22 +90,7 @@ public class ServerController {
 	@FXML
 	private Circle circleStatus;
 
-//	private List<TextField> txtFields = new ArrayList<>();
-//	@FXML
-//	private Label serverMessagesUi;
 
-//	@FXML
-//	private Label serverMsgTxt, PortErrorLabel, ipErrorLabel, passwordErrorLabel, usernameErrorLabel;
-
-//	@FXML
-//	private Label dbNameErrorLabel;
-
-//
-//	@FXML
-//	private ImageView closeAppBtn;
-
-//	@FXML
-//	private Circle serverStartedCircle;
 
 	@FXML
 	void serveStopAction(ActionEvent event) {
@@ -182,11 +166,7 @@ public class ServerController {
 		if (isVaiildLogin()) {
 			try {
 				sv = new BackEndServer(port, this, dbUserName, dbPass);
-				connectionForThread = new MySqlConnector(dbUserName,dbPass);
-				notifyThread = new NotifyThread(connectionForThread.getDbConnection()); // You may need to pass any required parameters to the constructor
-		        Thread thread = new Thread(notifyThread);
-		        thread.setDaemon(true); // Set the thread as daemon so that it stops when the application exits
-		        thread.start();
+				
 		
 
 				// Start server

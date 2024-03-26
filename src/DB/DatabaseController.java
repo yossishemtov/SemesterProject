@@ -34,10 +34,11 @@ public class DatabaseController {
 	 * @param username the database username
 	 * @param password the database password
 	 */
-	public DatabaseController(String username, String password) {
-		this.connector = new MySqlConnector(username, password);
-		connectionToDatabase = this.connector.getDbConnection();
+	public DatabaseController(Connection ConnectionToDB) {
+	
+		connectionToDatabase = ConnectionToDB;
 	}
+	
 
 	/**
 	 * Finds the most recent traveler order based on his ID

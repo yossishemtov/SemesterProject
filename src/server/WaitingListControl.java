@@ -14,8 +14,14 @@ import common.WaitingList;
  */
 
 public class WaitingListControl {
+	private  static DatabaseController DC;
 
-	private static DatabaseController DC = new DatabaseController("root","Aa123456");
+	public WaitingListControl(DatabaseController DBController) {
+		WaitingListControl.DC = DBController;
+     
+	}
+
+
 	
 
 	/**
