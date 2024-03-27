@@ -1,118 +1,105 @@
 package server;
 
-import java.sql.Connection;
-import java.time.LocalDate;
+import java.time.Duration;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-
-import javax.swing.JOptionPane;
-
 
 import DB.DatabaseController;
-import common.Order;
-import common.OrderNotification;
-import common.WaitingList;
 
+/**
+ * A thread designed to update database statuses at specific times. It handles
+ * updates for both a waiting list and order statuses, performing these updates
+ * daily at 8:00 AM and 11:00 PM respectively.
+ */
 public class UpdateStatusThread implements Runnable {
 
+	private DatabaseController DC;
 
-		private final int second = 1000;
-		private final int minute = second * 30;
-		private DatabaseController DC;
-	    private ArrayList<OrderNotification> ordersWithAlerts; // Array to store orders with alerts
-	    private ArrayList<WaitingList> waitingArray;
-
-		public UpdateStatusThread(DatabaseController DBController) {
-			DC = DBController;
-	        ordersWithAlerts = new ArrayList<>(); // Initialize the array
-	        waitingArray = new ArrayList<>();
-		}
-
-		/**
-		 * This function handle all the automated functionality:
-		 * Send reminder 24 hours before visit.
-		 * Cancel the visit if the traveler did not confirmed within two hours.
-		 * Notify the next in the waiting list
-		 */
-		@Override
-		public void run() {
-
-			while (true) {
-
-				ArrayList<Order> pendingOrders = DC.getOrdersByStatusInLastTwentyFourHours("PENDING");
-				ArrayList<OrderNotification> ordersAlreadyNotified= DC.getTodayNotificationsWithStatus("SENT");
-				
-				
-				for (Order order : pendingOrders) {
-					String status = "PENDING_EMAIL_SENT";
-					String orderId = String.valueOf(order.getOrderId());
-					
-					//Change status of orders to PENDING_EMAIL_SENT
-					DC.updateOrderStatusArray(new ArrayList<String>(Arrays.asList(status, orderId)));
-					
-					/**Visitor has 2 hours to accept visit from now*/
-					OrderNotification createNotification = new OrderNotification(Integer.parseInt(orderId), LocalDate.now(),
-							LocalTime.now(), LocalTime.now().plusHours(2), "SENT");
-					
-					//Add notification to the orders notified arrayList
-					ordersAlreadyNotified.add(createNotification);
-					
-					//Posting the notification in the db
-					DC.postOrderNotification(createNotification);
-					
-					WaitingList waiting = new WaitingList(order.getOrderId(), order.getVisitorId(),
-							order.getParkNumber(), order.getAmountOfVisitors(), order.getPrice(),
-							order.getVisitorEmail(), order.getDate(), order.getVisitTime(), order.getOrderStatus(),
-							order.getTypeOfOrder(), order.getTelephoneNumber(), order.getParkName(), 0, 0);
-					waitingArray.add(waiting);
-					
-				}
-				
-				ordersWithAlerts = ordersAlreadyNotified;
-				CancelOrderAndNotify(waitingArray);
-				try {
-					Thread.sleep(1 * minute);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-
-		
-		private void CancelOrderAndNotify(ArrayList<WaitingList> waiting) {
-		    
-		    // Iterate through orders with alerts and cancel expired orders
-		    Iterator<OrderNotification> iterator = ordersWithAlerts.iterator();
-		    while (iterator.hasNext()) {
-		    	int i = 0;
-		    	OrderNotification notificationOfSpecificOrder = iterator.next();
-		        if (isAlertExpired(LocalTime.now(), notificationOfSpecificOrder.getEndNotification())) {
-		            // Cancel the order
-		        	System.out.print("Cancel Order");
-		        	
-		        	//Change status in the orderNotification table
-		        	DC.changeStatusOfNotification(notificationOfSpecificOrder.getOrderId(), "PASSED");
-		        	
-		        	//Change status in the order table
-		            DC.updateOrderStatusArray(new ArrayList<String>(Arrays.asList("CANCELEDBYSERVER", String.valueOf(notificationOfSpecificOrder.getOrderId()))));
-
-		            // Remove the canceled order from orderNotifications
-		            WaitingListControl.notifyPersonFromWaitingList(waiting.get(i));
-
-		            i++;
-		            iterator.remove();
-		        }
-		    }
-		}
-
-		private boolean isAlertExpired(LocalTime currentTime, LocalTime alertEndTime) {
-		    return currentTime.isAfter(alertEndTime);
-		}
-
-
-
-
-
+	/**
+	 * Constructs an {@code UpdateStatusThread} with a specified
+	 * {@link DatabaseController}.
+	 *
+	 * @param DBController the database controller used for updating database
+	 *                     records.
+	 */
+	public UpdateStatusThread(DatabaseController DBController) {
+		this.DC = DBController;
 	}
+
+	/**
+	 * The main execution method for the thread. This runs in a continuous loop,
+	 * determining the next target time for an update, sleeping until it's close to
+	 * that time, and then performing the necessary update.
+	 */
+	@Override
+	public void run() {
+		try {
+			while (!Thread.currentThread().isInterrupted()) {
+
+				LocalTime now = LocalTime.now();
+				LocalTime timeForWaitingListUpdate = LocalTime.of(8, 0); // 8 AM
+				LocalTime timeForOrderUpdate = LocalTime.of(23, 0); // 11 PM
+
+				LocalTime nextTarget = getNextTarget(now, timeForWaitingListUpdate, timeForOrderUpdate);
+				sleepUntilCloseTo(nextTarget);
+				while (LocalTime.now().isBefore(nextTarget)) {
+					Thread.sleep(100);
+				}
+				performActionForTime(nextTarget, timeForWaitingListUpdate, timeForOrderUpdate);
+			}
+
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			System.out.println("Thread was interrupted, stopping.");
+		}
+	}
+
+	/**
+	 * Determines the next target time for an update based on the current time.
+	 *
+	 * @param now                      the current time
+	 * @param timeForWaitingListUpdate the time scheduled for updating the waiting
+	 *                                 list
+	 * @param timeForOrderUpdate       the time scheduled for updating order
+	 *                                 statuses
+	 * @return the next target time for an update
+	 */
+	private LocalTime getNextTarget(LocalTime now, LocalTime timeForWaitingListUpdate, LocalTime timeForOrderUpdate) {
+		if (now.isBefore(timeForWaitingListUpdate) || now.isAfter(timeForOrderUpdate)) {
+			return timeForWaitingListUpdate;
+		} else {
+			return timeForOrderUpdate;
+		}
+	}
+
+	/**
+	 * Sleeps the thread until it's close to the next target time for an update.
+	 *
+	 * @param targetTime the next target time to wake up for an update
+	 * @throws InterruptedException if the thread is interrupted while sleeping
+	 */
+	private void sleepUntilCloseTo(LocalTime targetTime) throws InterruptedException {
+		long sleepTimeMillis = Duration.between(LocalTime.now(), targetTime.minusMinutes(1)).toMillis();
+		if (sleepTimeMillis > 0) {
+			System.out.println("Sleeping for " + sleepTimeMillis + " milliseconds to be close to target time.");
+			Thread.sleep(sleepTimeMillis);
+		}
+	}
+
+	/**
+	 * Performs the appropriate update action based on the target time.
+	 *
+	 * @param targetTime               the time the update is targeted for
+	 * @param timeForWaitingListUpdate the time scheduled for updating the waiting
+	 *                                 list
+	 * @param timeForOrderUpdate       the time scheduled for updating order
+	 *                                 statuses
+	 */
+	private void performActionForTime(LocalTime targetTime, LocalTime timeForWaitingListUpdate,
+			LocalTime timeForOrderUpdate) {
+		if (targetTime.equals(timeForWaitingListUpdate)) {
+			DC.updateWaitingListStatusForToday();
+		} else if (targetTime.equals(timeForOrderUpdate)) {
+			DC.updateOrderStatusForToday();
+		}
+	}
+}

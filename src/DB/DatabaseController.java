@@ -2289,5 +2289,62 @@ public class DatabaseController {
 			}
 			return orders;
 		}
+		
+		public Boolean updateOrderStatusForToday() {
+		    // Format today's date in the same format as stored in the database
+		    LocalDate today = LocalDate.now();
+		    String todayStr = today.toString(); // Converts today's date to String in the format yyyy-MM-dd
+
+		    // SQL query to update the status of orders
+		    String query = "UPDATE `order` SET orderStatus = ? WHERE date = ? AND orderStatus = ?";
+
+		    try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+		        // Set the parameters for the query
+		        ps.setString(1, "NOTARRIVED"); // New status to set
+		        ps.setString(2, todayStr); // Today's date
+		        ps.setString(3, "CONFIRMED"); // Current status to look for
+
+		        int affectedRows = ps.executeUpdate();
+		        if (affectedRows > 0) {
+		            System.out.println(affectedRows + " order(s) updated successfully.");
+		            return true;
+		        } else {
+		            System.out.println("No orders found with status CONFIRMED for today's date, or an error occurred.");
+		            return false;
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		        return false;
+		    }
+		}
+		public Boolean updateWaitingListStatusForToday() {
+		    // Format today's date in the same format as stored in the database
+		    LocalDate today = LocalDate.now();
+		    String todayStr = today.toString(); // Converts today's date to String in the format yyyy-MM-dd
+
+		    // SQL query to update the status of waiting list entries
+		    String query = "UPDATE `waitinglist` SET orderStatus = ? WHERE date = ? AND orderStatus = ?";
+
+		    try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+		        // Set the parameters for the query
+		        ps.setString(1, "CANCELED"); // New status to set
+		        ps.setString(2, todayStr); // Today's date
+		        ps.setString(3, "PENDING"); // Current status to look for
+
+		        int affectedRows = ps.executeUpdate();
+		        if (affectedRows > 0) {
+		            System.out.println(affectedRows + " waiting list entry(ies) updated successfully.");
+		            return true;
+		        } else {
+		            System.out.println("No waiting list entries found with status PENDING for today's date, or an error occurred.");
+		            return false;
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		        return false;
+		    }
+		}
+
+
 
 }
