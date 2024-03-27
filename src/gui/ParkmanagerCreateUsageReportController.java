@@ -155,9 +155,11 @@ public class ParkmanagerCreateUsageReportController implements Initializable {
 			ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
 
 			if (ClientController.data.getFlag()) {
+				ParkmanagerReportController.refreshReportsTable();
 				Alerts erorAlert = new Alerts(Alerts.AlertType.INFORMATION, "Confirmtion", "",
 						"The report was successfully saved.");
 				erorAlert.showAndWait();
+				ClosePageAction(event);
 
 			}
 		} else {

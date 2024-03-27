@@ -58,6 +58,7 @@ public class Order implements Serializable {
 			this.orderType = Order.typeOfOrder.SOLO;
 		}
 	}
+	public Order() {}
 
 	public Integer getVisitorId() {
 		return visitorId;

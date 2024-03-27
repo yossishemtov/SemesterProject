@@ -897,19 +897,7 @@ public class MessageHandlerFromClient {
 			client.sendToClient(orderListTravelerByIdCanceledMessageToClient);
 			break;
 			
-		case Operation.PATCH_ORDER_STATUS_ARRAYLIST:
-            try {
-                List<Order> orderToChange = (List<Order>) messageFromClient.getDataTransfered();
-                ArrayList<Order> orderList = new ArrayList<>(orderToChange);
-                // Create a message to send to the client
-                messageFromClient.setDataTransfered(dbControllerInstance.updateOrderStatusArray(orderList));
-                // Send the message to the client
-            } catch (Exception e) {
-                e.printStackTrace();
-                // Handle the exception according to your needs
-            }
-            client.sendToClient(messageFromClient);
-            break;
+	
 			
 
 		default:

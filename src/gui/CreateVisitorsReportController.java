@@ -66,9 +66,12 @@ public class CreateVisitorsReportController {
 			ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
 
 			if (ClientController.data.getFlag()) {
+			ParkmanagerReportController.refreshReportsTable();
+
 				Alerts erorAlert = new Alerts(Alerts.AlertType.CONFIRMATION, "Confirmtion", "",
 						"The report was successfully saved.");
 				erorAlert.showAndWait();
+				CloseWindowAction(event);
 
 			}
 			// fetches the data

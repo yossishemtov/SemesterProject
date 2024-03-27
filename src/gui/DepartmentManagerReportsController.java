@@ -77,9 +77,9 @@ public class DepartmentManagerReportsController implements Initializable {
 	@FXML
 	private JFXButton Createbth;
 	@FXML
-	private JFXComboBox<String> monthCombobox; // Changed to String for display purposes
+	private JFXComboBox<String> monthCombobox; 
 	@FXML
-	private JFXComboBox<String> ReportTypeCombobox; // Changed to String for display purposes
+	private JFXComboBox<String> ReportTypeCombobox; 
 	@FXML
 	private JFXComboBox<String> parkNameComboBox;
 	@FXML

@@ -52,7 +52,7 @@ public class WorkerLoginController {
 			GeneralParkWorker workerForServer = new GeneralParkWorker(null, null, null, null, null, workerUsername,
 					workerPassword, null);
 //			System.out.println("worker username: " + workerForServer.getUserName() + "worker password: " + workerForServer.getPassword());
-			System.out.println("Worker username:");
+			System.out.println("Worker username:"+workerUsername + " "+workerPassword );
 			// Send worker object to server and request worker details
 			ClientServerMessage messageForServer = new ClientServerMessage(workerForServer,
 					Operation.GET_GENERAL_PARK_WORKER_DETAILS);

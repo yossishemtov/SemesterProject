@@ -43,9 +43,9 @@ import javafx.scene.control.Label;
 public class ParkmanagerReportController implements Initializable {
 
 	@FXML
-	private JFXComboBox<String> monthCombobox; // Changed to String for display purposes
+	private JFXComboBox<String> monthCombobox;
 	@FXML
-	private JFXComboBox<String> ReportTypeCombobox; // Changed to String for display purposes
+	private JFXComboBox<String> ReportTypeCombobox;
 
 	ObservableList<?> observable = FXCollections.observableArrayList();
 
@@ -68,7 +68,8 @@ public class ParkmanagerReportController implements Initializable {
 	private TableColumn<Report, String> commentCol;
 	@FXML
 	private JFXButton Createbth;
-	private Park park; 
+	private static ParkmanagerReportController instance;
+	private Park park;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -79,50 +80,50 @@ public class ParkmanagerReportController implements Initializable {
 			ReportTypeCombobox.setItems(FXCollections.observableArrayList("Visitors Report", "Usage Report"));
 
 		}
+		instance = this;
 
 		ClientServerMessage<?> messageForServer = new ClientServerMessage<>(
 				Usermanager.getCurrentWorker().getWorksAtPark(), Operation.GET_PARK_DETAILS);
 		ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
 
 		if (ClientController.data.getFlag()) {
-			park=(Park) ClientUI.clientControllerInstance.getData().getDataTransfered();
-		}
-		else {
+			park = (Park) ClientUI.clientControllerInstance.getData().getDataTransfered();
+		} else {
 			Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "", "Error to load park data .");
 			warningalert.showAndWait();
 		}
-	
 
-	configureTableColumns();
+		configureTableColumns();
 
-	ShowReportparkIdAction();
+		ShowReportparkIdAction();
 
 	}
+	  public static void refreshReportsTable() {
+	        if (instance != null) {
+	            instance.ShowReportparkIdAction();
+	        }
+	    }
 
 	private void configureTableColumns() {
-	    reportIDCol.setCellValueFactory(new PropertyValueFactory<>("reportID"));
-	    reportTypeCol.setCellValueFactory(new PropertyValueFactory<>("reportType"));
-	    parkIDCol.setCellValueFactory(new PropertyValueFactory<>("parkID"));
-	    
-	    // Adjust this column to use the month field
-	    MonthCol.setCellValueFactory(cellData -> {
-	        int month = cellData.getValue().getMonth();
-	        return new javafx.beans.property.SimpleStringProperty(String.valueOf(month));
-	    });
+		reportIDCol.setCellValueFactory(new PropertyValueFactory<>("reportID"));
+		reportTypeCol.setCellValueFactory(new PropertyValueFactory<>("reportType"));
+		parkIDCol.setCellValueFactory(new PropertyValueFactory<>("parkID"));
 
-	    commentCol.setCellValueFactory(new PropertyValueFactory<>("comment"));
+		// Adjust this column to use the month field
+		MonthCol.setCellValueFactory(cellData -> {
+			int month = cellData.getValue().getMonth();
+			return new javafx.beans.property.SimpleStringProperty(String.valueOf(month));
+		});
+
+		commentCol.setCellValueFactory(new PropertyValueFactory<>("comment"));
 	}
-
 
 	private void ShowReportparkIdAction() {
 		Integer parkId = Usermanager.getCurrentWorker().getWorksAtPark();
 
 		// Here, send request to server to get reports by parkId
 		ObservableList<Report> reports = getReportsByParkId(parkId);
-		if (reports.isEmpty()) {
-			Alerts infoalert = new Alerts(Alert.AlertType.INFORMATION, "Information", "", "Not have report to show.");
-			infoalert.showAndWait();
-		} else {
+		if (!reports.isEmpty()) {
 			ReportsTableView.getItems().clear(); // Clear existing content
 			ReportsTableView.setItems(reports); // Set new items
 			ReportsTableView.refresh(); // Explicitly refresh the table view
@@ -131,50 +132,51 @@ public class ParkmanagerReportController implements Initializable {
 
 	@FXML
 	void ShowReportTableClickAction(MouseEvent event) {
-	    if (event.getClickCount() == 2) { // Double click
-	        Report selectedReport = ReportsTableView.getSelectionModel().getSelectedItem();
-	        if (selectedReport != null) {
-	            String operation = null;
-	            String fxmlFile = "";
-	            
-	            // Determine the type of report and set the operation and FXML file accordingly
-	            if (selectedReport.getReportType() == ReportType.USAGE.toString()) {
-	                operation = Operation.GET_EXISTS_USAGE_REPORT;
-	                fxmlFile = "ShowUsageReport.fxml";
-	            } else if (selectedReport.getReportType() == ReportType.VISITOR.toString()) {
-	                operation = Operation.GET_EXISTS_VISITORS_REPORT;
-	                fxmlFile = "ShowVisitorsReport.fxml";
-	            }
-	            
-	            if (operation != null && !fxmlFile.isEmpty()) {
-	                ClientServerMessage<Report> messageForServer = new ClientServerMessage<>(selectedReport, operation);
-	                ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
+		if (event.getClickCount() == 2) { // Double click
+			Report selectedReport = ReportsTableView.getSelectionModel().getSelectedItem();
+			if (selectedReport != null) {
+				String operation = null;
+				String fxmlFile = "";
 
-	                if (ClientController.data.getFlag()) {
-	                    System.out.println(ClientController.data.getDataTransfered());
-	                    Alerts infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
-	                            "Report retrieved from database");
-	                    infoalert.showAndWait();
-	                    try {
-	                        NavigationManager.openPage(fxmlFile, event, "", false);
-	                    } catch (IOException e) {
-	                        e.printStackTrace();
-	                    }
-	                } else {
-	                    Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
-	                            "A report return empty request was not successfully executed on database");
-	                    somethingWentWrong.showAndWait();
-	                }
-	            } else {
-	                Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "", "Selection is empty or report type is unknown.");
-	                warningalert.showAndWait();
-	            }
+				// Determine the type of report and set the operation and FXML file accordingly
+				if (selectedReport.getReportType() == ReportType.USAGE.toString()) {
+					operation = Operation.GET_EXISTS_USAGE_REPORT;
+					fxmlFile = "ShowUsageReport.fxml";
+				} else if (selectedReport.getReportType() == ReportType.VISITOR.toString()) {
+					operation = Operation.GET_EXISTS_VISITORS_REPORT;
+					fxmlFile = "ShowVisitorsReport.fxml";
+				}
 
-	        } else {
-	            Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "", "Selection is empty.");
-	            warningalert.showAndWait();
-	        }
-	    }
+				if (operation != null && !fxmlFile.isEmpty()) {
+					ClientServerMessage<Report> messageForServer = new ClientServerMessage<>(selectedReport, operation);
+					ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
+
+					if (ClientController.data.getFlag()) {
+						System.out.println(ClientController.data.getDataTransfered());
+						Alerts infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
+								"Report retrieved from database");
+						infoalert.showAndWait();
+						try {
+							NavigationManager.openPage(fxmlFile, event, "", false);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					} else {
+						Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
+								"A report return empty request was not successfully executed on database");
+						somethingWentWrong.showAndWait();
+					}
+				} else {
+					Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "",
+							"Selection is empty or report type is unknown.");
+					warningalert.showAndWait();
+				}
+
+			} else {
+				Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "", "Selection is empty.");
+				warningalert.showAndWait();
+			}
+		}
 	}
 
 	private ObservableList<Report> getReportsByParkId(int parkId) {
@@ -237,20 +239,19 @@ public class ParkmanagerReportController implements Initializable {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					
-				}
-				else {
+
+				} else {
 					infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
 							"Not have data for this month in database");
 					infoalert.showAndWait();
 				}
-				
 
 				System.out.println("Creating Visit Report for Month: " + selectedMonthString);
-				break; 
+				break;
 			case "Usage Report":
 				UsageReport usageReport = new UsageReport(0, Report.ReportType.USAGE,
-						Usermanager.getCurrentWorker().getWorksAtPark(), LocalDate.now(), selectedMonth, "", null, park.getCapacity());
+						Usermanager.getCurrentWorker().getWorksAtPark(), LocalDate.now(), selectedMonth, "", null,
+						park.getCapacity());
 				System.out.println(usageReport.toString());
 				ClientServerMessage<?> messageForServerUsageReport = new ClientServerMessage<>(usageReport,
 						Operation.GET_NEW_USAGE_REPORT);
@@ -261,9 +262,9 @@ public class ParkmanagerReportController implements Initializable {
 						infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
 								"Report retrieved from database");
 						infoalert.showAndWait();
-					}
-					else {
-						Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "", "Error to load park data .");
+					} else {
+						Alerts warningalert = new Alerts(Alert.AlertType.WARNING, "Warning", "",
+								"Error to load park data .");
 						warningalert.showAndWait();
 					}
 
