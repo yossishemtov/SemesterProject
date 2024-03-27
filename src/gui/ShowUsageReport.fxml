@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ShowUsageReportController">
@@ -46,5 +47,9 @@
             <RowConstraints maxHeight="51.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
+      <Label layoutX="105.0" layoutY="241.0" text="Full capacity" textFill="WHITE" />
+      <Label layoutX="105.0" layoutY="307.0" text="Not full capacity" textFill="WHITE" />
+      <Circle fill="RED" layoutX="76.0" layoutY="251.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fill="#3dee5a" layoutX="76.0" layoutY="316.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" />
    </children>
 </AnchorPane>
