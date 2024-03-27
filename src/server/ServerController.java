@@ -47,7 +47,6 @@ public class ServerController {
 	BackEndServer sv;
 //	private Map<String, ClientConnectionStatus> statusMap = new HashMap<>();
 
-
 	@FXML
 	private JFXTextField PortTxt;
 
@@ -89,8 +88,6 @@ public class ServerController {
 
 	@FXML
 	private Circle circleStatus;
-
-
 
 	@FXML
 	void serveStopAction(ActionEvent event) {
@@ -165,25 +162,28 @@ public class ServerController {
 
 		if (isVaiildLogin()) {
 			try {
+
 				sv = new BackEndServer(port, this, dbUserName, dbPass);
-				
-		
 
 				// Start server
 				sv.listen();
-				circleStatus.setFill(Color.GREEN);
-				//logTextArea.setText("server start listen");
-				System.out.println("server start listen");
+				circleStatus.setFill(Color.GREEN); // Assume circleStatus is a GUI element indicating server status
+				logTextArea.setText("Server started listening."); // logTextArea for logging text to GUI
+				System.out.println("Server started listening.");
 
+			} catch (java.net.BindException b) {
+				// This block catches the BindException specifically
+				 Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
+						 "Error: Port " + port + " is already in use. Please choose a different port.");
+					somethingWentWrong.showAndWait();				logTextArea.setText("Error: Port " + port + " is already in use. Please choose a different port.");
+				System.err.println("Error: Port " + port + " is already in use. Please choose a different port.");
 			} catch (IOException e) {
-			
-
-				logTextArea.setText("Server fail.");
-//				System.out.println("Server fail.");
+				// Catch other IOExceptions here
+				logTextArea.setText("Server failed to start.");
+				System.err.println("Server failed to start.");
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	@FXML
@@ -191,7 +191,7 @@ public class ServerController {
 		PortTxt.setText("5555");
 		DBUserNameTxt.setText("root"); // Assuming you might want to set the username to 'root' as well
 
-		 redirectSystemStreams(); // Redirect System.out and System.err
+		redirectSystemStreams(); // Redirect System.out and System.err
 
 		HostCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getHost()));
 		IPCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getIp()));
@@ -237,7 +237,7 @@ public class ServerController {
 		try {
 			if (sv != null && sv.isListening())
 				circleStatus.setFill(Color.RED);
-				sv.close();
+			sv.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 

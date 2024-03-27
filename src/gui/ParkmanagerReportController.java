@@ -30,7 +30,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-
+/**
+ * Controller class for managing park reports within the GUI. This class handles
+ * the display and generation of reports such as visitors and usage reports for
+ * a park manager.
+ */
 public class ParkmanagerReportController implements Initializable {
 
 	@FXML
@@ -62,6 +66,16 @@ public class ParkmanagerReportController implements Initializable {
 	private static ParkmanagerReportController instance;
 	private Park park;
 
+	/**
+	 * Initializes the controller class. This method is automatically called after
+	 * the FXML file has been loaded. It initializes the comboboxes for months and
+	 * report types, configures the table columns, and loads the park details.
+	 * 
+	 * @param location  The location used to resolve relative paths for the root
+	 *                  object, or null if the location is not known.
+	 * @param resources The resources used to localize the root object, or null if
+	 *                  the root object was not localized.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// Initialize months 1-12
@@ -72,7 +86,6 @@ public class ParkmanagerReportController implements Initializable {
 
 		}
 		instance = this;
-
 		ClientServerMessage<?> messageForServer = new ClientServerMessage<>(
 				Usermanager.getCurrentWorker().getWorksAtPark(), Operation.GET_PARK_DETAILS);
 		ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
@@ -85,16 +98,24 @@ public class ParkmanagerReportController implements Initializable {
 		}
 
 		configureTableColumns();
-
 		ShowReportparkIdAction();
 
 	}
-	  public static void refreshReportsTable() {
-	        if (instance != null) {
-	            instance.ShowReportparkIdAction();
-	        }
-	    }
 
+	/**
+	 * Static method to refresh the reports table. This can be called from other
+	 * classes to update the table's contents.
+	 */
+	public static void refreshReportsTable() {
+		if (instance != null) {
+			instance.ShowReportparkIdAction();
+		}
+	}
+
+	/**
+	 * Configures the table columns with the correct property values to be
+	 * displayed.
+	 */
 	private void configureTableColumns() {
 		reportIDCol.setCellValueFactory(new PropertyValueFactory<>("reportID"));
 		reportTypeCol.setCellValueFactory(new PropertyValueFactory<>("reportType"));
@@ -109,6 +130,9 @@ public class ParkmanagerReportController implements Initializable {
 		commentCol.setCellValueFactory(new PropertyValueFactory<>("comment"));
 	}
 
+	/**
+	 * Loads and displays the reports for the current park manager's park ID.
+	 */
 	private void ShowReportparkIdAction() {
 		Integer parkId = Usermanager.getCurrentWorker().getWorksAtPark();
 
@@ -121,6 +145,12 @@ public class ParkmanagerReportController implements Initializable {
 		}
 	}
 
+	/**
+	 * Handles the action when a report in the table is double-clicked. It opens the
+	 * selected report for viewing.
+	 *
+	 * @param event The mouse event that triggered this action.
+	 */
 	@FXML
 	void ShowReportTableClickAction(MouseEvent event) {
 		if (event.getClickCount() == 2) { // Double click
@@ -148,7 +178,7 @@ public class ParkmanagerReportController implements Initializable {
 								"Report retrieved from database");
 						infoalert.showAndWait();
 						try {
-							NavigationManager.openPage(fxmlFile, event, "", false,false);
+							NavigationManager.openPage(fxmlFile, event, "", false, false);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -170,6 +200,12 @@ public class ParkmanagerReportController implements Initializable {
 		}
 	}
 
+	/**
+	 * Retrieves a list of reports based on the park ID.
+	 *
+	 * @param parkId The park ID for which to retrieve the reports.
+	 * @return An observable list of reports for the given park ID.
+	 */
 	private ObservableList<Report> getReportsByParkId(int parkId) {
 		ClientServerMessage<?> messageForServer = new ClientServerMessage<>(parkId, Operation.GET_GENERAL_REPORT);
 		System.out.println("1");
@@ -187,6 +223,12 @@ public class ParkmanagerReportController implements Initializable {
 		}
 	}
 
+	/**
+	 * Handles the action to create a new report based on the selected month and
+	 * report type from the GUI.
+	 *
+	 * @param event The action event that triggered this action.
+	 */
 	@FXML
 	void CreateReportAction(ActionEvent event) {
 		Alerts infoalert;
@@ -204,17 +246,11 @@ public class ParkmanagerReportController implements Initializable {
 			// React based on the selected report type
 			switch (selectedReportType) {
 			case "Visitors Report":
-				VisitorsReport visitorReportToServer = new VisitorsReport(0, 
-						null, 
+				VisitorsReport visitorReportToServer = new VisitorsReport(0, null,
 						Usermanager.getCurrentWorker().getWorksAtPark(), // Gets the park ID from the current worker
 						LocalDate.now(), // Sets the report's date to today
-						selectedMonth, // The month selected	
-						null, 
-						null, 
-						null, 
-						null, 
-						null 
-				);
+						selectedMonth, // The month selected
+						null, null, null, null, null);
 				ClientServerMessage<?> messageForServer = new ClientServerMessage<>(visitorReportToServer,
 						Operation.GET_NEW_VISITORS_REPORT);
 				ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
@@ -224,7 +260,7 @@ public class ParkmanagerReportController implements Initializable {
 						infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
 								"Report retrieved from database");
 						infoalert.showAndWait();
-						NavigationManager.openPage("CreateVisitorsReport.fxml", event, "", false,false);
+						NavigationManager.openPage("CreateVisitorsReport.fxml", event, "", false, false);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -257,9 +293,8 @@ public class ParkmanagerReportController implements Initializable {
 						warningalert.showAndWait();
 					}
 
-					NavigationManager.openPage("ParkManagerCreateUsageReport.fxml", event, "", false,false);
+					NavigationManager.openPage("ParkManagerCreateUsageReport.fxml", event, "", false, false);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					System.out.println("error Usage Report for Month: " + selectedMonthString);
 
 					e.printStackTrace();

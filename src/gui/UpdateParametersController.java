@@ -1,14 +1,9 @@
 package gui;
 
 import java.net.URL;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
-
 import client.ClientController;
 import client.ClientUI;
 import common.Alerts;
@@ -17,24 +12,20 @@ import common.Operation;
 import common.Park;
 import common.Usermanager;
 import common.worker.ChangeRequest;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert;
-import javafx.scene.control.DateCell;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-
 /**
- * This class control the request sending, that is used by Park Manager.
+ * Controls the UI and logic for sending requests to update park parameters by a
+ * Park Manager.
  */
 public class UpdateParametersController implements Initializable {
 
-
-    @FXML
-    private Label CapacityLabel;
+	@FXML
+	private Label CapacityLabel;
 
 	@FXML
 	private Label allowedGapLabel;
@@ -45,8 +36,8 @@ public class UpdateParametersController implements Initializable {
 	@FXML
 	private TextField NewStayTime;
 
-    @FXML
-    private TextField CapacityField;
+	@FXML
+	private TextField CapacityField;
 
 	@FXML
 	private TextField NewAllowedGap;
@@ -61,36 +52,43 @@ public class UpdateParametersController implements Initializable {
 	private Label parkNameLabel;
 	private Park parkData = null;
 
+	/**
+	 * Initializes the controller class. This method is automatically called after
+	 * the fxml file has been loaded.
+	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		init();
 	}
 
+	/**
+	 * Initializes and loads park information.
+	 */
 	private void init() {
 		loadInfo();
-	} 
+	}
 
+	/**
+	 * Loads park information from the server and updates UI elements accordingly.
+	 */
 	private void loadInfo() {
-
 		Integer parkNumber = Usermanager.getCurrentWorker().getWorksAtPark();
-
 		ClientServerMessage<?> messageForServer = new ClientServerMessage<>(parkNumber, Operation.GET_PARK_DETAILS);
 		ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
 		if (ClientController.data.getFlag()) {
-
-			parkData = (Park) ClientController.data.getDataTransfered(); // This is assumed to be synchronous but
-																			// typically isn't.
-			System.out.println(parkData.toString());
-			// Update UI labels with park data
+			parkData = (Park) ClientController.data.getDataTransfered();
 			updateLabels(parkData);
 		} else {
-			Alerts nullResponseAlert = new Alerts(Alert.AlertType.ERROR, "Error", "Error to load park parameters.",
-					"Not have park for this park number.");
-			nullResponseAlert.showAndWait();
+			displayAlert("Error to load park parameters.", "Not have park for this park number.",
+					Alert.AlertType.ERROR);
 		}
-
 	}
 
+	/**
+	 * Updates the UI labels with the data of the specified park.
+	 * 
+	 * @param parkData The park data to be displayed.
+	 */
 	private void updateLabels(Park parkData) {
 		if (parkData != null) {
 			parkNameLabel.setText(parkData.getName());
@@ -100,6 +98,11 @@ public class UpdateParametersController implements Initializable {
 		}
 	}
 
+	/**
+	 * Handles the action of sending a change request for park parameters.
+	 * 
+	 * @param event The event that triggered the action.
+	 */
 	@FXML
 	public void SendRequestAction(ActionEvent event) {
 		if (validateInput()) {
@@ -107,75 +110,47 @@ public class UpdateParametersController implements Initializable {
 				Integer newStayTime = Integer.valueOf(NewStayTime.getText());
 				Integer newCapacity = Integer.valueOf(CapacityField.getText());
 				Integer newAllowedGap = Integer.valueOf(NewAllowedGap.getText());
-				Integer parkNumber = Usermanager.getCurrentWorker().getWorksAtPark(); 
-				System.out.println("in send action");
-				// Construct the ChangeRequest object
-				ChangeRequest request = new ChangeRequest(0, // Assuming an 'id' is not needed or will be auto-generated
-																// by the database
-						parkData.getName(), parkNumber, newCapacity, newAllowedGap, newStayTime,
-						"WAITING_FOR_APPROVAL" // Assuming a new request starts with a status indicating it's waiting
-												// for approval
-				);
+				Integer parkNumber = Usermanager.getCurrentWorker().getWorksAtPark();
 
+				ChangeRequest request = new ChangeRequest(0, parkData.getName(), parkNumber, newCapacity, newAllowedGap,
+						newStayTime, "WAITING_FOR_APPROVAL");
 				ClientServerMessage<?> requestForServer = new ClientServerMessage<>(request,
 						Operation.POST_NEW_CHANGE_REQUEST);
 				ClientUI.clientControllerInstance.sendMessageToServer(requestForServer);
+
 				if (ClientController.data.getFlag()) {
-					System.out.println("in get flag");
-
-
-					Alerts infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
-							"A change request was successfully received");
-					infoalert.showAndWait();
+					displayAlert("A change request was successfully received", "", Alert.AlertType.INFORMATION);
 				} else {
-					Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
-							"A change request was not successful");
-					somethingWentWrong.showAndWait();
+					displayAlert("A change request was not successful", "", Alert.AlertType.ERROR);
 				}
-
 			} catch (NumberFormatException e) {
-				showAlert("Input values must be numeric.");
+				displayAlert("Input values must be numeric.", "", Alert.AlertType.WARNING);
 			}
-			}
-
-		
+		}
 	}
 
 	/**
-	 * Validates that all new parameter fields are filled.
+	 * Validates that all input fields for new parameters are filled out.
 	 * 
 	 * @return true if all inputs are valid, false otherwise.
 	 */
 	private boolean validateInput() {
-		if (NewStayTime.getText().isEmpty()) {
-			showAlert("New Stay Time is required.");
+		if (NewStayTime.getText().isEmpty() || CapacityField.getText().isEmpty() || NewAllowedGap.getText().isEmpty()) {
+			displayAlert("All fields are required.", "", Alert.AlertType.WARNING);
 			return false;
 		}
-		if (CapacityField.getText().isEmpty()) {
-			showAlert("New capacity field is required.");
-			return false;
-		}
-		if (NewAllowedGap.getText().isEmpty()) {
-			showAlert("New Allowed Gap is required.");
-			return false;
-		}
-	
-
-		// Additional validation can be added here (e.g., numeric values, ranges, etc.)
 		return true;
 	}
 
 	/**
-	 * Shows an alert dialog with the specified message.
+	 * Displays an alert dialog of a specified type with the provided message.
 	 * 
 	 * @param message The message to display in the alert dialog.
+	 * @param header  The header text for the alert. Can be empty for no header.
+	 * @param type    The type of alert to display.
 	 */
-	private void showAlert(String message) {
-		Alert alert = new Alert(Alert.AlertType.WARNING);
-		alert.setTitle("Validation Error");
-		alert.setHeaderText(null);
-		alert.setContentText(message);
+	private void displayAlert(String message, String header, Alert.AlertType type) {
+		Alerts alert = new Alerts(type, "Validation Error", header, message);
 		alert.showAndWait();
 	}
-
-} 
+}

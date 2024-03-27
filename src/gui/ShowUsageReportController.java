@@ -2,15 +2,9 @@ package gui;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
-
-import client.ClientController;
 import client.ClientUI;
-import common.Alerts;
-import common.ClientServerMessage;
-import common.Operation;
 import common.worker.UsageReport;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,17 +18,18 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
-
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.temporal.TemporalAdjusters;
 import java.util.Map;
-
 import javafx.scene.control.Label;
-
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * Controller class for displaying a usage report within a GridPane layout.
+ * This class is responsible for loading and visualizing usage data, including
+ * daily usage statistics, for a specific month and year.
+ */
 public class ShowUsageReportController implements Initializable {
 
 	@FXML
@@ -51,22 +46,34 @@ public class ShowUsageReportController implements Initializable {
 	@FXML
 	private Label titlelLabal;
 
-
-
 	private Map<Integer, Integer> dailyUsage;
 
+    /**
+     * Initializes the controller. This method is automatically called after the
+     * FXML file has been loaded. It initializes the usage report view by loading
+     * data and setting up the grid pane.
+     */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loadUsageReport();
 		populateGridPane();
 	}
 
+    /**
+     * Loads the usage report data from the server/client controller.
+     * The data is expected to be of type UsageReport.
+     */
 	private void loadUsageReport() {
 		usageReport = (UsageReport) ClientUI.clientControllerInstance.getData().getDataTransfered();
 		
 
 	}
 
+    /**
+     * Populates the grid pane with daily usage statistics for the month specified
+     * in the usage report. It visualizes the data using rectangles with different
+     * colors indicating the occupancy levels.
+     */
 	private void populateGridPane() {
 		if (usageReport == null)
 			return; // Ensure we have a report to work with
@@ -135,10 +142,15 @@ public class ShowUsageReportController implements Initializable {
 			gridPaneUsageReport.add(stackPane, columnIndex, rowIndex);
 		}
 	}
-
+	
+	
+    /**
+     * Handles the action of closing the usage report window.
+     * 
+     * @param event The action event triggered by clicking the close button.
+     */
 	@FXML
 		void ClosePageAction(ActionEvent event) {
-
 			// Get the current stage using the event source
 			Stage stage = (Stage) ClosePagebth.getScene().getWindow();
 			// Close the current stage

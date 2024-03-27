@@ -80,7 +80,6 @@ public class UpdateStatusThread implements Runnable {
 	private void sleepUntilCloseTo(LocalTime targetTime) throws InterruptedException {
 		long sleepTimeMillis = Duration.between(LocalTime.now(), targetTime.minusMinutes(1)).toMillis();
 		if (sleepTimeMillis > 0) {
-			System.out.println("Sleeping for " + sleepTimeMillis + " milliseconds to be close to target time.");
 			Thread.sleep(sleepTimeMillis);
 		}
 	}

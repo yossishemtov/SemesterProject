@@ -22,15 +22,17 @@ import DB.DatabaseController;
 import ocsf.server.ConnectionToClient;
 
 public class MessageHandlerFromClient {
+	private static DatabaseController dbControllerInstance;
+	
+	public static void setDbController(DatabaseController dbInstance) {
+		dbControllerInstance=dbInstance;
+		
+	}
 
 	public static void handleMessage(ClientServerMessage messageFromClient, ConnectionToClient client)
 			throws IOException {
-		// A class that is intended to handle diffrent messages from the client and
-		// response accordingly
 
-		// client.sendToClient("aaa");
 		BackEndServer backEndServerInstance = BackEndServer.getBackEndServer();
-		DatabaseController dbControllerInstance = BackEndServer.DBController;
 
 		// Checking if message is of type of generic message intended for client and
 		// server communication

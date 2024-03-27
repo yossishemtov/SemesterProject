@@ -31,13 +31,12 @@ public class BackEndServer extends AbstractServer {
 	public BackEndServer(int port, ServerController serverControllerInstance, String userName, String password) {
 		super(port);
 
-		// Initiating a servercontroller instance
 		BackEndServer.serverControllerInstance = serverControllerInstance;
 
 		this.DbConnection = new MySqlConnector(userName, password).getDbConnection();
 		// Initiate a connection to the database
 		DBController = new DatabaseController(DbConnection);
-
+		MessageHandlerFromClient.setDbController(DBController);
 		notifyThread = new NotifyThread(DBController); // You may need to pass any required parameters to the
 														// constructor
 		Thread thread = new Thread(notifyThread);
@@ -82,11 +81,9 @@ public class BackEndServer extends AbstractServer {
 
 	@Override
 	protected void clientDisconnected(ConnectionToClient client) {
-		System.out.println("Client disconnected: " + client);
 		Long clientId = client.getId(); // Use Long without casting
 		ClientConnectionStatus status = connectedClients.get(clientId);
 		if (status != null) {
-			// Notify the client that it is being disconnected
 			try {
 				client.sendToClient("disconnecting");
 			} catch (IOException e) {
@@ -105,12 +102,9 @@ public class BackEndServer extends AbstractServer {
 	}
 
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		System.out.println("bk");
-
 		try {
 			MessageHandlerFromClient.handleMessage((ClientServerMessage) msg, client);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -1,57 +1,32 @@
 package gui;
-import java.net.URL;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXTextField;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import com.jfoenix.controls.JFXButton;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import client.ClientController;
 import client.ClientUI;
 import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
-import common.Park;
 import common.Usermanager;
 import common.worker.ChangeRequest;
 import common.worker.GeneralParkWorker;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-
 import javafx.scene.control.Label;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
-
-import client.ClientUI;
-import common.ClientServerMessage;
-import common.Operation;
-
-import common.Usermanager;
-import common.worker.ChangeRequest;
 
 
 public class ViewRequestsForChangesController implements Initializable {
 
-    // FXML components bound to the view
     @FXML
     private TableView<ChangeRequest> parametersTable;
     @FXML
@@ -96,7 +71,7 @@ public class ViewRequestsForChangesController implements Initializable {
             cancelRequestBtn.setManaged(false);
             SelectLabal.setVisible(false);
         } else {
-            // Show buttons for department managers or any other roles, including their icons
+            // Show buttons for department managers , including their icons
             confirmRequestBtn.setVisible(true);
             confirmRequestBtn.setManaged(true);
             cancelRequestBtn.setVisible(true);
