@@ -202,38 +202,11 @@ public class WaitingListController implements Initializable {
      * @return The list of available alternative dates.
      */
 	private void getAvailableDatesList() {
-		Order tempOrder = new Order(order.getOrderId(), order.getVisitorId(), order.getParkNumber(), order.getAmountOfVisitors(),
-				order.getPrice(),order.getVisitorEmail(), order.getDate(), order.getVisitTime(), order.getOrderStatus(),
-				order.getTypeOfOrder(), order.getTelephoneNumber(), order.getParkName());
-		LocalDate originalDate = order.getDate(); 
-
-
-		LocalTime currentTime = LocalTime.parse("08:00");
-		LocalDate currentDate = originalDate;
-		int counter = 0;
-		ArrayList<String> availableDatesList = new ArrayList<String>();
-		while (counter != 10) {
-			tempOrder.setDate(currentDate);
-			tempOrder.setVisitTime(currentTime);;
-			
-			if (OrderChecker.isDateAvailable(tempOrder)) {
-				availableDatesList.add(tempOrder.getDate().toString() + ", " + tempOrder.getVisitTime().toString());
-				counter++;
-			}
-
-			LocalTime hour = currentTime.plusHours(1);
-
-			if (hour.isAfter(LocalTime.of(17, 0))) {
-				currentTime = LocalTime.parse("08:00");
-
-				// Date after adding the days to the given date
-				currentDate = currentDate.plusDays(1);
-			} else {
-				currentTime = currentTime.plusHours(1);
-			}
-
-		}
-		DatesToPick.getItems().addAll(availableDatesList);
+		ClientServerMessage<?> findDates = new ClientServerMessage<>(order, Operation.FIND_AVAILABLE_DATES);
+		ClientUI.clientControllerInstance.sendMessageToServer(findDates);
+	    ClientServerMessage<?> findDatesMsg = ClientUI.clientControllerInstance.getData();
+	    ArrayList<String> orders = (ArrayList<String>) findDatesMsg.getDataTransfered();
+		DatesToPick.getItems().addAll(orders);
 
 	}
 	
@@ -275,10 +248,3 @@ public class WaitingListController implements Initializable {
 
 
 }
-
-
-
-
-
-
-

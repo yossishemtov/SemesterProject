@@ -81,6 +81,8 @@ public class NotifyThread implements Runnable {
 			
 			ordersWithAlerts = ordersAlreadyNotified;
 			CancelOrderAndNotify(waitingArray);
+			deleteAlertsExpired();
+
 			try {
 				Thread.sleep(1 * minute);
 			} catch (InterruptedException e) {
@@ -113,12 +115,15 @@ public class NotifyThread implements Runnable {
 	            // Remove the canceled order from orderNotifications
 	            WaitingListControl.notifyPersonFromWaitingList(waiting.get(i));
 
-	            i++;
+
+	            waiting.remove(0);
 	            iterator.remove();
 	        }
 	    }
 	}
-
+	private void deleteAlertsExpired() {
+	    DC.deleteExpiredOrderAlerts();
+	}
 	private boolean isAlertExpired(LocalTime currentTime, LocalTime alertEndTime) {
 	    return currentTime.isAfter(alertEndTime);
 	}

@@ -24,31 +24,29 @@ public class WaitingListControl {
 
 	
 
+
 	/**
 	 * This method receives a canceled order and notifies the next order in the waiting list.
 	 * 
 	 * @param Order that has been canceled.
 	 */
 	public static void notifyPersonFromWaitingList(WaitingList waiting) {
-		Park park = DC.getParkDetails(waiting.getParkNumber());
-		WaitingList toNotify = getOrderFromWaitingList(waiting.getDate().toString(), waiting.getVisitTime().toString(), park);
+	    Park park = DC.getParkDetails(waiting.getParkNumber());
+	    ArrayList<WaitingList> toNotify = getOrderFromWaitingList(waiting);
 
-		if (toNotify == null)
-			return;
+	    if (toNotify.isEmpty())
+	        return;
 
-		String waitingListId = String.valueOf(toNotify.getWaitingListId()+"");
-		String status = "HAS_SPOT";
-		DC.updateWaitingStatusArray(new ArrayList<String>(Arrays.asList(status, waitingListId)));
-
+	    for (WaitingList notify : toNotify) {
+	        String waitingListId = String.valueOf(notify.getWaitingListId());
+	        String status = "HAS_SPOT";
+	        DC.updateWaitingStatusArray(new ArrayList<String>(Arrays.asList(status, waitingListId)));
+	    }
 	}
 
-	private static WaitingList getOrderFromWaitingList(String date, String hour, Park park) {
-		String parkId = String.valueOf(park.getParkNumber());
-		String maxVisitors = String.valueOf(park.getMaxVisitors());
-		String estimatedStayTime = String.valueOf(park.getStaytime());
-		ArrayList<String> parameters = new ArrayList<String>(
-				Arrays.asList(parkId, maxVisitors, estimatedStayTime, date, hour));
-		WaitingList rightPlace = DC.findPlaceInWaiting(parameters);
+
+	private static ArrayList<WaitingList> getOrderFromWaitingList(WaitingList waiting) {
+		ArrayList<WaitingList> rightPlace = DC.findPlaceInWaiting(waiting);
 		return rightPlace;
 	}
 

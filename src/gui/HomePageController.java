@@ -53,6 +53,14 @@ public class HomePageController {
         videoStage.initModality(Modality.APPLICATION_MODAL);
         videoStage.setScene(new Scene(webView, 640, 480));
         videoStage.setTitle("YouTube Video");
+
+     // Add a listener to handle video stage close event
+        videoStage.setOnCloseRequest(event -> {
+            // Stop the video playback when the stage is closed
+            webEngine.load(null); // This stops the video and clears the WebView content
+        });
+
+
         videoStage.show();
     }
     

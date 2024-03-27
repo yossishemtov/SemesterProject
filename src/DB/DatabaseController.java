@@ -35,10 +35,9 @@ public class DatabaseController {
 	 * @param password the database password
 	 */
 	public DatabaseController(Connection ConnectionToDB) {
-	
+
 		connectionToDatabase = ConnectionToDB;
 	}
-	
 
 	/**
 	 * Finds the most recent traveler order based on his ID
@@ -352,7 +351,7 @@ public class DatabaseController {
 		String query = "SELECT date, visitTime, parkNumber FROM `order` WHERE travelerId = ?";
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-            ps.setInt(1, order.getVisitorId()); 
+			ps.setInt(1, order.getVisitorId());
 
 			ResultSet rs = ps.executeQuery();
 
@@ -499,9 +498,6 @@ public class DatabaseController {
 		}
 		return false;
 	}
-
-
-	
 
 	public Boolean patchParkUnorderedVisits(Park parkWithIdAndNewUnorderedVisits) {
 		// change the unordered visits amount
@@ -1756,46 +1752,48 @@ public class DatabaseController {
 			e.printStackTrace();
 		}
 
-		return usageReport; 
+		return usageReport;
 	}
+
 	/**
-	 * Return's all the orders that their status is orderStatus within 24hours from now.
+	 * Return's all the orders that their status is orderStatus within 24hours from
+	 * now.
 	 * 
 	 * @return ArrayList of orders.
 	 */
 	public ArrayList<Order> getOrdersByStatusInLastTwentyFourHours(String orderStatus) {
 		ArrayList<Order> orders = new ArrayList<Order>();
-	    String query = "SELECT * FROM `order` WHERE orderStatus = ? AND CONCAT(date, ' ', visitTime) BETWEEN ? AND ?";
-		
-		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
+		String query = "SELECT * FROM `order` WHERE orderStatus = ? AND CONCAT(date, ' ', visitTime) BETWEEN ? AND ?";
+
+		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 			ps.setString(1, orderStatus);
 			LocalDateTime now = LocalDateTime.now();
-	        LocalDateTime twentyFourHoursAhead = LocalDateTime.now().plusHours(24);
-	        
-	        // Convert LocalDateTime to Timestamp
-	        Timestamp nowTimestamp = Timestamp.valueOf(now);
-	        Timestamp twentyFourHoursAheadTimestamp = Timestamp.valueOf(twentyFourHoursAhead);
-	        
-	        ps.setTimestamp(2, nowTimestamp);
-	        ps.setTimestamp(3, twentyFourHoursAheadTimestamp);
-	        
-	        ResultSet rs = ps.executeQuery();
+			LocalDateTime twentyFourHoursAhead = LocalDateTime.now().plusHours(24);
+
+			// Convert LocalDateTime to Timestamp
+			Timestamp nowTimestamp = Timestamp.valueOf(now);
+			Timestamp twentyFourHoursAheadTimestamp = Timestamp.valueOf(twentyFourHoursAhead);
+
+			ps.setTimestamp(2, nowTimestamp);
+			ps.setTimestamp(3, twentyFourHoursAheadTimestamp);
+
+			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Integer orderId = rs.getInt("orderId");
 				Integer travelerId = rs.getInt("travelerId");
-	            Integer parkNumber = rs.getInt("parkNumber");
-	            Integer amountOfVisitors = rs.getInt("amountOfVisitors");
-	            Float price = rs.getFloat("price");
-	            String visitorEmail = rs.getString("visitorEmail");
-	            LocalDate date = rs.getDate("date").toLocalDate();
-	            LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
-	            String statusStr = rs.getString("orderStatus");
-	            String typeOfOrderStr = rs.getString("typeOfOrder");
-	            String telephoneNumber = rs.getString("TelephoneNumber");
-	            String parkName = rs.getString("parkName");
-				
-				Order order = new Order(orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail
-						,date, visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName);
+				Integer parkNumber = rs.getInt("parkNumber");
+				Integer amountOfVisitors = rs.getInt("amountOfVisitors");
+				Float price = rs.getFloat("price");
+				String visitorEmail = rs.getString("visitorEmail");
+				LocalDate date = rs.getDate("date").toLocalDate();
+				LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
+				String statusStr = rs.getString("orderStatus");
+				String typeOfOrderStr = rs.getString("typeOfOrder");
+				String telephoneNumber = rs.getString("TelephoneNumber");
+				String parkName = rs.getString("parkName");
+
+				Order order = new Order(orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date,
+						visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName);
 				orders.add(order);
 			}
 
@@ -1804,7 +1802,6 @@ public class DatabaseController {
 		}
 		return orders;
 	}
-
 
 	/**
 	 * Get's an existing order from the database based on its ID.
@@ -1820,133 +1817,123 @@ public class DatabaseController {
 			ps.setInt(1, orderId);
 			ResultSet rs = ps.executeQuery();
 
-			if(rs.next()) {
+			if (rs.next()) {
 				Integer id = rs.getInt("orderId");
 				Integer travelerId = rs.getInt("travelerId");
-	            Integer parkNumber = rs.getInt("parkNumber");
-	            Integer amountOfVisitors = rs.getInt("amountOfVisitors");
-	            Float price = rs.getFloat("price");
-	            String visitorEmail = rs.getString("visitorEmail");
-	            LocalDate date = rs.getDate("date").toLocalDate();
-	            LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
-	            String statusStr = rs.getString("orderStatus");
-	            String typeOfOrderStr = rs.getString("typeOfOrder");
-	            String telephoneNumber = rs.getString("TelephoneNumber");
-	            String parkName = rs.getString("parkName");
-	            
-			order = new Order(id, travelerId, parkNumber, amountOfVisitors, price, visitorEmail
-					,date, visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName);
+				Integer parkNumber = rs.getInt("parkNumber");
+				Integer amountOfVisitors = rs.getInt("amountOfVisitors");
+				Float price = rs.getFloat("price");
+				String visitorEmail = rs.getString("visitorEmail");
+				LocalDate date = rs.getDate("date").toLocalDate();
+				LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
+				String statusStr = rs.getString("orderStatus");
+				String typeOfOrderStr = rs.getString("typeOfOrder");
+				String telephoneNumber = rs.getString("TelephoneNumber");
+				String parkName = rs.getString("parkName");
+
+				order = new Order(id, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date, visitTime,
+						statusStr, typeOfOrderStr, telephoneNumber, parkName);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return order;
 	}
-	
-	
-	
-	/**
-	 * This function return orders in waiting list that can replace the can canceled order.
-	 * 
-	 * @param parameters ArrayList containing: parkId,maxVisitors in the park,
-	 *                   estimatedStayTime in the park, date of the canceled order, timeToCheck of the canceled order,
-	 *                   gap between max and current in the park
-	 * @return ArrayList of object Order containing matching orders.
-	 */
-	public WaitingList findPlaceInWaiting(ArrayList<?> parameters) {
-		WaitingList result = null;
 
-		String parkNumber = (String) parameters.get(0);
-		String maxVisitors = (String) parameters.get(1);
-		String estimatedStayTime = (String) parameters.get(2);
-		String dateCanceled = (String) parameters.get(3);
-		String timeToCheck = (String) parameters.get(4);
+	/** 
+	  * This function return orders in waiting list that can replace the can canceled order. 
+	  *  
+	  * @param parameters ArrayList containing: parkId,maxVisitors in the park, 
+	  *                   estimatedStayTime in the park, date of the canceled order, timeToCheck of the canceled order, 
+	  *                    
+	  * @return WaitingList object containing matching order. 
+	  */ 
+	 public ArrayList<WaitingList> findPlaceInWaiting(WaitingList waiting) { 
+	  ArrayList<WaitingList> waitingArray = new ArrayList<WaitingList>(); 
+	  Order order = null; 
+	  WaitingList result; 
+	  Integer parkNumber = waiting.getParkNumber(); 
+	  Park park = getParkDetails(parkNumber); 
+	  LocalDate dateToCancel = waiting.getDate(); 
+	  LocalTime visitTimeToCheck = waiting.getVisitTime(); 
+	  Integer amtOfVisitors = waiting.getAmountOfVisitors(); 
+	  int estimatedStayTime = park.getStaytime(); 
+	   
+	  LocalTime startTime = visitTimeToCheck.minusHours(estimatedStayTime-1); 
+	  LocalTime endTime = visitTimeToCheck.plusHours(estimatedStayTime-1); 
+	 
+	  order = new Order(null, null, parkNumber, amtOfVisitors, null, null 
+	    ,dateToCancel, visitTimeToCheck, null, null, null, null); 
+	 
+	  try (PreparedStatement ps = connectionToDatabase.prepareStatement( 
+	    "SELECT * FROM waitinglist WHERE parkNumber = ? AND " 
+	                  + "date = ? AND visitTime BETWEEN ? AND ? AND orderStatus NOT IN (?)")) { 
+	         ps.setInt(1, parkNumber); 
+	         ps.setDate(2, java.sql.Date.valueOf(dateToCancel)); 
+	         ps.setTime(3, java.sql.Time.valueOf(startTime)); 
+	         ps.setTime(4, java.sql.Time.valueOf(endTime)); 
+	         ps.setString(5,"HAS_SPOT"); 
+	 
+	         try (ResultSet rs = ps.executeQuery()) { 
+	             while (rs.next()) { 
+	                 Integer orderId = rs.getInt("orderId"); 
+	                 Integer travelerId = rs.getInt("travlerId"); 
+	                 Integer waitingListId = rs.getInt("waitingListId"); 
+	                 Integer parkNum = rs.getInt("parkNumber"); 
+	                 Integer amtVisitorsWaiting = rs.getInt("amountOfVisitors"); 
+	                 Float price = rs.getFloat("price"); 
+	                 String visitorEmail = rs.getString("visitorEmail"); 
+	                 LocalDate date = rs.getDate("date").toLocalDate(); 
+	                 LocalTime visitTime = rs.getTime("visitTime").toLocalTime(); 
+	                 String statusStr = rs.getString("orderStatus"); 
+	                 String typeOfOrderStr = rs.getString("typeOfOrder"); 
+	                 String telephoneNumber = rs.getString("TelephoneNumber"); 
+	                 String parkName = rs.getString("parkName"); 
+	                 Integer placeInList = rs.getInt("placeInList"); 
+	                  
+	                 order.setAmountOfVisitors(amtVisitorsWaiting); 
+	                  
+	                 if (findOrdersWithinDates(order,true)) { 
+	                     result = new WaitingList(orderId, travelerId, parkNum, amtVisitorsWaiting, price, visitorEmail, 
+	                             date, visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName, waitingListId, 
+	                             placeInList); 
+	                     waitingArray.add(result); 
+	                 } 
+	             } 
+	         } 
+	     } catch (SQLException e) { 
+	         e.printStackTrace(); 
+	     } 
+	 
+	     return waitingArray; 
+	 }
 
-		int estimated = Integer.parseInt(estimatedStayTime);
-		int maxVisitor = Integer.parseInt(maxVisitors);
-
-		int maxAllowedInPark = maxVisitor;
-
-		int hour = Integer.parseInt(timeToCheck.split(":")[0]);
-
-		String hourAfterEstimated = LocalTime.of(hour + estimated - 1, 0).toString();
-		String hourBeforeEstimated = LocalTime.of(hour - estimated + 1, 0).toString();
-
-		 ArrayList<Order> resultOrders = findOrdersWithinDates(
-		            new ArrayList<>(Arrays.asList(parkNumber, dateCanceled, hourBeforeEstimated, hourAfterEstimated)));
-
-		try (PreparedStatement ps = connectionToDatabase.prepareStatement(
-				"SELECT * FROM waitinglist WHERE parkNumber = ? AND "
-		                + "date = ? AND visitTime BETWEEN ? AND ? AND `orderStatus` NOT IN (?)")) {
-	        ps.setInt(1, Integer.parseInt(parkNumber));
-	        ps.setString(2, dateCanceled);
-	        ps.setString(3, hourBeforeEstimated);
-	        ps.setString(4, hourAfterEstimated);
-	        ps.setString(5,"HAS_SPOT");
-
-	        try (ResultSet rs = ps.executeQuery()) {
-	            while (rs.next()) {
-	                int visitorsInWaitingList = 0;
-	                for (Order o : resultOrders) {
-	                        visitorsInWaitingList += o.getAmountOfVisitors();
-	                }
-
-	                int orderId = rs.getInt("orderId");
-	                int travelerId = rs.getInt("travelerId");
-	                int waitingListId = rs.getInt("waitingListId");
-	                int parkNum = rs.getInt("parkNumber");
-	                int amountOfVisitors = rs.getInt("amountOfVisitors");
-	                float price = rs.getFloat("price");
-	                String visitorEmail = rs.getString("visitorEmail");
-	                LocalDate date = rs.getDate("date").toLocalDate();
-	                LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
-	                String statusStr = rs.getString("orderStatus");
-	                String typeOfOrderStr = rs.getString("typeOfOrder");
-	                String telephoneNumber = rs.getString("TelephoneNumber");
-	                String parkName = rs.getString("parkName");
-	                int placeInList = rs.getInt("placeInList");
-
-	                if (visitorsInWaitingList + amountOfVisitors <= maxAllowedInPark) {
-	                    result = new WaitingList(orderId, travelerId, parkNum, amountOfVisitors, price, visitorEmail,
-	                            date, visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName, waitingListId,
-	                            placeInList);
-	                    return result;
-	                }
-	            }
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-
-	    return result;
-	}
-	
 	public ArrayList<Order> getPendingNotificationsOrdersByID(Integer travelerIdToCheckPendingNotifications) {
-		//Checks if traveler has any pending notifications and return their orders
+		// Checks if traveler has any pending notifications and return their orders
 		ArrayList<Order> orders = new ArrayList<Order>();
-	    String query = "SELECT * FROM `order` WHERE travelerId = ? AND orderStatus = ?";
-		
-		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
+		String query = "SELECT * FROM `order` WHERE travelerId = ? AND orderStatus = ?";
+
+		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 			ps.setInt(1, travelerIdToCheckPendingNotifications);
 			ps.setString(2, "PENDING_EMAIL_SENT");
-	        
-	        ResultSet rs = ps.executeQuery();
+
+			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Integer orderId = rs.getInt("orderId");
 				Integer travelerId = rs.getInt("travelerId");
-	            Integer parkNumber = rs.getInt("parkNumber");
-	            Integer amountOfVisitors = rs.getInt("amountOfVisitors");
-	            Float price = rs.getFloat("price");
-	            String visitorEmail = rs.getString("visitorEmail");
-	            LocalDate date = rs.getDate("date").toLocalDate();
-	            LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
-	            String statusStr = rs.getString("orderStatus");
-	            String typeOfOrderStr = rs.getString("typeOfOrder");
-	            String telephoneNumber = rs.getString("TelephoneNumber");
-	            String parkName = rs.getString("parkName");
-				
-				Order order = new Order(orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail
-						,date, visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName);
+				Integer parkNumber = rs.getInt("parkNumber");
+				Integer amountOfVisitors = rs.getInt("amountOfVisitors");
+				Float price = rs.getFloat("price");
+				String visitorEmail = rs.getString("visitorEmail");
+				LocalDate date = rs.getDate("date").toLocalDate();
+				LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
+				String statusStr = rs.getString("orderStatus");
+				String typeOfOrderStr = rs.getString("typeOfOrder");
+				String telephoneNumber = rs.getString("TelephoneNumber");
+				String parkName = rs.getString("parkName");
+
+				Order order = new Order(orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date,
+						visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName);
 				orders.add(order);
 			}
 
@@ -1957,7 +1944,7 @@ public class DatabaseController {
 	}
 
 	/**
-	 * Updates the status of an existing waitinglist in the database. 
+	 * Updates the status of an existing waitinglist in the database.
 	 * 
 	 * @param containing the waitingListId and the new status.
 	 * @return true if the update was successful, false otherwise.
@@ -1967,7 +1954,7 @@ public class DatabaseController {
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 			ps.setString(1, (String) info.get(0));
-			ps.setInt(2, Integer.parseInt((String) info.get(1))); 
+			ps.setInt(2, Integer.parseInt((String) info.get(1)));
 
 			int affectedRows = ps.executeUpdate();
 			if (affectedRows > 0) {
@@ -1983,7 +1970,7 @@ public class DatabaseController {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Get's an existing waitinglist from the database based on its ID.
 	 * 
@@ -1998,30 +1985,30 @@ public class DatabaseController {
 			ps.setInt(1, waitingListId);
 			ResultSet rs = ps.executeQuery();
 
-			if(rs.next()) {
+			if (rs.next()) {
 				Integer orderId = rs.getInt("orderId");
-	            Integer waitingId = rs.getInt("waitingListId");
-	            Integer parkNumber = rs.getInt("parkNumber");
-	            Integer amountOfVisitors = rs.getInt("amountOfVisitors");
-	            Float price = rs.getFloat("price");
-	            String visitorEmail = rs.getString("visitorEmail");
-	            LocalDate date = rs.getDate("date").toLocalDate();
-	            LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
-	            String statusStr = rs.getString("orderStatus");
-	            String typeOfOrderStr = rs.getString("typeOfOrder");
-	            String telephoneNumber = rs.getString("TelephoneNumber");
-	            String parkName = rs.getString("parkName");
-	            Integer placeInList = rs.getInt("placeInList");
+				Integer waitingId = rs.getInt("waitingListId");
+				Integer parkNumber = rs.getInt("parkNumber");
+				Integer amountOfVisitors = rs.getInt("amountOfVisitors");
+				Float price = rs.getFloat("price");
+				String visitorEmail = rs.getString("visitorEmail");
+				LocalDate date = rs.getDate("date").toLocalDate();
+				LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
+				String statusStr = rs.getString("orderStatus");
+				String typeOfOrderStr = rs.getString("typeOfOrder");
+				String telephoneNumber = rs.getString("TelephoneNumber");
+				String parkName = rs.getString("parkName");
+				Integer placeInList = rs.getInt("placeInList");
 
-	            waiting = new WaitingList(orderId, waitingId, parkNumber, amountOfVisitors, price,
-	                    visitorEmail, date, visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName, waitingId, placeInList);
+				waiting = new WaitingList(orderId, waitingId, parkNumber, amountOfVisitors, price, visitorEmail, date,
+						visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName, waitingId, placeInList);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return waiting;
 	}
-	
+
 	/**
 	 * Return's all the waitingList that their status is "HAS_SPOT" .
 	 * 
@@ -2029,32 +2016,33 @@ public class DatabaseController {
 	 */
 	public ArrayList<WaitingList> getHasSpotOrders() {
 		ArrayList<WaitingList> waitingArray = new ArrayList<WaitingList>();
-	    String query = "SELECT * FROM `waitinglist` WHERE orderStatus = ?";
-		
-		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
+		String query = "SELECT * FROM `waitinglist` WHERE orderStatus = ?";
+
+		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 			ps.setString(1, "HAS_SPOT");
-	        
-	        ResultSet rs = ps.executeQuery();
+
+			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Integer orderId = rs.getInt("orderId");
 				Integer travelerId = rs.getInt("travelerId");
-	            Integer waitingId = rs.getInt("waitingListId");
-	            Integer parkNumber = rs.getInt("parkNumber");
-	            Integer amountOfVisitors = rs.getInt("amountOfVisitors");
-	            Float price = rs.getFloat("price");
-	            String visitorEmail = rs.getString("visitorEmail");
-	            LocalDate date = rs.getDate("date").toLocalDate();
-	            LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
-	            String statusStr = rs.getString("orderStatus");
-	            String typeOfOrderStr = rs.getString("typeOfOrder");
-	            String telephoneNumber = rs.getString("TelephoneNumber");
-	            String parkName = rs.getString("parkName");
-	            Integer placeInList = rs.getInt("placeInList");
+				Integer waitingId = rs.getInt("waitingListId");
+				Integer parkNumber = rs.getInt("parkNumber");
+				Integer amountOfVisitors = rs.getInt("amountOfVisitors");
+				Float price = rs.getFloat("price");
+				String visitorEmail = rs.getString("visitorEmail");
+				LocalDate date = rs.getDate("date").toLocalDate();
+				LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
+				String statusStr = rs.getString("orderStatus");
+				String typeOfOrderStr = rs.getString("typeOfOrder");
+				String telephoneNumber = rs.getString("TelephoneNumber");
+				String parkName = rs.getString("parkName");
+				Integer placeInList = rs.getInt("placeInList");
 
-	            WaitingList waiting = new WaitingList(orderId, travelerId, parkNumber, amountOfVisitors, price,
-	                    visitorEmail, date, visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName, waitingId, placeInList);
-	            waitingArray.add(waiting);
-	            
+				WaitingList waiting = new WaitingList(orderId, travelerId, parkNumber, amountOfVisitors, price,
+						visitorEmail, date, visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName, waitingId,
+						placeInList);
+				waitingArray.add(waiting);
+
 			}
 
 		} catch (SQLException e) {
@@ -2062,275 +2050,385 @@ public class DatabaseController {
 		}
 		return waitingArray;
 	}
-	
-	
+
 	/**
-	Inserts a new reservation (order) into the database.
-	@param traveler The traveler making the reservation.
-	@param order The details of the order being made.
-	@return true if insertion was successful, false otherwise.
-	*/
-	public Boolean insertWaitingOrder(WaitingList waiting) {// Adjusting the query to match the database schema order provided
-	    String query = "INSERT INTO `order` (orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder, parkName)"+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
-	    try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {// Set parameters based on the Order object fields, in the order specified
-	        ps.setInt(1, waiting.getOrderId());
-	        ps.setInt(2, waiting.getVisitorId());
-	        ps.setInt(3, waiting.getParkNumber());
-	        ps.setInt(4, waiting.getAmountOfVisitors());
-	        ps.setFloat(5, waiting.getPrice());
-	        ps.setString(6, waiting.getVisitorEmail());
-	        ps.setDate(7, java.sql.Date.valueOf(waiting.getDate()));
-	        ps.setString(8, waiting.getTelephoneNumber()); 
-	        ps.setTime(9, java.sql.Time.valueOf(waiting.getVisitTime()));
-	        ps.setString(10, waiting.getOrderStatus()); 
-	        ps.setString(11, waiting.getTypeOfOrder());
-	        ps.setString(12, waiting.getParkName());
-	        int affectedRows = ps.executeUpdate();
-	        if (affectedRows > 0) {
-	            System.out.println("Order inserted successfully.");
-	            return true;} else {
-	            System.out.println("A problem occurred and the order was not inserted.");
-	            return false;}} catch (SQLException e) {
-	        e.printStackTrace();
-	        return false;}
-	    }
-	
-	
+	 * Inserts a new reservation (order) into the database.
+	 * 
+	 * @param traveler The traveler making the reservation.
+	 * @param order    The details of the order being made.
+	 * @return true if insertion was successful, false otherwise.
+	 */
+	public Boolean insertWaitingOrder(WaitingList waiting) {// Adjusting the query to match the database schema order
+															// provided
+		String query = "INSERT INTO `order` (orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder, parkName)"
+				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {// Set parameters based on the Order
+																					// object fields, in the order
+																					// specified
+			ps.setInt(1, waiting.getOrderId());
+			ps.setInt(2, waiting.getVisitorId());
+			ps.setInt(3, waiting.getParkNumber());
+			ps.setInt(4, waiting.getAmountOfVisitors());
+			ps.setFloat(5, waiting.getPrice());
+			ps.setString(6, waiting.getVisitorEmail());
+			ps.setDate(7, java.sql.Date.valueOf(waiting.getDate()));
+			ps.setString(8, waiting.getTelephoneNumber());
+			ps.setTime(9, java.sql.Time.valueOf(waiting.getVisitTime()));
+			ps.setString(10, waiting.getOrderStatus());
+			ps.setString(11, waiting.getTypeOfOrder());
+			ps.setString(12, waiting.getParkName());
+			int affectedRows = ps.executeUpdate();
+			if (affectedRows > 0) {
+				System.out.println("Order inserted successfully.");
+				return true;
+			} else {
+				System.out.println("A problem occurred and the order was not inserted.");
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	/**
 	 * Return's all the orders that already been notified today
 	 * 
 	 * @return ArrayList of orders.
 	 */
-	public ArrayList<OrderNotification> getTodayNotificationsWithStatus(String status){
-		
-		//Gets all the notifications for orders of today by getting them from orderNotifications table
+	public ArrayList<OrderNotification> getTodayNotificationsWithStatus(String status) {
+
+		// Gets all the notifications for orders of today by getting them from
+		// orderNotifications table
 		ArrayList<OrderNotification> ordersAlreadyNotified = new ArrayList<OrderNotification>();
-		String query = "SELECT * FROM orderNotifications " +
-                "WHERE dateOfNotification = ?  AND status = ?";
-		
-		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
+		String query = "SELECT * FROM orderNotifications " + "WHERE dateOfNotification = ?  AND status = ?";
+
+		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 
 			ps.setDate(1, Date.valueOf(LocalDate.now()));
 			ps.setString(2, status);
-			
-	        
-	        ResultSet rs = ps.executeQuery();
-	     // Process the results
-            while (rs.next()) {
-                // Retrieve data from the result set
-                int orderId = rs.getInt("orderId");
-                LocalDate dateOfNotification = rs.getDate("dateOfNotification").toLocalDate();
-                LocalTime startNotification = rs.getTime("startNotification").toLocalTime();
-                LocalTime endNotification = rs.getTime("endNotification").toLocalTime();
-                String notificationStatus = rs.getString("status");
 
-                // Add notification to arraylist
-                ordersAlreadyNotified.add(new OrderNotification(orderId, dateOfNotification, startNotification, endNotification, notificationStatus));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return ordersAlreadyNotified;
-        }
-		
+			ResultSet rs = ps.executeQuery();
+			// Process the results
+			while (rs.next()) {
+				// Retrieve data from the result set
+				int orderId = rs.getInt("orderId");
+				LocalDate dateOfNotification = rs.getDate("dateOfNotification").toLocalDate();
+				LocalTime startNotification = rs.getTime("startNotification").toLocalTime();
+				LocalTime endNotification = rs.getTime("endNotification").toLocalTime();
+				String notificationStatus = rs.getString("status");
+
+				// Add notification to arraylist
+				ordersAlreadyNotified.add(new OrderNotification(orderId, dateOfNotification, startNotification,
+						endNotification, notificationStatus));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return ordersAlreadyNotified;
+		}
+
 		return ordersAlreadyNotified;
-		
+
 	}
-	
+
 	public void postOrderNotification(OrderNotification notificationForAnOrder) {
-		//Add an order notification to the ordernotifications table
-		String query = "INSERT INTO `ordernotifications` (orderId, dateOfNotification, startNotification, endNotification, status) " +
-                 "VALUES (?, ?, ?, ?, ?)";
+		// Add an order notification to the ordernotifications table
+		String query = "INSERT INTO `ordernotifications` (orderId, dateOfNotification, startNotification, endNotification, status) "
+				+ "VALUES (?, ?, ?, ?, ?)";
 
-	  try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
-	      // Set values for the parameters
-	      pstmt.setInt(1, notificationForAnOrder.getOrderId());
-	      pstmt.setDate(2, Date.valueOf(notificationForAnOrder.getDateOfNotification()));
-	      pstmt.setTime(3, Time.valueOf(notificationForAnOrder.getStartNotification()));
-	      pstmt.setTime(4, Time.valueOf(notificationForAnOrder.getEndNotification()));
-	      pstmt.setString(5, notificationForAnOrder.getStatus());
-	      
-	      // Execute the query
-	      pstmt.executeUpdate();
-	  } catch (SQLException e) {
-	      e.printStackTrace();
-	  }
+		try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
+			// Set values for the parameters
+			pstmt.setInt(1, notificationForAnOrder.getOrderId());
+			pstmt.setDate(2, Date.valueOf(notificationForAnOrder.getDateOfNotification()));
+			pstmt.setTime(3, Time.valueOf(notificationForAnOrder.getStartNotification()));
+			pstmt.setTime(4, Time.valueOf(notificationForAnOrder.getEndNotification()));
+			pstmt.setString(5, notificationForAnOrder.getStatus());
+
+			// Execute the query
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
-	  
-	  /**
-		 * Change the status of a notification based on the orderid and the status we want to change to
-		 * 
-		 * @return Boolean if succeeded or not
-		 */
-		public Boolean changeStatusOfNotification(Integer orderId ,String statusToChangeTo) {
-			String query = "UPDATE `orderNotifications` SET  " +
-	                "status = ? WHERE orderId = ?";
-			
-			try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-				ps.setString(1, statusToChangeTo); 
-				ps.setInt(2, orderId);
 
-				int affectedRows = ps.executeUpdate();
-				if (affectedRows > 0) {
-					System.out.println("Notification status updated successfully.");
-					return true;
-				} 
-				
-			} catch (SQLException e) {
-				System.out.println("An error occurred while updating the order status:");
-				e.printStackTrace();
+	/**
+	 * Change the status of a notification based on the orderid and the status we
+	 * want to change to
+	 * 
+	 * @return Boolean if succeeded or not
+	 */
+	public Boolean changeStatusOfNotification(Integer orderId, String statusToChangeTo) {
+		String query = "UPDATE `orderNotifications` SET  " + "status = ? WHERE orderId = ?";
+
+		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+			ps.setString(1, statusToChangeTo);
+			ps.setInt(2, orderId);
+
+			int affectedRows = ps.executeUpdate();
+			if (affectedRows > 0) {
+				System.out.println("Notification status updated successfully.");
+				return true;
 			}
-			return false;
-		}
-		
-		public ArrayList<Order>getCanceledNotificationsOrdersByID(Integer travelerIdToCheckCanceledNotifications){
-			//Checks if traveler has any Canceled notifications and return their orders
-			ArrayList<Order> orders = new ArrayList<Order>();
-		    String query = "SELECT * FROM `order` WHERE travelerId = ? AND orderStatus = ?";
-			
-			try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)){
-				ps.setInt(1, travelerIdToCheckCanceledNotifications);
-				ps.setString(2, "CANCELEDBYSERVER");
-		        
-		        ResultSet rs = ps.executeQuery();
-				while (rs.next()) {
-					Integer orderId = rs.getInt("orderId");
-					Integer travelerId = rs.getInt("travelerId");
-		            Integer parkNumber = rs.getInt("parkNumber");
-		            Integer amountOfVisitors = rs.getInt("amountOfVisitors");
-		            Float price = rs.getFloat("price");
-		            String visitorEmail = rs.getString("visitorEmail");
-		            LocalDate date = rs.getDate("date").toLocalDate();
-		            LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
-		            String statusStr = rs.getString("orderStatus");
-		            String typeOfOrderStr = rs.getString("typeOfOrder");
-		            String telephoneNumber = rs.getString("TelephoneNumber");
-		            String parkName = rs.getString("parkName");
-					
-					Order order = new Order(orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail
-							,date, visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName);
-					orders.add(order);
-				}
 
-			} catch (SQLException e) {
-				e.printStackTrace();
+		} catch (SQLException e) {
+			System.out.println("An error occurred while updating the order status:");
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public ArrayList<Order> getCanceledNotificationsOrdersByID(Integer travelerIdToCheckCanceledNotifications) {
+		// Checks if traveler has any Canceled notifications and return their orders
+		ArrayList<Order> orders = new ArrayList<Order>();
+		String query = "SELECT * FROM `order` WHERE travelerId = ? AND orderStatus = ?";
+
+		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+			ps.setInt(1, travelerIdToCheckCanceledNotifications);
+			ps.setString(2, "CANCELEDBYSERVER");
+
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Integer orderId = rs.getInt("orderId");
+				Integer travelerId = rs.getInt("travelerId");
+				Integer parkNumber = rs.getInt("parkNumber");
+				Integer amountOfVisitors = rs.getInt("amountOfVisitors");
+				Float price = rs.getFloat("price");
+				String visitorEmail = rs.getString("visitorEmail");
+				LocalDate date = rs.getDate("date").toLocalDate();
+				LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
+				String statusStr = rs.getString("orderStatus");
+				String typeOfOrderStr = rs.getString("typeOfOrder");
+				String telephoneNumber = rs.getString("TelephoneNumber");
+				String parkName = rs.getString("parkName");
+
+				Order order = new Order(orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date,
+						visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName);
+				orders.add(order);
 			}
-			return orders;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		
-		public Boolean updateOrderStatusForToday() {
-		    // Format today's date in the same format as stored in the database
-		    LocalDate today = LocalDate.now();
-		    String todayStr = today.toString(); // Converts today's date to String in the format yyyy-MM-dd
+		return orders;
+	}
 
-		    // SQL query to update the status of orders
-		    String query = "UPDATE `order` SET orderStatus = ? WHERE date = ? AND orderStatus = ?";
+	public Boolean updateOrderStatusForToday() {
+		// Format today's date in the same format as stored in the database
+		LocalDate today = LocalDate.now();
+		String todayStr = today.toString(); // Converts today's date to String in the format yyyy-MM-dd
 
-		    try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-		        // Set the parameters for the query
-		        ps.setString(1, "NOTARRIVED"); // New status to set
-		        ps.setString(2, todayStr); // Today's date
-		        ps.setString(3, "CONFIRMED"); // Current status to look for
+		// SQL query to update the status of orders
+		String query = "UPDATE `order` SET orderStatus = ? WHERE date = ? AND orderStatus = ?";
 
-		        int affectedRows = ps.executeUpdate();
-		        if (affectedRows > 0) {
-		            System.out.println(affectedRows + " order(s) updated successfully.");
-		            return true;
-		        } else {
-		            System.out.println("No orders found with status CONFIRMED for today's date, or an error occurred.");
-		            return false;
-		        }
-		    } catch (SQLException e) {
-		        e.printStackTrace();
-		        return false;
-		    }
-		}
-		public Boolean updateWaitingListStatusForToday() {
-		    // Format today's date in the same format as stored in the database
-		    LocalDate today = LocalDate.now();
-		    String todayStr = today.toString(); // Converts today's date to String in the format yyyy-MM-dd
+		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+			// Set the parameters for the query
+			ps.setString(1, "NOTARRIVED"); // New status to set
+			ps.setString(2, todayStr); // Today's date
+			ps.setString(3, "CONFIRMED"); // Current status to look for
 
-		    // SQL query to update the status of waiting list entries
-		    String query = "UPDATE `waitinglist` SET orderStatus = ? WHERE date = ? AND orderStatus = ?";
-
-		    try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-		        // Set the parameters for the query
-		        ps.setString(1, "CANCELED"); // New status to set
-		        ps.setString(2, todayStr); // Today's date
-		        ps.setString(3, "PENDING"); // Current status to look for
-
-		        int affectedRows = ps.executeUpdate();
-		        if (affectedRows > 0) {
-		            System.out.println(affectedRows + " waiting list entry(ies) updated successfully.");
-		            return true;
-		        } else {
-		            System.out.println("No waiting list entries found with status PENDING for today's date, or an error occurred.");
-		            return false;
-		        }
-		    } catch (SQLException e) {
-		        e.printStackTrace();
-		        return false;
-		    }
-		}
-		/**
-		 * Updates a traveler's record to mark them as a guide.
-		 *
-		 * @param travelerId the ID of the traveler to be updated.
-		 * @return true if the update is successful, false otherwise.
-		 */
-		public boolean ChangeTravelerToGuide(Traveler traveler) {
-
-			String query = "UPDATE `traveler` SET GroupGuide = 1 WHERE id = ?";
-			
-			try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
-				pstmt.setInt(1, traveler.getId());
-
-				int affectedRows = pstmt.executeUpdate();
-
-				// Check if the update was successful
-				 if(affectedRows > 0) {
-					 traveler.setIsGroupGuide(1);
-					 return true;
-				 }
-				 else {
-					 return false;
-				 }
-			} catch (SQLException e) {
-				System.err.println("SQLException: " + e.getMessage());
+			int affectedRows = ps.executeUpdate();
+			if (affectedRows > 0) {
+				System.out.println(affectedRows + " order(s) updated successfully.");
+				return true;
+			} else {
+				System.out.println("No orders found with status CONFIRMED for today's date, or an error occurred.");
 				return false;
 			}
-		}
-
-		public boolean insertNewGroupGuide(Traveler traveler) {
-			// Assuming you have a method getConnection() that returns a Connection object.
-
-			String query = "INSERT INTO `traveler` (id, firstName, lastName, email, phoneNumber, GroupGuide, isloggedin) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-			try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
-				pstmt.setInt(1, traveler.getId());
-				pstmt.setString(2, traveler.getFirstName());
-				pstmt.setString(3, traveler.getLastName());
-				pstmt.setString(4, traveler.getEmail());
-				pstmt.setString(5, traveler.getPhoneNum());
-				pstmt.setInt(6, traveler.getIsGroupGuide()); // Assuming 1 for guide, 0 for not a guide.
-				pstmt.setInt(7, 0); // Assuming isloggedin default to 0.
-
-				int affectedRows = pstmt.executeUpdate();
-
-				// Check if the insert was successful
-				if (affectedRows > 0) {
-					traveler.setIsGroupGuide(1);
-					return true;
-				}
-				else {
-					return false;
-				}
-			} catch (SQLException e) {
-				System.err.println("SQLException: " + e.getMessage());
-			}
-
+		} catch (SQLException e) {
+			e.printStackTrace();
 			return false;
 		}
+	}
 
+	public Boolean updateWaitingListStatusForToday() {
+		// Format today's date in the same format as stored in the database
+		LocalDate today = LocalDate.now();
+		String todayStr = today.toString(); // Converts today's date to String in the format yyyy-MM-dd
 
+		// SQL query to update the status of waiting list entries
+		String query = "UPDATE `waitinglist` SET orderStatus = ? WHERE date = ? AND orderStatus = ?";
+
+		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+			// Set the parameters for the query
+			ps.setString(1, "CANCELED"); // New status to set
+			ps.setString(2, todayStr); // Today's date
+			ps.setString(3, "PENDING"); // Current status to look for
+
+			int affectedRows = ps.executeUpdate();
+			if (affectedRows > 0) {
+				System.out.println(affectedRows + " waiting list entry(ies) updated successfully.");
+				return true;
+			} else {
+				System.out.println(
+						"No waiting list entries found with status PENDING for today's date, or an error occurred.");
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
+	 * Updates a traveler's record to mark them as a guide.
+	 *
+	 * @param travelerId the ID of the traveler to be updated.
+	 * @return true if the update is successful, false otherwise.
+	 */
+	public boolean ChangeTravelerToGuide(Traveler traveler) {
+
+		String query = "UPDATE `traveler` SET GroupGuide = 1 WHERE id = ?";
+
+		try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
+			pstmt.setInt(1, traveler.getId());
+
+			int affectedRows = pstmt.executeUpdate();
+
+			// Check if the update was successful
+			if (affectedRows > 0) {
+				traveler.setIsGroupGuide(1);
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			System.err.println("SQLException: " + e.getMessage());
+			return false;
+		}
+	}
+
+	public boolean insertNewGroupGuide(Traveler traveler) {
+		// Assuming you have a method getConnection() that returns a Connection object.
+
+		String query = "INSERT INTO `traveler` (id, firstName, lastName, email, phoneNumber, GroupGuide, isloggedin) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+		try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
+			pstmt.setInt(1, traveler.getId());
+			pstmt.setString(2, traveler.getFirstName());
+			pstmt.setString(3, traveler.getLastName());
+			pstmt.setString(4, traveler.getEmail());
+			pstmt.setString(5, traveler.getPhoneNum());
+			pstmt.setInt(6, traveler.getIsGroupGuide()); // Assuming 1 for guide, 0 for not a guide.
+			pstmt.setInt(7, 0); // Assuming isloggedin default to 0.
+
+			int affectedRows = pstmt.executeUpdate();
+
+			// Check if the insert was successful
+			if (affectedRows > 0) {
+				traveler.setIsGroupGuide(1);
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			System.err.println("SQLException: " + e.getMessage());
+		}
+
+		return false;
+	}
+
+	/**
+	 * Finding order within given times
+	 * 
+	 * @param parameters parkNumber, date, visitTime
+	 * @return
+	 */
+	public Boolean findOrdersWithinDates(Order order, Boolean flag) {
+		String query = "SELECT SUM(amountOfVisitors) AS SumVisitors FROM order WHERE parkNumber = ? AND date = ? AND visitTime >= ? AND visitTime <= ? "
+				+ "AND orderStatus NOT IN (?, ?)";
+		String parkId = String.valueOf(order.getParkNumber());
+		Park park = getParkDetails(order.getParkNumber());
+		LocalTime timeToCheck = order.getVisitTime();
+		int estimatedStayTime = park.getStaytime();
+
+		LocalDate visitDate = order.getDate();
+		LocalTime startTime = timeToCheck.minusHours(estimatedStayTime - 1);
+		LocalTime endTime = timeToCheck.plusHours(estimatedStayTime - 1);
+
+		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+			ps.setString(1, parkId);
+			ps.setDate(2, java.sql.Date.valueOf(visitDate));
+			ps.setTime(3, java.sql.Time.valueOf(startTime));
+			ps.setTime(4, java.sql.Time.valueOf(endTime));
+			ps.setString(5, "CANCELED");
+			ps.setString(6, "CANCELEDBYSERVER");
+
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				int numberOfVisitors = rs.getInt("SumVisitors");
+
+				if (numberOfVisitors + order.getAmountOfVisitors() <= park.getMaxVisitors() && flag) {
+					return true;
+				}
+				if (numberOfVisitors + order.getAmountOfVisitors() >= park.getMaxVisitors() && !flag) {
+					return false;
+				}
+				if (flag) {
+					return false;
+				} else {
+					return true;
+				}
+
+			} else {
+				return false;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public ArrayList<String> getAvailableDatesList(Order order) {
+		Order tempOrder = new Order(order.getOrderId(), order.getVisitorId(), order.getParkNumber(),
+				order.getAmountOfVisitors(), order.getPrice(), order.getVisitorEmail(), order.getDate(),
+				order.getVisitTime(), order.getOrderStatus(), order.getTypeOfOrder(), order.getTelephoneNumber(),
+				order.getParkName());
+		LocalDate originalDate = order.getDate();
+
+		LocalTime currentTime = LocalTime.parse("08:00");
+		LocalDate currentDate = originalDate;
+		int counter = 0;
+		ArrayList<String> availableDatesList = new ArrayList<String>();
+		while (counter != 70) {
+			tempOrder.setDate(currentDate);
+			tempOrder.setVisitTime(currentTime);
+			;
+
+			if (findOrdersWithinDates(tempOrder, false)) {
+				availableDatesList.add(tempOrder.getDate().toString() + ", " + tempOrder.getVisitTime().toString());
+				counter++;
+			}
+
+			LocalTime hour = currentTime.plusHours(1);
+
+			if (hour.isAfter(LocalTime.of(17, 0))) {
+				currentTime = LocalTime.parse("08:00");
+
+				// Date after adding the days to the given date
+				currentDate = currentDate.plusDays(1);
+			} else {
+				currentTime = currentTime.plusHours(1);
+			}
+		}
+		return availableDatesList;
+	}
+
+	public void deleteExpiredOrderAlerts() {
+		String query = "DELETE FROM ordernotifications " + "WHERE dateOfNotification = ? AND endNotification < ? ";
+
+		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+			ps.setString(1, LocalDate.now().toString());
+			ps.setString(2, LocalTime.now().toString());
+
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("Could not execute deleteExpiredOrderAlerts query");
+			e.printStackTrace();
+		}
+
+	}
 
 }

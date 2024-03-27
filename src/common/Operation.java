@@ -44,8 +44,8 @@ public abstract class Operation {
     public final static String POST_TRAVLER_ORDER = "Post new traveler order";
     public final static String POST_NEW_REPORT = "Post a new report";
     public final static String POST_NEW_VISIT = "Post new visit";
-    
     public final static String FIND_ORDERS_WITHIN_DATES = "Get all the orders within given dates"; //emanuel
+    public final static String FIND_AVAILABLE_DATES = "Finding available dates to reschedule"; //emanuel
 
     // PATCH COMMANDS
     public final static String PATCH_EXIST_ORDER = "Patch existing order";

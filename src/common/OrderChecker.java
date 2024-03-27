@@ -17,40 +17,28 @@ public class OrderChecker {
 	 */
 	@SuppressWarnings("unchecked")
 	public static boolean isDateAvailable(Order order) {
-		String parkId = String.valueOf(order.getParkNumber());
-		Park park = getPark(order.getParkNumber());
-		LocalTime timeToCheck = order.getVisitTime();
-		int estimatedStayTime = park.getStaytime();
-
-
-		String visitDate = order.getDate().toString();
-		String startTime = timeToCheck.minusHours(estimatedStayTime+1).toString();
-		String endTime = timeToCheck.plusHours(estimatedStayTime-1).toString();
-		
-		ClientServerMessage<?> findDates = new ClientServerMessage<>(new ArrayList<String>
-		(Arrays.asList(parkId, visitDate, startTime, endTime)), Operation.FIND_ORDERS_WITHIN_DATES);
+		ClientServerMessage<?> findDates = new ClientServerMessage<>(order, Operation.FIND_ORDERS_WITHIN_DATES);
 		ClientUI.clientControllerInstance.sendMessageToServer(findDates);
 	    ClientServerMessage<?> findDatesMsg = ClientUI.clientControllerInstance.getData();
-	    ArrayList<Order> orders = (ArrayList<Order>) findDatesMsg.getDataTransfered();
-    	
-		int numberOfVisitors = 0; 
-		for (Order ord : orders) {
-			numberOfVisitors += ord.getAmountOfVisitors();
-		}
-
-		if (numberOfVisitors + order.getAmountOfVisitors() >= park.getMaxVisitors()) {
-			return false;
-		}
-
-		return true;
+	    Boolean isAvailable = (Boolean) findDatesMsg.getFlag();
+	    return isAvailable;
 	}
 	
 	
-	public static Park getPark(Integer parkId) {
+	public static Park getParkById(Integer parkId) {
 		ClientServerMessage<?> findPark = new ClientServerMessage<>(parkId, Operation.GET_PARK_DETAILS);
 		ClientUI.clientControllerInstance.sendMessageToServer(findPark);
 	    ClientServerMessage<?> findParkMsg = ClientUI.clientControllerInstance.getData();
 	    Park park = (Park) findParkMsg.getDataTransfered();
+	    return park;
+	}
+	
+	public static Park getParkByName(String parkName) {
+		ClientServerMessage<?> checkPark = new ClientServerMessage<>(parkName, Operation.GET_PARK_BY_NAME);
+		ClientUI.clientControllerInstance.sendMessageToServer(checkPark);
+		// Receive the response from the server
+	    ClientServerMessage<?> ParkMsg = ClientUI.clientControllerInstance.getData();
+	    Park park = (Park) ParkMsg.getDataTransfered();
 	    return park;
 	}
 	

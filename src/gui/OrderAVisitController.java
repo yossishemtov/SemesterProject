@@ -1,4 +1,3 @@
-
 package gui;
 
 import java.io.IOException;
@@ -462,11 +461,7 @@ public class OrderAVisitController implements Initializable {
 	 This function returns the name of the selected park
 	 */
 	private Integer getSelectedParkId() {
-		ClientServerMessage<?> checkPark = new ClientServerMessage<>(ParkComboBox.getValue(), Operation.GET_PARK_BY_NAME);
-		ClientUI.clientControllerInstance.sendMessageToServer(checkPark);
-		// Receive the response from the server
-	    ClientServerMessage<?> ParkMsg = ClientUI.clientControllerInstance.getData();
-		Park park = (Park) ParkMsg.getDataTransfered();
+	    Park park = OrderChecker.getParkByName(ParkComboBox.getValue());
 		if (park != null)
 			return park.getParkNumber();
 		else
@@ -483,22 +478,33 @@ public class OrderAVisitController implements Initializable {
 		String visitorsNumber = txtVisitorsNum.getText();
 		String email = txtEmail.getText();
 		String parkName = new String();
-		if (ParkComboBox.getValue() != null)
+		Integer getMaxVisitors = null;
+		Park park = OrderChecker.getParkByName(ParkComboBox.getValue());
+		if (ParkComboBox.getValue() != null) {
 			parkName = ParkComboBox.getValue().toString();
+			getMaxVisitors = park.getMaxVisitors();
+		}
 		String TravelerId = txtID.getText();
 		String Phone = txtPhone.getText();
 		String Time = new String();
-			if(TimeComboBox.getValue() != null)
-				Time = TimeComboBox.getValue().toString();
-
+		if(TimeComboBox.getValue() != null)
+			Time = TimeComboBox.getValue().toString();
 		if (fullName.isEmpty() || visitorsNumber.isEmpty() || email.isEmpty() || parkName.isEmpty() || TravelerId.isEmpty()
 				|| Phone.isEmpty() || txtDate.getValue()==null || Time.isEmpty()) {
-			new Alerts(AlertType.ERROR, "Bad Input", "Bad Input", "Please all the required fields").showAndWait();
+			new Alerts(AlertType.ERROR, "Bad Input", "Bad Input", "Please fill all the required fields").showAndWait();
 		} 
 		
 		else if (fullName.split(" ").length != 2) {
 			new Alerts(AlertType.ERROR, "Bad Input", "Bad Input",
 					"Please enter first name + last name").showAndWait();
+		}
+		else if (!validInput("AmountVisitor", txtVisitorsNum.getText())) {
+			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Visitors amount",
+					"Insert a valid visitors amount please").showAndWait();
+		}
+		else if (getMaxVisitors < Integer.parseInt(visitorsNumber)) {
+			String errorMessage = String.format("The park has only %d space, you ordered for too much visitors", getMaxVisitors);
+		    new Alerts(AlertType.ERROR, "Place Error", "Park Max Visitors", errorMessage).showAndWait();
 		}
 		else if (!checkCurrentTime())
 			new Alerts(AlertType.ERROR, "Bad Input", "Bad Date Input", "Please select future date").showAndWait();
@@ -527,15 +533,14 @@ public class OrderAVisitController implements Initializable {
 			new Alerts(AlertType.ERROR, "Bad Input", "Bad Input",
 					"Name must contain only letters").showAndWait();
 		}
-		
 		else if (Integer.parseInt(visitorsNumber) < 1) {
 			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
 					"Visitor's number must be positive number and atleast 1. ").showAndWait();
 		}
-		else if (Integer.parseInt(visitorsNumber) > 10
+		else if (Integer.parseInt(visitorsNumber) > 6
 				&& Order.typeOfOrder.FAMILY.toString().equals(OrderComboBox.getValue())) {
 			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
-					"Family cannot exceed 10 visitors").showAndWait();
+					"Family cannot exceed 6 visitors").showAndWait();
 		}
 		else if (checkTooLate()) {
 			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Date",
@@ -556,11 +561,6 @@ public class OrderAVisitController implements Initializable {
 		else if (!(PayParkBtn.isSelected() || PayNowBtn.isSelected())) {
 			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Payment Button",
 					"Please choose how you want to pay.").showAndWait();
-		}
-		
-		else if (!validInput("AmountVisitor", txtVisitorsNum.getText())) {
-			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Visitors amount",
-					"Insert a valid visitors amount please").showAndWait();
 		} else {
 			return true;
 		}

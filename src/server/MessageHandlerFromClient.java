@@ -23,10 +23,10 @@ import ocsf.server.ConnectionToClient;
 
 public class MessageHandlerFromClient {
 	private static DatabaseController dbControllerInstance;
-	
+
 	public static void setDbController(DatabaseController dbInstance) {
-		dbControllerInstance=dbInstance;
-		
+		dbControllerInstance = dbInstance;
+
 	}
 
 	public static void handleMessage(ClientServerMessage messageFromClient, ConnectionToClient client)
@@ -63,6 +63,33 @@ public class MessageHandlerFromClient {
 				client.sendToClient(Operation.DISCONNECTING); // Send acknowledgment to client
 			} catch (IOException e) {
 				System.out.println("Error sending ack_disconnect to client: " + e.getMessage());
+			}
+			break;
+		case Operation.FIND_ORDERS_WITHIN_DATES:
+			try {
+				Order orderToCheck = (Order) messageFromClient.getDataTransfered();
+				if (dbControllerInstance.findOrdersWithinDates(orderToCheck, false)) {
+					messageFromClient.setflagTrue();
+
+				} else {
+					messageFromClient.setflagFalse();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				// Handle the exception according to your needs
+			}
+			client.sendToClient(messageFromClient);
+			break;
+		case Operation.FIND_AVAILABLE_DATES: // emanuel
+			try {
+				Order orderToCheck = (Order) messageFromClient.getDataTransfered();
+				// Create a message to send to the client
+				messageFromClient.setDataTransfered(dbControllerInstance.getAvailableDatesList(orderToCheck));
+				// Send the message to the client
+				client.sendToClient(messageFromClient);
+			} catch (Exception e) {
+				e.printStackTrace();
+				// Handle the exception according to your needs
 			}
 			break;
 
@@ -115,10 +142,11 @@ public class MessageHandlerFromClient {
 
 		case Operation.GET_GENERAL_PARK_WORKER_DETAILS:
 			GeneralParkWorker generalParkWorker = (GeneralParkWorker) messageFromClient.getDataTransfered();
-			GeneralParkWorker generalParkWorkerToclient=dbControllerInstance.getGeneralParkWorkerDetails(generalParkWorker);
+			GeneralParkWorker generalParkWorkerToclient = dbControllerInstance
+					.getGeneralParkWorkerDetails(generalParkWorker);
 			System.out.println("not :");
- 
-			if (generalParkWorkerToclient !=null) {
+
+			if (generalParkWorkerToclient != null) {
 				System.out.println("not null:");
 
 				messageFromClient.setDataTransfered(generalParkWorkerToclient);
@@ -132,7 +160,7 @@ public class MessageHandlerFromClient {
 
 		case Operation.GET_ALL_REPORTS:
 			// Placeholder for getting all reports
-			break; 
+			break;
 
 		case Operation.GET_NEW_VISITORS_REPORT:
 			VisitorsReport NewVisitorReportFromClient = (VisitorsReport) messageFromClient.getDataTransfered();
@@ -255,20 +283,20 @@ public class MessageHandlerFromClient {
 			client.sendToClient(messageFromClient);
 			break;
 		case Operation.POST_NEW_VISIT:
-			//Post a new visit to the database
+			// Post a new visit to the database
 			Visit visitOfPark = (Visit) messageFromClient.getDataTransfered();
-			
-			try {				
+
+			try {
 				Boolean isSuccessful = dbControllerInstance.addNewVisit(visitOfPark);
-				
-				if(isSuccessful) {
+
+				if (isSuccessful) {
 					messageFromClient.setflagTrue();
 				} else {
 					messageFromClient.setflagFalse();
 
 				}
-				
-			}catch (IndexOutOfBoundsException e) {
+
+			} catch (IndexOutOfBoundsException e) {
 				e.printStackTrace();
 			}
 
@@ -520,7 +548,6 @@ public class MessageHandlerFromClient {
 			client.sendToClient(messageFromClient);
 			break;
 
-		
 		case Operation.PATCH_ORDER_STATUS_TO_INPARK:
 			// Changes the state of an order to INPARK
 			Order orderInformationToChangeStatus = (Order) messageFromClient.getDataTransfered();
@@ -658,20 +685,6 @@ public class MessageHandlerFromClient {
 			}
 			break;
 
-		case Operation.FIND_ORDERS_WITHIN_DATES: // emanuel
-			try {
-				List<Order> orderToCheck = (List<Order>) messageFromClient.getDataTransfered();
-				ArrayList<Order> orderList = new ArrayList<>(orderToCheck);
-				// Create a message to send to the client
-				messageFromClient.setDataTransfered(dbControllerInstance.findOrdersWithinDates(orderList));
-				// Send the message to the client
-				client.sendToClient(messageFromClient);
-			} catch (Exception e) {
-				e.printStackTrace();
-				// Handle the exception according to your needs
-			}
-			break;
-
 		case Operation.GET_PARKS_INFO: // emanuel
 			try {
 
@@ -755,16 +768,17 @@ public class MessageHandlerFromClient {
 			messageFromClient.setDataTransfered(amountOfUnorderedVisitsAllowed);
 			client.sendToClient(messageFromClient);
 			break;
-			
+
 		case Operation.GET_CANCELLATION_REPORT:
-			CancellationReport cancellstionReportFromClient = (CancellationReport) messageFromClient.getDataTransfered();
+			CancellationReport cancellstionReportFromClient = (CancellationReport) messageFromClient
+					.getDataTransfered();
 			cancellstionReportFromClient = dbControllerInstance.getCancellationReport(cancellstionReportFromClient);
 			if (cancellstionReportFromClient != null) {
 				messageFromClient.setflagTrue(); // Order is valid
 			} else {
 				messageFromClient.setflagFalse(); // Order is not valid
 			}
-		
+
 			messageFromClient.setDataTransfered(cancellstionReportFromClient);
 			client.sendToClient(messageFromClient);
 			break;
@@ -794,39 +808,35 @@ public class MessageHandlerFromClient {
 
 			break;
 
-		
-		
 		case Operation.PATCH_PARK_VISITORS_DEDUCT:
-			//Deduct the number of visitors from the park
+			// Deduct the number of visitors from the park
 			Park parkToDeductVisitors = (Park) messageFromClient.getDataTransfered();
-			
-			Boolean isDeductAmountSucessful = dbControllerInstance.patchParkVisitorsNumber(parkToDeductVisitors);
-			
-			if(isDeductAmountSucessful) {
-				messageFromClient.setflagTrue();
-			}else {
-				messageFromClient.setflagFalse();
-			}
-			client.sendToClient(messageFromClient);
-			break;
-			
-			
-			
-		case Operation.PATCH_ORDER_STATUS_TO_COMPLETED:
-			//Changes the state of an order to COMPLETED
-			Order orderInformationToChangeStatusToCompleted = (Order) messageFromClient.getDataTransfered();
-			Boolean didChangeStateSuccesseded = dbControllerInstance.patchOrderStatusToCompleted(orderInformationToChangeStatusToCompleted);
 
-			if(didChangeStateSuccesseded) {
+			Boolean isDeductAmountSucessful = dbControllerInstance.patchParkVisitorsNumber(parkToDeductVisitors);
+
+			if (isDeductAmountSucessful) {
 				messageFromClient.setflagTrue();
-			}else {
+			} else {
 				messageFromClient.setflagFalse();
 			}
-			
 			client.sendToClient(messageFromClient);
 			break;
-	
-			
+
+		case Operation.PATCH_ORDER_STATUS_TO_COMPLETED:
+			// Changes the state of an order to COMPLETED
+			Order orderInformationToChangeStatusToCompleted = (Order) messageFromClient.getDataTransfered();
+			Boolean didChangeStateSuccesseded = dbControllerInstance
+					.patchOrderStatusToCompleted(orderInformationToChangeStatusToCompleted);
+
+			if (didChangeStateSuccesseded) {
+				messageFromClient.setflagTrue();
+			} else {
+				messageFromClient.setflagFalse();
+			}
+
+			client.sendToClient(messageFromClient);
+			break;
+
 		case Operation.PATCH_WAITING_STATUS:
 			try {
 				List<WaitingList> waitingToChange = (List<WaitingList>) messageFromClient.getDataTransfered();
@@ -840,18 +850,17 @@ public class MessageHandlerFromClient {
 			// Send the message to the client
 			client.sendToClient(messageFromClient);
 			break;
-			
-		case Operation.GET_STATUS_HAS_SPOT: 
+
+		case Operation.GET_STATUS_HAS_SPOT:
 			ArrayList<WaitingList> waitingList = dbControllerInstance.getHasSpotOrders();
 
 			// Create a message to send to the client
-			ClientServerMessage<?> getSpotMsg = new ClientServerMessage<>(waitingList,
-					Operation.GET_STATUS_HAS_SPOT);
+			ClientServerMessage<?> getSpotMsg = new ClientServerMessage<>(waitingList, Operation.GET_STATUS_HAS_SPOT);
 
 			// Send the message to the client
-			client.sendToClient(getSpotMsg); 
+			client.sendToClient(getSpotMsg);
 			break;
-			
+
 		case Operation.POST_ORDER_FROM_WAITING: // Emanuel
 			// Placeholder for posting a new traveler order
 
@@ -872,11 +881,11 @@ public class MessageHandlerFromClient {
 			client.sendToClient(messageFromClient);
 
 			break;
-			
-			
+
 		case Operation.GET_STATUS_PENDING_NOTIFICATION_BY_TRAVELERID: // emanuel
 			Integer idToLookForPendingNotifications = (Integer) messageFromClient.getDataTransfered();
-			ArrayList<Order> orderListTravelerById = dbControllerInstance.getPendingNotificationsOrdersByID(idToLookForPendingNotifications);
+			ArrayList<Order> orderListTravelerById = dbControllerInstance
+					.getPendingNotificationsOrdersByID(idToLookForPendingNotifications);
 
 			// Create a message to send to the client
 			ClientServerMessage<?> orderListOfPendingNotifications = new ClientServerMessage<>(orderListTravelerById,
@@ -885,22 +894,19 @@ public class MessageHandlerFromClient {
 			// Send the message to the client
 			client.sendToClient(orderListOfPendingNotifications);
 			break;
-			
-			
+
 		case Operation.GET_STATUS_CANCELED_NOTIFICATION_BY_TRAVELERID:
 			Integer idToLookForCanceledNotifications = (Integer) messageFromClient.getDataTransfered();
-			ArrayList<Order> orderListTravelerByIdCanceled = dbControllerInstance.getCanceledNotificationsOrdersByID(idToLookForCanceledNotifications);
+			ArrayList<Order> orderListTravelerByIdCanceled = dbControllerInstance
+					.getCanceledNotificationsOrdersByID(idToLookForCanceledNotifications);
 
 			// Create a message to send to the client
-			ClientServerMessage<?> orderListTravelerByIdCanceledMessageToClient = new ClientServerMessage<>(orderListTravelerByIdCanceled,
-					Operation.GET_STATUS_PENDING_NOTIFICATION_BY_TRAVELERID);
+			ClientServerMessage<?> orderListTravelerByIdCanceledMessageToClient = new ClientServerMessage<>(
+					orderListTravelerByIdCanceled, Operation.GET_STATUS_PENDING_NOTIFICATION_BY_TRAVELERID);
 
 			// Send the message to the client
 			client.sendToClient(orderListTravelerByIdCanceledMessageToClient);
 			break;
-			
-	
-			
 
 		default:
 			System.out.println("default");
