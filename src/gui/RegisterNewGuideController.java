@@ -82,6 +82,11 @@ public class RegisterNewGuideController {
 		    else {
 		    	Alerts failedToRegister = new Alerts(Alert.AlertType.ERROR, "Error in Registration","","Error in Registration");
 		    	failedToRegister.showAndWait();
+		    	ID.setText(""); 
+		    	FirstName.setText("");
+		    	LastName.setText("");
+		    	Email.setText(""); 
+		    	PhoneNumber.setText("");
 		    }
 	    } catch (Exception e) {
 	        System.out.print("Something went wrong while clicking on submit button, trying to register new group guide, check stack trace");

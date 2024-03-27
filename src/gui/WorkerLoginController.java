@@ -9,17 +9,24 @@ import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
 import common.worker.GeneralParkWorker;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
+
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import client.ClientController;
 import client.NavigationManager;
 import common.*;
 
-public class WorkerLoginController {
+public class WorkerLoginController implements Initializable{
 	@FXML
     private Button LoginBtn;
 
@@ -31,6 +38,61 @@ public class WorkerLoginController {
 
     @FXML
     private JFXPasswordField WorkerPwd;
+    
+    @FXML
+    private FontAwesomeIconView userIcon;
+
+    @FXML
+    private FontAwesomeIconView passIcon;
+    
+    
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+        // Listener for the username text field
+        WorkerUsername.textProperty().addListener((obs, oldValue, newValue) -> {
+            String pattern = "^[a-zA-Z]{1}[a-zA-Z0-9]{3,20}$"; // Username pattern
+
+            // Set text field color and icon based on input
+            if (newValue.isEmpty()) {
+                // Set to original color
+                userIcon.setFill(Color.web("#b3ffb3"));
+                WorkerUsername.setStyle("-jfx-unfocus-color: #b3ffb3; " + "-fx-text-fill: #b3ffb3; " + "-fx-prompt-text-fill: #b3ffb3;");
+            } else {
+                // Set to red if input is not empty
+                userIcon.setFill(Color.RED);
+                WorkerUsername.setStyle("-jfx-unfocus-color: red; " + "-fx-text-fill: red; " + "-fx-prompt-text-fill: red;");
+            }
+
+            // Set to green if input matches pattern
+            if (!newValue.isEmpty() && newValue.matches(pattern)) {
+                userIcon.setFill(Color.GREEN);
+                WorkerUsername.setStyle("-jfx-unfocus-color: green; " + "-fx-text-fill: green; " + "-fx-prompt-text-fill: green;");
+            }
+        });
+
+        // Listener for the password text field
+        WorkerPwd.textProperty().addListener((obs, oldValue, newValue) -> {
+            String pattern = "^.{4,30}$"; // Password pattern
+
+            // Set text field color and icon based on input
+            if (newValue.isEmpty()) {
+                // Set to original color
+                passIcon.setFill(Color.web("#b3ffb3"));
+                WorkerPwd.setStyle("-jfx-unfocus-color: #b3ffb3; " + "-fx-text-fill: #b3ffb3; " + "-fx-prompt-text-fill: #b3ffb3;");
+            } else {
+                // Set to red if input is not empty
+                passIcon.setFill(Color.RED);
+                WorkerPwd.setStyle("-jfx-unfocus-color: red; " + "-fx-text-fill: red; " + "-fx-prompt-text-fill: red;");
+            }
+
+            // Set to green if input matches pattern
+            if (!newValue.isEmpty() && newValue.matches(pattern)) {
+                passIcon.setFill(Color.GREEN);
+                WorkerPwd.setStyle("-jfx-unfocus-color: green; " + "-fx-text-fill: green; " + "-fx-prompt-text-fill: green;");
+            }
+        });
+    }
 
  
 	@FXML
@@ -144,5 +206,7 @@ public class WorkerLoginController {
 			e.printStackTrace();
 		}
 	}
+
+
 
 }

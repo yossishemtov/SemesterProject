@@ -500,55 +500,8 @@ public class DatabaseController {
 		return false;
 	}
 
-	/**
-	 * Updates a traveler's record to mark them as a guide.
-	 *
-	 * @param travelerId the ID of the traveler to be updated.
-	 * @return true if the update is successful, false otherwise.
-	 */
-	public boolean ChangeTravelerToGuide(Traveler traveler) {
 
-		String query = "UPDATE `traveler` SET GroupGuide = 1 WHERE id = ?";
-
-		try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
-			pstmt.setInt(1, traveler.getId());
-
-			int affectedRows = pstmt.executeUpdate();
-
-			// Check if the update was successful
-			return affectedRows > 0;
-		} catch (SQLException e) {
-			System.err.println("SQLException: " + e.getMessage());
-			return false;
-		}
-	}
-
-	public boolean insertNewGroupGuide(Traveler traveler) {
-		// Assuming you have a method getConnection() that returns a Connection object.
-
-		String query = "INSERT INTO `traveler` (id, firstName, lastName, email, phoneNumber, GroupGuide, isloggedin) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-		try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
-			pstmt.setInt(1, traveler.getId());
-			pstmt.setString(2, traveler.getFirstName());
-			pstmt.setString(3, traveler.getLastName());
-			pstmt.setString(4, traveler.getEmail());
-			pstmt.setString(5, traveler.getPhoneNum());
-			pstmt.setInt(6, traveler.getIsGroupGuide()); // Assuming 1 for guide, 0 for not a guide.
-			pstmt.setInt(7, 0); // Assuming isloggedin default to 0.
-
-			int affectedRows = pstmt.executeUpdate();
-
-			// Check if the insert was successful
-			if (affectedRows > 0) {
-				return true;
-			}
-		} catch (SQLException e) {
-			System.err.println("SQLException: " + e.getMessage());
-		}
-
-		return false;
-	}
+	
 
 	public Boolean patchParkUnorderedVisits(Park parkWithIdAndNewUnorderedVisits) {
 		// change the unordered visits amount
@@ -2317,6 +2270,65 @@ public class DatabaseController {
 		        e.printStackTrace();
 		        return false;
 		    }
+		}
+		/**
+		 * Updates a traveler's record to mark them as a guide.
+		 *
+		 * @param travelerId the ID of the traveler to be updated.
+		 * @return true if the update is successful, false otherwise.
+		 */
+		public boolean ChangeTravelerToGuide(Traveler traveler) {
+
+			String query = "UPDATE `traveler` SET GroupGuide = 1 WHERE id = ?";
+			
+			try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
+				pstmt.setInt(1, traveler.getId());
+
+				int affectedRows = pstmt.executeUpdate();
+
+				// Check if the update was successful
+				 if(affectedRows > 0) {
+					 traveler.setIsGroupGuide(1);
+					 return true;
+				 }
+				 else {
+					 return false;
+				 }
+			} catch (SQLException e) {
+				System.err.println("SQLException: " + e.getMessage());
+				return false;
+			}
+		}
+
+		public boolean insertNewGroupGuide(Traveler traveler) {
+			// Assuming you have a method getConnection() that returns a Connection object.
+
+			String query = "INSERT INTO `traveler` (id, firstName, lastName, email, phoneNumber, GroupGuide, isloggedin) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+			try (PreparedStatement pstmt = connectionToDatabase.prepareStatement(query)) {
+				pstmt.setInt(1, traveler.getId());
+				pstmt.setString(2, traveler.getFirstName());
+				pstmt.setString(3, traveler.getLastName());
+				pstmt.setString(4, traveler.getEmail());
+				pstmt.setString(5, traveler.getPhoneNum());
+				pstmt.setInt(6, traveler.getIsGroupGuide()); // Assuming 1 for guide, 0 for not a guide.
+				pstmt.setInt(7, 0); // Assuming isloggedin default to 0.
+
+				int affectedRows = pstmt.executeUpdate();
+
+				// Check if the insert was successful
+				if (affectedRows > 0) {
+					traveler.setIsGroupGuide(1);
+					return true;
+				}
+				else {
+					return false;
+				}
+			} catch (SQLException e) {
+				System.err.println("SQLException: " + e.getMessage());
+			}
+
+			return false;
 		}
 
 

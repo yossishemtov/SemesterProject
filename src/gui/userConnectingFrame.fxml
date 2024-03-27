@@ -7,39 +7,41 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="background-pane" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.UserConnectController">
 	
    <children>
-      <Text fill="#b3ffb3" layoutX="375.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connect To Server:">
+      <Text fill="#5aed99" layoutX="391.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connect To Server:">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <Button fx:id="connectBtn" layoutX="319.0" layoutY="386.0" mnemonicParsing="false" onAction="#connectBtn" text="Connect" textFill="#67b540" />
-      <Button fx:id="exitBtn" layoutX="508.0" layoutY="386.0" mnemonicParsing="false" onAction="#exitBtn" text="Exit" textFill="#c32d2d" />
-      <VBox layoutX="319.0" layoutY="237.0" prefHeight="131.0" prefWidth="262.0">
+      <Button fx:id="connectBtn" layoutX="335.0" layoutY="383.0" mnemonicParsing="false" onAction="#connectBtn" text="Connect" textFill="#67b540" />
+      <Button fx:id="exitBtn" layoutX="524.0" layoutY="383.0" mnemonicParsing="false" onAction="#exitBtn" text="Exit" textFill="#c32d2d" />
+      <VBox layoutX="335.0" layoutY="234.0" prefHeight="131.0" prefWidth="262.0">
          <children>
             <HBox prefHeight="101.0" prefWidth="262.0">
                <children>
-                  <Text fill="#b3ffb3" strokeType="OUTSIDE" strokeWidth="0.0" text="Server Ip Address:" wrappingWidth="137.9453125" />
-                  <JFXTextField fx:id="IpAddressField" focusColor="#b3ffb3" prefHeight="25.0" prefWidth="126.0" unFocusColor="WHITE" />
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Server Ip Address:" wrappingWidth="137.9453125" />
+                  <JFXTextField fx:id="IpAddressField" focusColor="#5aed99" prefHeight="25.0" prefWidth="126.0" unFocusColor="WHITE" />
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Text fill="#b3ffb3" strokeType="OUTSIDE" strokeWidth="0.0" text="Server Port:" wrappingWidth="97.896484375" />
-                  <JFXTextField fx:id="portAddressField" focusColor="#b3ffb3" prefHeight="31.0" prefWidth="182.0" unFocusColor="WHITE" />
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Server Port:" wrappingWidth="97.896484375" />
+                  <JFXTextField fx:id="portAddressField" focusColor="#5aed99" prefHeight="31.0" prefWidth="182.0" unFocusColor="WHITE" />
                </children>
             </HBox>
          </children>
       </VBox>
       <ImageView fitHeight="157.0" fitWidth="156.0" layoutX="7.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../common/images/2-Photoroom.png-Photoroom.png" />
+            <Image url="@../common/images/Go_Nature-removebg-preview.png" />
          </image>
       </ImageView>
+      <Rectangle arcHeight="150.0" arcWidth="150.0" fill="#14151700" height="359.0" layoutX="243.0" layoutY="120.0" mouseTransparent="true" stroke="#5aed99" strokeType="INSIDE" strokeWidth="5.0" width="429.0" />
    	</children>
 </Pane>

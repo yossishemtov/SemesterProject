@@ -1,6 +1,8 @@
 package gui;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXTextField;
 
@@ -13,18 +15,21 @@ import common.ClientServerMessage;
 import common.Operation;
 import common.Traveler;
 import common.Usermanager;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class TravelerLoginController {
+public class TravelerLoginController implements Initializable{
 
 	 @FXML
 	 private Button LoginBtn;
@@ -34,6 +39,36 @@ public class TravelerLoginController {
 
 	 @FXML
 	 private JFXTextField TravelerID;
+	 
+	 @FXML
+	 private FontAwesomeIconView userIcon;
+	 
+	 @Override
+	    public void initialize(URL location, ResourceBundle resources) {
+	        // Listener for the username text field
+		   TravelerID.textProperty().addListener((obs, oldValue, newValue) -> {
+	            String pattern = "^.{7}$"; // Username pattern
+
+	            // Set text field color and icon based on input
+	            if (newValue.isEmpty()) {
+	                // Set to original color
+	                userIcon.setFill(Color.web("#b3ffb3"));
+	                TravelerID.setStyle("-jfx-unfocus-color: #b3ffb3; " + "-fx-text-fill: #b3ffb3; " + "-fx-prompt-text-fill: #b3ffb3;");
+	            } else {
+	                // Set to red if input is not empty
+	                userIcon.setFill(Color.RED);
+	                TravelerID.setStyle("-jfx-unfocus-color: red; " + "-fx-text-fill: red; " + "-fx-prompt-text-fill: red;");
+	            }
+
+	            // Set to green if input matches pattern
+	            if (!newValue.isEmpty() && newValue.matches(pattern)) {
+	                userIcon.setFill(Color.GREEN);
+	                TravelerID.setStyle("-jfx-unfocus-color: green; " + "-fx-text-fill: green; " + "-fx-prompt-text-fill: green;");
+	            }
+	        });
+
+	    }
+	 
 	 
 	
 	public void LoginBtn(ActionEvent click) throws Exception {
@@ -108,4 +143,7 @@ public class TravelerLoginController {
 			e.printStackTrace();
 		}
 	}
+
+
+
 }

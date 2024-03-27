@@ -35,6 +35,7 @@ public class RegisterExistingTravelerController {
 			    Traveler TravelerFromServer = (Traveler) ClientController.data.getDataTransfered();
 		    	// if traveler exists, send him to DB to make him a guide
 			    if (TravelerFromServer != null) {
+			    	if (TravelerFromServer.getIsGroupGuide() == 0) {
 		    		ClientServerMessage<?> RegistrationAttempt = new ClientServerMessage<>(TravelerFromServer, Operation.POST_EXISTS_TRAVLER_GUIDER);
 				    ClientUI.clientControllerInstance.sendMessageToServer(RegistrationAttempt);
 				    if( ClientUI.clientControllerInstance.getData().getFlag()) {
@@ -42,7 +43,13 @@ public class RegisterExistingTravelerController {
 				    	succeedRegistration.showAndWait();
 				    	// Clear the field after registrate
 					    travelerID.setText(""); 
+				    	}
 				    }
+			    	else {
+			    		Alerts AlreadyGroupGuide = new Alerts (Alerts.AlertType.ERROR, "Traveler is already a guop guide", "", "Traveler is already a guop guide");
+			    		AlreadyGroupGuide.showAndWait();
+			    		travelerID.setText(""); 
+			    	}
 			    }
 			    else {
 			    	// if traveler not exists 

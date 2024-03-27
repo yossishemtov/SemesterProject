@@ -6,6 +6,7 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -25,17 +26,17 @@
          <children>
             <Pane fx:id="PaneConfirmation" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="pnOrder" stylesheets="@../styles/styles.css">
                <children>
-                  <ImageView fitHeight="56.0" fitWidth="165.0" layoutX="369.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="56.0" fitWidth="165.0" layoutX="367.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../common/images/OrderStage2.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="367.0" layoutY="105.0" styleClass="labelBold" text="Thank you for your order" textFill="#b3ffb3">
+                  <Label layoutX="364.0" layoutY="84.0" styleClass="labelBold" text="Thank you for your order" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="256.0" layoutY="133.0" styleClass="labelBold" text="Confirmation message has been sent to your phone and email" textFill="#b3ffb3">
+                  <Label layoutX="253.0" layoutY="104.0" styleClass="labelBold" text="Confirmation message has been sent to your phone and email" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -50,37 +51,34 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="288.0" layoutY="164.0" styleClass="labelBold" text="We will not charge you until you arrive at the park" textFill="#b3ffb3">
+                  <Label layoutX="288.0" layoutY="124.0" styleClass="labelBold" text="We will not charge you until you arrive at the park" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="380.0" layoutY="483.0" styleClass="labelBold" text="Your order number is: " textFill="#b3ffb3">
+                  <Label layoutX="370.0" layoutY="444.0" styleClass="labelBold" text="Your order number is: " textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="summaryNum" focusTraversable="false" layoutX="435.0" layoutY="503.0" styleClass="labelBold" text="111" textFill="WHITE">
+                  <Label fx:id="summaryNum" focusTraversable="false" layoutX="432.0" layoutY="469.0" styleClass="labelBold" text="111" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Line endX="100.0" layoutX="444.0" layoutY="201.0" startX="-100.0" stroke="#b3ffb3" />
-                  <Label layoutX="400.0" layoutY="206.0" text="Visit Information:" textFill="#b3ffb3" />
-                  <Line endX="100.0" layoutX="445.0" layoutY="229.0" startX="-100.0" stroke="#b3ffb3" />
-                  <Line endX="103.0" layoutX="448.0" layoutY="437.0" startX="-100.0" stroke="#b3ffb3" />
-                  <Line endX="100.0" layoutX="450.0" layoutY="474.0" startX="-101.0" stroke="#b3ffb3" />
-                  <Label layoutX="391.0" layoutY="446.0" text="Total Price: " textFill="#b3ffb3" />
+                  <Line endX="100.0" layoutX="449.0" layoutY="160.0" startX="-100.0" stroke="#5aed99" />
+                  <Label layoutX="388.0" layoutY="167.0" text="Visit Information:" textFill="WHITE" />
+                  <Label layoutX="361.0" layoutY="404.0" prefHeight="21.0" prefWidth="99.0" text="Total Price: " textFill="#5aed99" />
                   <Label layoutX="390.0" layoutY="254.0" text="Park : " />
                   <Label fx:id="summaryPark" layoutX="480.0" layoutY="254.0" text="Park" />
-                  <Button fx:id="btnHome" layoutX="403.0" layoutY="542.0" onAction="#HomeButton" prefHeight="37.0" prefWidth="93.0" text="Home" />
-                  <Label fx:id="summaryPrice" layoutX="467.0" layoutY="446.0" text="Price" textFill="WHITE" />
-                  <VBox layoutX="369.0" layoutY="248.0" prefHeight="184.0" prefWidth="214.0">
+                  <Button fx:id="btnHome" layoutX="403.0" layoutY="506.0" onAction="#HomeButton" prefHeight="37.0" prefWidth="93.0" text="Home" />
+                  <Label fx:id="summaryPrice" layoutX="472.0" layoutY="404.0" prefHeight="21.0" prefWidth="49.0" text="Price" textFill="WHITE" />
+                  <VBox layoutX="361.0" layoutY="208.0" prefHeight="184.0" prefWidth="281.0">
                      <children>
                         <HBox prefHeight="28.0" prefWidth="281.0">
                            <children>
-                              <Label prefHeight="17.0" prefWidth="105.0" text="Date: " textFill="#b3ffb3" />
-                              <Label fx:id="summaryDate" prefHeight="17.0" prefWidth="71.0" text="Date" textFill="WHITE" />
+                              <Label prefHeight="17.0" prefWidth="105.0" text="Date: " textFill="#5aed99" />
+                              <Label fx:id="summaryDate" prefHeight="21.0" prefWidth="157.0" text="Date" textFill="WHITE" />
                            </children>
                         </HBox>
                         <HBox prefHeight="38.0" prefWidth="281.0">
@@ -91,94 +89,161 @@
                         </HBox>
                         <HBox prefHeight="39.0" prefWidth="281.0">
                            <children>
-                              <Label prefHeight="17.0" prefWidth="106.0" text="Type:" textFill="#b3ffb3" />
+                              <Label prefHeight="17.0" prefWidth="106.0" text="Type:" textFill="#5aed99" />
                               <Label fx:id="summaryType" text="Type" textFill="WHITE" />
                            </children>
                         </HBox>
                         <HBox prefHeight="39.0" prefWidth="281.0">
                            <children>
-                              <Label prefHeight="17.0" prefWidth="108.0" text="Visitors:" textFill="#b3ffb3" />
+                              <Label prefHeight="17.0" prefWidth="108.0" text="Visitors:" textFill="#5aed99" />
                               <Label fx:id="summaryVisitors" text="Visitors" textFill="WHITE" />
                            </children>
                         </HBox>
                         <HBox prefHeight="30.0" prefWidth="281.0">
                            <children>
-                              <Label prefHeight="17.0" prefWidth="112.0" text="Order Status:" textFill="#b3ffb3" />
+                              <Label prefHeight="17.0" prefWidth="112.0" text="Order Status:" textFill="#5aed99" />
                               <Label fx:id="summaryStatus" text="Order" textFill="WHITE" />
                            </children>
                         </HBox>
                      </children>
                   </VBox>
-                  <Pane fx:id="PaneOrder" layoutX="4.0" layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="pnOrder" stylesheets="@../styles/styles.css">
+                  <Line endX="100.0" layoutX="451.0" layoutY="197.0" startX="-100.0" stroke="#5aed99" />
+                  <Line endX="100.0" layoutX="444.0" layoutY="392.0" startX="-100.0" stroke="#5aed99" />
+                  <Line endX="100.0" layoutX="447.0" layoutY="436.0" startX="-100.0" stroke="#5aed99" />
+                  <Pane fx:id="PaneOrder" layoutX="-3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="pnOrder" stylesheets="@../styles/styles.css">
                      <children>
-                        <Label layoutX="360.0" layoutY="14.0" prefHeight="45.0" prefWidth="170.0" text="Order a Visit" textFill="#b3ffb3">
+                        <Label layoutX="387.0" layoutY="22.0" prefHeight="45.0" prefWidth="146.0" text="Order a Visit" textFill="#5aed99">
                            <font>
-                              <Font size="30.0" />
+                              <Font size="25.0" />
                            </font>
                         </Label>
                         <Accordion layoutX="270.0" layoutY="113.0" />
-                        <ImageView fitHeight="78.0" fitWidth="241.0" layoutX="317.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="77.0" fitWidth="212.0" layoutX="344.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../common/images/OrderStage.png" />
                            </image>
                         </ImageView>
-                        <JFXTextField fx:id="txtName" focusColor="#121920" layoutX="317.0" layoutY="161.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Enter Fullname" styleClass="txtField" unFocusColor="#a3a3a3">
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <font>
-                              <Font name="Ebrima" size="14.0" />
-                           </font>
-                        </JFXTextField>
-                        <FontAwesomeIconView fx:id="userIcon" fill="#b3ffb3" glyphName="USER" layoutX="564.0" layoutY="199.0" size="16" />
-                        <FontAwesomeIconView fx:id="visitorsIcon" fill="#a1a1a1" glyphName="USERS" layoutX="539.0" layoutY="389.0" size="16" />
-                        <JFXTextField fx:id="txtEmail" focusColor="#b3ffb3" layoutX="317.0" layoutY="305.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Enter Email" styleClass="txtField" unFocusColor="WHITE">
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <font>
-                              <Font name="Ebrima" size="14.0" />
-                           </font>
-                        </JFXTextField>
-                        <FontAwesomeIconView fx:id="invitingIcon" fill="#b3ffb3" glyphName="ENVELOPE" layoutX="562.0" layoutY="334.0" size="16" />
-                        <JFXTextField fx:id="txtPhone" focusColor="#121920" layoutX="317.0" layoutY="254.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Phone Number " styleClass="txtField" unFocusColor="#a3a3a3">
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <font>
-                              <Font name="Ebrima" size="14.0" />
-                           </font>
-                        </JFXTextField>
-                        <Label layoutX="325.0" layoutY="544.0" text="Required fields" textFill="#b3ffb3" />
-                        <Label layoutX="315.0" layoutY="544.0" text="*" textFill="RED" />
-                        <JFXTextField fx:id="txtID" focusColor="#121920" layoutX="317.0" layoutY="209.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="*Enter ID" styleClass="txtField" unFocusColor="#a3a3a3">
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <font>
-                              <Font name="Ebrima" size="14.0" />
-                           </font>
-                        </JFXTextField>
-                        <FontAwesomeIconView fx:id="userIcon1" fill="#b3ffb3" glyphName="USER" layoutX="564.0" layoutY="238.0" size="16" />
-                        <JFXDatePicker fx:id="txtDate" defaultColor="#b3ffb3" layoutX="317.0" layoutY="458.0" prefHeight="30.0" prefWidth="250.0" promptText="*Pick Date" />
-                        <JFXComboBox fx:id="OrderComboBox" focusColor="#b3ffb3" layoutX="317.0" layoutY="368.0" prefHeight="25.0" prefWidth="250.0" promptText="*Order For" unFocusColor="WHITE" />
-                        <FontAwesomeIconView fx:id="invitingIcon1" fill="#b3ffb3" glyphName="PHONE" layoutX="564.0" layoutY="291.0" size="16" />
-                        <JFXTextField fx:id="txtVisitorsNum" disable="true" layoutX="578.0" layoutY="368.0" prefHeight="30.0" prefWidth="104.0" promptText="Visitor's Number" />
-                        <JFXComboBox fx:id="ParkComboBox" focusColor="#b3ffb3" layoutX="317.0" layoutY="418.0" prefHeight="25.0" prefWidth="250.0" promptText="*Choose Park" unFocusColor="WHITE" />
-                        <JFXComboBox fx:id="TimeComboBox" focusColor="#b3ffb3" layoutX="317.0" layoutY="502.0" prefHeight="25.0" prefWidth="250.0" promptText="*Choose Time" unFocusColor="WHITE" />
-                        <Button fx:id="btnSubmit" layoutX="606.0" layoutY="496.0" onAction="#SubmitOrderButton" prefHeight="39.0" prefWidth="104.0" text="Submit Order" />
-                        <Button layoutX="523.0" layoutY="536.0" mnemonicParsing="false" onAction="#handlePricingButton" prefHeight="45.0" prefWidth="54.0" style="-fx-background-color: transparent;">
-                           <graphic>
-                              <ImageView fx:id="Pricingbtn" fitHeight="35.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../common/images/Pricingbtn.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                        <Button fx:id="Back" layoutX="209.0" layoutY="39.0" mnemonicParsing="false" onAction="#BackButton" prefHeight="40.0" prefWidth="61.0" style="-fx-background-color: transparent;" text="Back" />
-                        <JFXRadioButton fx:id="PayNowBtn" layoutX="599.0" layoutY="422.0" text="Pay now" textFill="#b3ffb3" />
-                        <JFXRadioButton fx:id="PayParkBtn" layoutX="599.0" layoutY="450.0" text="Pay in park" textFill="#b3ffb3" />
+                        <Label layoutX="410.0" layoutY="484.0" text="All fields are required" textFill="#5aed99" />
+                        <Label layoutX="392.0" layoutY="485.0" text="*" textFill="RED" />
+                        <Button fx:id="btnSubmit" layoutX="416.0" layoutY="522.0" onAction="#SubmitOrderButton" prefHeight="43.0" prefWidth="129.0" text="Submit Order" />
+                        <VBox fillWidth="false" layoutX="216.0" layoutY="174.0" prefHeight="286.0" prefWidth="511.0" spacing="10.0">
+                           <children>
+                              <HBox prefHeight="36.0" prefWidth="511.0">
+                                 <children>
+                                    <JFXTextField fx:id="txtName" focusColor="#b3ffb3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="154.0" promptText="Enter Fullname" styleClass="txtField" unFocusColor="WHITE">
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <font>
+                                          <Font name="Ebrima" size="14.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                    </JFXTextField>
+                                    <FontAwesomeIconView fx:id="userIcon" fill="#5aed99" glyphName="USER" size="25" wrappingWidth="69.4285717010498" />
+                                    <JFXTextField fx:id="txtID" focusColor="#5aed99" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="151.0" promptText="Enter ID" styleClass="txtField" unFocusColor="WHITE">
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <font>
+                                          <Font name="Ebrima" size="14.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                    </JFXTextField>
+                                    <FontAwesomeIconView fx:id="userIcon1" fill="#5aed99" glyphName="USER" size="25" wrappingWidth="51.571428298950195" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="40.0" prefWidth="511.0">
+                                 <children>
+                                    <JFXTextField fx:id="txtPhone" focusColor="#5aed99" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="157.0" promptText="Phone Number " styleClass="txtField" unFocusColor="WHITE">
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <font>
+                                          <Font name="Ebrima" size="14.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                    </JFXTextField>
+                                    <FontAwesomeIconView fx:id="invitingIcon1" fill="#5aed99" glyphName="PHONE" size="30" wrappingWidth="61.428571701049805" />
+                                    <JFXTextField fx:id="txtEmail" focusColor="#5aed99" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="162.0" promptText="Enter Email" styleClass="txtField" unFocusColor="WHITE">
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <font>
+                                          <Font name="Ebrima" size="14.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets right="15.0" />
+                                       </HBox.margin>
+                                    </JFXTextField>
+                                    <FontAwesomeIconView fx:id="invitingIcon" fill="#5aed99" glyphName="ENVELOPE" size="25" wrappingWidth="90.0" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="52.0" prefWidth="511.0">
+                                 <children>
+                                    <JFXComboBox fx:id="OrderComboBox" focusColor="#5aed99" prefHeight="9.0" prefWidth="157.0" promptText="Order For" unFocusColor="WHITE">
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                    </JFXComboBox>
+                                    <FontAwesomeIconView fx:id="visitorsIcon" fill="#5aed99" glyphName="USERS" size="25" wrappingWidth="67.85714340209961" />
+                                    <JFXTextField fx:id="txtVisitorsNum" disable="true" focusColor="#5aed99" prefHeight="31.0" prefWidth="160.0" promptText="Visitor's Number" unFocusColor="WHITE" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="44.0" prefWidth="496.0">
+                                 <children>
+                                    <JFXComboBox fx:id="ParkComboBox" focusColor="#5aed99" prefHeight="17.0" prefWidth="163.0" promptText="Choose Park" unFocusColor="WHITE">
+                                       <HBox.margin>
+                                          <Insets right="75.0" />
+                                       </HBox.margin>
+                                    </JFXComboBox>
+                                    <JFXDatePicker fx:id="txtDate" defaultColor="#5aed99" prefHeight="31.0" prefWidth="178.0" promptText="Pick Date">
+                                       <HBox.margin>
+                                          <Insets right="15.0" />
+                                       </HBox.margin>
+                                    </JFXDatePicker>
+                                 </children>
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                                 <VBox.margin>
+                                    <Insets right="15.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox prefHeight="40.0" prefWidth="511.0">
+                                 <children>
+                                    <JFXComboBox fx:id="TimeComboBox" focusColor="#5aed99" pickOnBounds="false" prefHeight="31.0" prefWidth="204.0" promptText="Choose Time" unFocusColor="WHITE">
+                                       <HBox.margin>
+                                          <Insets right="55.0" />
+                                       </HBox.margin>
+                                    </JFXComboBox>
+                                    <Button mnemonicParsing="false" onAction="#handlePricingButton" prefHeight="78.0" prefWidth="41.0" styleClass="pricingButton">
+                                       <graphic>
+                                          <ImageView id="pricingButton" fx:id="Pricingbtn" fitHeight="80.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true" styleClass="pricingButton">
+                                             <image>
+                                                <Image url="@../common/images/Pricingbtn.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <JFXRadioButton fx:id="PayNowBtn" alignment="CENTER_LEFT" contentDisplay="CENTER" prefHeight="88.0" prefWidth="146.0" text="Pay now" textFill="#5aed99" />
+                                    <JFXRadioButton fx:id="PayParkBtn" prefHeight="90.0" prefWidth="170.0" text="Pay in park" textFill="#5aed99" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Button fx:id="Back" layoutX="247.0" layoutY="522.0" mnemonicParsing="false" onAction="#BackButton" text="Back" />
                      </children>
                   </Pane>
                </children>

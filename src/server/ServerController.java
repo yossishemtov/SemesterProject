@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import DB.MySqlConnector;
@@ -54,7 +55,7 @@ public class ServerController {
 	private JFXTextField DBUserNameTxt;
 
 	@FXML
-	private JFXTextField PasswordTxt;
+	private JFXPasswordField PasswordTxt;
 
 	@FXML
 	private VBox TableViewContainer;
@@ -191,7 +192,7 @@ public class ServerController {
 		PortTxt.setText("5555");
 		DBUserNameTxt.setText("root"); // Assuming you might want to set the username to 'root' as well
 
-		redirectSystemStreams(); // Redirect System.out and System.err
+		//redirectSystemStreams(); // Redirect System.out and System.err
 
 		HostCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getHost()));
 		IPCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getIp()));

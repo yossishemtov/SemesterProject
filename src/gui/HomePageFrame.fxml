@@ -15,7 +15,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.HomePageController">
    <children>
-      <Text fill="#b3ffb3" layoutX="285.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to GoNature" wrappingWidth="330.6171875">
+      <Text fill="#5aed99" layoutX="285.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to GoNature" wrappingWidth="330.6171875">
          <font>
             <Font size="33.0" />
          </font>
@@ -86,20 +86,15 @@
          </cursor>
       </ImageView>
       <Line endX="100.0" startX="-100.0" />
-      <Line endX="677.5" layoutX="173.0" layoutY="392.0" startX="-123.5" stroke="#b3ffb3" />
-      <Label layoutX="419.0" layoutY="364.0" text="Our Parks:" textFill="#b3ffb3">
+      <Line endX="677.5" layoutX="173.0" layoutY="392.0" startX="-123.5" stroke="#5aed99" />
+      <Label layoutX="419.0" layoutY="364.0" text="Our Parks:" textFill="#5aed99">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
       <Button fx:id="ExitBtn" layoutX="32.0" layoutY="542.0" mnemonicParsing="false" onAction="#ExitBtnAction" text="Exit" />
-      <ImageView fitHeight="157.0" fitWidth="156.0" layoutX="5.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../common/images/2-Photoroom.png-Photoroom.png" />
-         </image>
-      </ImageView>
-      <Label layoutX="188.0" layoutY="562.0" text="click to watch video" textFill="#b3ffb3" />
-      <Label layoutX="417.0" layoutY="563.0" text="click to watch video" textFill="#b3ffb3" />
-      <Label layoutX="659.0" layoutY="563.0" text="click to watch video" textFill="#b3ffb3" />
+      <Label layoutX="188.0" layoutY="562.0" text="click to watch video" textFill="#5aed99" />
+      <Label layoutX="417.0" layoutY="563.0" text="click to watch video" textFill="#5aed99" />
+      <Label layoutX="659.0" layoutY="563.0" text="click to watch video" textFill="#5aed99" />
    </children>
 </Pane>

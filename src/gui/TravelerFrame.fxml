@@ -10,31 +10,33 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1100.0" stylesheets="@../styles/mainScreensStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TravelerFrameController">
+<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1100.0" stylesheets="@../styles/mainScreensStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TravelerFrameController">
    <top>
-      <AnchorPane fx:id="topBorder" prefHeight="114.0" prefWidth="1100.0" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="topBorder" prefHeight="130.0" prefWidth="1100.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="userLabel" layoutX="570.0" layoutY="53.0" text="Traveler">
+            <Label fx:id="userLabel" layoutX="586.0" layoutY="50.0" text="Traveler" textFill="#5aed99">
                <font>
                   <Font size="30.0" />
                </font>
             </Label>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="117.0" fitWidth="204.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../common/images/2-Photoroom.png-Photoroom.png" />
+                  <Image url="@../common/images/Go_Nature-removebg-preview.png" />
                </image>
             </ImageView>
+            <Line endX="689.0" endY="3.0" layoutX="412.0" layoutY="127.0" startX="-411.9999694824219" startY="3.0" stroke="#5aed99" />
          </children>
       </AnchorPane>
    </top>
    <left>
-      <StackPane fx:id="leftBorder" maxHeight="-Infinity" prefHeight="542.0" prefWidth="193.0" BorderPane.alignment="BOTTOM_LEFT">
+      <StackPane fx:id="leftBorder" maxHeight="-Infinity" prefHeight="619.0" prefWidth="171.0" BorderPane.alignment="BOTTOM_LEFT">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <JFXButton fx:id="travelerProfile" onAction="#travelerProfile" prefHeight="106.0" prefWidth="213.0" text="Profile">
+                  <JFXButton fx:id="travelerProfile" onAction="#travelerProfile" prefHeight="183.0" prefWidth="193.0" text="Profile">
                      <graphic>
                         <FontAwesomeIconView fill="#b3ffb3" glyphName="USER" styleClass="icon" />
                      </graphic>
@@ -42,7 +44,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </JFXButton>
-                  <JFXButton fx:id="orderBtn" onAction="#orderBtn" prefHeight="107.0" prefWidth="193.0" text="Order A Visit">
+                  <JFXButton fx:id="orderBtn" onAction="#orderBtn" prefHeight="172.0" prefWidth="193.0" text="Order A Visit">
                      <graphic>
                         <FontAwesomeIconView fill="#b3ffb3" glyphName="PENCIL" styleClass="icon" />
                      </graphic>
@@ -50,7 +52,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </JFXButton>
-                  <JFXButton fx:id="viewOrdersbutton" onAction="#viewOrdersbutton" prefHeight="112.0" prefWidth="193.0" text="View Orders">
+                  <JFXButton fx:id="viewOrdersbutton" onAction="#viewOrdersbutton" prefHeight="187.0" prefWidth="193.0" text="View Orders">
                      <graphic>
                         <FontAwesomeIconView fill="#b3ffb3" glyphName="LIST_UL" styleClass="icon" />
                      </graphic>
@@ -58,7 +60,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </JFXButton>
-                  <JFXButton fx:id="waitingListBtn" onAction="#waitingListBtn" prefHeight="106.0" prefWidth="213.0" text="View Waiting List">
+                  <JFXButton fx:id="waitingListBtn" onAction="#waitingListBtn" prefHeight="183.0" prefWidth="193.0" text="View Waiting List">
                      <graphic>
                         <FontAwesomeIconView fill="#b3ffb3" glyphName="TABLE" styleClass="icon" />
                      </graphic>
@@ -66,15 +68,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </JFXButton>
-                  <JFXButton fx:id="messages" onAction="#messages" prefHeight="106.0" prefWidth="213.0" text="View Messages">
-                     <graphic>
-                        <FontAwesomeIconView fill="#b3ffb3" glyphName="ENVELOPE" styleClass="icon" />
-                     </graphic>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </JFXButton>
-                  <JFXButton fx:id="logoutBtn" onAction="#logoutBtn" prefHeight="106.0" prefWidth="213.0" text="Logout">
+                  <JFXButton fx:id="logoutBtn" onAction="#logoutBtn" prefHeight="182.0" prefWidth="193.0" text="Logout">
                      <graphic>
                         <FontAwesomeIconView fill="#b3ffb3" glyphName="SIGN_OUT" styleClass="icon" />
                      </graphic>

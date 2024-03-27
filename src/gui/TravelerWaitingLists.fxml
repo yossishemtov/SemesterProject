@@ -30,7 +30,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <Label layoutX="395.0" layoutY="31.0" text="My Waiting Lists" textFill="#b3ffb3" />
-      <Label layoutX="365.0" layoutY="447.0" text="Select Waiting List  to exit from:" textFill="#b3ffb3" />
+      <Label layoutX="395.0" layoutY="31.0" text="My Waiting Lists" textFill="#5aed99" />
+      <Label layoutX="365.0" layoutY="447.0" text="Select Waiting List  to exit from:" textFill="#5aed99" />
    </children>
 </Pane>

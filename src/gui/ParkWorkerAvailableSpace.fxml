@@ -12,7 +12,7 @@
          <children>
             <HBox prefHeight="45.0" prefWidth="332.0">
                <children>
-                  <Text fill="#b3ffb3" strokeType="OUTSIDE" strokeWidth="0.0" text="Available Space In Park:" wrappingWidth="187.51171875" />
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Available Space In Park:" wrappingWidth="187.51171875" />
                   <Label fx:id="parkspace" text="parkspace" textFill="WHITE" />
                </children>
             </HBox>

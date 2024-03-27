@@ -3,29 +3,69 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ProfileController">
    <children>
-      <Label fx:id="headerLabel" layoutX="429.0" layoutY="49.0" text="Welcome" textAlignment="CENTER" textFill="WHITE" />
-      <Label layoutX="314.0" layoutY="137.0" style="-fx-text-fill: #b3ffb3;" text="First name:" />
-      <Label fx:id="profileNameLabel" layoutX="522.0" layoutY="137.0" text="Israel" textFill="WHITE" />
-      <Label layoutX="312.0" layoutY="178.0" style="-fx-text-fill: #b3ffb3;" text="Last Name:" />
-      <Label fx:id="profileLastNameLabel" layoutX="522.0" layoutY="178.0" text="Israeli" textFill="WHITE" />
-      <Label layoutX="312.0" layoutY="220.0" text="ID:" textFill="#b3ffb3" />
-      <Label fx:id="profileIDLabel" layoutX="522.0" layoutY="220.0" text="123456789" textFill="WHITE" />
-      <Label layoutX="312.0" layoutY="303.0" style="-fx-text-fill: #b3ffb3;" text="Email:" />
-      <Label fx:id="ProfileEmailLabel" layoutX="522.0" layoutY="303.0" text="IsraelIsraeli@gmail.com" textFill="WHITE" />
-      <Label layoutX="312.0" layoutY="261.0" style="-fx-text-fill: #b3ffb3;" text="Account type:" />
-      <Label fx:id="profileAccountTypeLabel" layoutX="522.0" layoutY="261.0" text="Park manager" textFill="WHITE" />
-      <Label fx:id="parkLabel" layoutX="314.0" layoutY="345.0" style="-fx-text-fill: #b3ffb3;" text="Park:" />
-      <Label fx:id="profileParkLabel" layoutX="522.0" layoutY="345.0" text="Linda park" textFill="WHITE" />
+      <Label fx:id="headerLabel" layoutX="408.0" layoutY="70.0" text="Welcome" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label layoutX="238.0" layoutY="137.0" text="First name:" textFill="#5aed99">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label fx:id="profileNameLabel" layoutX="432.0" layoutY="137.0" text="Israel" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label layoutX="234.0" layoutY="178.0" style="-fx-text-fill: #5aed99;" text="Last Name:">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label fx:id="profileLastNameLabel" layoutX="433.0" layoutY="178.0" text="Israeli" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label layoutX="238.0" layoutY="220.0" text="ID:" textFill="#5aed99">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label fx:id="profileIDLabel" layoutX="433.0" layoutY="220.0" text="123456789" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label layoutX="236.0" layoutY="302.0" style="-fx-text-fill: #5aed99;" text="Email:">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label fx:id="ProfileEmailLabel" layoutX="436.0" layoutY="302.0" text="IsraelIsraeli@gmail.com" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label layoutX="234.0" layoutY="260.0" style="-fx-text-fill: #5aed99;" text="Account type:">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label fx:id="profileAccountTypeLabel" layoutX="436.0" layoutY="260.0" text="Park manager" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label fx:id="parkLabel" layoutX="237.0" layoutY="345.0" style="-fx-text-fill: #5aed99;" text="Park:">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label fx:id="profileParkLabel" layoutX="436.0" layoutY="345.0" text="Linda park" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
   
-      <Line disable="true" endX="200.0" endY="1.0" layoutX="488.0" layoutY="125.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
-      <Line disable="true" endX="200.0" endY="1.0" layoutX="488.0" layoutY="167.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
-      <Line disable="true" endX="200.0" endY="1.0" layoutX="488.0" layoutY="209.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
-      <Line disable="true" endX="200.0" endY="1.0" layoutX="488.0" layoutY="251.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
-      <Line disable="true" endX="200.0" endY="1.0" layoutX="488.0" layoutY="293.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
-      <Line disable="true" endX="200.0" endY="1.0" layoutX="488.0" layoutY="335.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
-      <Line fx:id="line" disable="true" endX="200.0" endY="1.0" layoutX="488.0" layoutY="377.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
+      <Line disable="true" endX="254.0" layoutX="457.0" layoutY="128.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
+      <Line disable="true" endX="254.0" layoutX="457.0" layoutY="170.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
+      <Line disable="true" endX="254.0" layoutX="457.0" layoutY="211.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
+      <Line disable="true" endX="254.0" layoutX="457.0" layoutY="253.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
+      <Line disable="true" endX="254.0" layoutX="457.0" layoutY="292.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
+      <Line disable="true" endX="254.0" layoutX="457.0" layoutY="336.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
+      <Line fx:id="line" disable="true" endX="254.0" layoutX="457.0" layoutY="378.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
    </children>
 </AnchorPane>

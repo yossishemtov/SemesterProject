@@ -10,23 +10,23 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParkmanagerReportController">
    <children>
-      <Label layoutX="337.0" layoutY="56.0" text="Creating reports screen" textFill="#b3ffb3">
+      <Label layoutX="337.0" layoutY="56.0" text="Creating reports screen" textFill="#5aed99">
          <font>
             <Font size="22.0" />
          </font>
       </Label>
-      <JFXComboBox fx:id="ReportTypeCombobox" focusColor="#b3ffb3" layoutX="368.0" layoutY="438.0" unFocusColor="WHITE" />
+      <JFXComboBox fx:id="ReportTypeCombobox" focusColor="#5aed99" layoutX="368.0" layoutY="438.0" unFocusColor="WHITE" />
       <JFXComboBox fx:id="monthCombobox" focusColor="#b3ffb3" layoutX="696.0" layoutY="438.0" unFocusColor="WHITE" />
-      <JFXButton fx:id="Createbth" layoutX="466.0" layoutY="496.0" onAction="#CreateReportAction" text="Create">
+      <JFXButton fx:id="Createbth" layoutX="450.0" layoutY="505.0" onAction="#CreateReportAction" text="Create">
          <font>
             <Font size="15.0" />
          </font></JFXButton>
-      <Label layoutX="214.0" layoutY="440.0" text="Select report type" textFill="#b3ffb3">
+      <Label layoutX="214.0" layoutY="440.0" text="Select report type" textFill="#5aed99">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="566.0" layoutY="441.0" text="Choose a month" textFill="#b3ffb3">
+      <Label layoutX="566.0" layoutY="441.0" text="Choose a month" textFill="#5aed99">
          <font>
             <Font size="14.0" />
          </font>

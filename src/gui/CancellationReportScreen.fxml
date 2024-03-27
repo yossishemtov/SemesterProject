@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.DepartmentManagerCancellationReportController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.DepartmentManagerCancellationReportController">
    <children>
-      <Label fx:id="titlelLabal" layoutX="346.0" layoutY="28.0" prefHeight="28.0" prefWidth="450.0">
+      <Label fx:id="titlelLabal" layoutX="433.0" layoutY="27.0" prefHeight="28.0" prefWidth="450.0" textFill="#5aed99">
          <font>
             <Font size="18.0" />
          </font>
@@ -24,7 +24,7 @@
             <Font size="14.0" />
          </font>
          <graphic>
-            <FontAwesomeIconView glyphName="CLOSE" />
+            <FontAwesomeIconView fill="RED" glyphName="CLOSE" />
          </graphic>
       </JFXButton>
       <BarChart fx:id="CancellationBarChart" layoutX="276.0" layoutY="65.0" prefHeight="234.0" prefWidth="739.0">
@@ -43,7 +43,7 @@
             <NumberAxis side="LEFT" />
          </yAxis>
       </BarChart>
-      <Label layoutX="69.0" layoutY="67.0" text="Cancellation report data" underline="true">
+      <Label layoutX="69.0" layoutY="67.0" text="Cancellation report data" textFill="#5aed99" underline="true">
          <font>
             <Font size="14.0" />
          </font>
@@ -62,18 +62,18 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Average canceled orders :" />
-            <Label text="Average unfulfilled orders :" GridPane.rowIndex="1" />
-            <Label text="Median unfulfilled orders :" GridPane.rowIndex="3" />
-            <Label fx:id="AverageCanceledOrdersLabal" text="Label" GridPane.columnIndex="1" />
-            <Label fx:id="AverageUnfulfilledOrderLabal" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="MedianUnfulfilledOrdersLabal" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Label fx:id="MedianCanceledOdersLabal" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label text="Median canceled orders :" GridPane.rowIndex="2" />
-            <Label layoutX="10.0" layoutY="156.0" text="Total canceled order :s" GridPane.rowIndex="4" />
-            <Label layoutX="10.0" layoutY="195.0" text="Total unfulfilled orders :" GridPane.rowIndex="5" />
-            <Label fx:id="TotalCanceledLabal" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Label fx:id="TotalUnfulfilledLabal" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label text="Average canceled orders :" textFill="#5aed99" />
+            <Label text="Average unfulfilled orders :" textFill="#5aed99" GridPane.rowIndex="1" />
+            <Label text="Median unfulfilled orders :" textFill="#5aed99" GridPane.rowIndex="3" />
+            <Label fx:id="AverageCanceledOrdersLabal" text="Label" textFill="WHITE" GridPane.columnIndex="1" />
+            <Label fx:id="AverageUnfulfilledOrderLabal" text="Label" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="MedianUnfulfilledOrdersLabal" text="Label" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="MedianCanceledOdersLabal" text="Label" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Median canceled orders :" textFill="#5aed99" GridPane.rowIndex="2" />
+            <Label layoutX="10.0" layoutY="156.0" text="Total canceled orders :" textFill="#5aed99" GridPane.rowIndex="4" />
+            <Label layoutX="10.0" layoutY="195.0" text="Total unfulfilled orders :" textFill="#5aed99" GridPane.rowIndex="5" />
+            <Label fx:id="TotalCanceledLabal" text="Label" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label fx:id="TotalUnfulfilledLabal" text="Label" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
    </children>

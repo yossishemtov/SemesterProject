@@ -2,39 +2,85 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParkWorkerShowBillController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParkWorkerShowBillController">
    <children>
-      <Text fill="#63bf6c" layoutX="400.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invoice" underline="true">
+      <Text fill="#5aed99" layoutX="400.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invoice" underline="true">
          <font>
             <Font size="32.0" />
          </font>
       </Text>
-      <Text layoutX="271.0" layoutY="134.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order ID:" />
-      <Text layoutX="271.0" layoutY="171.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Traveler ID:" />
-      <Text layoutX="271.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount Of Visitors:" />
-      <Text layoutX="270.0" layoutY="246.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price:" />
-      <Text layoutX="271.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Visitor Email:" />
-      <Text layoutX="270.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date:" />
-      <Text layoutX="510.0" layoutY="134.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number:" />
-      <Text layoutX="510.0" layoutY="171.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Visit Time:" />
-      <Text layoutX="510.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Type:" />
-      <Label fx:id="orderIdLabel" layoutX="325.0" layoutY="121.0" text="Label" />
-      <Label fx:id="travelerIdLabel" layoutX="339.0" layoutY="158.0" text="Label" />
-      <Label fx:id="amountOfVisitorsLabel" layoutX="381.0" layoutY="198.0" text="Label" />
-      <Label fx:id="priceLabel" layoutX="305.0" layoutY="233.0" text="Label" />
-      <Label fx:id="visitorEmailLabel" layoutX="353.0" layoutY="268.0" text="Label" />
-      <Label fx:id="dateLabel" layoutX="305.0" layoutY="301.0" text="Label" />
-      <Label fx:id="phoneNumberLabel" layoutX="602.0" layoutY="121.0" text="Label" />
-      <Label fx:id="visitTimeLabel" layoutX="573.0" layoutY="158.0" text="Label" />
-      <Label fx:id="orderTypeLabel" layoutX="579.0" layoutY="198.0" text="Label" />
-      <JFXButton fx:id="confirmOrderButton" buttonType="RAISED" layoutX="340.0" layoutY="400.0" onAction="#confirmButtonAction" prefHeight="103.0" prefWidth="221.0" text="CONFIRM" textAlignment="CENTER" textFill="#54b950">
+      <JFXButton fx:id="confirmOrderButton" buttonType="RAISED" layoutX="395.0" layoutY="444.0" onAction="#confirmButtonAction" prefHeight="44.0" prefWidth="110.0" text="CONFIRM" textAlignment="CENTER" textFill="#54b950">
          <font>
             <Font name="Candara" size="18.0" />
          </font>
       </JFXButton>
+      <VBox layoutX="205.0" layoutY="185.0" prefHeight="230.0" prefWidth="277.0">
+         <children>
+            <HBox prefHeight="37.0" prefWidth="295.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Order ID:" wrappingWidth="142.228515625" />
+                  <Label fx:id="orderIdLabel" prefHeight="17.0" prefWidth="80.0" text="Label" textFill="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="38.0" prefWidth="295.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Traveler ID:" wrappingWidth="142.4375" />
+                  <Label fx:id="travelerIdLabel" text="Label" textFill="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="38.0" prefWidth="277.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount Of Visitors:" wrappingWidth="142.453125" />
+                  <Label fx:id="amountOfVisitorsLabel" text="Label" textFill="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="34.0" prefWidth="170.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Price:" wrappingWidth="143.21875" />
+                  <Label fx:id="priceLabel" text="Label" textFill="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="34.0" prefWidth="170.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Visitor Email:" wrappingWidth="142.83984375" />
+                  <Label fx:id="visitorEmailLabel" text="Label" textFill="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="44.0" prefWidth="295.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Date:" wrappingWidth="141.462890625" />
+                  <Label fx:id="dateLabel" text="Label" textFill="WHITE" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox layoutX="515.0" layoutY="185.0" prefHeight="200.0" prefWidth="277.0">
+         <children>
+            <HBox prefHeight="42.0" prefWidth="265.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number:" wrappingWidth="143.103515625" />
+                  <Label fx:id="phoneNumberLabel" text="Label" textFill="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="40.0" prefWidth="265.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Visit Time:" wrappingWidth="144.1171875" />
+                  <Label fx:id="visitTimeLabel" text="Label" textFill="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Type:" wrappingWidth="144.044921875" />
+                  <Label fx:id="orderTypeLabel" text="Label" textFill="WHITE" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
    </children>
 </Pane>
