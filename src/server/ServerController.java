@@ -174,9 +174,10 @@ public class ServerController {
 
 			} catch (java.net.BindException b) {
 				// This block catches the BindException specifically
-				 Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
-						 "Error: Port " + port + " is already in use. Please choose a different port.");
-					somethingWentWrong.showAndWait();				logTextArea.setText("Error: Port " + port + " is already in use. Please choose a different port.");
+				Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
+						"Error: Port " + port + " is already in use. Please choose a different port.");
+				somethingWentWrong.showAndWait();
+				logTextArea.setText("Error: Port " + port + " is already in use. Please choose a different port.");
 				System.err.println("Error: Port " + port + " is already in use. Please choose a different port.");
 			} catch (IOException e) {
 				// Catch other IOExceptions here
@@ -192,7 +193,7 @@ public class ServerController {
 		PortTxt.setText("5555");
 		DBUserNameTxt.setText("root"); // Assuming you might want to set the username to 'root' as well
 
-		//redirectSystemStreams(); // Redirect System.out and System.err
+		// redirectSystemStreams(); // Redirect System.out and System.err
 
 		HostCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getHost()));
 		IPCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getIp()));
@@ -236,9 +237,10 @@ public class ServerController {
 
 	public void closeConnection() {
 		try {
-			if (sv != null && sv.isListening())
+			if (sv != null && sv.isListening()) {
 				circleStatus.setFill(Color.RED);
-			sv.close();
+				sv.close();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 
