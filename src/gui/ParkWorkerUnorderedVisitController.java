@@ -210,7 +210,7 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 								ParkWorkerEntrenceControlController.orderToEnterOrExit = newUnorderedOrder;
 								
 								//Show Traveler bill
-				    			NavigationManager.openPage("ParkWorkerShowBill.fxml", click, "Traveler Bill", false);
+				    			NavigationManager.openPage("ParkWorkerShowBill.fxml", click, "Traveler Bill", false,false);
 							}else {
 								//If posting visit wasn't successful
 								Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Could not post a visit for the unordered visit");

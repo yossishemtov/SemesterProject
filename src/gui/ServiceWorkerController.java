@@ -86,7 +86,7 @@ public class ServiceWorkerController implements Initializable {
 
     		}
 			// navigate back to home page
-			NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true);
+			NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true, true);
 		} catch(Exception e) {
 				System.out.print("Something went wrong while clicking on the back button, check stack trace");
 				e.printStackTrace();

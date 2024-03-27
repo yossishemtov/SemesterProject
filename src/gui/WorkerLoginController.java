@@ -89,19 +89,19 @@ public class WorkerLoginController {
 					switch (role) {
 					case "Department Manager":
 						System.out.println("in Department Manager");
-						NavigationManager.openPage("DepartmentManagerScreen.fxml", click, "departmentManagerScreen", true);
+						NavigationManager.openPage("DepartmentManagerScreen.fxml", click, "departmentManagerScreen", true, true);
 						break;
 					case "Park Manager":
 						System.out.println("in Park Manager");
-						NavigationManager.openPage("ParkManager.fxml", click, "parkManagerScreen", true);
+						NavigationManager.openPage("ParkManager.fxml", click, "parkManagerScreen", true, true);
 						break;
 					case "Park Worker":
 						System.out.println("in Worker");
-						NavigationManager.openPage("ParkWorkerFrame.fxml", click, "workerScreen", true);
+						NavigationManager.openPage("ParkWorkerFrame.fxml", click, "workerScreen", true, true);
 
 						break;
 					case "Service Worker":
-						NavigationManager.openPage("ServiceWorkerFrame.fxml", click, "ServiceWorkerScreen", true);
+						NavigationManager.openPage("ServiceWorkerFrame.fxml", click, "ServiceWorkerScreen", true, true);
 						break;
 					default:
 						System.out.println("Role not recognized. Unable to proceed.");
@@ -137,7 +137,7 @@ public class WorkerLoginController {
 
 	public void BackBtn(ActionEvent click) {
 		try {
-			NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true);
+			NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true, true);
 
 		} catch (Exception e) {
 			System.out.print("Something went wrong while clicking on the back button, check stack trace");

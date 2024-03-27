@@ -143,7 +143,7 @@ public class ParkWorkerController implements Initializable {
 	    		}
 	    		
 	    		//Changing page back to main menu
-	    		NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true);
+	    		NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true, true);
     		
     		}catch(Exception e) {
     			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Something went wrong when trying to return to main menu");

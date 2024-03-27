@@ -157,7 +157,7 @@ public class ParkmanagerReportController implements Initializable {
 								"Report retrieved from database");
 						infoalert.showAndWait();
 						try {
-							NavigationManager.openPage(fxmlFile, event, "", false);
+							NavigationManager.openPage(fxmlFile, event, "", false,false);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -235,7 +235,7 @@ public class ParkmanagerReportController implements Initializable {
 						infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
 								"Report retrieved from database");
 						infoalert.showAndWait();
-						NavigationManager.openPage("CreateVisitorsReport.fxml", event, "", false);
+						NavigationManager.openPage("CreateVisitorsReport.fxml", event, "", false,false);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -268,7 +268,7 @@ public class ParkmanagerReportController implements Initializable {
 						warningalert.showAndWait();
 					}
 
-					NavigationManager.openPage("ParkManagerCreateUsageReport.fxml", event, "", false);
+					NavigationManager.openPage("ParkManagerCreateUsageReport.fxml", event, "", false,false);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					System.out.println("error Usage Report for Month: " + selectedMonthString);

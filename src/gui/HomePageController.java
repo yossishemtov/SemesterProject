@@ -61,7 +61,7 @@ public class HomePageController {
 
 		// Starting the root scene of the HomePage
 		try {
-			NavigationManager.openPage("HomePageFrame.fxml", primaryStage, "Home Page", true);
+			NavigationManager.openPage("HomePageFrame.fxml", primaryStage, "Home Page", true, true);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -72,7 +72,7 @@ public class HomePageController {
 		// Function for opening a new scene when clicking on the Client Login button
 		try {
 
-			NavigationManager.openPage("TravelerLoginFrame.fxml", click, "Traveler Login", true);
+			NavigationManager.openPage("TravelerLoginFrame.fxml", click, "Traveler Login", true, true);
 
 		} catch (Exception e) {
 			System.out.print("Something went wrong while clicking on the Traveler login button, check stack trace");
@@ -84,7 +84,7 @@ public class HomePageController {
 		// Function for opening a new scene when clicking on the Worker Login button
 		try {
 
-			NavigationManager.openPage("WorkerLoginFrame.fxml", click, "worker Login", true);
+			NavigationManager.openPage("WorkerLoginFrame.fxml", click, "worker Login", true, true);
 
 		} catch (Exception e) {
 			System.out.print("Something went wrong while clicking on the Worker login button, check stack trace");

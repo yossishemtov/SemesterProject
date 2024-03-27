@@ -121,7 +121,7 @@ public class ParkManagerController  implements Initializable {
 
 			}
 
-			NavigationManager.openPage("HomePageFrame.fxml", event, "User Menu", true);
+			NavigationManager.openPage("HomePageFrame.fxml", event, "User Menu", true, true);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

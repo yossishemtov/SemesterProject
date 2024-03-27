@@ -69,7 +69,7 @@ public class TravelerLoginController {
 		        		ClientServerMessage travelerLoginRequest = new ClientServerMessage(TravelerFromServer, Operation.PATCH_TRAVELER_SIGNEDIN);
 		        		ClientUI.clientControllerInstance.sendMessageToServer(travelerLoginRequest);
 		        		
-		        		NavigationManager.openPage("TravelerFrame.fxml", click, "Traveler Screen", true);
+		        		NavigationManager.openPage("TravelerFrame.fxml", click, "Traveler Screen", true, true);
 		        	}else {
 		        		
 		        		Alerts nullResponseAlert = new Alerts(Alert.AlertType.ERROR, "Already Logged In",
@@ -84,7 +84,7 @@ public class TravelerLoginController {
 				        Usermanager.setCurrentTraveler(TryLoginVistor);
 		        		// open order a visit screen 
 		        		Usermanager.setNewTraveler(true);
-		        		NavigationManager.openPage("OrderVisit.fxml", click, "order A visit Screen", true);
+		        		NavigationManager.openPage("OrderVisit.fxml", click, "order A visit Screen", true, true);
 		        	}	
 		        }
 	        } catch (Exception e) {
@@ -102,7 +102,7 @@ public class TravelerLoginController {
 	public void BackBtn(ActionEvent click) throws Exception{
 		//Function for opening a new scene when clicking on the Back Button
 	try {
-		NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true);
+		NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true, true);
 	} catch(Exception e) {
 			System.out.print("Something went wrong while clicking on the back button, check stack trace");
 			e.printStackTrace();

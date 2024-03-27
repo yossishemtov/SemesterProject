@@ -186,7 +186,7 @@ public class DepartmentManagerReportsController implements Initializable {
 								"Report retrieved from database");
 						infoalert.showAndWait();
 						try {
-							NavigationManager.openPage(fxmlFile, event, "", false);
+							NavigationManager.openPage(fxmlFile, event, "", false,false);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -253,7 +253,7 @@ public class DepartmentManagerReportsController implements Initializable {
 						infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
 								"Report retrieved from database");
 						infoalert.showAndWait();
-						NavigationManager.openPage("VisitReport.fxml", event, "", false);
+						NavigationManager.openPage("VisitReport.fxml", event, "", false,false);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -277,7 +277,7 @@ public class DepartmentManagerReportsController implements Initializable {
 						infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
 								"Report retrieved from database");
 						infoalert.showAndWait();
-						NavigationManager.openPage("CancellationReportScreen.fxml", event, "", false);
+						NavigationManager.openPage("CancellationReportScreen.fxml", event, "", false,false);
 					} else {
 						infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
 								"Not have data for this month in database");

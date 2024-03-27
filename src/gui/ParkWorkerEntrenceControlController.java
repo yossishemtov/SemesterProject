@@ -125,7 +125,7 @@ public class ParkWorkerEntrenceControlController {
 	    			ClientUI.clientControllerInstance.sendMessageToServer(addNewVisitMessage);
 	    			
 	    			//Show Traveler bill
-	    			NavigationManager.openPage("ParkWorkerShowBill.fxml", click, "Traveler Bill", false);
+	    			NavigationManager.openPage("ParkWorkerShowBill.fxml", click, "Traveler Bill", false,false);
 	    			
     			}catch (Exception e) {
     				e.printStackTrace();

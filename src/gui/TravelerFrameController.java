@@ -145,10 +145,11 @@ public class TravelerFrameController implements Initializable {
 				ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentTraveler(),
 						Operation.PATCH_TRAVELER_SIGNEDOUT);
 				ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
+				Usermanager.setCurrentTraveler(null);
 
 			}
 
-			NavigationManager.openPage("HomePageFrame.fxml", event, "User Menu", true);
+			NavigationManager.openPage("HomePageFrame.fxml", event, "User Menu", true, true);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -161,13 +162,13 @@ public class TravelerFrameController implements Initializable {
 
 	public void orderVisit(ActionEvent click) throws Exception {
 
-		NavigationManager.openPage("OrderAVisitFrame.fxml", click, "Order a visit", true);
+		NavigationManager.openPage("OrderAVisitFrame.fxml", click, "Order a visit", true,false);
 
 	}
 
 	public void viewWaitingList(ActionEvent click) throws Exception {
 
-		NavigationManager.openPage("WaitingListFrame.fxml", click, "Waiting list", true);
+		NavigationManager.openPage("WaitingListFrame.fxml", click, "Waiting list", true,false);
 
 	}
 
@@ -179,9 +180,10 @@ public class TravelerFrameController implements Initializable {
 				ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentTraveler(),
 						Operation.PATCH_TRAVELER_SIGNEDOUT);
 				ClientUI.clientControllerInstance.sendMessageToServer(requestToLogout);
+				Usermanager.setCurrentTraveler(null);
 
 			}
-			NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true);
+			NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true, true);
 
 		} catch (Exception e) {
 			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
@@ -190,51 +192,5 @@ public class TravelerFrameController implements Initializable {
 		}
 
 	}
-
-	public void viewOrders(ActionEvent click) throws Exception {
-
-		try {
-			NavigationManager.openPage("OrdersFrame.fxml", click, "Orders", true);
-		} catch (Exception e) {
-			System.out.print("Something went wrong while clicking on view messages button, check stack trace");
-			e.printStackTrace();
-		}
-	}
-
-//	    public void editOrderBtn(ActionEvent click) throws Exception {
-//	    	
-//	    	
-//	    	String orderID = OrderID.getText(); // get the order ID
-//		    Alerts alertID = InputValidation.ValidateVisitorID(orderID); // get the right alert
-//		    Boolean isSuccessful = alertID.getAlertType().toString().equals("INFORMATION");
-//		    
-//		    if (isSuccessful) { // if entered the right order ID
-//		        try {
-//		            NavigationManager.openPage("OrderFrame.fxml", click, "test", true);
-//		        }
-//		    }
-//	    }
-
-//	public void viewMessages(ActionEvent click) throws Exception {
-
-//		// Fetch messages from the server and set them in the TextArea
-//		ClientServerMessage<?> messege = new ClientServerMessage(currentTraveler, Operation.GET_MESSAGES);
-//		ClientUI.clientControllerInstance.sendMessageToServer(messege);
-//		// get data from server
-//		ArrayList<Message> messages = (ArrayList<Message>) ClientController.data.getDataTransfered();
-//		
-//		ArrayList<String> stringMessages = new ArrayList<>();
-//		
-//		for (Message message : messages) {
-//			stringMessages.add(message.toString());
-//		}
-//
-//		StringBuilder messagesText = new StringBuilder();
-//
-//		for (String message : stringMessages) {
-//			messagesText.append(message).append("\n");
-//		}
-//
-//		messagesTextArea.setText(messagesText.toString());
-
 }
+
