@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="750.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.RegisterNewGuideController">
+   <children>
+      <Text fill="#5aed99" layoutX="325.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Register New Guide" />
+      <JFXTextField fx:id="ID" focusColor="#5aed99" layoutX="283.0" layoutY="71.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="190.0" promptText="ID" styleClass="txtField" unFocusColor="WHITE">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <font>
+            <Font name="Ebrima" size="14.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextField fx:id="FirstName" focusColor="#5aed99" layoutX="284.0" layoutY="114.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="190.0" promptText="First Name" styleClass="txtField" unFocusColor="WHITE">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <font>
+            <Font name="Ebrima" size="14.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextField fx:id="LastName" focusColor="#5aed99" layoutX="283.0" layoutY="167.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="190.0" promptText="Last Name" styleClass="txtField" unFocusColor="WHITE">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <font>
+            <Font name="Ebrima" size="14.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextField fx:id="Email" focusColor="#5aed99" layoutX="284.0" layoutY="215.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="190.0" promptText="Email" styleClass="txtField" unFocusColor="WHITE">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <font>
+            <Font name="Ebrima" size="14.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextField fx:id="PhoneNumber" focusColor="#5aed99" layoutX="283.0" layoutY="264.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="190.0" promptText="Phone Number" styleClass="txtField" unFocusColor="WHITE">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <font>
+            <Font name="Ebrima" size="14.0" />
+         </font>
+      </JFXTextField>
+      <Label fx:id="asterisk" layoutX="281.0" layoutY="324.0" text="*" textFill="RED" />
+      <Label layoutX="295.0" layoutY="324.0" text="All the fields are required" textFill="WHITE" />
+      <Button fx:id="SubmitBtn" layoutX="342.0" layoutY="370.0" mnemonicParsing="false" onAction="#SubmitRegister" text="Submit" />
+   </children>
+   <cursor>
+      <Cursor fx:constant="DEFAULT" />
+   </cursor>
+</Pane>

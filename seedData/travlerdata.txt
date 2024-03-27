@@ -1,0 +1,4 @@
+1214214 	Alice 	Johnson 	alice@example.com 	054-7376231 	0
+2654456 	Bob 	Smith 	bob@example.com 	052-7355231 	0
+3123123 	Claire 	Williams 	claire@example.com 	054-7376431 	1
+4643544 	David 	Brown 	david@example.com 	054-2136231 	0

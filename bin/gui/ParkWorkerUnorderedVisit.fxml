@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParkWorkerUnorderedVisitController">
+   <children>
+      <Text fill="#5aed99" layoutX="322.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unordered Visit System" underline="true">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Text>
+      <Text fill="#5aed99" layoutX="186.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Amount Of Allowed Unordered Visitors:">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Label fx:id="allowedVisitorsLabel" layoutX="547.0" layoutY="104.0" textFill="WHITE" />
+      <JFXButton fx:id="orderButton" layoutX="432.0" layoutY="455.0" onAction="#orderButtonAction" prefHeight="46.0" prefWidth="83.0" text="Order" textFill="#76ab52">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </JFXButton>
+      <VBox layoutX="136.0" layoutY="145.0" prefHeight="310.0" prefWidth="337.0">
+         <children>
+            <HBox prefHeight="44.0" prefWidth="284.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Traveler ID:" wrappingWidth="90.296875" />
+                  <JFXTextField fx:id="travelerIdField" focusColor="#5aed99" prefHeight="31.0" prefWidth="195.0" unFocusColor="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="45.0" prefWidth="284.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount Of Visitors:" wrappingWidth="153.31640625" />
+                  <JFXTextField fx:id="amountOfVisitorsField" focusColor="#5aed99" prefHeight="31.0" prefWidth="132.0" unFocusColor="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="53.0" prefWidth="284.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Visitor Email:" wrappingWidth="110.7998046875" />
+                  <JFXTextField fx:id="visitorEmailField" focusColor="#5aed99" prefHeight="31.0" prefWidth="177.0" unFocusColor="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="60.0" prefWidth="284.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number:" wrappingWidth="121.87939453125" />
+                  <JFXTextField fx:id="phoneNumberField" focusColor="#5aed99" prefHeight="31.0" prefWidth="159.0" unFocusColor="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="52.0" prefWidth="337.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Type Of Order:" wrappingWidth="128.66845703125" />
+                  <SplitMenuButton fx:id="menuField" mnemonicParsing="false" text="Choose Type Of Order">
+                    <items>
+                      <MenuItem fx:id="familyMenuFeild" mnemonicParsing="false" onAction="#chooseEntrencePlan" text="Family" />
+                      <MenuItem fx:id="soloMenuField" mnemonicParsing="false" onAction="#chooseEntrencePlan" text="Solo" />
+                    </items>
+                  </SplitMenuButton>
+               </children>
+            </HBox>
+            <HBox prefHeight="45.0" prefWidth="337.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Price:" wrappingWidth="68.2734375" />
+                  <Label fx:id="priceLabel" textFill="WHITE" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox layoutX="500.0" layoutY="185.0" prefHeight="115.0" prefWidth="292.0">
+         <children>
+            <HBox prefHeight="49.0" prefWidth="292.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name:" wrappingWidth="92.59716796875" />
+                  <JFXTextField fx:id="firstNameField" focusColor="#5aed99" prefHeight="27.0" prefWidth="106.0" unFocusColor="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="55.0" prefWidth="292.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name:" wrappingWidth="95.11767578125" />
+                  <JFXTextField fx:id="lastNameField" focusColor="#5aed99" prefHeight="27.0" prefWidth="106.0" unFocusColor="WHITE" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</Pane>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TravelerOrdersController">
+   <children>
+      <Label layoutX="417.0" layoutY="41.0" text="My Orders" textFill="#5aed99" />
+      <TableView fx:id="TravelerOrders" layoutX="34.0" layoutY="74.0" prefHeight="317.0" prefWidth="835.0">
+        <columns>
+          <TableColumn fx:id="orderIDCol" prefWidth="70.0" style="-fx-text-align: center;" text="Order ID" />
+            <TableColumn fx:id="parkNameCol" prefWidth="120.0" text="Park Name" />
+            <TableColumn fx:id="AmtOfVisitorsCol" prefWidth="145.0" text="Amount Of Visitors" />
+            <TableColumn fx:id="PriceCol" minWidth="0.0" prefWidth="65.0" text="Price" />
+            <TableColumn fx:id="DateCol" prefWidth="104.0" text="Date" />
+            <TableColumn fx:id="VisitTimeCol" prefWidth="94.0" text="Visit Time" />
+            <TableColumn fx:id="TypeOfVisitCol" prefWidth="127.0" text="Type Of Visit" />
+            <TableColumn fx:id="StatusCol" prefWidth="109.0" text="Status" />
+        </columns>
+      </TableView>
+      <JFXButton fx:id="cancelOrder" layoutX="252.0" layoutY="458.0" onAction="#CancelTravelerOrder" text="Cancel Order">
+         <graphic>
+            <FontAwesomeIconView fill="#eb0e0e" glyphName="CLOSE" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="ConfirmOrder" layoutX="489.0" layoutY="458.0" onAction="#ConfirmTravelerOrder" text="Confirm Order">
+         <graphic>
+            <FontAwesomeIconView fill="#2cdd43" glyphName="CHECK" />
+         </graphic>
+      </JFXButton>
+      <Label layoutX="341.0" layoutY="417.0" text="Select Order to confirm or cancel:" textFill="#5aed99" />
+   </children>
+</Pane>

@@ -22,7 +22,7 @@ public class MySqlConnector {
 
     /**
      * Attempts to establish a connection to the MySQL database.
-     *
+     * 
      * @param username the username required for the database connection
      * @param password the password required for the database connection
      * @return a Connection object to the database; null if the connection fails
@@ -38,9 +38,13 @@ public class MySqlConnector {
         }
 
         try {
-            // Attempt to establish a connection to the specified MySQL database
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost/project?serverTimezone=IST", username, password);
+            // Define connection URL with timeout settings
+            String connectionURL = "jdbc:mysql://localhost/project?serverTimezone=Israel" +
+                                   "&connectTimeout=5000" + // Set connection timeout (5 seconds)
+                                   "&socketTimeout=10000";  // Set socket timeout (10 seconds)
+
+            // Attempt to establish a connection to the specified MySQL database with timeout settings
+            Connection conn = DriverManager.getConnection(connectionURL, username, password);
             System.out.println("SQL connection succeed");
             return conn;
         } catch (SQLException ex) {
@@ -51,6 +55,8 @@ public class MySqlConnector {
             return null; // Return null if connection fails
         }
     }
+
+
 
     /**
      * Returns the database connection.

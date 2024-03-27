@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.WorkerLoginController">
+   <children>
+      <Text fill="#5aed99" layoutX="375.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Worker Login">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+      <Button fx:id="LoginBtn" layoutX="451.0" layoutY="410.0" mnemonicParsing="false" onAction="#WorkerLoginBtn" prefHeight="33.0" prefWidth="107.0" text="Login" textFill="#2abf3c">
+
+         <font>
+            <Font size="13.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <FontAwesomeIconView fill="#b3ffb3" glyphName="SIGN_IN" styleClass="icon" />
+         </graphic>
+      </Button>
+      <Button fx:id="BackBtn" layoutX="315.0" layoutY="410.0" mnemonicParsing="false" onAction="#BackBtn" prefHeight="41.0" prefWidth="72.0" text="Back" textFill="RED">
+         <font>
+            <Font size="13.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <JFXTextField fx:id="WorkerUsername" focusColor="#5aed99" layoutX="375.0" layoutY="274.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="190.0" promptText="Enter username" styleClass="txtField" unFocusColor="WHITE">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <font>
+            <Font name="Ebrima" size="14.0" />
+         </font>
+      </JFXTextField>
+      <JFXPasswordField fx:id="WorkerPwd" focusColor="#5aed99" layoutX="375.0" layoutY="334.0" prefHeight="31.0" prefWidth="190.0" promptText="Enter Password" unFocusColor="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font></JFXPasswordField>
+      <ImageView fitHeight="157.0" fitWidth="156.0" layoutX="372.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../common/images/Go_Nature-removebg-preview.png" />
+         </image>
+      </ImageView>
+      <FontAwesomeIconView fx:id="userIcon" fill="#5aed99" glyphName="USER" layoutX="340.0" layoutY="297.0" size="30" />
+      <FontAwesomeIconView fx:id="passIcon" fill="#5aed99" glyphName="LOCK" layoutX="340.0" layoutY="361.0" size="34" />
+      <Rectangle arcHeight="150.0" arcWidth="150.0" fill="#14151700" height="359.0" layoutX="237.0" layoutY="141.0" mouseTransparent="true" stroke="#5aed99" strokeType="INSIDE" strokeWidth="5.0" width="429.0" />
+   </children>
+</Pane>

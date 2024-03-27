@@ -2,6 +2,7 @@ package gui;
 
 import client.ClientController;
 import client.ClientUI;
+import client.NavigationManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,16 +11,23 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.fxml.Initializable;
 
+import java.net.InetAddress;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class UserConnectController {
+import com.jfoenix.controls.JFXTextField;
+
+public class UserConnectController implements Initializable {
 	
 	    @FXML
-	    private TextField IpAddressField;
-
+	    private JFXTextField IpAddressField;
+	
 	    @FXML
-	    private TextField portAddressField;
+	    private JFXTextField portAddressField;
 
 	    @FXML
 	    private Button connectBtn;
@@ -27,16 +35,29 @@ public class UserConnectController {
 	    @FXML
 	    private Button exitBtn;
 	    
+	    @Override
+	    public void initialize(URL location, ResourceBundle resources) {
+	        try {
+	            InetAddress inetAddress = InetAddress.getLocalHost();
+	            String ipAddress = inetAddress.getHostAddress();
+	            IpAddressField.setText(ipAddress);
+	            portAddressField.setText("5555");
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            System.out.println("Could not determine IP address.");
+	        }
+	    }
 	    
 	    public void start(Stage primaryStage) throws Exception {
 			
 			//Starting the root scene of the userInterface
+	    	
 			try {			
 				Parent root = FXMLLoader.load(getClass().getResource("userConnectingFrame.fxml"));
 				Scene scene = new Scene(root);
-
 				primaryStage.setTitle("User Connection");
 				primaryStage.setScene(scene);
+				primaryStage.getIcons().add(new Image("/common/images/1.png"));
 				primaryStage.show();
 			}catch(Exception e){
 				e.printStackTrace();
@@ -50,11 +71,11 @@ public class UserConnectController {
 			
 			try {				
 			ClientUI.clientControllerInstance = new ClientController(IpAddressFieldValue, portAddressFieldValue);
-			Parent root = new FXMLLoader().load(getClass().getResource("UserInterfaceFrame.fxml"));
+			Parent root = new FXMLLoader().load(getClass().getResource("HomePageFrame.fxml"));
 			Stage stage = (Stage)((Node)click.getSource()).getScene().getWindow(); //hiding primary window
 			Scene scene = new Scene(root);	
 			
-			stage.setTitle("User Menu");
+			stage.setTitle("Home Page");
 			
 			stage.setScene(scene);		
 			stage.show();

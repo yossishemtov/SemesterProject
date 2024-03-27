@@ -4,74 +4,84 @@ import java.io.IOException;
 import server.BackEndServer;
 import java.util.ArrayList;
 
-import clientEntities.Reservation;
-import common.DisplayIF;
+
+import common.Alerts;
+import common.ClientServerMessage;
+
+import common.Operation;
+import common.Usermanager;
+import javafx.application.Platform;
 import ocsf.client.AbstractClient;
 
 public class SystemClient extends AbstractClient{
 	
 	//A boolean to indicate waiting for a server response
 	public static boolean awaitResponse = false;
-	private ClientController clientController;
+	private ClientController<?> clientControllerInstance;
 
 	public SystemClient(String host, int port, ClientController clientController) throws IOException{
 		super(host, port);
-		this.clientController = clientController;
+		this.clientControllerInstance = clientController;
 		// TODO Auto-generated constructor stub
 		openConnection();
 	}
 
 
+
+	
 	//Handle message from the server
-	  public void handleMessageFromServer(Object msg) 
+	@Override
+	public void handleMessageFromServer(Object messageFromServer) {
 	  
+	    // Log the class type and content of the message for debugging
+	    System.out.println("Message Class: " + messageFromServer.getClass().getName());
+	    System.out.println("Message Content: " + messageFromServer.toString());
+
+	    // Check for disconnection acknowledgment
+	    if (Operation.DISCONNECTING.equals(messageFromServer.toString())) {
+	        
+	        awaitResponse = false; // Acknowledgment received; stop waiting
+	        return; // Early return to skip further processing
+	    }
+
+	    // Check if the message is of type ClientServerMessage
+	    if (messageFromServer instanceof ClientServerMessage) {
+	        System.out.println("in instanceof");
+	        ClientServerMessage<?> clientServerMessage = (ClientServerMessage<?>) messageFromServer;
+
+	        // Assuming you have some specific handling or logging based on the message content
+	        // For example:
+	        System.out.println("Received ClientServerMessage with command in system client: " + clientServerMessage.toString());
+	        clientControllerInstance.setData(clientServerMessage);
+	        awaitResponse = false;
+	        
+	    } else {
+	        System.out.println("Received message of unknown type");
+	        Platform.runLater(() -> {
+	            Alerts alertOfUnknownTypeOfMessage = new Alerts(Alerts.AlertType.ERROR, "Received Data Error", "", "Something went wrong while receiving the data from the server");
+	            alertOfUnknownTypeOfMessage.showAndWait();
+	        });
+	    }
+	    awaitResponse = false;
+	}
+
+	  
+	  
+	  public void handleMessageFromClientController(ClientServerMessage<?> messageToServer)  
 	  {
-		    // Check for disconnection acknowledgment
-		    if ("ack_disconnect".equals(msg.toString())) {
-		        awaitResponse = false; // Acknowledgment received; stop waiting
-		        return; // Early return to skip further processing
-		    }
-		  
-		  awaitResponse = false;
-		    // Check if the message is the type you expect, in this case, ArrayList<String>
-		    if (msg instanceof ArrayList) {
-		    	String userCommand = ((ArrayList<String>) msg).get(0);
-		    	
-		    	
-		    	System.out.println("in");
-		        ArrayList<String> orderData = (ArrayList<String>) msg;
-		        
-		    //Putting the received data in the ClientController data array using the setData mathod
-		    switch(userCommand) {
-			    case "GET ALL":
-			    	orderData.remove(0);
-			    	clientController.setData(orderData);
-			    	break;
-			    
-			    case "GET ORDER":
-			    	orderData.remove(0);
-			    	clientController.setData(orderData);
-		    }
-		        
-		    }else{
-		    	clientController.display(msg.toString());
-		   }
-	  }
-	  
-	  
-	  public void handleMessageFromClientController(String message)  
-	  {
+		   	System.out.println("handleMessageFromClientController");
 		  
 		  awaitResponse = true;
 		  
 		//Send the message to the server and waiting for a response
-	    try
+	    try 
 		    {
-		    	sendToServer(message);
+		    	sendToServer(messageToServer); 
 		    	
 		    	while (awaitResponse) {
 					try {
 						Thread.sleep(100);
+					
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -79,17 +89,73 @@ public class SystemClient extends AbstractClient{
 		    }
 	    catch(IOException e)
 		    {
-		    	clientController.display
+		    	clientControllerInstance.display
 		        ("Could not send message to server.  Terminating client.");
 		      quit();
 		    }
 	  }
 	  
 	  public void quit() {
-		    try {
+		  
+		  
+		  //Check if worker is logged in (if the user exited from worker signin page) and sign him off
+		  if(Usermanager.getCurrentWorker() != null) {
+				ClientServerMessage requestToLogout = new ClientServerMessage(Usermanager.getCurrentWorker(), Operation.PATCH_GENERALPARKWORKER_SIGNEDOUT);
+				
+				try {
+			        sendToServer(requestToLogout);
+			        awaitResponse = true; // Wait for the server to acknowledge disconnection
+
+			        // Wait for acknowledgment
+			        while (awaitResponse) {
+			            try {
+			                Thread.sleep(100); // Check for the acknowledgment every 100 milliseconds
+			            } catch (InterruptedException e) {
+			                Thread.currentThread().interrupt(); // Restore interrupted status
+			                System.err.println("Interrupted while waiting for disconnection acknowledgment.");
+			                break;
+			            }
+			        }
+				
+					}catch(IOException e) {
+				        // Handle exception
+				        e.printStackTrace();
+					}
+			  }
+		  
+		//Check if Traveler is logged in (if the user exited from Traveler signin page) and sign him off
+		  if(Usermanager.getCurrentTraveler() != null) {
+				ClientServerMessage requestToLogoutTraveler = new ClientServerMessage(Usermanager.getCurrentTraveler(), Operation.PATCH_TRAVELER_SIGNEDOUT);
+				
+				try {
+			        sendToServer(requestToLogoutTraveler);
+			        awaitResponse = true; // Wait for the server to acknowledge disconnection
+
+			        // Wait for acknowledgment
+			        while (awaitResponse) {
+			            try {
+			                Thread.sleep(100); // Check for the acknowledgment every 100 milliseconds
+			            } catch (InterruptedException e) {
+			                Thread.currentThread().interrupt(); // Restore interrupted status
+			                System.err.println("Interrupted while waiting for disconnection acknowledgment.");
+			                break;
+			            }
+			        }
+				
+					}catch(IOException e) {
+				        // Handle exception
+				        e.printStackTrace();
+					}
+			  }
+		    
+		    	
+		    	
+		    	try {
+		    	
 		        // Notify server of disconnection
-		        sendToServer("disconnecting");
-		        awaitResponse = true; // Wait for the server to acknowledge disconnection
+		    	ClientServerMessage<?> message=new ClientServerMessage(null,Operation.DISCONNECTING);
+		        sendToServer(message);
+		        awaitResponse = true; // Wsait for the server to acknowledge disconnection
 
 		        // Wait for acknowledgment
 		        while (awaitResponse) {

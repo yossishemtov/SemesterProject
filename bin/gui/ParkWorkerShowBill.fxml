@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParkWorkerShowBillController">
+   <children>
+      <Text fill="#5aed99" layoutX="400.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invoice" underline="true">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Text>
+      <JFXButton fx:id="confirmOrderButton" buttonType="RAISED" layoutX="395.0" layoutY="444.0" onAction="#confirmButtonAction" prefHeight="44.0" prefWidth="110.0" text="CONFIRM" textAlignment="CENTER" textFill="#54b950">
+         <font>
+            <Font name="Candara" size="18.0" />
+         </font>
+      </JFXButton>
+      <VBox layoutX="205.0" layoutY="185.0" prefHeight="230.0" prefWidth="277.0">
+         <children>
+            <HBox prefHeight="37.0" prefWidth="295.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Order ID:" wrappingWidth="142.228515625" />
+                  <Label fx:id="orderIdLabel" prefHeight="17.0" prefWidth="80.0" text="Label" textFill="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="38.0" prefWidth="295.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Traveler ID:" wrappingWidth="142.4375" />
+                  <Label fx:id="travelerIdLabel" text="Label" textFill="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="38.0" prefWidth="277.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount Of Visitors:" wrappingWidth="142.453125" />
+                  <Label fx:id="amountOfVisitorsLabel" text="Label" textFill="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="34.0" prefWidth="170.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Price:" wrappingWidth="143.21875" />
+                  <Label fx:id="priceLabel" text="Label" textFill="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="34.0" prefWidth="170.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Visitor Email:" wrappingWidth="142.83984375" />
+                  <Label fx:id="visitorEmailLabel" text="Label" textFill="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="44.0" prefWidth="295.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Date:" wrappingWidth="141.462890625" />
+                  <Label fx:id="dateLabel" text="Label" textFill="WHITE" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox layoutX="515.0" layoutY="185.0" prefHeight="200.0" prefWidth="277.0">
+         <children>
+            <HBox prefHeight="42.0" prefWidth="265.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number:" wrappingWidth="143.103515625" />
+                  <Label fx:id="phoneNumberLabel" text="Label" textFill="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="40.0" prefWidth="265.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Visit Time:" wrappingWidth="144.1171875" />
+                  <Label fx:id="visitTimeLabel" text="Label" textFill="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Type:" wrappingWidth="144.044921875" />
+                  <Label fx:id="orderTypeLabel" text="Label" textFill="WHITE" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</Pane>
