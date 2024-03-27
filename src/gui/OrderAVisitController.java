@@ -129,6 +129,9 @@ public class OrderAVisitController implements Initializable {
     private Label summaryPrice;
 
     @FXML
+    private Label lblPrice;
+    
+    @FXML
     private Button btnHome;
     
     @FXML
@@ -210,7 +213,31 @@ public class OrderAVisitController implements Initializable {
 			}
 		});
 		
-		
+		// Add listener to PayNowBtn and PayParkBtn
+		paymentToggleGroup = new ToggleGroup();
+	    PayNowBtn.setToggleGroup(paymentToggleGroup);
+	    PayParkBtn.setToggleGroup(paymentToggleGroup);
+	    paymentToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+	        calculateAndDisplayPriceIfNeeded();
+	    });
+
+	    // Add listener to txtVisitorsNum
+	    txtVisitorsNum.textProperty().addListener((observable, oldValue, newValue) -> {
+	        calculateAndDisplayPriceIfNeeded();
+	    });
+
+	    // Add listener to OrderComboBox
+	    OrderComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+	        calculateAndDisplayPriceIfNeeded();
+	    });
+	    
+	 // Limit input length of txtVisitorsNum to 4 characters
+	    txtVisitorsNum.textProperty().addListener((observable, oldValue, newValue) -> {
+	        if (newValue.length() > 4) {
+	            txtVisitorsNum.setText(oldValue);
+	        }
+	    });
+	    
 		if (WaitingListController.getSetDateFromWaitList() == 1) {
 			txtDate.setValue(LocalDate.parse((String) WaitingListController.getAnotherDates().get(0)));
 			TimeComboBox.setValue(LocalTime.parse((String) WaitingListController.getAnotherDates().get(1)));
@@ -239,6 +266,8 @@ public class OrderAVisitController implements Initializable {
 		
 	}
 	
+	
+	
 	/**
      * Handles the action event when the submit order button is clicked.
      *
@@ -255,7 +284,7 @@ public class OrderAVisitController implements Initializable {
 					LocalDate.parse(txtDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))),
 					LocalTime.parse(TimeComboBox.getValue().toString().split("-")[0]), 
 					"PENDING", OrderComboBox.getValue() , txtPhone.getText(), ParkComboBox.getValue());
-			order.setPrice(CalculatePrice());
+			order.setPrice(calculatePrice(OrderComboBox.getValue().toString(), Integer.valueOf(txtVisitorsNum.getText())));
 			
 			
 			/** if we pushed Submit order */
@@ -637,36 +666,54 @@ public class OrderAVisitController implements Initializable {
 		return matcher.find();
 	} 
 
-	/**
-	 * Calculates the cost of the visit
-	 * @return cost of the visit
-	 */
-	private Float CalculatePrice() {
-		Float discountprice;
-			// Solo/family pre-order 
-
-			if ((OrderComboBox.getValue().equals("SOLO") || OrderComboBox.getValue().equals("FAMILY"))){
-
-				discountprice = (float) (100*Integer.parseInt(txtVisitorsNum.getText())*0.85);
-				return discountprice;
-			}
-
-			//Group pre-order, pre-payment
-			if ((PayNowBtn.isSelected() && (OrderComboBox.getValue().equals("GUIDEDGROUP")))){
-				discountprice = (float) (100*(Integer.parseInt(txtVisitorsNum.getText())-1)*0.75*0.88); 
-				return discountprice;
-			}
-			
-			//Group pre-order, payment at park
-			if ((PayParkBtn.isSelected() && (OrderComboBox.getValue().equals("GUIDEDGROUP")))){
-				discountprice = (float) (100*(Integer.parseInt(txtVisitorsNum.getText())-1)*0.75); 
-				return discountprice;
-			}
-			return 0.0f;
-			
+	private Float calculatePrice(String orderType, int numVisitors) {
+	    Float discountPrice = 0.0f;
+	    if ((orderType.equals("SOLO") || orderType.equals("FAMILY"))) {
+	        discountPrice = (float) (100 * numVisitors * 0.85);
+	    } else if (PayNowBtn.isSelected() && orderType.equals("GUIDEDGROUP")) {
+	        discountPrice = (float) (100 * (numVisitors - 1) * 0.75 * 0.88);
+	    } else if (PayParkBtn.isSelected() && orderType.equals("GUIDEDGROUP")) {
+	        discountPrice = (float) (100 * (numVisitors - 1) * 0.75);
+	    }
+	    return discountPrice;
 	}
 	
+	private boolean isDataComplete() {
+	    return PayNowBtn.isSelected() || PayParkBtn.isSelected() &&
+	            OrderComboBox.getValue() != null &&
+	            !txtVisitorsNum.getText().isEmpty();
+	}
 
-
+	private void calculateAndDisplayPriceIfNeeded() {
+	    if (isDataComplete()) {
+	        calculateAndDisplayPrice();
+	    } else {
+	        lblPrice.setText(""); // Clear price label if any required field is missing
+	    }
+	}
 	
+	private void calculateAndDisplayPrice() {
+	    if (PayNowBtn.isSelected() || PayParkBtn.isSelected()) {
+	        String orderType = OrderComboBox.getValue();
+	        String numVisitorsStr = txtVisitorsNum.getText();
+
+	        if ((PayNowBtn.isSelected() || PayParkBtn.isSelected()) && orderType != null && numVisitorsStr != null && !numVisitorsStr.isEmpty()) {
+	            try {
+	                Integer numVisitors = Integer.parseInt(numVisitorsStr);
+	                if (numVisitors == 1 && (PayNowBtn.isSelected() || PayParkBtn.isSelected()) && orderType.equals("GUIDEDGROUP")) {
+	                    lblPrice.setText("GroupVisit>=2");
+	                    return;
+	                }
+	                Float price = calculatePrice(orderType, numVisitors);
+	                lblPrice.setText(String.format("%.2f", price)); 
+	            } catch (NumberFormatException e) {
+	                // Handle invalid number format
+	                lblPrice.setText("Invalid input");
+	            }
+	        }
+	    } else {
+	        lblPrice.setText(""); // Clear price label if no payment option is selected
+	    }
+	}
+
 }
