@@ -1,12 +1,9 @@
-
 package gui;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
-
 import client.ClientController;
 import client.ClientUI;
 import common.Alerts;
@@ -25,18 +22,20 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.temporal.TemporalAdjusters;
 import java.util.Map;
-
 import javafx.scene.control.Label;
-
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+
+/**
+ * Controller class for creating and displaying a usage report in the park manager's interface.
+ * This class handles the visual representation and interaction of generating a usage report,
+ * including displaying usage statistics on a calendar-like grid and allowing the manager to
+ * add comments and save the report.
+ */
 public class ParkmanagerCreateUsageReportController implements Initializable {
 
 	@FXML
@@ -56,19 +55,39 @@ public class ParkmanagerCreateUsageReportController implements Initializable {
 	@FXML
 	private JFXButton SaveReportbth;
 
-	private Map<Integer, Integer> dailyUsage;
 
+	
+
+	   /**
+     * Initializes the controller class. This method is automatically called
+     * after the FXML file has been loaded. It initializes the usage report
+     * view by loading the usage report data and setting up the grid pane.
+     *
+     * @param location  The location used to resolve relative paths for the root object,
+     *                  or null if the location is not known.
+     * @param resources The resources used to localize the root object, or null if
+     *                  the root object was not localized.
+     */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loadUsageReport();
 		populateGridPane();
 	}
 
+    /**
+     * Loads the usage report data from the server response stored in the client's current session.
+     */
 	private void loadUsageReport() {
 		usageReport = (UsageReport) ClientUI.clientControllerInstance.getData().getDataTransfered();
 
 	}
+	
 
+	   /**
+     * Populates the grid pane with data from the usage report. It sets up the
+     * grid to display days of the week and fills in each day with color-coded
+     * rectangles to represent park occupancy.
+     */
 	private void populateGridPane() {
 		if (usageReport == null)
 			return;
@@ -138,35 +157,44 @@ public class ParkmanagerCreateUsageReportController implements Initializable {
 
 	}
 
+    /**
+     * Handles the action of closing the usage report page.
+     * @param event The event that triggered the action.
+     */
 	@FXML
 	void ClosePageAction(ActionEvent event) {
 		Stage stage = (Stage) ClosePagebth.getScene().getWindow();
 		stage.close();
 	}
 
-	@FXML
-	void SaveReportAction(ActionEvent event) {
-		if (usageReport != null) {
-			if (CommentTextArea.getText() != null) {
-				usageReport.setComment(CommentTextArea.getText());
-			}
-			ClientServerMessage<?> messageForServer = new ClientServerMessage<>(usageReport,
-					Operation.POST_USAGE_REPORT);
-			ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
+	 /**
+     * Handles saving the usage report, including any comments made by the park manager.
+     * @param event The event that triggered the action.
+     */
+    @FXML
+    void SaveReportAction(ActionEvent event) {
+        if (usageReport != null) {
+            // Adding comments to the report if present
+            if (CommentTextArea.getText() != null) {
+                usageReport.setComment(CommentTextArea.getText());
+            }
 
-			if (ClientController.data.getFlag()) {
-				ParkmanagerReportController.refreshReportsTable();
-				Alerts erorAlert = new Alerts(Alerts.AlertType.INFORMATION, "Confirmtion", "",
-						"The report was successfully saved.");
-				erorAlert.showAndWait();
-				ClosePageAction(event);
+            // Sending the report to the server for saving
+            ClientServerMessage<?> messageForServer = new ClientServerMessage<>(usageReport, Operation.POST_USAGE_REPORT);
+            ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
 
-			}
-		} else {
-			Alerts erorAlert = new Alerts(Alerts.AlertType.ERROR, "Error", "Error", "Not able to save visitor report.");
-			erorAlert.showAndWait();
-		}
-
-	}
+            // Confirmation message upon successful save
+            if (ClientController.data.getFlag()) {
+                ParkmanagerReportController.refreshReportsTable();
+                Alerts confirmationAlert = new Alerts(Alerts.AlertType.INFORMATION, "Confirmation", "", "The report was successfully saved.");
+                confirmationAlert.showAndWait();
+                ClosePageAction(event); // Close the page after saving
+            }
+        } else {
+            // Error message if the report data is not available
+            Alerts errorAlert = new Alerts(Alerts.AlertType.ERROR, "Error", "Error", "Not able to save visitor report.");
+            errorAlert.showAndWait();
+        }
+    }
 
 }

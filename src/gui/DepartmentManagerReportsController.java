@@ -1,19 +1,14 @@
 package gui;
 
 import java.io.IOException;
-
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
-
 import client.ClientController;
 import client.ClientUI;
 import client.NavigationManager;
@@ -21,34 +16,24 @@ import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
 import common.Park;
-import common.Usermanager;
-import common.worker.ChangeRequest;
 import common.worker.*;
-import common.worker.UsageReport;
 import common.worker.Report.ReportType;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
+/**
+ * Controls the Department Manager Reports GUI. This controller handles the UI
+ * logic for generating and displaying various reports for a department manager.
+ */
 public class DepartmentManagerReportsController implements Initializable {
 
 	ObservableList<?> observable = FXCollections.observableArrayList();
@@ -77,9 +62,9 @@ public class DepartmentManagerReportsController implements Initializable {
 	@FXML
 	private JFXButton Createbth;
 	@FXML
-	private JFXComboBox<String> monthCombobox; 
+	private JFXComboBox<String> monthCombobox;
 	@FXML
-	private JFXComboBox<String> ReportTypeCombobox; 
+	private JFXComboBox<String> ReportTypeCombobox;
 	@FXML
 	private JFXComboBox<String> parkNameComboBox;
 	@FXML
@@ -90,6 +75,16 @@ public class DepartmentManagerReportsController implements Initializable {
 
 	private Map<String, Integer> parkNamesToNumbers;
 
+	/**
+	 * Initializes the controller class. This method is automatically called after
+	 * the fxml file has been loaded. It sets up the UI components and prepares them
+	 * for user interaction.
+	 *
+	 * @param location  The location used to resolve relative paths for the root
+	 *                  object, or null if the location is not known.
+	 * @param resources The resources used to localize the root object, or null if
+	 *                  the root object was not localized.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		configureTableColumns();
@@ -106,6 +101,12 @@ public class DepartmentManagerReportsController implements Initializable {
 
 	}
 
+	/**
+	 * Loads the mapping from park names to their numeric identifiers.
+	 *
+	 * @return A map where each key is a park name and its value is the
+	 *         corresponding park number.
+	 */
 	private Map<String, Integer> loadParkNamesToNumbersMap() {
 		ClientServerMessage<?> getParkInfoMsg = new ClientServerMessage(null, Operation.GET_PARKS_INFO);
 		ClientUI.clientControllerInstance.sendMessageToServer(getParkInfoMsg);
@@ -120,6 +121,10 @@ public class DepartmentManagerReportsController implements Initializable {
 		return parkNamesToNumbers;
 	}
 
+	/**
+	 * Configures the table columns for the reports table view. This method sets up
+	 * the cell value factories for each column in the reports table.
+	 */
 	private void configureTableColumns() {
 		reportIDCol.setCellValueFactory(new PropertyValueFactory<>("reportID"));
 		reportTypeCol.setCellValueFactory(new PropertyValueFactory<>("reportType"));
@@ -134,6 +139,12 @@ public class DepartmentManagerReportsController implements Initializable {
 		commentCol.setCellValueFactory(new PropertyValueFactory<>("comment"));
 	}
 
+	/**
+	 * Handles the action to show reports based on selected park ID. This method is
+	 * invoked when the "Show Report" button is clicked.
+	 *
+	 * @param event The event that occurred.
+	 */
 	@FXML
 	void ShowReportparkIdAction(ActionEvent event) {
 		String selectedparkString = parkNameComboBoxShowReport.getSelectionModel().getSelectedItem();
@@ -158,7 +169,14 @@ public class DepartmentManagerReportsController implements Initializable {
 			}
 		}
 	}
- 
+
+	/**
+	 * Handles the action when a report is double-clicked in the reports table. This
+	 * method is intended to open a detailed view of the selected report when it is
+	 * double-clicked.
+	 *
+	 * @param event The mouse event that occurred.
+	 */
 	@FXML
 	void ShowReportTableClickAction(MouseEvent event) {
 		if (event.getClickCount() == 2) { // Double click
@@ -186,7 +204,7 @@ public class DepartmentManagerReportsController implements Initializable {
 								"Report retrieved from database");
 						infoalert.showAndWait();
 						try {
-							NavigationManager.openPage(fxmlFile, event, "", false,false);
+							NavigationManager.openPage(fxmlFile, event, "", false, false);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -207,6 +225,18 @@ public class DepartmentManagerReportsController implements Initializable {
 		}
 	}
 
+	/**
+	 * Retrieves a list of reports for a given park ID from the server. This method
+	 * sends a request to the server to fetch reports associated with a specific
+	 * park. If the server returns a positive response, it converts the received
+	 * list to an ObservableList and returns it. In case of failure or no data
+	 * found, it alerts the user and returns an empty ObservableList.
+	 *
+	 * @param parkId The ID of the park for which reports are being requested.
+	 * @return An ObservableList of {@link Report} objects for the specified park.
+	 *         If no reports are found or in case of an error, returns an empty
+	 *         list.
+	 */
 	private ObservableList<Report> getReportsByParkId(int parkId) {
 		ClientServerMessage<Integer> messageForServer = new ClientServerMessage<>(parkId, Operation.GET_GENERAL_REPORT);
 		ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
@@ -223,6 +253,17 @@ public class DepartmentManagerReportsController implements Initializable {
 		}
 	}
 
+	/**
+	 * Handles the action to create a report based on the user's selections in the
+	 * GUI. This method is called when the user triggers the report creation
+	 * process, typically by clicking a button. It validates the user's selections
+	 * from the GUI, prepares the appropriate request based on the selected report
+	 * type, and sends it to the server. Depending on the server's response, it
+	 * either navigates to the relevant report page or informs the user of any
+	 * issues.
+	 *
+	 * @param event The {@link ActionEvent} triggered by the user's interaction.
+	 */
 	@FXML
 	void CreateReportAction(ActionEvent event) {
 		Alerts infoalert;
@@ -253,7 +294,7 @@ public class DepartmentManagerReportsController implements Initializable {
 						infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
 								"Report retrieved from database");
 						infoalert.showAndWait();
-						NavigationManager.openPage("VisitReport.fxml", event, "", false,false);
+						NavigationManager.openPage("VisitReport.fxml", event, "", false, false);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -277,7 +318,7 @@ public class DepartmentManagerReportsController implements Initializable {
 						infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
 								"Report retrieved from database");
 						infoalert.showAndWait();
-						NavigationManager.openPage("CancellationReportScreen.fxml", event, "", false,false);
+						NavigationManager.openPage("CancellationReportScreen.fxml", event, "", false, false);
 					} else {
 						infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
 								"Not have data for this month in database");

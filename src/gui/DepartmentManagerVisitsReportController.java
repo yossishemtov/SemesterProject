@@ -1,49 +1,30 @@
 package gui;
 
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import javafx.scene.chart.LineChart;
-
 import javafx.scene.control.Label;
-
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
-
-import client.ClientController;
 import client.ClientUI;
-import common.ClientServerMessage;
-
-import common.Operation;
-
 import javafx.scene.chart.CategoryAxis;
-
-import javafx.scene.control.Button;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 import common.worker.VisitReport;
 import common.worker.VisitReport.TypeOfOrder;
 import common.worker.VisitData;
 
+/**
+ * Controller for the Department Manager Visits Report GUI.
+ * This class is responsible for initializing and populating the visits line chart with data
+ * obtained from a {@link VisitReport} object.
+ */
 public class DepartmentManagerVisitsReportController implements Initializable {
 
 	@FXML
@@ -61,9 +42,17 @@ public class DepartmentManagerVisitsReportController implements Initializable {
 	@FXML
 	private JFXButton Closebth;
 
-	// This is a placeholder for your VisitReport object
-	private VisitReport Visitreport;
 
+    // Placeholder for your VisitReport object
+    private VisitReport Visitreport;
+
+    /**
+     * Initializes the controller class. This method is automatically called
+     * after the FXML file has been loaded. It initializes the chart with data.
+     *
+     * @param location  The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resources The resources used to localize the root object, or null if the root object was not localized.
+     */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loadUsageReport(); // Mock method to load report data
@@ -71,12 +60,19 @@ public class DepartmentManagerVisitsReportController implements Initializable {
 
 	} 
 
-	private void loadUsageReport() {
+	/**
+     * Loads the usage report data from the server and stores it in the {@link VisitReport} object.
+     */
+    private void loadUsageReport() {
+        // Retrieve and store the VisitReport object sent from the server
+        this.Visitreport = (VisitReport) ClientUI.clientControllerInstance.getData().getDataTransfered();
+    }
 
-		this.Visitreport = (VisitReport) ClientUI.clientControllerInstance.getData().getDataTransfered();
-
-	}
-
+    /**
+     * Populates the line chart with visit report data.
+     * This method organizes visit data by type of order and hour of day,
+     * then displays it in the line chart.
+     */
 	private void populateLineChart() {
 	    titlelLabal.setText("Visit Report for month " + Visitreport.getMonthNumber());
 	    VisitLineChart.getData().clear();
@@ -110,11 +106,15 @@ public class DepartmentManagerVisitsReportController implements Initializable {
 	    });
 	}
 
+    /**
+     * Handles the action of closing the visit report page.
+     * This method is called when the close button is clicked.
+     *
+     * @param event The event that triggered the method call.
+     */
 	@FXML
 	void ClosepageAction(ActionEvent event) {
-		// Get the current stage using the event source
 		Stage stage = (Stage) Closebth.getScene().getWindow();
-		// Close the current stage
 		stage.close();
 	}
 }

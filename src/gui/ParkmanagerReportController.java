@@ -3,13 +3,10 @@ package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-
 import client.ClientController;
 import client.ClientUI;
 import client.NavigationManager;
@@ -26,19 +23,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+
 
 public class ParkmanagerReportController implements Initializable {
 
@@ -213,18 +204,16 @@ public class ParkmanagerReportController implements Initializable {
 			// React based on the selected report type
 			switch (selectedReportType) {
 			case "Visitors Report":
-				VisitorsReport visitorReportToServer = new VisitorsReport(0, // Assuming 0 is a placeholder for the
-																				// report ID
-						null, // Assuming this is for ReportType, which you might want to specify
+				VisitorsReport visitorReportToServer = new VisitorsReport(0, 
+						null, 
 						Usermanager.getCurrentWorker().getWorksAtPark(), // Gets the park ID from the current worker
 						LocalDate.now(), // Sets the report's date to today
-						selectedMonth, // The month selected, make sure this is correctly parsed as an integer if
-										// needed
-						null, // Placeholder for comment
-						null, // Placeholder for total individual visitors
-						null, // Placeholder for total group visitors
-						null, // Placeholder for total family visitors
-						null // Placeholder for total visitors
+						selectedMonth, // The month selected	
+						null, 
+						null, 
+						null, 
+						null, 
+						null 
 				);
 				ClientServerMessage<?> messageForServer = new ClientServerMessage<>(visitorReportToServer,
 						Operation.GET_NEW_VISITORS_REPORT);
