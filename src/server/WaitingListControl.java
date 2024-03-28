@@ -1,12 +1,8 @@
 package server;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-
-import DB.DatabaseController;
-import common.Park;
 import common.WaitingList;
 
 /**
@@ -14,15 +10,6 @@ import common.WaitingList;
  */
 
 public class WaitingListControl {
-	private  static DatabaseController DC;
-
-	public WaitingListControl(DatabaseController DBController) {
-		WaitingListControl.DC = DBController;
-     
-	}
-
-
-	
 
 
 	/**
@@ -31,7 +18,6 @@ public class WaitingListControl {
 	 * @param Order that has been canceled.
 	 */
 	public static void notifyPersonFromWaitingList(WaitingList waiting) {
-	    Park park = DC.getParkDetails(waiting.getParkNumber());
 	    ArrayList<WaitingList> toNotify = getOrderFromWaitingList(waiting);
 
 	    if (toNotify.isEmpty())
@@ -40,13 +26,13 @@ public class WaitingListControl {
 	    for (WaitingList notify : toNotify) {
 	        String waitingListId = String.valueOf(notify.getWaitingListId());
 	        String status = "HAS_SPOT";
-	        DC.updateWaitingStatusArray(new ArrayList<String>(Arrays.asList(status, waitingListId)));
+	        NotifyThread.getDC().updateWaitingStatusArray(new ArrayList<String>(Arrays.asList(status, waitingListId)));
 	    }
 	}
 
 
 	private static ArrayList<WaitingList> getOrderFromWaitingList(WaitingList waiting) {
-		ArrayList<WaitingList> rightPlace = DC.findPlaceInWaiting(waiting);
+		ArrayList<WaitingList> rightPlace = NotifyThread.getDC().findPlaceInWaiting(waiting);
 		return rightPlace;
 	}
 

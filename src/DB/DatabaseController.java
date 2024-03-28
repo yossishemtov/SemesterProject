@@ -520,14 +520,14 @@ public class DatabaseController {
 	}
 
 	// Method to get a Park object by parkNumber
-	public Park getParkDetails(int parkNumber) {
+	public Park getParkDetails(Integer parkNumber) {
 		Park park = null;
 		String query = "SELECT * FROM `park` WHERE parkNumber = ?";
 
-		try (PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
-			preparedStatement.setInt(1, parkNumber);
+		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+			ps.setInt(1, parkNumber);
 
-			ResultSet resultSet = preparedStatement.executeQuery();
+			ResultSet resultSet = ps.executeQuery();
 
 			if (resultSet.next()) {
 				System.out.println("in");
@@ -542,11 +542,9 @@ public class DatabaseController {
 				Integer managerID = resultSet.getInt("managerId");
 				Integer workingTime = resultSet.getInt("workingTime");
 				Integer gap = resultSet.getInt("gap"); // Retrieve gap from resultSet
-				Integer unorderedvisits = resultSet.getInt("unorderedvisits");
 
 				park = new Park(name, parkNumber, maxVisitors, capacity, currentVisitors, location, staytime,
 						workersAmount, gap, managerID, workingTime);
-				park.setUnorderedVisits(unorderedvisits);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -2432,4 +2430,31 @@ public class DatabaseController {
 
 	}
 
+	/**Updates the status of an existing order in the database. 
+	*@param order The order object containing the order ID and the new status.
+	*@return true if the update was successful, false otherwise.
+	*/
+	public Boolean updateOrderStatusArray(ArrayList<?> info) {
+	    String query = "UPDATE `order` SET orderStatus = ? WHERE orderId = ?";
+
+	        try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	            ps.setString(1, (String) info.get(0));
+	            ps.setInt(2, Integer.parseInt((String) info.get(1))); 
+
+	            int affectedRows = ps.executeUpdate();
+	            if (affectedRows > 0) {
+	                System.out.println("Order status updated successfully.");
+	                return true;
+	            } else {
+	                System.out.println(
+	                        "No order was found with the provided ID, or the status is already set to the new value.");
+	            }
+	        } catch (SQLException e) {
+	            System.out.println("An error occurred while updating the order status:");
+	            e.printStackTrace();
+	        }
+	        return false;
+	    }
+	
+	
 }
