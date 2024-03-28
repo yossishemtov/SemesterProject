@@ -39,7 +39,7 @@
                         <Image url="@../common/images/WaitingList.png" />
                     </image>
                 </ImageView>
-                <ImageView fitHeight="106.0" fitWidth="96.0" layoutX="269.0" layoutY="219.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="68.0" fitWidth="77.0" layoutX="279.0" layoutY="232.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../common/images/Reschedule.png" />
                     </image>
@@ -52,7 +52,7 @@
                         <Image url="@../common/images/FullCapacity.png" />
                     </image>
                 </ImageView>
-            <Pane fx:id="WaitingSucc" layoutX="154.0" layoutY="70.0" prefHeight="461.0" prefWidth="607.0" styleClass="pnWaitingList" stylesheets="@../styles/styles.css">
+            <Pane fx:id="WaitingSucc" layoutX="152.0" layoutY="70.0" prefHeight="461.0" prefWidth="607.0" styleClass="pnWaitingList" stylesheets="@../styles/styles.css">
                <children>
                   <Label layoutX="157.0" layoutY="119.0" prefHeight="20.0" prefWidth="293.0" styleClass="labelBold" text="You've successfully entered waiting list" textFill="#5aed99">
                      <font>

@@ -29,8 +29,13 @@ public class NotifyThread implements Runnable {
 
 	private final int second = 1000;
 	private final int minute = second * 30;
-	private DatabaseController DC;
-    private ArrayList<OrderNotification> ordersWithAlerts; // Array to store orders with alerts
+	private static DatabaseController DC;
+	
+    public static DatabaseController getDC() {
+		return DC;
+	}
+
+	private ArrayList<OrderNotification> ordersWithAlerts; // Array to store orders with alerts
     private ArrayList<WaitingList> waitingArray;
 
 	public NotifyThread(DatabaseController DBController) {
@@ -96,7 +101,6 @@ public class NotifyThread implements Runnable {
 	    
 	    // Iterate through orders with alerts and cancel expired orders
 	    Iterator<OrderNotification> iterator = ordersWithAlerts.iterator();
-	    Order orderTonotification=new Order();
 	    while (iterator.hasNext()) {
 	    	int i = 0;
 	    	OrderNotification notificationOfSpecificOrder = iterator.next();
@@ -106,24 +110,23 @@ public class NotifyThread implements Runnable {
 	        	
 	        	//Change status in the orderNotification table
 	        	DC.changeStatusOfNotification(notificationOfSpecificOrder.getOrderId(), "PASSED");
-	        	orderTonotification.setOrderId(notificationOfSpecificOrder.getOrderId());
-	        	orderTonotification.setStatus("CANCELEDBYSERVER");
 	        	
 	        	//Change status in the order table
-	            DC.updateOrderStatus(orderTonotification);
+	            DC.updateOrderStatusArray(new ArrayList<String>(Arrays.asList("CANCELEDBYSERVER", String.valueOf(notificationOfSpecificOrder.getOrderId()))));
 
 	            // Remove the canceled order from orderNotifications
 	            WaitingListControl.notifyPersonFromWaitingList(waiting.get(i));
-
 
 	            waiting.remove(0);
 	            iterator.remove();
 	        }
 	    }
 	}
+	
 	private void deleteAlertsExpired() {
 	    DC.deleteExpiredOrderAlerts();
 	}
+	
 	private boolean isAlertExpired(LocalTime currentTime, LocalTime alertEndTime) {
 	    return currentTime.isAfter(alertEndTime);
 	}

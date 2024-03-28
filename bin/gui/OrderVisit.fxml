@@ -244,6 +244,16 @@
                            </children>
                         </VBox>
                         <Button fx:id="Back" layoutX="247.0" layoutY="522.0" mnemonicParsing="false" onAction="#BackButton" text="Back" />
+                        <Label fx:id="lblPrice" layoutX="481.0" layoutY="454.0" textFill="#5aed99">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="424.0" layoutY="454.0" text="Price:" textFill="#5aed99">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
                      </children>
                   </Pane>
                </children>

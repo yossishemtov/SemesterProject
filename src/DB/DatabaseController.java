@@ -384,7 +384,13 @@ public class DatabaseController {
 			return false; // Handle the exception according to your needs
 		}
 	}
-
+	
+	/**
+     * Retrieves visit report data for a specified park and month.
+     *
+     * @param report The VisitReport object representing the report.
+     * @return The VisitReport object populated with visit data, or null if no data is found.
+     */
 	public VisitReport getVisitReport(VisitReport report) {
 		String query = "SELECT v.enteringTime, TIMESTAMPDIFF(MINUTE, v.enteringTime, v.exitingTime) AS duration, o.typeOfOrder "
 				+ "FROM `visit` v JOIN `order` o ON v.orderNumber = o.orderId "
@@ -427,6 +433,12 @@ public class DatabaseController {
 		}
 	}
 
+	/**
+     * Inserts a change request into the database.
+     *
+     * @param request The ChangeRequest object representing the change request to be inserted.
+     * @return True if the change request is successfully inserted, false otherwise.
+     */
 	public boolean insertChangeRequest(ChangeRequest request) {
 		String query = "INSERT INTO `changerequests` (parkName, parkNumber, capacity, gap, staytime, approved) VALUES (?, ?, ?, ?, ?, ?)";
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
@@ -446,6 +458,13 @@ public class DatabaseController {
 		return false;
 	}
 
+	/**
+     * Retrieves change requests waiting for approval based on the role of the worker.
+     *
+     * @param worker The GeneralParkWorker object representing the worker.
+     * @return An ArrayList of ChangeRequest objects representing the change requests waiting for approval,
+     *         or null if no requests are found.
+     */
 	public ArrayList<ChangeRequest> getChangeRequestsWaitingForApproval(GeneralParkWorker worker) {
 		ArrayList<ChangeRequest> requests = new ArrayList<>();
 		String query = "SELECT * FROM `changerequests` WHERE parkNumber = ? AND approved = 'WAITING_FOR_APPROVAL'";
@@ -484,6 +503,12 @@ public class DatabaseController {
 		return requests.isEmpty() ? null : requests; // Return null if the list is empty
 	}
 
+	/**
+     * Updates the status of a change request.
+     *
+     * @param request The ChangeRequest object representing the change request to be updated.
+     * @return True if the status of the change request is successfully updated, false otherwise.
+     */
 	public boolean updateChangeRequestStatus(ChangeRequest request) {
 		String query = "UPDATE `changerequests` SET approved = ? WHERE id = ?";
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
@@ -498,7 +523,13 @@ public class DatabaseController {
 		}
 		return false;
 	}
-
+	
+	/**
+     * Updates the number of unordered visits for a park.
+     *
+     * @param parkWithIdAndNewUnorderedVisits The Park object containing the park number and the new unordered visits count.
+     * @return True if the update is successful, false otherwise.
+     */
 	public Boolean patchParkUnorderedVisits(Park parkWithIdAndNewUnorderedVisits) {
 		// change the unordered visits amount
 
@@ -519,15 +550,20 @@ public class DatabaseController {
 		}
 	}
 
-	// Method to get a Park object by parkNumber
-	public Park getParkDetails(int parkNumber) {
+	/**
+     * Retrieves details of a park based on the park number.
+     *
+     * @param parkNumber The park number for which details are to be retrieved.
+     * @return A Park object containing the details of the park, or null if no park is found with the specified number.
+     */
+	public Park getParkDetails(Integer parkNumber) {
 		Park park = null;
 		String query = "SELECT * FROM `park` WHERE parkNumber = ?";
 
-		try (PreparedStatement preparedStatement = connectionToDatabase.prepareStatement(query)) {
-			preparedStatement.setInt(1, parkNumber);
+		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+			ps.setInt(1, parkNumber);
 
-			ResultSet resultSet = preparedStatement.executeQuery();
+			ResultSet resultSet = ps.executeQuery();
 
 			if (resultSet.next()) {
 				System.out.println("in");
@@ -542,11 +578,9 @@ public class DatabaseController {
 				Integer managerID = resultSet.getInt("managerId");
 				Integer workingTime = resultSet.getInt("workingTime");
 				Integer gap = resultSet.getInt("gap"); // Retrieve gap from resultSet
-				Integer unorderedvisits = resultSet.getInt("unorderedvisits");
 
 				park = new Park(name, parkNumber, maxVisitors, capacity, currentVisitors, location, staytime,
 						workersAmount, gap, managerID, workingTime);
-				park.setUnorderedVisits(unorderedvisits);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -676,7 +710,8 @@ public class DatabaseController {
 	public ArrayList<WaitingList> getWaitingListsDataFromDatabase(Traveler traveler) {
 		ArrayList<WaitingList> waitingListDataForClient = new ArrayList<>();
 		// Assuming the table and column names are corrected to match Java conventions
-		String query = "SELECT orderId, waitingListId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder, parkName, placeInList FROM waitinglist WHERE travelerId = ?";
+		String query = "SELECT orderId, waitingListId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, "
+				+ "typeOfOrder, parkName, placeInList FROM waitinglist WHERE travelerId = ? AND orderStatus != 'CONFIRMED'";
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 			ps.setInt(1, traveler.getId());
@@ -729,7 +764,13 @@ public class DatabaseController {
 			return false;
 		}
 	}
-
+	
+	 /**
+     * Retrieves details of a traveler from the database based on the traveler's ID.
+     *
+     * @param travelerFromClient The Traveler object representing the traveler whose details are to be retrieved.
+     * @return A Traveler object containing the details of the traveler, or null if no traveler is found with the specified ID.
+     */
 	public Traveler getTravelerDetails(Traveler travelerFromClient) {
 		String query = "SELECT firstName, lastName, email, phoneNumber, GroupGuide, isloggedin FROM `traveler` WHERE id = ?";
 		Traveler traveler = null; // Initialize to null
@@ -757,11 +798,12 @@ public class DatabaseController {
 		return traveler; // Returns the new Traveler object or null if not found
 	}
 
-	// Get GeneralParkWorkerDetails
-	// check GetGeneralParkWorker login details and return the data,if not exist
-	// return empty ArrayList of type generalParkWorker
-	// WorkerId | firstName | lastName | email | role | userName | password |
-	// worksAtPark
+	/**
+     * Retrieves details of a general park worker from the database based on the worker's credentials.
+     *
+     * @param worker The GeneralParkWorker object representing the worker whose details are to be retrieved.
+     * @return A GeneralParkWorker object containing the details of the worker, or null if no worker is found with the specified credentials.
+     */
 	public GeneralParkWorker getGeneralParkWorkerDetails(GeneralParkWorker worker) {
 		System.out.println("Starting to fetch GeneralParkWorker details from DB.");
 		System.out.println("Credentials provided: " + worker.getUserName());
@@ -820,7 +862,6 @@ public class DatabaseController {
 	 * @param traveler The traveler whose orders are to be retrieved.
 	 * @return An ArrayList of Order objects.
 	 */
-
 	public ArrayList<Order> getOrdersDataFromDatabase(Traveler traveler) {
 		ArrayList<Order> orderDataForClient = new ArrayList<>();// Ensure the query reflects your actual database table
 																// and column names
@@ -909,7 +950,6 @@ public class DatabaseController {
 		String updateQuery = "UPDATE `order` SET orderStatus = ? WHERE orderId = ?";
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(updateQuery)) {
-//			System.out.println("order new status is:" +order.getOrderStatus());
 			ps.setString(1, order.getOrderStatus()); // Assuming getStatus() returns the new status of the order
 			ps.setInt(2, order.getOrderId()); // Assuming getOrderId() returns the ID of the order to be updated
 
@@ -949,6 +989,12 @@ public class DatabaseController {
 		}
 	}
 
+	/**
+	 * Updates the parameters of a park based on a change request.
+	 *
+	 * @param changeRequest The ChangeRequest object representing the details of the requested changes.
+	 * @return True if the update is successful, false otherwise.
+	 */
 	public Boolean patchParkParameters(ChangeRequest changeRequest) {
 		// Assuming capacity is a column in your database that should be updated based
 		// on gap
@@ -1268,6 +1314,12 @@ public class DatabaseController {
 		return fetchedPark;
 	}
 
+	/**
+	 * Retrieves the details of a park based on the park number associated with a general park worker.
+	 *
+	 * @param worker The GeneralParkWorker object containing the park number.
+	 * @return A Park object containing the details of the specified park, or null if no park is found.
+	 */
 	public Park getAmountOfVisitors(GeneralParkWorker worker) {
 		String query = "SELECT * FROM park WHERE parkNumber = ?";
 
@@ -1289,9 +1341,13 @@ public class DatabaseController {
 		return park;
 	}
 
+	/**
+	 * Generates a new visitors report based on the specified criteria.
+	 *
+	 * @param visitReport The VisitorsReport object representing the criteria for generating the report.
+	 * @return A VisitorsReport object containing the newly generated report, or null if no data is available.
+	 */
 	public VisitorsReport getNewVisitorsReport(VisitorsReport visitReport) {
-		System.out.println("in db getNewVisitorsReport...");
-		System.out.println(visitReport.toString());
 		boolean haveData = false;
 		String query = "SELECT typeOfOrder, SUM(amountOfVisitors) AS totalVisitors " + "FROM `order` "
 				+ "WHERE parkNumber = ? AND YEAR(date) = ? AND MONTH(date) = ? AND orderStatus = 'COMPLETED' "
@@ -1360,6 +1416,12 @@ public class DatabaseController {
 		return report;
 	}
 
+	/**
+	 * Inserts a new visitor report into the database.
+	 *
+	 * @param report The VisitorsReport object representing the report to be inserted.
+	 * @return True if the insertion is successful, false otherwise.
+	 */
 	public boolean insertVisitorReport(VisitorsReport report) {
 		// First, insert into the 'report' table.
 		System.out.println("in db insert...");
@@ -1424,6 +1486,12 @@ public class DatabaseController {
 		return false;
 	}
 
+	/**
+	 * Retrieves a visitors report based on the report ID.
+	 *
+	 * @param inputReport The Report object containing the report ID.
+	 * @return A VisitorsReport object containing the details of the specified report, or null if not found.
+	 */
 	public VisitorsReport getVisitorsReportByReportId(Report inputReport) {
 		System.out.println("in db getVisitorsReportByReportId...");
 
@@ -1468,6 +1536,12 @@ public class DatabaseController {
 		return visitorsReport;
 	}
 
+	/**
+	 * Retrieves a list of general reports for a specific park ID.
+	 *
+	 * @param parkId The ID of the park for which reports are to be retrieved.
+	 * @return A list of Report objects containing the general reports for the specified park.
+	 */
 	public List<Report> getGeneralReportsByParkId(int parkId) {
 		List<Report> reports = new ArrayList<>();
 		// Include 'month' in your SELECT query
@@ -1503,6 +1577,12 @@ public class DatabaseController {
 		return reports;
 	}
 
+	/**
+	 * Generates an updated cancellation report based on the provided criteria.
+	 *
+	 * @param cancellationReport The CancellationReport object containing the criteria for generating the report.
+	 * @return A CancellationReport object containing the updated cancellation report, or null if no data is available.
+	 */
 	public CancellationReport getCancellationReport(CancellationReport cancellationReport) {
 		System.out.println("In db getUpdatedCancellationReport...");
 		System.out.println(cancellationReport.toString());
@@ -1555,6 +1635,15 @@ public class DatabaseController {
 		return cancellationReport;
 	}
 
+	/**
+	 * Processes the specified SQL query to populate a daily map with data retrieved from the database.
+	 *
+	 * @param dailyMap    The Map<Integer, Integer> to populate with daily data, where the key is the day of the month
+	 *                     and the value is the count of the corresponding metric.
+	 * @param parkNumber  The ID of the park for which the data is being retrieved.
+	 * @param reportDate  The LocalDate representing the date for which the data is being retrieved.
+	 * @param query       The SQL query to execute for fetching the data.
+	 */
 	private void processQuery(Map<Integer, Integer> dailyMap, Integer parkNumber, LocalDate reportDate, String query) {
 		try (PreparedStatement statement = connectionToDatabase.prepareStatement(query)) {
 			statement.setInt(1, parkNumber);
@@ -1578,10 +1667,14 @@ public class DatabaseController {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * Generates a new usage report based on the specified criteria.
+	 *
+	 * @param usageReport The UsageReport object representing the criteria for generating the report.
+	 * @return A UsageReport object containing the newly generated report, or null if no data is available.
+	 */
 	public UsageReport getNewUsageReport(UsageReport usageReport) {
-		System.out.println("In db getNewUsageReport...");
-		System.out.println(usageReport.toString());
 
 		UsageReport newReport = null;
 		String query = "SELECT DAY(date) AS dayOfMonth, SUM(amountOfVisitors) AS dailyVisitors " + "FROM `order` "
@@ -1644,6 +1737,13 @@ public class DatabaseController {
 		return newReport;
 	}
 
+	/**
+	 * Inserts a new usage report into the database.
+	 * This method first inserts data into the 'report' table and then into the 'UsageReport' table.
+	 * It converts the daily usage map to a JSON string for storage in the 'UsageReport' table.
+	 * @param report The UsageReport object containing the report data to be inserted.
+	 * @return true if the insertion was successful, false otherwise.
+	 */
 	public boolean insertUsageReport(UsageReport report) {
 		// First, insert into the 'report' table.
 		System.out.println("in db insert...");
@@ -1707,6 +1807,12 @@ public class DatabaseController {
 		return false;
 	}
 
+	/**
+	 * Retrieves a usage report from the database based on the given Report ID.
+	 *
+	 * @param inputReport The Report object containing the ID of the report to retrieve.
+	 * @return The UsageReport object retrieved from the database, or null if no report is found.
+	 */
 	public UsageReport getUsageReportByReportId(Report inputReport) {
 		System.out.println("in db getUsageReportByReportId...");
 
@@ -1877,7 +1983,7 @@ public class DatabaseController {
 	         try (ResultSet rs = ps.executeQuery()) { 
 	             while (rs.next()) { 
 	                 Integer orderId = rs.getInt("orderId"); 
-	                 Integer travelerId = rs.getInt("travlerId"); 
+	                 Integer travelerId = rs.getInt("travelerId"); 
 	                 Integer waitingListId = rs.getInt("waitingListId"); 
 	                 Integer parkNum = rs.getInt("parkNumber"); 
 	                 Integer amtVisitorsWaiting = rs.getInt("amountOfVisitors"); 
@@ -1908,6 +2014,13 @@ public class DatabaseController {
 	     return waitingArray; 
 	 }
 
+	 /**
+	  * Retrieves a list of pending notification orders for a given traveler ID.
+	  * This method fetches orders from the database that belong to the specified traveler and have a status of "PENDING_EMAIL_SENT".
+	  * It returns an ArrayList containing the retrieved orders.
+	  * @param travelerIdToCheckPendingNotifications The ID of the traveler for whom pending notification orders are to be retrieved.
+	  * @return An ArrayList of Order objects representing the pending notification orders for the specified traveler.
+	  */
 	public ArrayList<Order> getPendingNotificationsOrdersByID(Integer travelerIdToCheckPendingNotifications) {
 		// Checks if traveler has any pending notifications and return their orders
 		ArrayList<Order> orders = new ArrayList<Order>();
@@ -2131,6 +2244,10 @@ public class DatabaseController {
 
 	}
 
+	/**
+	 * Posts an order notification to the database.
+	 * @param notificationForAnOrder The OrderNotification object containing the information to be posted.
+	 */
 	public void postOrderNotification(OrderNotification notificationForAnOrder) {
 		// Add an order notification to the ordernotifications table
 		String query = "INSERT INTO `ordernotifications` (orderId, dateOfNotification, startNotification, endNotification, status) "
@@ -2177,6 +2294,11 @@ public class DatabaseController {
 		return false;
 	}
 
+	/**
+	 * Retrieves the orders that have been canceled by the server for a given traveler ID.
+	 * @param travelerIdToCheckCanceledNotifications The ID of the traveler for whom canceled notifications are to be checked.
+	 * @return An ArrayList of Order objects representing the canceled orders for the specified traveler ID.
+	 */
 	public ArrayList<Order> getCanceledNotificationsOrdersByID(Integer travelerIdToCheckCanceledNotifications) {
 		// Checks if traveler has any Canceled notifications and return their orders
 		ArrayList<Order> orders = new ArrayList<Order>();
@@ -2212,6 +2334,10 @@ public class DatabaseController {
 		return orders;
 	}
 
+	/**
+	 * Updates the order status for today in the database.
+	 * @return True if the order status update was successful; false otherwise.
+	 */
 	public Boolean updateOrderStatusForToday() {
 		// Format today's date in the same format as stored in the database
 		LocalDate today = LocalDate.now();
@@ -2239,7 +2365,11 @@ public class DatabaseController {
 			return false;
 		}
 	}
-
+	
+	/**
+	 * Updates the waiting list status for today in the database.
+	 * @return True if the waiting list status update was successful; false otherwise.
+	 */
 	public Boolean updateWaitingListStatusForToday() {
 		// Format today's date in the same format as stored in the database
 		LocalDate today = LocalDate.now();
@@ -2297,6 +2427,11 @@ public class DatabaseController {
 		}
 	}
 
+	/**
+	 * Inserts a new group guide into the traveler table of the database.
+	 * @param traveler The Traveler object representing the new group guide to be inserted into the database.
+	 * @return True if the insertion was successful and the traveler is now considered a group guide; false otherwise.
+	 */
 	public boolean insertNewGroupGuide(Traveler traveler) {
 		// Assuming you have a method getConnection() that returns a Connection object.
 
@@ -2334,7 +2469,7 @@ public class DatabaseController {
 	 * @return
 	 */
 	public Boolean findOrdersWithinDates(Order order, Boolean flag) {
-		String query = "SELECT SUM(amountOfVisitors) AS SumVisitors FROM order WHERE parkNumber = ? AND date = ? AND visitTime >= ? AND visitTime <= ? "
+		String query = "SELECT SUM(amountOfVisitors) AS SumVisitors FROM `order` WHERE parkNumber = ? AND date = ? AND visitTime >= ? AND visitTime <= ? "
 				+ "AND orderStatus NOT IN (?, ?)";
 		String parkId = String.valueOf(order.getParkNumber());
 		Park park = getParkDetails(order.getParkNumber());
@@ -2380,6 +2515,11 @@ public class DatabaseController {
 		}
 	}
 
+	/**
+	 * Retrieves a list of available dates and visit times for scheduling an order.
+	 * @param order The Order object representing the order for which available dates and visit times are to be determined.
+	 * @return An ArrayList containing strings representing available dates and visit times in the format "YYYY-MM-DD, HH:MM".
+	 */
 	public ArrayList<String> getAvailableDatesList(Order order) {
 		Order tempOrder = new Order(order.getOrderId(), order.getVisitorId(), order.getParkNumber(),
 				order.getAmountOfVisitors(), order.getPrice(), order.getVisitorEmail(), order.getDate(),
@@ -2415,6 +2555,9 @@ public class DatabaseController {
 		return availableDatesList;
 	}
 
+	/**
+	 * Deletes expired order alerts from the ordernotifications table.
+	 */
 	public void deleteExpiredOrderAlerts() {
 		String query = "DELETE FROM ordernotifications " + "WHERE dateOfNotification = ? AND endNotification < ? ";
 
@@ -2431,4 +2574,33 @@ public class DatabaseController {
 
 	}
 
+	/**
+	 * Updates the order status for a single order identified by its order ID.
+	 * @param info An ArrayList containing information about the new order status and the order ID. The first element of the ArrayList 
+	 * 		  is the status, and the second element is the orderId
+	 * @return true if the order status was successfully updated, false otherwise.
+	 */
+	public Boolean updateOrderStatusArray(ArrayList<?> info) {
+	    String query = "UPDATE `order` SET orderStatus = ? WHERE orderId = ?";
+
+	        try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
+	            ps.setString(1, (String) info.get(0));
+	            ps.setInt(2, Integer.parseInt((String) info.get(1))); 
+
+	            int affectedRows = ps.executeUpdate();
+	            if (affectedRows > 0) {
+	                System.out.println("Order status updated successfully.");
+	                return true;
+	            } else {
+	                System.out.println(
+	                        "No order was found with the provided ID, or the status is already set to the new value.");
+	            }
+	        } catch (SQLException e) {
+	            System.out.println("An error occurred while updating the order status:");
+	            e.printStackTrace();
+	        }
+	        return false;
+	    }
+	
+	
 }

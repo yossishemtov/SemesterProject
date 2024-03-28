@@ -11,9 +11,15 @@ import client.ClientUI;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 
+/** This class is responsible for showing alerts to visitors that their order is within 24 hours
+ * or they have a spot in the park if they entered waitinglist
+ */
 @SuppressWarnings("unchecked")
 public class TravelerChecker {
 	
+	/**
+     * Views pending notifications for the current traveler and allows confirmation or cancellation of visits.
+     */
 	public void viewPendingNotifications() {
         // receive notifications about orders that are pending
 
@@ -49,31 +55,33 @@ public class TravelerChecker {
 
                     Alerts confirmAlert = new Alerts(AlertType.CONFIRMATION, "Order", "Please Confirm Your Visit", message[1]);
                     confirmAlert.showAndWait().ifPresent(response -> {
-                        if (response == ButtonType.YES) {
+                        if (response == ButtonType.OK) {
                             // Change the orderStatus to confirmed
-                            ClientServerMessage<?> updateStatusConfirmed = new ClientServerMessage<>(new ArrayList<String>
-                                    (Arrays.asList("CONFIRMED", order.getOrderId() + "")), Operation.PATCH_ORDER_STATUS_ARRAYLIST);
+                        	order.setStatus("CONFIRMED");
+                            ClientServerMessage<?> updateStatusConfirmed = new ClientServerMessage<>(order, Operation.PATCH_ORDER_STATUS);
                             ClientUI.clientControllerInstance.sendMessageToServer(updateStatusConfirmed);
                             // Display confirmation message
                             String[] messageYes = {
+                            		"Order Confirmed",
                                     String.format("Dear Visitor,\n"
-                                            + "You have confirmed your order to the %s Park on %s at %s.\n"
-                                            + "Best Regards, GoNature\n", order.getParkName(), order.getDate().toString(), order.getVisitTime().toString())
+                                            + "You have confirmed your order to the %s Park on %s at %s.\n\n"
+                                            + "Best Regards, GoNature\n", order.getParkName(), order.getDate(), order.getVisitTime())
                             };
-                            Alerts confirmationAlert = new Alerts(AlertType.INFORMATION, "Order Details", "Order Confirmed", messageYes[0]);
+                            Alerts confirmationAlert = new Alerts(AlertType.INFORMATION, "Order Confirmed", messageYes[0], messageYes[1]);
                             confirmationAlert.showAndWait();
                         } else {
                             // Handle cancellation
+                        	order.setStatus("CANCELED");
                             String[] messageNo = {
+                            		"Order Canceled",
                                     String.format("Dear Visitor,\n"
-                                            + "You have canceled your order to the %s Park on %s at %s.\n"
+                                            + "You have canceled your order to the %s Park on %s at %s.\n\n"
                                             + "Best Regards, GoNature\n", order.getParkName(), order.getDate().toString(), order.getVisitTime().toString())
                             };
                             Alerts cancellationAlert = new Alerts(AlertType.INFORMATION, "Order Details", "Order Canceled", messageNo[0]);
                             cancellationAlert.showAndWait();
                             // Change the order status to canceled
-                            ClientServerMessage<?> updateStatusCanceled = new ClientServerMessage<>(new ArrayList<String>
-                                    (Arrays.asList("CANCELED", order.getOrderId() + "")), Operation.PATCH_ORDER_STATUS_ARRAYLIST);
+                            ClientServerMessage<?> updateStatusCanceled = new ClientServerMessage<>(order, Operation.PATCH_ORDER_STATUS);
                             ClientUI.clientControllerInstance.sendMessageToServer(updateStatusCanceled);
                         }
                     });
@@ -86,7 +94,9 @@ public class TravelerChecker {
         }
     }
     
-    
+	/**
+     * Views canceled notifications for the current traveler.
+     */
 	public void viewCanceledNotifications() {
 	    Traveler currentTraveler = Usermanager.getCurrentTraveler();
 
@@ -99,25 +109,24 @@ public class TravelerChecker {
 
 	        for (Order order : canceledOrders) {
 	            if (currentTraveler.getId().equals(order.getVisitorId())) {
-	                String parkName = order.getParkName();
 	                String orderDate = order.getDate().toString();
 	                String orderTime = order.getVisitTime().toString();
-
+                	order.setStatus("CANCELED");
 	                LocalDateTime orderDateTime = LocalDateTime.of(LocalDate.parse(orderDate), LocalTime.parse(orderTime));
 	                LocalDateTime currentDateTime = LocalDateTime.now();
 
 	                if (currentDateTime.isAfter(orderDateTime))
 	                    break;
 	                String[] messageCancel = {
-                            String.format("Dear Visitor,\n"
-                                    + "You have canceled your order to the %s Park on %s at %s.\n"
-                                    + "Best Regards, GoNature\n", order.getParkName(), order.getDate().toString(), order.getVisitTime().toString())
-                    };
-	                ClientServerMessage<?> changeStatusToCancel = new ClientServerMessage<>(
-	                        new ArrayList<String>(Arrays.asList("CANCELED", String.valueOf(order.getOrderId()))), Operation.PATCH_ORDER_STATUS_ARRAYLIST);
+	                        String.format("Dear Visitor,\n"
+	                                + "Your order to the %s Park on %s at %s has been canceled.\n\n"
+	                                + "Best Regards, GoNature\n", order.getParkName(), order.getDate().toString(), order.getVisitTime().toString())
+	                };
+	                
+	                ClientServerMessage<?> changeStatusToCancel = new ClientServerMessage<>(order, Operation.PATCH_ORDER_STATUS);
 	                ClientUI.clientControllerInstance.sendMessageToServer(changeStatusToCancel);
 
-	                Alerts canceledAlert = new Alerts(AlertType.INFORMATION, "Order Canceled", "Order Canceled", messageCancel[1]);
+	                Alerts canceledAlert = new Alerts(AlertType.INFORMATION, "Order Canceled", "Order Canceled", messageCancel[0]);
 	                canceledAlert.showAndWait();
 	            }
 	        }
@@ -127,6 +136,9 @@ public class TravelerChecker {
 	    }
 	}
     
+	/**
+     * Views waiting notifications for the current traveler.
+     */
 	public void viewWaitingNotifications() {
 	    Traveler currentTraveler = Usermanager.getCurrentTraveler();
 
@@ -157,9 +169,9 @@ public class TravelerChecker {
 
 	            Alerts waitingAlert = new Alerts(AlertType.CONFIRMATION, "Order Confirmed", "We've reserved a spot for you in the park!", message[1]);
 	            waitingAlert.showAndWait().ifPresent(response -> {
-	                if (response == ButtonType.YES) {
+	                if (response == ButtonType.OK) {
 	                    String messageYes = String.format("Dear Visitor,\n"
-	                            + "You have confirmed your order to the %s Park on %s at %s.\n"
+	                            + "You have confirmed your order to the %s Park on %s at %s.\n\n"
 	                            + "Best Regards, GoNature\n", waiting.getParkName(), waiting.getDate().toString(), waiting.getVisitTime().toString());
 	                    Alerts confirmationAlert = new Alerts(AlertType.INFORMATION, "Order Details", "Order Confirmed", messageYes);
 	                    confirmationAlert.showAndWait();
@@ -173,7 +185,7 @@ public class TravelerChecker {
 	                    ClientUI.clientControllerInstance.sendMessageToServer(orderAttempt);
 	                } else {
 	                    String messageNo = String.format("Dear Visitor,\n"
-	                            + "You have canceled your order to the %s Park on %s at %s.\n"
+	                            + "You have canceled your order to the %s Park on %s at %s.\n\n"
 	                            + "Best Regards, GoNature\n", waiting.getParkName(), waiting.getDate().toString(), waiting.getVisitTime().toString());
 	                    Alerts cancellationAlert = new Alerts(AlertType.INFORMATION, "Order Details", "Order Canceled", messageNo);
 	                    cancellationAlert.showAndWait();
