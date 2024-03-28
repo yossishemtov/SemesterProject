@@ -676,7 +676,8 @@ public class DatabaseController {
 	public ArrayList<WaitingList> getWaitingListsDataFromDatabase(Traveler traveler) {
 		ArrayList<WaitingList> waitingListDataForClient = new ArrayList<>();
 		// Assuming the table and column names are corrected to match Java conventions
-		String query = "SELECT orderId, waitingListId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder, parkName, placeInList FROM waitinglist WHERE travelerId = ?";
+		String query = "SELECT orderId, waitingListId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, "
+				+ "typeOfOrder, parkName, placeInList FROM waitinglist WHERE travelerId = ? AND orderStatus != 'CONFIRMED'";
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 			ps.setInt(1, traveler.getId());
@@ -2334,7 +2335,7 @@ public class DatabaseController {
 	 * @return
 	 */
 	public Boolean findOrdersWithinDates(Order order, Boolean flag) {
-		String query = "SELECT SUM(amountOfVisitors) AS SumVisitors FROM order WHERE parkNumber = ? AND date = ? AND visitTime >= ? AND visitTime <= ? "
+		String query = "SELECT SUM(amountOfVisitors) AS SumVisitors FROM `order` WHERE parkNumber = ? AND date = ? AND visitTime >= ? AND visitTime <= ? "
 				+ "AND orderStatus NOT IN (?, ?)";
 		String parkId = String.valueOf(order.getParkNumber());
 		Park park = getParkDetails(order.getParkNumber());

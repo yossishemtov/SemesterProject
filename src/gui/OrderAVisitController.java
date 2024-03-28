@@ -316,9 +316,7 @@ public class OrderAVisitController implements Initializable {
 						loader.load();
 						controller.setTimeLabel(order.getDate() + ", " + order.getVisitTime());
 						Parent p = loader.getRoot();
-						newStage.initModality(Modality.WINDOW_MODAL);
-						newStage.getIcons().add(new Image("common/images/Icon.png"));
-			
+						newStage.initModality(Modality.WINDOW_MODAL);			
 			
 						newStage.setTitle("Reschedule");
 						newStage.setScene(new Scene(p));
