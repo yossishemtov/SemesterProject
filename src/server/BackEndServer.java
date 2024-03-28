@@ -32,10 +32,11 @@ public class BackEndServer extends AbstractServer {
 		super(port);
 
 		BackEndServer.serverControllerInstance = serverControllerInstance;
-
-		this.DbConnection = new MySqlConnector(userName, password).getDbConnection();
-		// Initiate a connection to the database
-		DBController = new DatabaseController(DbConnection);
+		Connection UserManagementSystemConnection = new MySqlConnector(userName, password,"User_management_system").getDbConnection();
+		UserManagementSystemDB UserManagementSystemDB=new UserManagementSystemDB(UserManagementSystemConnection);
+		this.DbConnection = new MySqlConnector(userName, password,"project").getDbConnection();
+		// Initiate a connection to the database	
+		DBController = new DatabaseController(DbConnection,UserManagementSystemDB);
 		MessageHandlerFromClient.setDbController(DBController);
 		notifyThread = new NotifyThread(DBController); // You may need to pass any required parameters to the
 														// constructor

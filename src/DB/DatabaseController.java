@@ -25,18 +25,56 @@ import common.worker.Report.ReportType;
  * This class is responsible for managing database operations related to orders.
  */
 public class DatabaseController {
-	private MySqlConnector connector;
 	private Connection connectionToDatabase;
 
 	/**
 	 * Constructs a DatabaseController object with specified user credentials.
+	 * @param userManagementSystemDB 
 	 *
 	 * @param username the database username
 	 * @param password the database password
 	 */
-	public DatabaseController(Connection ConnectionToDB) {
+	public DatabaseController(Connection ConnectionToDB, UserManagementSystemDB userManagementSystemDB) {
 
 		connectionToDatabase = ConnectionToDB;
+		insertEmployees(userManagementSystemDB.getAllEmployees());
+	}
+
+	 /**
+     * Inserts a list of GeneralParkWorker objects into the database.
+     * 
+     * @param employees The list of GeneralParkWorker objects to be inserted.
+     * @return The number of inserted rows.
+     */
+	public int insertEmployees(ArrayList<GeneralParkWorker> employees) {
+	    int insertedRows = 0;
+	    String query = "INSERT INTO `generalparkworker` (workerId, firstName, lastName, email, role, userName, password, worksAtPark, isloggedin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	    
+	    try (PreparedStatement statement = connectionToDatabase.prepareStatement(query)) {
+	        for (GeneralParkWorker worker : employees) {
+	            try {
+	                statement.setInt(1, worker.getWorkerId());
+	                statement.setString(2, worker.getFirstName());
+	                statement.setString(3, worker.getLastName());
+	                statement.setString(4, worker.getEmail());
+	                statement.setString(5, worker.getRole());
+	                statement.setString(6, worker.getUserName());
+	                statement.setString(7, worker.getPassword());
+	                statement.setInt(8, worker.getWorksAtPark());
+	                statement.setInt(9, 0); 
+	                
+	                insertedRows += statement.executeUpdate(); // Execute the insertion for each employee.
+	            } catch (SQLIntegrityConstraintViolationException e) {
+	                System.out.println("Duplicate entry for worker ID " + worker.getWorkerId() + ": " + e.getMessage());
+	                break;
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("SQL Exception: " + e.getMessage());
+	        e.printStackTrace();
+	    }
+	    
+	    return insertedRows;
 	}
 
 	/**

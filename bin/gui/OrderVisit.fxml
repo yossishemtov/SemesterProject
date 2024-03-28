@@ -250,7 +250,6 @@
                               </HBox>
                            </children>
                         </VBox>
-<<<<<<< HEAD
                         <Button fx:id="Back" layoutX="247.0" layoutY="522.0" mnemonicParsing="false" onAction="#BackButton" text="Back" />
                         <Label fx:id="lblPrice" layoutX="481.0" layoutY="454.0" textFill="#5aed99">
                            <font>
@@ -262,9 +261,7 @@
                               <Font size="15.0" />
                            </font>
                         </Label>
-=======
-                        <Button fx:id="Back" layoutX="246.0" layoutY="499.0" mnemonicParsing="false" onAction="#BackButton" text="Back" />
->>>>>>> shaib
+
                      </children>
                   </Pane>
                </children>

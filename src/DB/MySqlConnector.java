@@ -16,8 +16,8 @@ public class MySqlConnector {
      * @param username the username required to connect to the database
      * @param password the password required to connect to the database
      */
-    public MySqlConnector(String username, String password) {
-        dbConnection = connectToDB(username, password);
+    public MySqlConnector(String username, String password,String nameOfSchema) {
+        dbConnection = connectToDB(username, password,nameOfSchema);
     }
 
     /**
@@ -27,7 +27,7 @@ public class MySqlConnector {
      * @param password the password required for the database connection
      * @return a Connection object to the database; null if the connection fails
      */
-    private Connection connectToDB(String username, String password) {
+    private Connection connectToDB(String username, String password,String nameOfSchema) {
         try {
             // Attempt to load the MySQL JDBC driver
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
@@ -39,7 +39,7 @@ public class MySqlConnector {
 
         try {
             // Define connection URL with timeout settings
-            String connectionURL = "jdbc:mysql://localhost/project?serverTimezone=Israel" +
+            String connectionURL = "jdbc:mysql://localhost/"+nameOfSchema+"?serverTimezone=Israel" +
                                    "&connectTimeout=5000" + // Set connection timeout (5 seconds)
                                    "&socketTimeout=10000";  // Set socket timeout (10 seconds)
 
@@ -65,6 +65,16 @@ public class MySqlConnector {
      */
     public Connection getDbConnection() {
         return dbConnection;
+    }
+    public void closeConnection() {
+        if (dbConnection != null) {
+            try {
+                dbConnection.close();
+                System.out.println("Database connection closed successfully.");
+            } catch (SQLException e) {
+                System.out.println("Failed to close database connection: " + e.getMessage());
+            }
+        }
     }
 
 }

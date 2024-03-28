@@ -65,7 +65,7 @@ public class UpdateParametersController implements Initializable {
 	 * Initializes and loads park information.
 	 */
 	private void init() {
-		loadInfo();
+		loadInfo(); 
 	}
 
 	/**

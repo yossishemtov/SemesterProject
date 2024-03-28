@@ -50,16 +50,10 @@
             <RowConstraints maxHeight="51.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-<<<<<<< HEAD
-      <Label layoutX="105.0" layoutY="241.0" text="Full capacity" textFill="WHITE" />
-      <Label layoutX="105.0" layoutY="307.0" text="Not full capacity" textFill="WHITE" />
-      <Circle fill="RED" layoutX="76.0" layoutY="251.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" />
-      <Circle fill="#3dee5a" layoutX="76.0" layoutY="316.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" />
-=======
+
       <Circle fill="#3dee5a" layoutX="90.0" layoutY="286.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fill="RED" layoutX="90.0" layoutY="221.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" />
       <Label layoutX="119.0" layoutY="211.0" text="Full capacity" textFill="WHITE" />
       <Label layoutX="119.0" layoutY="277.0" text="Not full capacity" textFill="WHITE" />
->>>>>>> shaib
    </children>
 </AnchorPane>
