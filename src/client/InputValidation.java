@@ -93,13 +93,14 @@ public class InputValidation {
 	 }
 	 
 	 public static Alerts validatePhoneNumber(String phoneNumber) {
-		 //Check for a valid phone number (10 digits)
-		 if(!phoneNumber.matches("^[0-9]{10}$")) {
-	            return new Alerts(Alerts.AlertType.ERROR, "Invalid Phone Number", "", "Phone number must contain valid 10 digits");
-		 }else {
-	        	return new Alerts(Alerts.AlertType.INFORMATION, "valid Phone Number", "", "valid Phone Number");
-	        }
-	 }
+		    // Check for a valid phone number (11 digits starting with "05")
+		    if (!phoneNumber.matches("^05[0-9]{8}$")) {
+		        return new Alerts(Alerts.AlertType.ERROR, "Invalid Phone Number", "", "Phone number must start with '05' and contain 10 digits in total");
+		    } else {
+		        return new Alerts(Alerts.AlertType.INFORMATION, "Valid Phone Number", "", "Valid Phone Number");
+		    }
+		}
+
 	 
  
 	// function for validate worker username
