@@ -15,6 +15,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
+
+/**
+ * Controller class for managing the registration of a new group guide.
+ * This class handles the logic for registering a new group guide, including input validation,
+ * communicating with the server for registration, and displaying appropriate alerts
+ * based on the success or failure of the registration process.
+ */
 public class RegisterNewGuideController {
 	@FXML
 	private Button SubmitBtn;
@@ -31,7 +38,15 @@ public class RegisterNewGuideController {
 	
 	  
 	
-	
+	/**
+     * Handles the registration process for a new group guide.
+     * This method performs input validation for the provided traveler information,
+     * communicates with the server to check if the traveler already exists,
+     * and registers the traveler as a guide if he is new to the system.
+     * 
+     * @param click The action event triggering the method.
+     * @throws Exception If an error occurs during the registration process.              
+     */
 	public void SubmitRegister(ActionEvent click) throws Exception {
 	    String TravelerID = ID.getText();
 	    String TravelerFirstName = FirstName.getText();
@@ -82,6 +97,12 @@ public class RegisterNewGuideController {
 		    if (TravelerFromServer != null) {
 		    	Alerts failedToRegister = new Alerts(Alert.AlertType.ERROR, "Error in Registration","","Traveler already exists in the system, go to register existing traveler!");
 		    	failedToRegister.showAndWait();
+		    	// Clear the fields after registrate
+		    	ID.setText(""); 
+		    	FirstName.setText("");
+		    	LastName.setText("");
+		    	Email.setText(""); 
+		    	PhoneNumber.setText("");
 		    }
 		    else {
 		    	Traveler GroupGuideAttempt = new Traveler(Integer.parseInt(TravelerID), TravelerFirstName, TravelerLastName, TravelerEmail, TravelerPhoneNumber, 1, 0);
@@ -101,6 +122,7 @@ public class RegisterNewGuideController {
 			    else {
 			    	Alerts failedToRegister = new Alerts(Alert.AlertType.ERROR, "Error in Registration","","Error in Registration");
 			    	failedToRegister.showAndWait();
+			    	// Clear the fields after registrate
 			    	ID.setText(""); 
 			    	FirstName.setText("");
 			    	LastName.setText("");
@@ -109,8 +131,9 @@ public class RegisterNewGuideController {
 			    }
 		    }
 	    } catch (Exception e) {
-	        System.out.print("Something went wrong while clicking on submit button, trying to register new group guide, check stack trace");
 	        e.printStackTrace();
+	        Alerts errorAlert = new Alerts(Alerts.AlertType.ERROR, "Error", "", "Failed while clicking on submit register new guide button");
+			errorAlert.showAndWait();
 	    }
 	}
 }

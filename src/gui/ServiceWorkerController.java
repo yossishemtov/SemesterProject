@@ -103,7 +103,7 @@ public class ServiceWorkerController implements Initializable {
 	 }
 	 
 	 /**
-     * Logs out the current user.
+     * Logs out the current worker.
      * 
      * @param click The action event triggering the method.
      * @throws Exception If an error occurs while logging out.
