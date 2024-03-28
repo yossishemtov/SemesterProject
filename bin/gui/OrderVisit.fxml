@@ -130,9 +130,9 @@
                               <Image url="@../common/images/OrderStage.png" />
                            </image>
                         </ImageView>
-                        <Label layoutX="409.0" layoutY="461.0" text="All fields are required" textFill="#5aed99" />
-                        <Label layoutX="391.0" layoutY="462.0" text="*" textFill="RED" />
-                        <Button fx:id="btnSubmit" layoutX="415.0" layoutY="499.0" onAction="#SubmitOrderButton" prefHeight="43.0" prefWidth="129.0" text="Submit Order" />
+                        <Label layoutX="417.0" layoutY="479.0" text="All fields are required" textFill="#5aed99" />
+                        <Label layoutX="403.0" layoutY="479.0" text="*" textFill="RED" />
+                        <Button fx:id="btnSubmit" layoutX="417.0" layoutY="509.0" onAction="#SubmitOrderButton" prefHeight="43.0" prefWidth="129.0" text="Submit Order" />
                         <VBox fillWidth="false" layoutX="224.0" layoutY="183.0" prefHeight="265.0" prefWidth="511.0" spacing="10.0">
                            <children>
                               <HBox prefHeight="36.0" prefWidth="511.0">
@@ -256,7 +256,7 @@
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <Label layoutX="424.0" layoutY="454.0" text="Price:" textFill="#5aed99">
+                        <Label layoutX="417.0" layoutY="445.0" text="Price:" textFill="#5aed99">
                            <font>
                               <Font size="15.0" />
                            </font>

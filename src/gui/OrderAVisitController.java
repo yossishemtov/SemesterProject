@@ -475,7 +475,7 @@ public class OrderAVisitController implements Initializable {
 
         TimeComboBox.getItems().addAll(hoursList); //adding them to the Time combo box
 	}
-	
+	 
 	
 	private void RadioBoxCheck() { 
 		paymentToggleGroup = new ToggleGroup();
@@ -535,7 +535,7 @@ public class OrderAVisitController implements Initializable {
 		}
 		else if (!checkCurrentTime())
 			new Alerts(AlertType.ERROR, "Bad Input", "Bad Date Input", "Please select future date").showAndWait();
-		else if(TravelerId.length() != 7)
+		else if(TravelerId.length() != 9)
 			new Alerts(AlertType.ERROR, "Bad Input", "Bad ID Input", "ID must be 9 digits").showAndWait();
 		else if (Integer.parseInt(visitorsNumber) > 15 
 				&& Order.typeOfOrder.GUIDEDGROUP.toString().equals(OrderComboBox.getValue())) {
