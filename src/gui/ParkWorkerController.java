@@ -51,6 +51,10 @@ public class ParkWorkerController implements Initializable {
 
 
 	@Override
+	/**
+	 * Loading loggedin worker profile to the screen as soon as the page is loaded
+	 * 
+	 */
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//Render user information when coming to the parkWorkerFrame screen
 		
@@ -82,7 +86,11 @@ public class ParkWorkerController implements Initializable {
     
 
 
-    
+	   /**
+		 * Transitioning to the profile.fxml
+		 * 
+		 * @param event (Listening for an event) 
+		 */
 	public void loadProfileOfWorker(ActionEvent click) throws Exception{
 		//Loading profile of the current park worker
 		try {
@@ -95,7 +103,11 @@ public class ParkWorkerController implements Initializable {
 	    }
 	
 	    
-	    
+	/**
+	 * Transitioning to the ParkWorkerAvailableSpace.fxml, the check available space in park functionality.
+	 * 
+	 * @param event (Listening for an event)
+	 */
     public void availableSpaceBtnAction(ActionEvent click) throws Exception{
     	//Displaying the available space in the park
     	try {
@@ -108,7 +120,11 @@ public class ParkWorkerController implements Initializable {
 
   }
     
-    
+    /**
+	 * Transitioning to the ParkWorkerEntrenceControl.fxml the entrence control system.
+	 * 
+	 * @param event (Listening for an event)
+	 */
     public void entrenceControlAction(ActionEvent click) throws Exception{
     	//Loading the entrenceControl page
     	try {
@@ -120,6 +136,11 @@ public class ParkWorkerController implements Initializable {
       	 }
     }
     
+    /**
+	 * Transitioning to the ParkWorkerUnorderedVisit.fxml the unordered visit system.
+	 * 
+	 * @param event (Listening for an event)
+	 */
     public void unorderedVisitAction(ActionEvent click) throws Exception{
     	//Loading unordered visit system page
     	try {
@@ -131,7 +152,11 @@ public class ParkWorkerController implements Initializable {
      	 }
     }
 
-    
+    /**
+	 * Transitioning to the HomePageFrame.fxml the main page frame.
+	 * 
+	 * @param event (Listening for an event)
+	 */
     public void backBtnAction(ActionEvent click) throws Exception{
     		//Loading main login screen when clicking on the back button
     	try {

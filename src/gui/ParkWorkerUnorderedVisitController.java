@@ -70,12 +70,22 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
     private static Park currentParkDetails;
 
 	@Override
+	/**
+	 * Initializes the controller class. This method is automatically called after
+	 * the FXML file has been loaded. It initializes the number of current allowed unordered visits.
+	 *
+	 * 
+	 */
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// Initialize the display of amount of allowed unordered visits 
 		updateScreenAllowedUnorderedVisits();
 		
 	}
 	
+	/**
+	 * Handle the selection of a type of order from the menu
+	 * @param event (Listening for an event)
+	 */
 	public void handleMenuItemAction(ActionEvent event) {
 		//Handle the change and selection of the menuItem
 		

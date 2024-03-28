@@ -20,6 +20,10 @@ public class ParkWorkerAvailableSpaceController implements Initializable {
 	
 	
 	@Override
+	/**
+	 * Based on the current worker logged in, gets the current information about the park population
+	 *
+	 */
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		try {
