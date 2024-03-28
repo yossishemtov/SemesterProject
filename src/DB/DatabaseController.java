@@ -38,6 +38,7 @@ public class DatabaseController {
 
 		connectionToDatabase = ConnectionToDB;
 		insertEmployees(userManagementSystemDB.getAllEmployees());
+		userManagementSystemDB.closeConnection();
 	}
 
 	 /**

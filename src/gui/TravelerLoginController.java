@@ -47,7 +47,7 @@ public class TravelerLoginController implements Initializable{
 	    public void initialize(URL location, ResourceBundle resources) {
 	        // Listener for the username text field
 		   TravelerID.textProperty().addListener((obs, oldValue, newValue) -> {
-	            String pattern = "^.{7}$"; // Username pattern
+	            String pattern = "^.{9}$"; // Username pattern
 
 	            // Set text field color and icon based on input
 	            if (newValue.isEmpty()) {
@@ -56,7 +56,7 @@ public class TravelerLoginController implements Initializable{
 	                TravelerID.setStyle("-jfx-unfocus-color:#5aed99; " + "-fx-text-fill: white; " + "-fx-prompt-text-fill: #5aed99;");
 	            } else {
 	                // Set to red if input is not empty
-	                userIcon.setFill(Color.RED);
+	                userIcon.setFill(Color.RED); 
 	                TravelerID.setStyle("-jfx-unfocus-color: red; " + "-fx-text-fill: red; " + "-fx-prompt-text-fill: red;");
 	            }
 

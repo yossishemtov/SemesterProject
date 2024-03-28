@@ -47,4 +47,16 @@ public class UserManagementSystemDB {
         
         return employees;
     }
+    public void closeConnection() {
+        try {
+            if (this.connectionToDatabase != null && !this.connectionToDatabase.isClosed()) {
+                this.connectionToDatabase.close();
+                System.out.println("Database connection closed successfully.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to close the database connection: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 }

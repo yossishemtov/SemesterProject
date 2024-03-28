@@ -66,15 +66,7 @@ public class MySqlConnector {
     public Connection getDbConnection() {
         return dbConnection;
     }
-    public void closeConnection() {
-        if (dbConnection != null) {
-            try {
-                dbConnection.close();
-                System.out.println("Database connection closed successfully.");
-            } catch (SQLException e) {
-                System.out.println("Failed to close database connection: " + e.getMessage());
-            }
-        }
-    }
+    
+  
 
 }
