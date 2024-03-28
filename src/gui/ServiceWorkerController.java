@@ -103,8 +103,8 @@ public class ServiceWorkerController implements Initializable {
 	 }
 	 
 	 /**
-     * Logs out the current worker.
-     * 
+     * Logs out the current worker. this method navigates the user
+     * back to the home page by loading the "HomePageFrame.fxml" view. 
      * @param click The action event triggering the method.
      * @throws Exception If an error occurs while logging out.
      */

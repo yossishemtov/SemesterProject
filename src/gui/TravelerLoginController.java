@@ -29,6 +29,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+
+/**
+ * Controller class for managing traveler login.
+ * This class handles the interaction logic for the traveler login interface,
+ * including validating traveler ID, processing login attempts, and navigating between screens.
+ */
 public class TravelerLoginController implements Initializable{
 
 	 @FXML
@@ -43,6 +49,15 @@ public class TravelerLoginController implements Initializable{
 	 @FXML
 	 private FontAwesomeIconView userIcon;
 	 
+	 
+	 /**
+     * Initializes the controller.
+     * 
+     * @param location  The location used to resolve relative paths for the root
+     *                  object, or null if the location is not known.
+     * @param resources The resources used to localize the root object, or null if
+     *                  the root object was not localized.
+     */
 	 @Override
 	    public void initialize(URL location, ResourceBundle resources) {
 	        // Listener for the username text field
@@ -70,7 +85,18 @@ public class TravelerLoginController implements Initializable{
 	    }
 	 
 	 
-	
+	 /**
+	  * Handles the login button action. It retrieves the traveler ID
+	  * entered by the user, validates it, and then attempts to log in the traveler
+	  * by communicating with the server. Depending on the traveler's orders
+	  * status and login state, it either logs in the traveler and opens the traveler
+	  * screen or prompts the user to order a visit if the traveler has not a order in the system.
+	  * 
+	  * @param click The action event triggering the method, typically generated when
+	  *              the user clicks the login button.
+	  * @throws Exception If an error occurs during the login attempt processing,
+	  *                   such as communication errors with the server or data retrieval issues.
+	  */
 	public void LoginBtn(ActionEvent click) throws Exception {
 	    String visitorID = TravelerID.getText(); // get the id
 	    Alerts alertID = InputValidation.ValidateVisitorID(visitorID); // get the right alert
@@ -79,10 +105,7 @@ public class TravelerLoginController implements Initializable{
 	    if (isSuccessful) { // if entered right ID with 9 digits
 	        try {
 	        	// creating a traveler instance to send to server controller for validation 
-
 		    	Traveler TryLoginVistor = new Traveler(Integer.parseInt(visitorID), null, null, null, null, null,null);
-
-		    	
 		        ClientServerMessage TravelerLoginAttemptInformation = new ClientServerMessage(TryLoginVistor, Operation.GET_TRAVLER_INFO);
 		        ClientUI.clientControllerInstance.sendMessageToServer(TravelerLoginAttemptInformation);
 		        // Get traveler data from the server
@@ -134,13 +157,22 @@ public class TravelerLoginController implements Initializable{
 	    }
 	}
 	
+	/**
+	 * Handles the back button action. When triggered, this method navigates the user
+	 * back to the home page by loading the "HomePageFrame.fxml" view. 
+	 * @param click The action event triggering the method, typically generated when
+	 *              the user clicks the back button.
+	 * @throws Exception If an error occurs while navigating back to the home page,
+	 *                   such as issues with loading the FXML file or other navigation errors.
+	 */
 	public void BackBtn(ActionEvent click) throws Exception{
 		//Function for opening a new scene when clicking on the Back Button
 	try {
 		NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true, true);
 	} catch(Exception e) {
-			System.out.print("Something went wrong while clicking on the back button, check stack trace");
 			e.printStackTrace();
+			Alerts errorAlert = new Alerts(Alerts.AlertType.ERROR, "Error", "", "Failed while clicking on the back button");
+			errorAlert.showAndWait();
 		}
 	}
 
