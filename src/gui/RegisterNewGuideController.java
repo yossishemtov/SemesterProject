@@ -1,6 +1,9 @@
 package gui;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import com.jfoenix.controls.JFXTextField;
+import client.ClientController;
 import client.ClientUI;
 import client.InputValidation;
 import common.Alerts;
@@ -42,51 +45,68 @@ public class RegisterNewGuideController {
 	        // Show an alert indicating that all fields are required
 	        Alerts alert = new Alerts(Alerts.AlertType.ERROR, "All fields are required", "", "Please fill in all the required fields");
 	        alert.showAndWait();
-//	        return; // Exit the method early, as validation failed
+	        return; // Exit the method, as validation failed
 	    }
 
 	    // Perform additional validation for ID and Email
 	    Alerts alertID = InputValidation.ValidateVisitorID(TravelerID);
 	    Alerts alertEmail = InputValidation.validateEmail(TravelerEmail);
+	    Alerts alertPhone = InputValidation.validatePhoneNumber(TravelerPhoneNumber);
 	    Boolean validID = alertID.getAlertType().toString().equals("INFORMATION");
-		Boolean validEmail = alertID.getAlertType().toString().equals("INFORMATION");
+		Boolean validEmail = alertEmail.getAlertType().toString().equals("INFORMATION");
+		Boolean validPhone = alertPhone.getAlertType().toString().equals("INFORMATION");
 		 
 	    // Check if ID and Email validations passed
 	    if (!validID) {
 	        alertID.showAndWait();
-//	        return; // Exit the method early, as validation failed
+	        return; // Exit the method, as validation failed
 	    }
 
 	    if (!validEmail) {
 	        alertEmail.showAndWait();
-//	        return; // Exit the method early, as validation failed
+	        return; // Exit the method, as validation failed
 	    }
 	    
+	    if(!validPhone) {
+	    	alertPhone.showAndWait();
+	    	return;
+	    }
 	    // If all validations pass, proceed with registration logic
 	    try {
 	    	
-	    	Traveler GroupGuideAttempt = new Traveler(Integer.parseInt(TravelerID), TravelerFirstName, TravelerLastName, TravelerEmail, TravelerPhoneNumber, 1, 0);
-			// send to server in order to register new group guide
-			ClientServerMessage<?> RegistrationAttempt = new ClientServerMessage<>(GroupGuideAttempt, Operation.POST_NEW_TRAVLER_GUIDER);
-		    ClientUI.clientControllerInstance.sendMessageToServer(RegistrationAttempt);
-		    if(ClientUI.clientControllerInstance.getData().getFlag()) {
-		    	 Alerts succeedRegistration = new Alerts(Alert.AlertType.CONFIRMATION, "Succeed to registrate","","Succeed to registrate");
-		    	 succeedRegistration.showAndWait();
-		    	 // Clear the fields after registrate
-		    	 ID.setText(""); 
-		    	 FirstName.setText("");
-		    	 LastName.setText("");
-		    	 Email.setText(""); 
-		    	 PhoneNumber.setText("");
+	    	Traveler MakingTravelerGroupGuide = new Traveler(Integer.parseInt(TravelerID), null, null, null, null, 1, 0);
+	    	ClientServerMessage<?> validTravelerID = new ClientServerMessage<>(MakingTravelerGroupGuide, Operation.GET_TRAVLER_INFO);
+		    ClientUI.clientControllerInstance.sendMessageToServer(validTravelerID);
+		    Traveler TravelerFromServer = (Traveler) ClientController.data.getDataTransfered();
+		    // if traveler exists in the system, he is not new to the system
+		    if (TravelerFromServer != null) {
+		    	Alerts failedToRegister = new Alerts(Alert.AlertType.ERROR, "Error in Registration","","Traveler already exists in the system, go to register existing traveler!");
+		    	failedToRegister.showAndWait();
 		    }
 		    else {
-		    	Alerts failedToRegister = new Alerts(Alert.AlertType.ERROR, "Error in Registration","","Error in Registration");
-		    	failedToRegister.showAndWait();
-		    	ID.setText(""); 
-		    	FirstName.setText("");
-		    	LastName.setText("");
-		    	Email.setText(""); 
-		    	PhoneNumber.setText("");
+		    	Traveler GroupGuideAttempt = new Traveler(Integer.parseInt(TravelerID), TravelerFirstName, TravelerLastName, TravelerEmail, TravelerPhoneNumber, 1, 0);
+				// send to server in order to register new group guide
+				ClientServerMessage<?> RegistrationAttempt = new ClientServerMessage<>(GroupGuideAttempt, Operation.POST_NEW_TRAVLER_GUIDER);
+			    ClientUI.clientControllerInstance.sendMessageToServer(RegistrationAttempt);
+			    if(ClientUI.clientControllerInstance.getData().getFlag()) {
+			    	 Alerts succeedRegistration = new Alerts(Alert.AlertType.CONFIRMATION, "Succeed to registrate","","Succeed to registrate");
+			    	 succeedRegistration.showAndWait();
+			    	 // Clear the fields after registrate
+			    	 ID.setText(""); 
+			    	 FirstName.setText("");
+			    	 LastName.setText("");
+			    	 Email.setText(""); 
+			    	 PhoneNumber.setText("");
+			    }
+			    else {
+			    	Alerts failedToRegister = new Alerts(Alert.AlertType.ERROR, "Error in Registration","","Error in Registration");
+			    	failedToRegister.showAndWait();
+			    	ID.setText(""); 
+			    	FirstName.setText("");
+			    	LastName.setText("");
+			    	Email.setText(""); 
+			    	PhoneNumber.setText("");
+			    }
 		    }
 	    } catch (Exception e) {
 	        System.out.print("Something went wrong while clicking on submit button, trying to register new group guide, check stack trace");

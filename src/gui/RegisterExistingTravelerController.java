@@ -53,7 +53,7 @@ public class RegisterExistingTravelerController {
 			    }
 			    else {
 			    	// if traveler not exists 
-			    	Alerts notATraveler = new Alerts(Alerts.AlertType.ERROR, "Traveler not exist", "", "Entered wrong ID");
+			    	Alerts notATraveler = new Alerts(Alerts.AlertType.ERROR, "Traveler not exist", "", "Traveler does no exist in the system, go to register new guide");
 			    	notATraveler.showAndWait();
 			    	travelerID.setText("");
 			    }
