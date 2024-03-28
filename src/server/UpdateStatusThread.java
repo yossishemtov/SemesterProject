@@ -67,6 +67,7 @@ public class UpdateStatusThread implements Runnable {
 		if (now.isBefore(timeForWaitingListUpdate) || now.isAfter(timeForOrderUpdate)) {
 			return timeForWaitingListUpdate;
 		} else {
+			System.out.println("Thread timeForOrderUpdate.");
 			return timeForOrderUpdate;
 		}
 	}
@@ -78,11 +79,20 @@ public class UpdateStatusThread implements Runnable {
 	 * @throws InterruptedException if the thread is interrupted while sleeping
 	 */
 	private void sleepUntilCloseTo(LocalTime targetTime) throws InterruptedException {
-		long sleepTimeMillis = Duration.between(LocalTime.now(), targetTime.minusMinutes(1)).toMillis();
-		if (sleepTimeMillis > 0) {
-			Thread.sleep(sleepTimeMillis);
-		}
-	}
+        LocalTime now = LocalTime.now();
+        long sleepTimeMillis;
+
+        if (now.isAfter(targetTime)) { // Means target is effectively tomorrow
+            sleepTimeMillis = Duration.between(now, LocalTime.MAX).plusSeconds(1).toMillis() // Sleep until just after midnight
+                             + Duration.between(LocalTime.MIN, targetTime).toMillis(); // Then add time until target next day
+        } else {
+            sleepTimeMillis = Duration.between(now, targetTime.minusMinutes(1)).toMillis();
+        }
+
+        if (sleepTimeMillis > 0) {
+            Thread.sleep(sleepTimeMillis);
+        }
+    }
 
 	/**
 	 * Performs the appropriate update action based on the target time.
