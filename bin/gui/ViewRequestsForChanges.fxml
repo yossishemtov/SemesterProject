@@ -24,21 +24,24 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label fx:id="headerLabel" layoutX="397.0" layoutY="14.0" text="Review Requests" textFill="#5aed99">
+      <Label fx:id="headerLabel" layoutX="383.0" layoutY="14.0" text="Review Requests" textFill="#5aed99" underline="true">
          <font>
-            <Font size="16.0" />
+            <Font size="20.0" />
          </font></Label>
-      <Label layoutX="353.0" layoutY="46.0" text="Park Parameters Requests" textFill="#5aed99">
+      <Label layoutX="353.0" layoutY="46.0" text="Park Parameters Requests" textFill="#5aed99" underline="true">
          <font>
             <Font size="18.0" />
          </font></Label>
-      <Label fx:id="SelectLabal" layoutX="119.0" layoutY="432.0" text="Select a change request in the table for approval or cancellation" textFill="#5aed99" />
-      <JFXButton fx:id="cancelRequestBtn" layoutX="323.0" layoutY="479.0" onAction="#cancelRequestBtn" text="Cancel Request">
+      <Label fx:id="SelectLabal" layoutX="119.0" layoutY="423.0" text="Select a change request in the table for approval or cancellation" textFill="#5aed99">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <JFXButton fx:id="cancelRequestBtn" layoutX="320.0" layoutY="460.0" onAction="#cancelRequestBtn" text="Cancel Request">
          <graphic>
             <FontAwesomeIconView fill="RED" glyphName="CLOSE" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="confirmRequestBtn" layoutX="479.0" layoutY="479.0" onAction="#confirmRequestBtn" text="Confirm Request">
+      <JFXButton fx:id="confirmRequestBtn" layoutX="479.0" layoutY="460.0" onAction="#confirmRequestBtn" text="Confirm Request">
          <graphic>
             <FontAwesomeIconView fill="#2cdd43" glyphName="CHECK" />
          </graphic>

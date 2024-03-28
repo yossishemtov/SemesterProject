@@ -22,12 +22,12 @@
                   <Font size="30.0" />
                </font>
             </Label>
-            <ImageView fitHeight="117.0" fitWidth="204.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="117.0" fitWidth="204.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../common/images/Go_Nature-removebg-preview.png" />
                </image>
             </ImageView>
-            <Line endX="689.0" endY="3.0" layoutX="411.0" layoutY="125.0" startX="-411.9999694824219" startY="3.0" stroke="#5aed99" />
+            <Line endX="689.0" endY="3.0" layoutX="411.0" layoutY="125.0" startX="-411.9999694824219" startY="3.0" stroke="#5aed99" strokeWidth="2.0" />
          </children>
       </AnchorPane>
    </top>

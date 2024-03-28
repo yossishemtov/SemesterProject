@@ -4,6 +4,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParkWorkerAvailableSpaceController">
@@ -12,8 +13,14 @@
          <children>
             <HBox prefHeight="45.0" prefWidth="332.0">
                <children>
-                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Available Space In Park:" wrappingWidth="187.51171875" />
-                  <Label fx:id="parkspace" text="parkspace" textFill="WHITE" />
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Available Space In Park:" underline="true" wrappingWidth="192.51171875">
+                     <font>
+                        <Font size="16.0" />
+                     </font></Text>
+                  <Label fx:id="parkspace" text="parkspace" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font></Label>
                </children>
             </HBox>
          </children>

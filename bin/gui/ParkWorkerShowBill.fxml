@@ -10,17 +10,17 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParkWorkerShowBillController">
    <children>
-      <Text fill="#5aed99" layoutX="400.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invoice" underline="true">
+      <Text fill="#5aed99" layoutX="419.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invoice" underline="true">
          <font>
-            <Font size="32.0" />
+            <Font size="20.0" />
          </font>
       </Text>
-      <JFXButton fx:id="confirmOrderButton" buttonType="RAISED" layoutX="395.0" layoutY="444.0" onAction="#confirmButtonAction" prefHeight="44.0" prefWidth="110.0" text="CONFIRM" textAlignment="CENTER" textFill="#54b950">
+      <JFXButton fx:id="confirmOrderButton" buttonType="RAISED" layoutX="395.0" layoutY="353.0" onAction="#confirmButtonAction" prefHeight="44.0" prefWidth="110.0" text="CONFIRM" textAlignment="CENTER" textFill="#54b950">
          <font>
-            <Font name="Candara" size="18.0" />
+            <Font size="14.0" />
          </font>
       </JFXButton>
-      <VBox layoutX="205.0" layoutY="185.0" prefHeight="230.0" prefWidth="277.0">
+      <VBox layoutX="204.0" layoutY="113.0" prefHeight="230.0" prefWidth="277.0">
          <children>
             <HBox prefHeight="37.0" prefWidth="295.0">
                <children>
@@ -60,7 +60,7 @@
             </HBox>
          </children>
       </VBox>
-      <VBox layoutX="515.0" layoutY="185.0" prefHeight="200.0" prefWidth="277.0">
+      <VBox layoutX="481.0" layoutY="143.0" prefHeight="200.0" prefWidth="277.0">
          <children>
             <HBox prefHeight="42.0" prefWidth="265.0">
                <children>

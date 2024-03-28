@@ -4,30 +4,50 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParkParametersController">
    <children>
-      <Label fx:id="headerLabel" layoutX="350.0" layoutY="50.0" text="Park Parameters" textFill="#5aed99" AnchorPane.leftAnchor="347.0" AnchorPane.rightAnchor="347.0">
+      <Label fx:id="headerLabel" layoutX="369.0" layoutY="65.0" prefHeight="35.0" prefWidth="179.0" text="Park Parameters" textFill="#5aed99" underline="true" AnchorPane.leftAnchor="369.0" AnchorPane.rightAnchor="352.0">
          <font>
-            <Font size="24.0" />
+            <Font size="20.0" />
          </font></Label>
-  <Label layoutX="385.0" layoutY="155.0" text="Current Visitors:" textFill="#5aed99" />
-      <Label fx:id="currentvistorLabel" layoutX="508.0" layoutY="155.0" text="0" textFill="WHITE" />
-      <Label layoutX="385.0" layoutY="205.0" text="Max Visitors:" textFill="#5aed99" />
-      <Label fx:id="maxvisitorLabel" layoutX="508.0" layoutY="205.0" text="0" textFill="WHITE" />
-      <Label layoutX="385.0" layoutY="255.0" text="Allowed Gap" textFill="#5aed99" />
-      <Label fx:id="allowedGapLabel" layoutX="508.0" layoutY="255.0" text="0" textFill="WHITE" />
-      <Label layoutX="385.0" layoutY="305.0" text="Capacity" textFill="#5aed99" />
-      <Label fx:id="CapacityLabel" layoutX="508.0" layoutY="305.0" text="0" textFill="WHITE" />
-      <Label layoutX="386.0" layoutY="114.0" text="Park name" textFill="#5aed99" />
-      <Label fx:id="parkNameLabel" layoutX="508.0" layoutY="115.0" text="0" textFill="WHITE" />
-      <Label layoutX="385.0" layoutY="347.0" text="Stay time" textFill="#5aed99" />
-      <Label fx:id="StayTimeLabel" layoutX="508.0" layoutY="347.0" text="0" textFill="WHITE" />
-      <Label layoutX="388.0" layoutY="387.0" text="location" textFill="#5aed99" />
-      <Label fx:id="locationLabel" layoutX="508.0" layoutY="389.0" text="0" textFill="WHITE" />
-      <JFXButton fx:id="getDatabth" layoutX="273.0" layoutY="450.0" onAction="#Getparkparameters" text="Get park parameters" textFill="#b3ffb3" />
-      <JFXComboBox fx:id="parkNameComboBox" focusColor="#5aed99" layoutX="487.0" layoutY="450.0" unFocusColor="WHITE" />
+      <JFXButton fx:id="getDatabth" layoutX="458.0" layoutY="433.0" onAction="#Getparkparameters" text="Get park parameters" textFill="#b3ffb3" />
+      <JFXComboBox fx:id="parkNameComboBox" focusColor="#5aed99" layoutX="291.0" layoutY="440.0" prefHeight="25.0" prefWidth="141.0" promptText="Select park name" unFocusColor="WHITE" />
+      <GridPane layoutX="343.0" layoutY="122.0" prefHeight="281.0" prefWidth="215.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="106.0" minWidth="10.0" prefWidth="104.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="96.0" minWidth="10.0" prefWidth="96.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label prefHeight="17.0" prefWidth="61.0" text="Park name:" textFill="#5aed99" />
+            <Label fx:id="parkNameLabel" textFill="WHITE" GridPane.columnIndex="1" />
+        <Label text="Current Visitors:" textFill="#5aed99" GridPane.rowIndex="1" />
+            <Label fx:id="currentvistorLabel" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Max Visitors:" textFill="#5aed99" GridPane.rowIndex="2" />
+            <Label fx:id="maxvisitorLabel" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Allowed Gap:" textFill="#5aed99" GridPane.rowIndex="3" />
+            <Label fx:id="allowedGapLabel" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Capacity:" textFill="#5aed99" GridPane.rowIndex="4" />
+            <Label fx:id="CapacityLabel" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label text="Stay time:" textFill="#5aed99" GridPane.rowIndex="5" />
+            <Label fx:id="StayTimeLabel" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label text="location:" textFill="#5aed99" GridPane.rowIndex="6" />
+            <Label fx:id="locationLabel" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+         </children>
+      </GridPane>
 
    </children>
 </AnchorPane>

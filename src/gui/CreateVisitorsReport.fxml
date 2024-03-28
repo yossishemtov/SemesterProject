@@ -10,7 +10,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CreateVisitorsReportController">
    <children>
-      <Label fx:id="titlelLabal" layoutX="302.0" layoutY="39.0" prefHeight="49.0" prefWidth="296.0" text=" Visitor report" textFill="#5aed99">
+      <Label fx:id="titlelLabal" layoutX="302.0" layoutY="39.0" prefHeight="49.0" prefWidth="296.0" text=" Visitor report" textFill="#5aed99" underline="true">
          <font>
             <Font size="18.0" />
          </font>
@@ -32,7 +32,7 @@
             <FontAwesomeIconView fill="RED" glyphName="CLOSE" />
          </graphic>
       </JFXButton>
-      <JFXTextArea fx:id="CommentTextArea" focusColor="#5aed99" layoutX="322.0" layoutY="425.0" prefHeight="71.0" prefWidth="257.0" promptText="Add cmments to the report" unFocusColor="WHITE">
+      <JFXTextArea fx:id="CommentTextArea" focusColor="#5aed99" layoutX="322.0" layoutY="425.0" prefHeight="49.0" prefWidth="257.0" promptText="Add cmments to the report" unFocusColor="WHITE">
          <font>
             <Font size="14.0" />
          </font></JFXTextArea>
