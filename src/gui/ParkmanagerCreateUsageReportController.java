@@ -115,9 +115,9 @@ public class ParkmanagerCreateUsageReportController implements Initializable {
 		// Adding day names in the first row, aligned to the top center of their cells
 		for (int i = 0; i < dayNames.length; i++) {
 			Label lblDayName = new Label(dayNames[i]);
-			lblDayName.setStyle("-fx-text-alignment: center; -fx-alignment: top-center;"); // Center text and align
-																							// label top-center within
-																							// its cell
+			lblDayName.setStyle("-fx-text-alignment: center; -fx-alignment: top-center; -fx-text-fill: white; -fx-padding: 10px;"); // Center text and align
+																												// label top-center within
+																												// its cell
 			lblDayName.setMaxWidth(Double.MAX_VALUE); // Allow the label to grow and fill the cell width
 			GridPane.setMargin(lblDayName, new Insets(0, 0, 0, 0));
 
@@ -141,14 +141,16 @@ public class ParkmanagerCreateUsageReportController implements Initializable {
 			int columnIndex = (firstDayWeekValue + dayOfMonth - 1) % 7;
 
 			Rectangle rect = new Rectangle(50, 50);
-			rect.setStroke(Color.BLACK);
+			rect.setStroke(Color.web("#282829"));
 
 			Integer occupancy = dailyUsage.getOrDefault(dayOfMonth, 0);
 			int parkCapacity = usageReport.getParkCapacity();
-			rect.setFill(occupancy >= parkCapacity ? Color.GREEN : Color.RED);
+			rect.setFill(occupancy >= parkCapacity ?  Color.RED  : Color.web("#3dee5a"));
+			
+			
 
 			Label dayLabel = new Label(String.valueOf(dayOfMonth));
-			dayLabel.setTextFill(Color.WHITE);
+			dayLabel.setTextFill(Color.web("#282829"));
 			StackPane stackPane = new StackPane(rect, dayLabel);
 			stackPane.setAlignment(Pos.CENTER);
 

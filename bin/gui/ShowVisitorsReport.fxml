@@ -11,9 +11,9 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ShowVisitorsReportController">
 
    <children>
-      <Label fx:id="titlelLabal" layoutX="327.0" layoutY="38.0" prefHeight="49.0" prefWidth="270.0" text=" Visitor Report" textFill="#5aed99">
+      <Label fx:id="titlelLabal" layoutX="315.0" layoutY="38.0" prefHeight="49.0" prefWidth="270.0" text="Visitor Report" textFill="#5aed99" underline="true">
          <font>
-            <Font size="18.0" />
+            <Font size="20.0" />
          </font>
       </Label>
       <PieChart fx:id="visitorsChart" layoutX="308.0" layoutY="99.0" prefHeight="312.0" prefWidth="366.0" />
@@ -25,6 +25,6 @@
             <FontAwesomeIconView fill="RED" glyphName="CLOSE" />
          </graphic>
       </JFXButton>
-      <JFXTextArea fx:id="CommentTextArea" focusColor="#b3ffb3" layoutX="308.0" layoutY="435.0" prefHeight="71.0" prefWidth="257.0" promptText="Add comments to the report" unFocusColor="WHITE" />
+      <JFXTextArea fx:id="CommentTextArea" focusColor="#b3ffb3" layoutX="308.0" layoutY="442.0" prefHeight="42.0" prefWidth="257.0" promptText="Add comments to the report" unFocusColor="WHITE" />
    </children>
 </AnchorPane>

@@ -80,7 +80,7 @@
          </children>
       </VBox>
       <TextArea fx:id="logTextArea" layoutX="322.0" layoutY="248.0" prefHeight="157.0" prefWidth="322.0" />
-      <Label layoutX="435.0" layoutY="222.0" text="server console">
+      <Label layoutX="435.0" layoutY="222.0" text="server console" textFill="WHITE">
          <font>
             <Font size="15.0" />
          </font>

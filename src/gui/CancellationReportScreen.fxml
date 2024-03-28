@@ -19,7 +19,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <JFXButton fx:id="ClosePagebth" layoutX="64.0" layoutY="515.0" onAction="#ClosePageAction" text="Close page">
+      <JFXButton fx:id="ClosePagebth" layoutX="86.0" layoutY="513.0" onAction="#ClosePageAction" text="Close page">
          <font>
             <Font size="14.0" />
          </font>
@@ -27,7 +27,7 @@
             <FontAwesomeIconView fill="RED" glyphName="CLOSE" />
          </graphic>
       </JFXButton>
-      <BarChart fx:id="CancellationBarChart" layoutX="276.0" layoutY="65.0" prefHeight="234.0" prefWidth="739.0">
+      <BarChart fx:id="CancellationBarChart" layoutX="289.0" layoutY="67.0" prefHeight="234.0" prefWidth="739.0">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
@@ -35,7 +35,7 @@
           <NumberAxis side="LEFT" />
         </yAxis>
       </BarChart>
-      <BarChart fx:id="UnfulfilledOrder" layoutX="288.0" layoutY="325.0" prefHeight="246.0" prefWidth="739.0">
+      <BarChart fx:id="UnfulfilledOrder" layoutX="289.0" layoutY="328.0" prefHeight="246.0" prefWidth="739.0">
          <xAxis>
             <CategoryAxis side="BOTTOM" />
          </xAxis>

@@ -18,12 +18,12 @@
         <yAxis>
  <NumberAxis fx:id="yAxis" lowerBound="0" tickUnit="1" upperBound="8" /> </yAxis>
       </LineChart>
-      <Label fx:id="titlelLabal" layoutX="399.0" layoutY="41.0" text="Visit Report" textFill="#5aed99">
+      <Label fx:id="titlelLabal" layoutX="420.0" layoutY="41.0" prefHeight="30.0" prefWidth="108.0" text="Visit Report" textFill="#5aed99" underline="true">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <JFXButton fx:id="Closebth" layoutX="423.0" layoutY="517.0" onAction="#ClosepageAction" text="Close page">
+      <JFXButton fx:id="Closebth" layoutX="416.0" layoutY="490.0" onAction="#ClosepageAction" text="Close page">
          <font>
             <Font size="14.0" />
          </font>

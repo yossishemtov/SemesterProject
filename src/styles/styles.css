@@ -26,6 +26,7 @@
     -fx-alignment: CENTER;  
 }
 
+
 .jfx-date-picker > .arrow-button > .jfx-svg-glyph{
     -fx-background-color: #5aed99;
 }
@@ -40,20 +41,20 @@
     -fx-text-fill: white;
 }
 .text-area {
+    -fx-prompt-text-fill: #5aed99; 
+    -fx-text-fill: white; 
+}
+.combo-box {
     -fx-prompt-text-fill: #5aed99;
     -fx-text-fill: white;
 }
-
-.text-area .text {
-    -fx-text-alignment: center;
-}
-/* .combo-box .text-input {
-    -fx-prompt-text-fill: #b3ffb3;
-    -fx-text-fill: white;
-
-} */
 .combo-box .list-cell:selected {
     -fx-text-fill: white; /* Set the text color to white when an item is selected */
+}
+
+.menu-button {
+    -fx-prompt-text-fill: #5aed99;
+    -fx-text-fill: white;
 }
 
 #asterisk {
@@ -122,9 +123,6 @@
     -fx-background-color: #5aed99; 
 }
 
-
-
-
 .loginBorder {
 	-fx-background-color: #b3ffb3;
 }
@@ -157,4 +155,13 @@
 
 .default-color0.chart-bar {
     -fx-bar-fill: #72a672; /* Orange Red */
+}
+
+#logTextArea {
+    /* -fx-background-color: #282829; */
+    -fx-control-inner-background: derive(#282829, 35%);
+    -fx-font-size: 12px; 
+    -fx-border-color: #5aed99;
+    -fx-border-width: 3px;
+    -fx-text-fill: white;
 }

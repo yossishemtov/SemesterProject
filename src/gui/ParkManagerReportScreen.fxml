@@ -6,31 +6,22 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParkmanagerReportController">
    <children>
-      <Label layoutX="337.0" layoutY="56.0" text="Creating reports screen" textFill="#5aed99">
+      <Label layoutX="357.0" layoutY="56.0" text="Creating reports screen" textFill="#5aed99" underline="true">
          <font>
-            <Font size="22.0" />
+            <Font size="18.0" />
          </font>
       </Label>
-      <JFXComboBox fx:id="ReportTypeCombobox" focusColor="#5aed99" layoutX="368.0" layoutY="438.0" unFocusColor="WHITE" />
-      <JFXComboBox fx:id="monthCombobox" focusColor="#b3ffb3" layoutX="696.0" layoutY="438.0" unFocusColor="WHITE" />
-      <JFXButton fx:id="Createbth" layoutX="450.0" layoutY="505.0" onAction="#CreateReportAction" text="Create">
+      <JFXButton fx:id="Createbth" layoutX="413.0" layoutY="505.0" onAction="#CreateReportAction" text="Create">
          <font>
             <Font size="15.0" />
          </font></JFXButton>
-      <Label layoutX="214.0" layoutY="440.0" text="Select report type" textFill="#5aed99">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="566.0" layoutY="441.0" text="Choose a month" textFill="#5aed99">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
       <TableView fx:id="ReportsTableView" layoutX="167.0" layoutY="112.0" onMouseClicked="#ShowReportTableClickAction" prefHeight="255.0" prefWidth="566.0">
          <columns>
             <TableColumn fx:id="reportIDCol" prefWidth="75.0" text="Report ID" />
@@ -43,5 +34,29 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
+      <GridPane layoutX="316.0" layoutY="384.0" prefHeight="111.0" prefWidth="269.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="10.0" prefWidth="126.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="143.0" minWidth="10.0" prefWidth="143.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Select report type" textFill="#5aed99">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXComboBox fx:id="ReportTypeCombobox" focusColor="#5aed99" prefHeight="25.0" prefWidth="142.0" unFocusColor="WHITE" GridPane.columnIndex="1" />
+            <Label text="Choose a month" textFill="#5aed99" GridPane.rowIndex="1">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXComboBox fx:id="monthCombobox" focusColor="#b3ffb3" prefHeight="25.0" prefWidth="160.0" unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
    </children>
 </AnchorPane>

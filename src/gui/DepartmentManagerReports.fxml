@@ -6,12 +6,15 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.DepartmentManagerReportsController">
    <children>
 
-      <Label fx:id="headerLabel" layoutX="385.0" layoutY="14.0" text="Parks Reports" textFill="#5aed99">
+      <Label fx:id="headerLabel" layoutX="385.0" layoutY="14.0" text="Parks Reports" textFill="#5aed99" underline="true">
          <font>
             <Font size="17.0" />
          </font></Label>
@@ -33,37 +36,61 @@
          <font>
             <Font size="14.0" />
          </font></Label>
-      <Label layoutX="509.0" layoutY="331.0" text="Generate Report:" textFill="#5aed99" underline="true" />
-            <JFXButton fx:id="ShowReportBth" layoutX="201.0" layoutY="420.0" onAction="#ShowReportparkIdAction" text="Click to show report" />
-      <Label layoutX="444.0" layoutY="417.0" text="Choose a month" textFill="#5aed99">
-
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-
-      <Label layoutX="444.0" layoutY="371.0" text="Select report type" textFill="#5aed99">
-
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-
-      <JFXComboBox fx:id="ReportTypeCombobox" focusColor="#5aed99" layoutX="592.0" layoutY="369.0" unFocusColor="WHITE" />
-      <JFXComboBox fx:id="monthCombobox" focusColor="#5aed99" layoutX="592.0" layoutY="415.0" unFocusColor="WHITE" />
-      <Label layoutX="444.0" layoutY="474.0" text="Choose park :" textFill="#5aed99">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <JFXComboBox fx:id="parkNameComboBox" focusColor="#5aed99" layoutX="592.0" layoutY="472.0" unFocusColor="WHITE" />
-      <Label layoutX="215.0" layoutY="331.0" text="View existing reports" textFill="#5aed99" underline="true" />
-      <JFXComboBox fx:id="parkNameComboBoxShowReport" focusColor="#b3ffb3" layoutX="285.0" layoutY="368.0" unFocusColor="WHITE" />
-      <Label layoutX="176.0" layoutY="370.0" text="Choose park" textFill="#5aed99">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <JFXButton fx:id="Createbth" layoutX="529.0" layoutY="509.0" onAction="#CreateReportAction" text="Create" />
+      <Label layoutX="541.0" layoutY="339.0" text="Generate Report:" textFill="#5aed99" underline="true" />
+            <JFXButton fx:id="ShowReportBth" layoutX="216.0" layoutY="436.0" onAction="#ShowReportparkIdAction" text="Click to show report" />
+      <Label layoutX="230.0" layoutY="339.0" text="View existing reports" textFill="#5aed99" underline="true" />
+      <JFXButton fx:id="Createbth" layoutX="564.0" layoutY="493.0" onAction="#CreateReportAction" text="Create" />
+      <GridPane layoutX="169.0" layoutY="384.0" prefHeight="30.0" prefWidth="246.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="128.0" minWidth="10.0" prefWidth="101.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="169.0" minWidth="10.0" prefWidth="145.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Choose park" textFill="#5aed99">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXComboBox fx:id="parkNameComboBoxShowReport" focusColor="#b3ffb3" prefHeight="25.0" prefWidth="150.0" unFocusColor="WHITE" GridPane.columnIndex="1" />
+         </children>
+      </GridPane>
+      <GridPane layoutX="471.0" layoutY="366.0" prefHeight="109.0" prefWidth="294.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="142.0" minWidth="10.0" prefWidth="130.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="164.0" minWidth="10.0" prefWidth="164.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+      
+            <Label text="Select report type" textFill="#5aed99">
+      
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+      
+            <JFXComboBox fx:id="ReportTypeCombobox" focusColor="#5aed99" prefHeight="25.0" prefWidth="139.0" unFocusColor="WHITE" GridPane.columnIndex="1" />
+            <Label text="Choose a month" textFill="#5aed99" GridPane.rowIndex="1">
+      
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXComboBox fx:id="monthCombobox" focusColor="#5aed99" prefHeight="25.0" prefWidth="136.0" unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label prefHeight="20.0" prefWidth="93.0" text="Choose park " textFill="#5aed99" GridPane.rowIndex="2">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXComboBox fx:id="parkNameComboBox" focusColor="#5aed99" prefHeight="25.0" prefWidth="136.0" unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
    </children>
 </AnchorPane>

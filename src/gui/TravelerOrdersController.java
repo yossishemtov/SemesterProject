@@ -141,7 +141,7 @@ public class TravelerOrdersController implements Initializable {
 	    if (selectedRequest != null) {
 	        try {
 	            // Check if the selected order's status is PENDING
-	            if (selectedRequest.getOrderStatus().equals("PENDING")) {
+	            if (selectedRequest.getOrderStatus().equals("PENDING") || selectedRequest.getOrderStatus().equals("PENDING_EMAIL_SENT") ) {
 	                // Update the order status to CONFIRMED
 	                selectedRequest.setStatus(Order.status.CONFIRMED.toString());
 	                System.out.println("New order status: " + selectedRequest.getOrderStatus());

@@ -52,8 +52,8 @@ public class TravelerLoginController implements Initializable{
 	            // Set text field color and icon based on input
 	            if (newValue.isEmpty()) {
 	                // Set to original color
-	                userIcon.setFill(Color.web("#b3ffb3"));
-	                TravelerID.setStyle("-jfx-unfocus-color: #b3ffb3; " + "-fx-text-fill: #b3ffb3; " + "-fx-prompt-text-fill: #b3ffb3;");
+	                userIcon.setFill(Color.web("#5aed99"));
+	                TravelerID.setStyle("-jfx-unfocus-color:#5aed99; " + "-fx-text-fill: white; " + "-fx-prompt-text-fill: #5aed99;");
 	            } else {
 	                // Set to red if input is not empty
 	                userIcon.setFill(Color.RED);
@@ -62,8 +62,8 @@ public class TravelerLoginController implements Initializable{
 
 	            // Set to green if input matches pattern
 	            if (!newValue.isEmpty() && newValue.matches(pattern)) {
-	                userIcon.setFill(Color.GREEN);
-	                TravelerID.setStyle("-jfx-unfocus-color: green; " + "-fx-text-fill: green; " + "-fx-prompt-text-fill: green;");
+	                userIcon.setFill(Color.web("#2cdd43"));
+	                TravelerID.setStyle("-jfx-unfocus-color: #2cdd43; " + "-fx-text-fill: #2cdd43; " + "-fx-prompt-text-fill: #2cdd43;");
 	            }
 	        });
 
