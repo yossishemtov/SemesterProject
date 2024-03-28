@@ -7,8 +7,6 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.paint.LinearGradient?>
-<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -24,16 +22,6 @@
          <font>
             <Font size="16.0" />
          </font>
-         <ripplerFill>
-            <LinearGradient endX="1.0" endY="1.0">
-               <stops>
-                  <Stop color="#4ab54a" />
-                  <Stop color="#291c1c00" offset="0.19931271477663232" />
-                  <Stop color="#49b249" offset="0.7849666232176008" />
-                  <Stop color="#4cc34c" offset="1.0" />
-               </stops>
-            </LinearGradient>
-         </ripplerFill>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -42,16 +30,6 @@
          <font>
             <Font size="16.0" />
          </font>
-         <ripplerFill>
-            <LinearGradient endX="1.0" endY="1.0">
-               <stops>
-                  <Stop color="#4ab54a" />
-                  <Stop color="#291c1c00" offset="0.19931271477663232" />
-                  <Stop color="#49b249" offset="0.7849666232176008" />
-                  <Stop color="#4bbc4b" offset="1.0" />
-               </stops>
-            </LinearGradient>
-         </ripplerFill>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
