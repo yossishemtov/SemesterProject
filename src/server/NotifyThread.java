@@ -16,7 +16,7 @@ import common.OrderNotification;
 import common.WaitingList;
 
 
-/**
+/** 
  * NotifyThread class implements Runnable.
  * 
  * This class handle all the automated functionality:
