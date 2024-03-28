@@ -659,7 +659,7 @@ public class DatabaseController {
 				orderInformation = new Order(rs.getInt("orderId"), rs.getInt("travelerId"), rs.getInt("parkNumber"),
 						rs.getInt("amountOfVisitors"), price, rs.getString("visitorEmail"), orderDate, visitTime,
 						rs.getString("orderStatus"), // Assuming managerID is stored directly as an integer
-						rs.getString("typeOfOrder"), rs.getString("TelephoneNumber"), null);
+						rs.getString("typeOfOrder"), rs.getString("TelephoneNumber"), rs.getString("parkName"));
 
 			}
 		} catch (SQLException e) {

@@ -58,10 +58,11 @@
             <HBox prefHeight="52.0" prefWidth="337.0">
                <children>
                   <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Type Of Order:" wrappingWidth="128.66845703125" />
-                  <SplitMenuButton fx:id="menuField" mnemonicParsing="false" text="Choose Type Of Order">
+                  <SplitMenuButton fx:id="menuField" mnemonicParsing="false" onAction="#handleMenuItemAction" text="SOLO">
                     <items>
-                      <MenuItem fx:id="familyMenuFeild" mnemonicParsing="false" onAction="#chooseEntrencePlan" text="Family" />
-                      <MenuItem fx:id="soloMenuField" mnemonicParsing="false" onAction="#chooseEntrencePlan" text="Solo" />
+                      <MenuItem fx:id="familyMenuFeild" mnemonicParsing="false" onAction="#handleMenuItemAction" text="FAMILY" />
+                      <MenuItem fx:id="soloMenuField" mnemonicParsing="false" onAction="#handleMenuItemAction" text="SOLO" />
+                        <MenuItem fx:id="guidedGroupMenuField" mnemonicParsing="false" onAction="#handleMenuItemAction" text="GUIDEDGROUP" />
                     </items>
                   </SplitMenuButton>
                </children>
@@ -69,7 +70,7 @@
             <HBox prefHeight="45.0" prefWidth="337.0">
                <children>
                   <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Price:" wrappingWidth="68.2734375" />
-                  <Label fx:id="priceLabel" textFill="WHITE" />
+                  <Label fx:id="priceLabel" prefHeight="17.0" prefWidth="83.0" textFill="WHITE" />
                </children>
             </HBox>
          </children>
