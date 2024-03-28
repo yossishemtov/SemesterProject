@@ -29,8 +29,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class TravelerWaitingListsController implements Initializable {
 
+/**
+ * Controller class for managing the traveler's waiting lists view.
+ * This class handles the initialization of the UI components, loading waiting lists from the database,
+ * and handling actions such as exiting from a waiting list.
+ */
+public class TravelerWaitingListsController implements Initializable {
 
 	@FXML
 	private TableColumn<WaitingList, Integer> waitingListIdCol;
@@ -68,6 +73,16 @@ public class TravelerWaitingListsController implements Initializable {
 
 	// order class needs to implement serializable
 
+	
+	/**
+	 * Initializes the controller by setting up the table columns and loading waiting lists from the database.
+	 * This method is called automatically when the controller is initialized.
+	 * 
+	 * @param location The location used to resolve relative paths for the root object, or null if
+	 *                 the location is not known.
+	 * @param resources The resources used to localize the root object, or null if the root object
+	 *                  was not localized.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// Load orders data from the database and initialize the table
@@ -78,6 +93,13 @@ public class TravelerWaitingListsController implements Initializable {
 		loadWaitingListsFromDatabase(currentTraveler);
 	}
 
+	/**
+	 * Loads waiting lists from the database for the specified traveler.
+	 * This method sends a request to the server to retrieve all waiting lists associated with the
+	 * current traveler, and then updates the UI with the fetched waiting lists.
+	 * 
+	 * @param currentTraveler The traveler for whom the waiting lists are to be loaded.
+	 */
 	private void loadWaitingListsFromDatabase(Traveler currentTraveler) {
 		ClientServerMessage<?> clientServerMessage = new ClientServerMessage<>(currentTraveler, Operation.GET_ALL_WAITING_LISTS);
 		ClientUI.clientControllerInstance.sendMessageToServer(clientServerMessage);
@@ -92,8 +114,8 @@ public class TravelerWaitingListsController implements Initializable {
 	}
 
 	/**
-	 * Sets up the table columns with the corresponding properties from the
-	 * ChangeRequest class.
+	 * Sets up the table columns with the corresponding properties from the WaitingList class.
+	 * This method binds each column to the appropriate property of the WaitingList object.
 	 */
 	private void setupTableColumns() {
 		// Binding table columns to ChangeRequest properties
@@ -108,8 +130,9 @@ public class TravelerWaitingListsController implements Initializable {
 	}
 
 	/**
-	 * Waits for a server response asynchronously and updates the UI with the
-	 * fetched data.
+	 * Waits for a server response asynchronously and updates the UI with the fetched data.
+	 * This method is responsible for simulating a wait for the server response and updating the
+	 * UI with the fetched data once the response is received.
 	 */
 	private void waitForServerResponse() {
 		new Thread(() -> {
@@ -134,8 +157,14 @@ public class TravelerWaitingListsController implements Initializable {
 
 	/**
 	 * Handles exiting from a waiting list.
+	 * This method is triggered when the user clicks the "Exit" button associated with a waiting list.
+	 * It retrieves the selected waiting list from the TableView and sends a message to the server to remove the traveler from the waiting list.
+	 * Upon successful removal, it updates the UI and notifies the user.
+	 * If any error occurs during the process, it displays an error message to the user.
+	 *
+	 * @param click The action event triggered by clicking the "Exit" button.
+	 * @throws Exception If an error occurs during the process of exiting the waiting list.
 	 */
-	@FXML
 	public void exitWaitingList(ActionEvent click) throws Exception {
 	    // Get the selected order from the TableView
 	    Order selectedWaitingList = waitingListsTable.getSelectionModel().getSelectedItem();
