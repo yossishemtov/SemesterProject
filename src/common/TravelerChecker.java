@@ -11,9 +11,15 @@ import client.ClientUI;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 
+/** This class is responsible for showing alerts to visitors that their order is within 24 hours
+ * or they have a spot in the park if they entered waitinglist
+ */
 @SuppressWarnings("unchecked")
 public class TravelerChecker {
 	
+	/**
+     * Views pending notifications for the current traveler and allows confirmation or cancellation of visits.
+     */
 	public void viewPendingNotifications() {
         // receive notifications about orders that are pending
 
@@ -88,7 +94,9 @@ public class TravelerChecker {
         }
     }
     
-    
+	/**
+     * Views canceled notifications for the current traveler.
+     */
 	public void viewCanceledNotifications() {
 	    Traveler currentTraveler = Usermanager.getCurrentTraveler();
 
@@ -128,6 +136,9 @@ public class TravelerChecker {
 	    }
 	}
     
+	/**
+     * Views waiting notifications for the current traveler.
+     */
 	public void viewWaitingNotifications() {
 	    Traveler currentTraveler = Usermanager.getCurrentTraveler();
 
