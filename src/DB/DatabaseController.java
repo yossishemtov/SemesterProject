@@ -1876,7 +1876,7 @@ public class DatabaseController {
 	         try (ResultSet rs = ps.executeQuery()) { 
 	             while (rs.next()) { 
 	                 Integer orderId = rs.getInt("orderId"); 
-	                 Integer travelerId = rs.getInt("travlerId"); 
+	                 Integer travelerId = rs.getInt("travelerId"); 
 	                 Integer waitingListId = rs.getInt("waitingListId"); 
 	                 Integer parkNum = rs.getInt("parkNumber"); 
 	                 Integer amtVisitorsWaiting = rs.getInt("amountOfVisitors"); 
