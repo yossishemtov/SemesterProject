@@ -2,9 +2,17 @@ package client;
 
 import common.Alerts;
 
+/**
+ * Provides methods for input validation in the client application.
+ */
 public class InputValidation {
 
-	
+	/**
+	 * Validates a visitor ID.
+	 *
+	 * @param visitorID the visitor ID to validate
+	 * @return an Alerts object indicating the validation result
+	 */
 	public static Alerts ValidateVisitorID(String visitorID) {
         // Check if the visitor ID is empty
         if (visitorID.equals("")) {
@@ -24,7 +32,13 @@ public class InputValidation {
         	 return new Alerts(Alerts.AlertType.INFORMATION, "ID Validation", "", "Valid ID");
         }
     }
-	// function for chacking validation of an email
+	
+	/**
+	 * Validates an email address.
+	 *
+	 * @param email the email address to validate
+	 * @return an Alerts object indicating the validation result
+	 */
 	public static Alerts validateEmail(String email) {
 	    // Check if the email is empty
 	    if (email.isEmpty()) {
@@ -42,6 +56,12 @@ public class InputValidation {
 	    }
 	}
 	
+	/**
+	 * Validates the number of visitors for a family order.
+	 *
+	 * @param amountOfVisitors the number of visitors to validate
+	 * @return an Alerts object indicating the validation result
+	 */
 	public static Alerts validateFamilyVisitors(String amountOfVisitors) {
 		 if (amountOfVisitors.isEmpty()) {
 		        return new Alerts(Alerts.AlertType.ERROR, "Invalid amountofvisitors", "", "amountofvisitors cannot be empty");
@@ -58,6 +78,12 @@ public class InputValidation {
 		
 	}
 	
+	/**
+	 * Validates the number of visitors for a solo order.
+	 *
+	 * @param amountOfVisitors the number of visitors to validate
+	 * @return an Alerts object indicating the validation result
+	 */
 	public static Alerts validateSoloVisitor(String amountOfVisitors) {
 		if (amountOfVisitors.isEmpty()) {
 	        return new Alerts(Alerts.AlertType.ERROR, "Invalid amountofvisitors", "", "amountofvisitors cannot be empty");
@@ -73,7 +99,12 @@ public class InputValidation {
 		
 	}
 	
-	
+	/**
+	 * Validates the type of order.
+	 *
+	 * @param typeOfOrder the type of order to validate
+	 * @return an Alerts object indicating the validation result
+	 */
 	public static Alerts validateTypeOfOrder(String typeOfOrder) {
 		if (typeOfOrder.isEmpty()) {
 	        return new Alerts(Alerts.AlertType.ERROR, "Invalid typeoforder", "", "typeoforder cannot be empty");
@@ -91,6 +122,12 @@ public class InputValidation {
 		
 	}
 	
+	/**
+	 * Validates the number of visitors for a group guided order.
+	 *
+	 * @param amountOfVisitors the number of visitors to validate
+	 * @return an Alerts object indicating the validation result
+	 */
 	public static Alerts validateGroupGuideVisitors(String amountOfVisitors) {
 		if (amountOfVisitors.isEmpty()) {
 	        return new Alerts(Alerts.AlertType.ERROR, "Invalid amountofvisitors", "", "amountofvisitors cannot be empty");
@@ -106,7 +143,12 @@ public class InputValidation {
 		
 	}
 	
-	
+	/**
+	 * Validates the price.
+	 *
+	 * @param priceToPay the price to validate
+	 * @return an Alerts object indicating the validation result
+	 */
 	public static Alerts validatePrice(String priceToPay) {
 		//Checks if order visitors is between 1-6
 		if (!priceToPay.matches("\\d+(\\.\\d+)?")) {
@@ -116,7 +158,12 @@ public class InputValidation {
 		}
 	}
 	
-	//validates name and lastname
+	/**
+	 * Validates a name or last name.
+	 *
+	 * @param nameOrLastname the name or last name to validate
+	 * @return an Alerts object indicating the validation result
+	 */
 	public static Alerts validateNameOrLastname(String amountOfVisitors) {
 		//Checks if order visitors is between 1-6
 		if (!amountOfVisitors.matches("^[a-zA-Z]{1,10}$")) {
@@ -129,7 +176,12 @@ public class InputValidation {
 	}
 	
 	
-	// function for validate worker password
+	/**
+	 * Validates a password.
+	 *
+	 * @param password the password to validate
+	 * @return an Alerts object indicating the validation result
+	 */
 	 public static Alerts validatePassword(String password) {
 	        // Check if password is empty
 	        if (password.equals("")) {
@@ -147,6 +199,12 @@ public class InputValidation {
 	        }
 	 }
 	 
+	 /**
+	  * Validates an order number.
+	  *
+	  * @param orderId the order ID to validate
+	  * @return an Alerts object indicating the validation result
+	  */
 	 public static Alerts validateOrderNumber(String orderId) {
 		 if(!orderId.matches("[1-9]\\d{0,8}|0")) {
 	            return new Alerts(Alerts.AlertType.ERROR, "Invalid Order Id", "", "Order id must only contain numbers and not exceed 8 characters");
@@ -155,6 +213,12 @@ public class InputValidation {
 	        }
 	 }
 	 
+	 /**
+	  * Validates a phone number.
+	  *
+	  * @param phoneNumber the phone number to validate
+	  * @return an Alerts object indicating the validation result
+	  */
 	 public static Alerts validatePhoneNumber(String phoneNumber) {
 		    // Check for a valid phone number (11 digits starting with "05")
 		    if (!phoneNumber.matches("^05[0-9]{8}$")) {
@@ -166,7 +230,12 @@ public class InputValidation {
 
 	 
  
-	// function for validate worker username
+	 /**
+	  * Validates a username.
+	  *
+	  * @param username the username to validate
+	  * @return an Alerts object indicating the validation result
+	  */
 	 public static Alerts validateUsername(String username) {
 	    // Check if the username is empty
 	    if (username.isEmpty()) {

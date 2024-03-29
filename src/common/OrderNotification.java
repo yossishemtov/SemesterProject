@@ -4,10 +4,13 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * The OrderNotification class represents a notification associated with an order.
+ * It contains information such as the order ID, date of notification, start and end time of notification,
+ * and status of the notification.
+ */
 public class OrderNotification implements Serializable{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private Integer orderId;
 	private LocalDate dateOfNotification;
@@ -16,6 +19,15 @@ public class OrderNotification implements Serializable{
 	private String status;
 	
 	
+	/**
+     * Constructs a new OrderNotification object with the specified parameters.
+     *
+     * @param orderId            The ID of the order associated with the notification.
+     * @param dateOfNotification The date of the notification.
+     * @param startNotification  The start time of the notification.
+     * @param endNotification    The end time of the notification.
+     * @param status             The status of the notification.
+     */
 	public OrderNotification(Integer orderId, LocalDate dateOfNotification, LocalTime startNotification,
 			LocalTime endNotification, String status) {
 		this.orderId = orderId;

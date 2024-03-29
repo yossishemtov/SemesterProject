@@ -2,6 +2,9 @@ package common;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a message with an address, content, and sending date.
+ */
 public class Message {
 	private String address;
 	private String content;
