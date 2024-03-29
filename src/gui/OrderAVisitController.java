@@ -475,7 +475,7 @@ public class OrderAVisitController implements Initializable {
 
         TimeComboBox.getItems().addAll(hoursList); //adding them to the Time combo box
 	}
-	 
+	
 	
 	private void RadioBoxCheck() { 
 		paymentToggleGroup = new ToggleGroup();

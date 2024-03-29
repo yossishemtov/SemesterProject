@@ -26,12 +26,17 @@
          <children>
             <Pane fx:id="PaneConfirmation" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="pnOrder" stylesheets="@../styles/styles.css">
                <children>
-                  <Label layoutX="357.0" layoutY="118.0" styleClass="labelBold" text="Thank you for your order" textFill="WHITE">
+                  <ImageView fitHeight="56.0" fitWidth="165.0" layoutX="367.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../common/images/OrderStage2.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="364.0" layoutY="84.0" styleClass="labelBold" text="Thank you for your order" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="246.0" layoutY="138.0" styleClass="labelBold" text="Confirmation message has been sent to your phone and email" textFill="WHITE">
+                  <Label layoutX="253.0" layoutY="104.0" styleClass="labelBold" text="Confirmation message has been sent to your phone and email" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -41,99 +46,87 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="352.0" layoutY="507.0" styleClass="labelBold" text="We'll send you a reminder!" textFill="WHITE">
+                  <Label layoutX="359.0" layoutY="496.0" styleClass="labelBold" text="We'll send you a reminder!">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="281.0" layoutY="158.0" styleClass="labelBold" text="We will not charge you until you arrive at the park" textFill="WHITE">
+                  <Label layoutX="288.0" layoutY="124.0" styleClass="labelBold" text="We will not charge you until you arrive at the park" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="363.0" layoutY="460.0" styleClass="labelBold" text="Your order number is: " textFill="WHITE">
+                  <Label layoutX="370.0" layoutY="444.0" styleClass="labelBold" text="Your order number is: " textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="summaryNum" focusTraversable="false" layoutX="422.0" layoutY="480.0" styleClass="labelBold" text="111" textFill="WHITE">
+                  <Label fx:id="summaryNum" focusTraversable="false" layoutX="432.0" layoutY="469.0" styleClass="labelBold" text="111" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Line endX="100.0" layoutX="442.0" layoutY="194.0" startX="-100.0" stroke="#5aed99" />
-                  <Label layoutX="384.0" layoutY="203.0" text="Visit Information:" textFill="WHITE">
-                     <font>
-                        <Font size="14.0" />
-                     </font></Label>
-                  <Label layoutX="349.0" layoutY="422.0" prefHeight="21.0" prefWidth="99.0" text="Total Price: " textFill="#5aed99" />
-                  <Button fx:id="btnHome" layoutX="398.0" layoutY="535.0" onAction="#HomeButton" prefHeight="37.0" prefWidth="93.0" text="Home" />
-                  <Label fx:id="summaryPrice" layoutX="454.0" layoutY="422.0" prefHeight="21.0" prefWidth="68.0" text="Price" textFill="WHITE" />
-                  <VBox layoutX="349.0" layoutY="238.0" prefHeight="176.0" prefWidth="281.0">
+                  <Line endX="100.0" layoutX="449.0" layoutY="160.0" startX="-100.0" stroke="#5aed99" />
+                  <Label layoutX="388.0" layoutY="167.0" text="Visit Information:" textFill="WHITE" />
+                  <Label layoutX="361.0" layoutY="404.0" prefHeight="21.0" prefWidth="99.0" text="Total Price: " textFill="#5aed99" />
+                  <Label layoutX="390.0" layoutY="254.0" text="Park : " />
+                  <Label fx:id="summaryPark" layoutX="480.0" layoutY="254.0" text="Park" />
+                  <Button fx:id="btnHome" layoutX="403.0" layoutY="506.0" onAction="#HomeButton" prefHeight="37.0" prefWidth="93.0" text="Home" />
+                  <Label fx:id="summaryPrice" layoutX="472.0" layoutY="404.0" prefHeight="21.0" prefWidth="49.0" text="Price" textFill="WHITE" />
+                  <VBox layoutX="361.0" layoutY="208.0" prefHeight="184.0" prefWidth="281.0">
                      <children>
-                        <HBox prefHeight="27.0" prefWidth="281.0">
+                        <HBox prefHeight="28.0" prefWidth="281.0">
                            <children>
                               <Label prefHeight="17.0" prefWidth="105.0" text="Date: " textFill="#5aed99" />
                               <Label fx:id="summaryDate" prefHeight="21.0" prefWidth="157.0" text="Date" textFill="WHITE" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="27.0" prefWidth="281.0">
+                        <HBox prefHeight="38.0" prefWidth="281.0">
                            <children>
-                              <Label prefHeight="17.0" prefWidth="107.0" text="Time:" textFill="#5aed99" />
-                              <Label fx:id="summaryTime" prefHeight="17.0" prefWidth="99.0" text="Time" textFill="WHITE" />
+                              <Label prefHeight="17.0" prefWidth="107.0" text="Time:" textFill="#b3ffb3" />
+                              <Label fx:id="summaryTime" text="Time" textFill="WHITE" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="30.0" prefWidth="281.0">
+                        <HBox prefHeight="39.0" prefWidth="281.0">
                            <children>
                               <Label prefHeight="17.0" prefWidth="106.0" text="Type:" textFill="#5aed99" />
-                              <Label fx:id="summaryType" prefHeight="17.0" prefWidth="123.0" text="Type" textFill="WHITE" />
+                              <Label fx:id="summaryType" text="Type" textFill="WHITE" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="31.0" prefWidth="281.0">
-                           <children>
-                              <Label prefHeight="17.0" prefWidth="107.0" text="Park : " textFill="#5aed99" />
-                              <Label fx:id="summaryPark" prefHeight="17.0" prefWidth="129.0" text="Park" textFill="WHITE" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="32.0" prefWidth="281.0">
+                        <HBox prefHeight="39.0" prefWidth="281.0">
                            <children>
                               <Label prefHeight="17.0" prefWidth="108.0" text="Visitors:" textFill="#5aed99" />
-                              <Label fx:id="summaryVisitors" prefHeight="17.0" prefWidth="126.0" text="Visitors" textFill="WHITE" />
+                              <Label fx:id="summaryVisitors" text="Visitors" textFill="WHITE" />
                            </children>
                         </HBox>
                         <HBox prefHeight="30.0" prefWidth="281.0">
                            <children>
-                              <Label prefHeight="17.0" prefWidth="108.0" text="Order Status:" textFill="#5aed99" />
-                              <Label fx:id="summaryStatus" prefHeight="17.0" prefWidth="124.0" text="Order" textFill="WHITE" />
+                              <Label prefHeight="17.0" prefWidth="112.0" text="Order Status:" textFill="#5aed99" />
+                              <Label fx:id="summaryStatus" text="Order" textFill="WHITE" />
                            </children>
                         </HBox>
                      </children>
                   </VBox>
-                  <Line endX="100.0" layoutX="444.0" layoutY="231.0" startX="-100.0" stroke="#5aed99" />
-                  <Line endX="100.0" layoutX="437.0" layoutY="450.0" startX="-100.0" stroke="#5aed99" />
-                  <Line endX="100.0" layoutX="437.0" layoutY="415.0" startX="-100.0" stroke="#5aed99" />
-                  <ImageView fitHeight="71.0" fitWidth="201.0" layoutX="336.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../common/images/OrderStage2.png" />
-                     </image>
-                  </ImageView>
-                  <Pane fx:id="PaneOrder" layoutX="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="pnOrder" stylesheets="@../styles/styles.css">
+                  <Line endX="100.0" layoutX="451.0" layoutY="197.0" startX="-100.0" stroke="#5aed99" />
+                  <Line endX="100.0" layoutX="444.0" layoutY="392.0" startX="-100.0" stroke="#5aed99" />
+                  <Line endX="100.0" layoutX="447.0" layoutY="436.0" startX="-100.0" stroke="#5aed99" />
+                  <Pane fx:id="PaneOrder" layoutX="-3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="pnOrder" stylesheets="@../styles/styles.css">
                      <children>
-                        <Label layoutX="385.0" layoutY="14.0" prefHeight="45.0" prefWidth="146.0" text="Order a Visit" textFill="#5aed99">
+                        <Label layoutX="387.0" layoutY="22.0" prefHeight="45.0" prefWidth="146.0" text="Order a Visit" textFill="#5aed99">
                            <font>
                               <Font size="25.0" />
                            </font>
                         </Label>
-                        <Accordion layoutX="269.0" layoutY="90.0" />
-                        <ImageView fitHeight="77.0" fitWidth="212.0" layoutX="343.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+                        <Accordion layoutX="270.0" layoutY="113.0" />
+                        <ImageView fitHeight="77.0" fitWidth="212.0" layoutX="344.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../common/images/OrderStage.png" />
                            </image>
                         </ImageView>
-                        <Label layoutX="417.0" layoutY="479.0" text="All fields are required" textFill="#5aed99" />
-                        <Label layoutX="403.0" layoutY="479.0" text="*" textFill="RED" />
-                        <Button fx:id="btnSubmit" layoutX="417.0" layoutY="509.0" onAction="#SubmitOrderButton" prefHeight="43.0" prefWidth="129.0" text="Submit Order" />
-                        <VBox fillWidth="false" layoutX="224.0" layoutY="183.0" prefHeight="265.0" prefWidth="511.0" spacing="10.0">
+                        <Label layoutX="410.0" layoutY="484.0" text="All fields are required" textFill="#5aed99" />
+                        <Label layoutX="392.0" layoutY="485.0" text="*" textFill="RED" />
+                        <Button fx:id="btnSubmit" layoutX="416.0" layoutY="522.0" onAction="#SubmitOrderButton" prefHeight="43.0" prefWidth="129.0" text="Submit Order" />
+                        <VBox fillWidth="false" layoutX="216.0" layoutY="174.0" prefHeight="286.0" prefWidth="511.0" spacing="10.0">
                            <children>
                               <HBox prefHeight="36.0" prefWidth="511.0">
                                  <children>
@@ -230,13 +223,6 @@
                                        </HBox.margin>
                                     </JFXComboBox>
                                     <Button mnemonicParsing="false" onAction="#handlePricingButton" prefHeight="78.0" prefWidth="41.0" styleClass="pricingButton">
-                                       <graphic>
-                                          <ImageView id="pricingButton" fx:id="Pricingbtn" fitHeight="80.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true" styleClass="pricingButton">
-                                             <image>
-                                                <Image url="@../common/images/Pricingbtn.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
                                        <cursor>
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
@@ -256,12 +242,17 @@
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <Label layoutX="417.0" layoutY="445.0" text="Price:" textFill="#5aed99">
+                        <Label layoutX="424.0" layoutY="454.0" text="Price:" textFill="#5aed99">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Label>
-
+                        <ImageView id="pricingButton" fx:id="Pricingbtn" fitHeight="80.0" fitWidth="41.0" layoutX="770.0" layoutY="482.0" pickOnBounds="true" preserveRatio="true" styleClass="pricingButton">
+                           <image>
+                              <Image url="@../common/images/Pricingbtn.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="668.0" layoutY="492.0" text="Click to see pricing:" textFill="#5aed99" />
                      </children>
                   </Pane>
                </children>
