@@ -44,11 +44,8 @@
                   <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount Of Visitors:" wrappingWidth="146.453125" />
                   <Label fx:id="amountOfVisitorsLabel" prefHeight="17.0" prefWidth="93.0" textFill="WHITE" />
                   <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Status:" textAlignment="CENTER" wrappingWidth="129.0898478627205" />
-<<<<<<< HEAD
                   <Label fx:id="orderStatusLabel" prefHeight="17.0" prefWidth="122.0" textFill="WHITE" />
-=======
-                  <Label fx:id="orderStatusLabel" prefHeight="17.0" prefWidth="101.0" textFill="WHITE" />
->>>>>>> origin/ItayBranch
+
                </children>
             </HBox>
             <HBox prefHeight="52.0" prefWidth="455.0">
