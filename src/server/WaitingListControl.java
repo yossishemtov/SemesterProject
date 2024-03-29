@@ -3,6 +3,7 @@ package server;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import common.Order;
 import common.WaitingList;
 
 /**
@@ -17,8 +18,8 @@ public class WaitingListControl {
 	 * 
 	 * @param Order that has been canceled.
 	 */
-	public static void notifyPersonFromWaitingList(WaitingList waiting) {
-	    ArrayList<WaitingList> toNotify = getOrderFromWaitingList(waiting);
+	public static void notifyPersonFromWaitingList(Order order) {
+	    ArrayList<WaitingList> toNotify = getOrderFromWaitingList(order);
 
 	    if (toNotify.isEmpty())
 	        return;
@@ -31,8 +32,8 @@ public class WaitingListControl {
 	}
 
 
-	private static ArrayList<WaitingList> getOrderFromWaitingList(WaitingList waiting) {
-		ArrayList<WaitingList> rightPlace = NotifyThread.getDC().findPlaceInWaiting(waiting);
+	private static ArrayList<WaitingList> getOrderFromWaitingList(Order order) {
+		ArrayList<WaitingList> rightPlace = NotifyThread.getDC().findPlaceInWaiting(order);
 		return rightPlace;
 	}
 

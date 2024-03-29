@@ -1917,7 +1917,7 @@ public class DatabaseController {
 	 */
 	public Order getOrderbyId(Integer orderId) {
 		Order order = null;
-		String deleteQuery = "SELECT FROM `order` WHERE orderId = ?";
+		String deleteQuery = "SELECT * FROM `order` WHERE orderId = ?";
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(deleteQuery)) {
 			ps.setInt(1, orderId);
@@ -1954,21 +1954,21 @@ public class DatabaseController {
 	  *                    
 	  * @return WaitingList object containing matching order. 
 	  */ 
-	 public ArrayList<WaitingList> findPlaceInWaiting(WaitingList waiting) { 
+	 public ArrayList<WaitingList> findPlaceInWaiting(Order order) { 
 	  ArrayList<WaitingList> waitingArray = new ArrayList<WaitingList>(); 
-	  Order order = null; 
+	  Order orderToCheck = null; 
 	  WaitingList result; 
-	  Integer parkNumber = waiting.getParkNumber(); 
+	  Integer parkNumber = order.getParkNumber(); 
 	  Park park = getParkDetails(parkNumber); 
-	  LocalDate dateToCancel = waiting.getDate(); 
-	  LocalTime visitTimeToCheck = waiting.getVisitTime(); 
-	  Integer amtOfVisitors = waiting.getAmountOfVisitors(); 
+	  LocalDate dateToCancel = order.getDate(); 
+	  LocalTime visitTimeToCheck = order.getVisitTime(); 
+	  Integer amtOfVisitors = order.getAmountOfVisitors(); 
 	  int estimatedStayTime = park.getStaytime(); 
 	   
 	  LocalTime startTime = visitTimeToCheck.minusHours(estimatedStayTime-1); 
 	  LocalTime endTime = visitTimeToCheck.plusHours(estimatedStayTime-1); 
 	 
-	  order = new Order(null, null, parkNumber, amtOfVisitors, null, null 
+	  orderToCheck = new Order(null, null, parkNumber, amtOfVisitors, null, null 
 	    ,dateToCancel, visitTimeToCheck, null, null, null, null); 
 	 
 	  try (PreparedStatement ps = connectionToDatabase.prepareStatement( 
@@ -1997,9 +1997,9 @@ public class DatabaseController {
 	                 String parkName = rs.getString("parkName"); 
 	                 Integer placeInList = rs.getInt("placeInList"); 
 	                  
-	                 order.setAmountOfVisitors(amtVisitorsWaiting); 
+	                 orderToCheck.setAmountOfVisitors(amtVisitorsWaiting); 
 	                  
-	                 if (findOrdersWithinDates(order,true)) { 
+	                 if (findOrdersWithinDates(orderToCheck,true)) { 
 	                     result = new WaitingList(orderId, travelerId, parkNum, amtVisitorsWaiting, price, visitorEmail, 
 	                             date, visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName, waitingListId, 
 	                             placeInList); 
@@ -2235,7 +2235,11 @@ public class DatabaseController {
 				ordersAlreadyNotified.add(new OrderNotification(orderId, dateOfNotification, startNotification,
 						endNotification, notificationStatus));
 			}
-		} catch (SQLException e) {
+		}	
+		 catch (SQLIntegrityConstraintViolationException e) {
+            System.out.println(e.getMessage());
+		}
+		 catch (SQLException e) {
 			e.printStackTrace();
 			return ordersAlreadyNotified;
 		}
