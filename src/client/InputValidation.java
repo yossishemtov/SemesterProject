@@ -43,6 +43,11 @@ public class InputValidation {
 	}
 	
 	public static Alerts validateFamilyVisitors(String amountOfVisitors) {
+		 if (amountOfVisitors.isEmpty()) {
+		        return new Alerts(Alerts.AlertType.ERROR, "Invalid amountofvisitors", "", "amountofvisitors cannot be empty");
+		    }
+		    
+		
 		//Checks if order visitors is between 1-6
 		if (!amountOfVisitors.matches("[1-6]")) {
 	        return new Alerts(Alerts.AlertType.ERROR, "Invalid Visitors Number", "", "Amount of visitors for family order must be between 1-6");
@@ -51,6 +56,64 @@ public class InputValidation {
 		}
 		
 		
+	}
+	
+	public static Alerts validateSoloVisitor(String amountOfVisitors) {
+		if (amountOfVisitors.isEmpty()) {
+	        return new Alerts(Alerts.AlertType.ERROR, "Invalid amountofvisitors", "", "amountofvisitors cannot be empty");
+	    }
+		
+		//Checks if order visitors is between 1-6
+		if (!amountOfVisitors.matches("[1]")) {
+	        return new Alerts(Alerts.AlertType.ERROR, "Invalid Visitors Number", "", "Amount of visitors for solo order must be 1");
+		}else {
+			return new Alerts(Alerts.AlertType.INFORMATION, "Valid Amount Of Visitors", "", "Valid Amount Of Visitors");
+		}
+		
+		
+	}
+	
+	
+	public static Alerts validateTypeOfOrder(String typeOfOrder) {
+		if (typeOfOrder.isEmpty()) {
+	        return new Alerts(Alerts.AlertType.ERROR, "Invalid typeoforder", "", "typeoforder cannot be empty");
+	    }
+		
+		
+		//Checks the type of order, if any of the three options available
+		
+		if (typeOfOrder.equals("FAMILY") || typeOfOrder.equals("SOLO") || typeOfOrder.equals("GROUPGUIDED")) {
+			return new Alerts(Alerts.AlertType.INFORMATION, "Valid type of order", "", "Valid type of order");
+		}else {
+			return new Alerts(Alerts.AlertType.ERROR, "Invalid TypeOfOrder", "", "Type of order is not valid");
+		}
+		
+		
+	}
+	
+	public static Alerts validateGroupGuideVisitors(String amountOfVisitors) {
+		if (amountOfVisitors.isEmpty()) {
+	        return new Alerts(Alerts.AlertType.ERROR, "Invalid amountofvisitors", "", "amountofvisitors cannot be empty");
+	    }
+		
+		//Checks if order visitors is between 1-15
+		if (!amountOfVisitors.matches("[1-9]|1[0-5]?")) {
+	        return new Alerts(Alerts.AlertType.ERROR, "Invalid Visitors Number", "", "Amount of visitors for group order must be between 1-15");
+		}else {
+			return new Alerts(Alerts.AlertType.INFORMATION, "Valid Amount Of Visitors", "", "Valid Amount Of Visitors");
+		}
+		
+		
+	}
+	
+	
+	public static Alerts validatePrice(String priceToPay) {
+		//Checks if order visitors is between 1-6
+		if (!priceToPay.matches("\\d+(\\.\\d+)?")) {
+	        return new Alerts(Alerts.AlertType.ERROR, "Invalid Price", "", "Price must be a valid number");
+	    }else {
+			return new Alerts(Alerts.AlertType.INFORMATION, "Invalid Price", "", "Price must be a valid number");
+		}
 	}
 	
 	//validates name and lastname

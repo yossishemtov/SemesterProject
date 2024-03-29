@@ -21,7 +21,9 @@ public class Order implements Serializable {
 	private typeOfOrder orderType;
 
 	public enum status {
-		PENDING, NOTARRIVED, INPARK, CONFIRMED, CANCELED, COMPLETED, PENDING_EMAIL_SENT, CANCELEDBYSERVER
+
+
+		PENDING, NOTARRIVED, INPARK, CONFIRMED, CANCELED, COMPLETED, PENDING_EMAIL_SENT, HAS_SPOT, UNORDERED
 	}
 
 	public enum typeOfOrder {

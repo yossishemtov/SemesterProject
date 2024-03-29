@@ -47,6 +47,10 @@ public class ParkWorkerShowBillController implements Initializable{
     private JFXButton confirmOrderButton;
 
 	@Override
+	/**
+	 * Initializes the controller class. This method is automatically called after
+	 * the FXML file has been loaded. It initializes the information to display in the order and prints the invoice to the screen
+	 */
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// Parsing order information to the bill screen
 		if(ParkWorkerEntrenceControlController.orderToEnterOrExit != null) {
@@ -80,7 +84,10 @@ public class ParkWorkerShowBillController implements Initializable{
 		ParkWorkerEntrenceControlController.orderToEnterOrExit = null;
 	}
 	
-	
+	/**
+	 * Closing the window of the bill
+	 * @param event (Listening for an event)
+	 */
 	public void confirmButtonAction(ActionEvent event) throws Exception {
     	//Function for closing the bill screen
     	try {

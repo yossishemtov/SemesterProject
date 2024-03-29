@@ -46,6 +46,7 @@
             <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
+<<<<<<< HEAD
             <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Traveler ID:" wrappingWidth="90.296875" />
             <JFXTextField fx:id="travelerIdField" focusColor="#5aed99" prefHeight="31.0" prefWidth="168.0" unFocusColor="WHITE" GridPane.columnIndex="1" />
             <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount Of Visitors:" wrappingWidth="153.31640625" GridPane.rowIndex="3" />
@@ -67,6 +68,50 @@
                 <MenuItem fx:id="soloMenuField" mnemonicParsing="false" onAction="#chooseEntrencePlan" text="Solo" />
               </items>
             </SplitMenuButton>
+=======
+            <HBox prefHeight="44.0" prefWidth="284.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Traveler ID:" wrappingWidth="90.296875" />
+                  <JFXTextField fx:id="travelerIdField" focusColor="#5aed99" prefHeight="31.0" prefWidth="195.0" unFocusColor="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="45.0" prefWidth="284.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount Of Visitors:" wrappingWidth="153.31640625" />
+                  <JFXTextField fx:id="amountOfVisitorsField" focusColor="#5aed99" prefHeight="31.0" prefWidth="132.0" unFocusColor="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="53.0" prefWidth="284.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Visitor Email:" wrappingWidth="110.7998046875" />
+                  <JFXTextField fx:id="visitorEmailField" focusColor="#5aed99" prefHeight="31.0" prefWidth="177.0" unFocusColor="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="60.0" prefWidth="284.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number:" wrappingWidth="121.87939453125" />
+                  <JFXTextField fx:id="phoneNumberField" focusColor="#5aed99" prefHeight="31.0" prefWidth="159.0" unFocusColor="WHITE" />
+               </children>
+            </HBox>
+            <HBox prefHeight="52.0" prefWidth="337.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Type Of Order:" wrappingWidth="128.66845703125" />
+                  <SplitMenuButton fx:id="menuField" mnemonicParsing="false" onAction="#handleMenuItemAction" text="SOLO">
+                    <items>
+                      <MenuItem fx:id="familyMenuFeild" mnemonicParsing="false" onAction="#handleMenuItemAction" text="FAMILY" />
+                      <MenuItem fx:id="soloMenuField" mnemonicParsing="false" onAction="#handleMenuItemAction" text="SOLO" />
+                        <MenuItem fx:id="guidedGroupMenuField" mnemonicParsing="false" onAction="#handleMenuItemAction" text="GUIDEDGROUP" />
+                    </items>
+                  </SplitMenuButton>
+               </children>
+            </HBox>
+            <HBox prefHeight="45.0" prefWidth="337.0">
+               <children>
+                  <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Price:" wrappingWidth="68.2734375" />
+                  <Label fx:id="priceLabel" prefHeight="17.0" prefWidth="83.0" textFill="WHITE" />
+               </children>
+            </HBox>
+>>>>>>> origin/ItayBranch
          </children>
       </GridPane>
    </children>

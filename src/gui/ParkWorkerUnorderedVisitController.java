@@ -50,6 +50,9 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 
     @FXML
     private MenuItem familyMenuFeild;
+    
+    @FXML
+    private MenuItem guidedGroupMenuField;
 
     @FXML
     private MenuItem soloMenuField;
@@ -67,37 +70,84 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
     private static Park currentParkDetails;
 
 	@Override
+	/**
+	 * Initializes the controller class. This method is automatically called after
+	 * the FXML file has been loaded. It initializes the number of current allowed unordered visits.
+	 *
+	 * 
+	 */
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// Initialize the display of amount of allowed unordered visits 
 		updateScreenAllowedUnorderedVisits();
+		
 	}
 	
-	public boolean chooseEntrencePlan(ActionEvent click) throws Exception{
+	/**
+	 * Handle the selection of a type of order from the menu
+	 * @param event (Listening for an event)
+	 */
+	public void handleMenuItemAction(ActionEvent event) {
+		//Handle the change and selection of the menuItem
+		
+        MenuItem menuItem = (MenuItem) event.getSource();
+        String selectedMenuItemText = menuItem.getText();
+        
+        menuField.setText(selectedMenuItemText);
+        System.out.println("Selected: " + menuItem.getText());
+        
+        //Calculate entrence fee based on typeoforder
+        if(menuItem.getText().equals("GUIDEDGROUP")) {
+        	checkIfGroupGuide();
+        }else {
+        	chooseEntrencePlan(selectedMenuItemText);
+        }
+        
+    }
+	
+	public void chooseEntrencePlan(String planToCalculate){
 		
 		try {
-				
 			//Calculate entrance price when choosing Type Of Order
-			Integer amountOfVisitors = Integer.parseInt(amountOfVisitorsField.getText());
-			Alerts visitorsValidate = InputValidation.validateFamilyVisitors(amountOfVisitors.toString());
+			Integer amountOfVisitors = -5;
+			if(!amountOfVisitorsField.getText().isEmpty()) {				
+				amountOfVisitors = Integer.parseInt(amountOfVisitorsField.getText());
+			}
+		
+			Alerts visitorsValidate = new Alerts(Alerts.AlertType.INFORMATION, "Unrecognized typeoforder", "", "Unrecognized typeoforder");
 			
-			//If amount of visitors is not between 1-6
+			
+			//Calculate fee based on the type of order
+			System.out.print(planToCalculate + amountOfVisitors);
+			if(planToCalculate.equals("FAMILY") ) {
+				visitorsValidate = InputValidation.validateFamilyVisitors(amountOfVisitors.toString());				
+			}else if(planToCalculate.equals("SOLO")) {
+				visitorsValidate = InputValidation.validateSoloVisitor(amountOfVisitors.toString());
+			}else if(planToCalculate.equals("GUIDEDGROUP")){
+				visitorsValidate = InputValidation.validateGroupGuideVisitors(amountOfVisitors.toString());
+			}
+			
+			//If amount of visitors is valid according the the user selection
 			if(visitorsValidate.getAlertType().toString().equals("INFORMATION")) {
-				//Renders the calculated price into screen
 				Float calculatedPrice = (float) (100*amountOfVisitors);
+				//Renders the calculated price into screen
+				//Calculate the price based on the entered traveler
+				if(planToCalculate.equals("GUIDEDGROUP")) {					
+					calculatedPrice = (float) (90*amountOfVisitors);
+				}else {
+					calculatedPrice = (float) (100*amountOfVisitors);
+				}
 	
 				priceLabel.setText(calculatedPrice.toString());
-				return true;
 			}else {
 				visitorsValidate.showAndWait();
-				return false;
 			}
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 			Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Please enter valid amount of visitors");
 			somethingWentWrong.showAndWait();
 		}
 		
-		return false;
 		
 	}
 	
@@ -113,7 +163,8 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 			if(!travelerIdField.getText().isEmpty()) {				
 				travelerId = Integer.parseInt(travelerIdField.getText());
 			}
-			Integer amountOfVisitors = 10;
+			
+			Integer amountOfVisitors = -5;
 			if(!amountOfVisitorsField.getText().isEmpty()) {				
 				amountOfVisitors = Integer.parseInt(amountOfVisitorsField.getText());
 			}
@@ -124,8 +175,7 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 			Integer parkNumber = currentParkDetails.getParkNumber();
 			LocalDate today = LocalDate.now();
 			LocalTime timeNow = LocalTime.now();
-			String orderStatus = "UNORDERED";
-			
+			String orderStatus = "UNORDERED";			
 			
 			//Need to Implement checks
 			Alerts alertID = InputValidation.ValidateVisitorID(travelerId.toString()); 
@@ -134,10 +184,17 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 			Alerts validPhoneNuber = InputValidation.validatePhoneNumber(phoneNumber);
 			Alerts checkName = InputValidation.validateNameOrLastname(firstNameVisitor);
 			Alerts checkLastName = InputValidation.validateNameOrLastname(lastNameVisitor);
+			Alerts checkTypeOfOrder = InputValidation.validateTypeOfOrder(typeOfOrder);
 			
 			
-			
-			
+		
+		
+		//If its group guide 1-15 visitors are allowed
+		if(typeOfOrder.equals("GUIDEDGROUP")) {
+			visitorsValidate = InputValidation.validateGroupGuideVisitors(amountOfVisitors.toString());
+		}else if(typeOfOrder.equals("SOLO")) {
+			visitorsValidate = InputValidation.validateSoloVisitor(amountOfVisitors.toString());
+		}
 			
 		
 		//validates name and lastname 
@@ -151,7 +208,8 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 					
 					//Check if can perform unordered visit (if unordered visits amount in db is less than amount of visitors in order)
 					if((numberOfAllowedUnorderedVisits() < amountOfVisitors)) {
-						Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "This amount of visitors is more than allowed unordered visitors!");
+						Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "This amount of visitors is more than allowed unordered visitors to park!");
+						somethingWentWrong.showAndWait();
 						return;
 					}
 					
@@ -161,65 +219,78 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 						//Validate phone number
 						if(validPhoneNuber.getAlertType().toString().equals("INFORMATION")) {
 							
-							//Post unordered visit as a traveler in the system
 							
-							//Check if Traveler already exists in the system
-							Traveler checkTravelerInformation = new Traveler(travelerId, firstNameVisitor, lastNameVisitor, visitorEmail, phoneNumber, 0, 0);
-							ClientServerMessage checkIfTravelerExists = new ClientServerMessage(checkTravelerInformation ,Operation.GET_TRAVLER_INFO);
-							ClientUI.clientControllerInstance.sendMessageToServer(checkIfTravelerExists);
-
-							
-							//If traveler does not exist, register him
-							if(ClientUI.clientControllerInstance.getData().getDataTransfered() == null) {
-								ClientServerMessage sendRegistrationRequestToServer = new ClientServerMessage(checkTravelerInformation ,Operation.POST_NEW_TRAVLER);
-								ClientUI.clientControllerInstance.sendMessageToServer(sendRegistrationRequestToServer);
+							if(checkTypeOfOrder.getAlertType().toString().equals("INFORMATION")) {
+								chooseEntrencePlan(typeOfOrder);
 								
-							}
-
 							
-							//Receive last order number from db
-							ClientServerMessage lastOrderFromServMessage = new ClientServerMessage(null ,Operation.GET_LAST_ORDER_ID);
-							ClientUI.clientControllerInstance.sendMessageToServer(lastOrderFromServMessage);
-							Integer lastOrderNumber = (Integer) ClientUI.clientControllerInstance.getData().getDataTransfered() + 1;
-							
-							//checks for family plan if visitor is more than 1
-							if(amountOfVisitors > 1) {
-								typeOfOrder = "FAMILY";
-							}
-							
-							//Creating new order
-							Float calculatedPrice = (float) (100*amountOfVisitors);
-							Order newUnorderedOrder = new Order(lastOrderNumber, travelerId, currentParkDetails.getParkNumber(), amountOfVisitors, calculatedPrice,
-									visitorEmail,LocalDate.now(), LocalTime.now(), orderStatus, typeOfOrder, phoneNumber,currentParkDetails.getName());
-							
-							//Posting new order in the server
-							ClientServerMessage postUnorderedorder = new ClientServerMessage(newUnorderedOrder, Operation.POST_TRAVLER_ORDER);
-							ClientUI.clientControllerInstance.sendMessageToServer(postUnorderedorder);
-							
-							//calculate time of exit from park
-							LocalTime timeToExit = LocalTime.now().plusHours(currentParkDetails.getStaytime());
-							//Post new visit in visits table
-							createAndPostToServerVisitForUnordered(newUnorderedOrder, timeToExit);
-							
-							if(ClientUI.clientControllerInstance.getData().getFlag() == true) {
+								//Post unordered visit as a traveler in the system
 								
-								//Append visits to park and deduct from unordered visits park column
-								AppendUnorderedVisitsAndVisitorsToPark(newUnorderedOrder);
+								//Check if Traveler already exists in the system
+								Traveler checkTravelerInformation = new Traveler(travelerId, firstNameVisitor, lastNameVisitor, visitorEmail, phoneNumber, 0, 0);
+								ClientServerMessage checkIfTravelerExists = new ClientServerMessage(checkTravelerInformation ,Operation.GET_TRAVLER_INFO);
+								ClientUI.clientControllerInstance.sendMessageToServer(checkIfTravelerExists);
+	
 								
-								//If process was successful
-								ParkWorkerEntrenceControlController.orderToEnterOrExit = newUnorderedOrder;
+								//If traveler does not exist, register him
+								if(ClientUI.clientControllerInstance.getData().getDataTransfered() == null) {
+									ClientServerMessage sendRegistrationRequestToServer = new ClientServerMessage(checkTravelerInformation ,Operation.POST_NEW_TRAVLER);
+									ClientUI.clientControllerInstance.sendMessageToServer(sendRegistrationRequestToServer);
+									
+								}
+	
 								
-								//Show Traveler bill
-				    			NavigationManager.openPage("ParkWorkerShowBill.fxml", click, "Traveler Bill", false,false);
-							}else {
-								//If posting visit wasn't successful
-								Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Could not post a visit for the unordered visit");
-								somethingWentWrong.showAndWait();
-							}
-							
-							
-							
+								//Receive last order number from db
+								ClientServerMessage lastOrderFromServMessage = new ClientServerMessage(null ,Operation.GET_LAST_ORDER_ID);
+								ClientUI.clientControllerInstance.sendMessageToServer(lastOrderFromServMessage);
+								Integer lastOrderNumber = (Integer) ClientUI.clientControllerInstance.getData().getDataTransfered() + 1;
 								
+								
+								
+								//Validating and calculating the price
+								Float calculatedPrice = Float.parseFloat(priceLabel.getText());
+								Alert isPriceValid = InputValidation.validatePrice(calculatedPrice.toString());
+								if(isPriceValid.getAlertType().toString().equals("INFORMATION")) {
+									
+								
+								
+									//Creating new order
+									Order newUnorderedOrder = new Order(lastOrderNumber, travelerId, currentParkDetails.getParkNumber(), amountOfVisitors, calculatedPrice,
+											visitorEmail,LocalDate.now(), LocalTime.now(), orderStatus, typeOfOrder, phoneNumber,currentParkDetails.getName());
+									
+									//Posting new order in the server
+									ClientServerMessage postUnorderedorder = new ClientServerMessage(newUnorderedOrder, Operation.POST_TRAVLER_ORDER);
+									ClientUI.clientControllerInstance.sendMessageToServer(postUnorderedorder);
+									
+									//calculate time of exit from park
+									LocalTime timeToExit = LocalTime.now().plusHours(currentParkDetails.getStaytime());
+									//Post new visit in visits table
+									createAndPostToServerVisitForUnordered(newUnorderedOrder, timeToExit);
+									
+									if(ClientUI.clientControllerInstance.getData().getFlag() == true) {
+										
+										//Append visits to park and deduct from unordered visits park column
+										AppendUnorderedVisitsAndVisitorsToPark(newUnorderedOrder);
+										
+										//If process was successful
+										ParkWorkerEntrenceControlController.orderToEnterOrExit = newUnorderedOrder;
+										
+										//Show Traveler bill
+						    			NavigationManager.openPage("ParkWorkerShowBill.fxml", click, "Traveler Bill", false,false);
+								}else {
+									//If posting visit wasn't successful
+									Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR","", "Could not post a visit for the unordered visit");
+									somethingWentWrong.showAndWait();
+								}
+								
+								
+								}else {
+									isPriceValid.showAndWait();
+								}
+								
+								}else {
+									checkTypeOfOrder.showAndWait();
+								}
 							}else {
 								validPhoneNuber.showAndWait();
 							}
@@ -300,6 +371,67 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 		allowedVisitorsLabel.setText(Integer.toString(allowedUnorderedVists));
 
 		return allowedUnorderedVists;
+	}
+	
+	public void checkIfGroupGuide() {
+		
+		//Checking if travelerid is valid
+		Integer travelerId = 11;
+		if(!travelerIdField.getText().isEmpty()) {				
+			travelerId = Integer.parseInt(travelerIdField.getText());
+		}
+		
+		//Checking the id of the traveler, erroring if not valid
+		Alerts alertID = InputValidation.ValidateVisitorID(travelerId.toString()); 
+		
+		
+		if(alertID.getAlertType().toString().equals("INFORMATION")) {
+			
+		//Get information about the traveler
+		Traveler checkTravelerInformation = new Traveler(travelerId, null, null, null, null, 0, 0);
+		ClientServerMessage checkIfTravelerExists = new ClientServerMessage(checkTravelerInformation ,Operation.GET_TRAVLER_INFO);
+		ClientUI.clientControllerInstance.sendMessageToServer(checkIfTravelerExists);
+		
+		//Receive the information of the traveler from the database
+		
+		if(ClientUI.clientControllerInstance.getData().getDataTransfered() != null) {
+			
+			Traveler visitorGroupGuide = (Traveler) ClientUI.clientControllerInstance.getData().getDataTransfered();
+			
+			//Checks if the traveler is groupguide
+			if(visitorGroupGuide.getIsGroupGuide() == 1) {
+				
+				//Checks input validation of the amount of visitors
+				Integer amountOfVisitors = -5;
+				if(!amountOfVisitorsField.getText().isEmpty()) {				
+					amountOfVisitors = Integer.parseInt(amountOfVisitorsField.getText());
+				}
+				
+				Alerts visitorsValidate = InputValidation.validateGroupGuideVisitors(amountOfVisitors.toString());
+				
+				if(visitorsValidate.getAlertType().toString().equals("INFORMATION")) {
+					chooseEntrencePlan("GUIDEDGROUP");
+					
+				}else {
+					visitorsValidate.showAndWait();
+					menuField.setText("SOLO");
+				}
+				
+			}else {
+				alertID.showAndWait();
+				menuField.setText("SOLO");
+			}
+			
+		}else {
+			//If returned null from the database
+			(new Alerts(Alerts.AlertType.ERROR, "Group Guide doesn't exists!", "", "Group Guide doesn't exists!")).showAndWait();
+		}
+			
+		}else {
+			//If travelerid is not of a groupguide
+			alertID.showAndWait();
+			menuField.setText("SOLO");
+		}
 	}
 	
 	//Updates the amount of allowed unordered visits in the screen
