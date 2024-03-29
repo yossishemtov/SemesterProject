@@ -29,18 +29,18 @@
       </JFXButton>
       <BarChart fx:id="CancellationBarChart" layoutX="289.0" layoutY="67.0" prefHeight="234.0" prefWidth="739.0">
         <xAxis>
-          <CategoryAxis side="BOTTOM" />
+          <CategoryAxis side="BOTTOM" tickLabelFill="WHITE" />
         </xAxis>
         <yAxis>
-          <NumberAxis side="LEFT" />
+          <NumberAxis side="LEFT" tickLabelFill="WHITE" />
         </yAxis>
       </BarChart>
       <BarChart fx:id="UnfulfilledOrder" layoutX="289.0" layoutY="328.0" prefHeight="246.0" prefWidth="739.0">
          <xAxis>
-            <CategoryAxis side="BOTTOM" />
+            <CategoryAxis side="BOTTOM" tickLabelFill="WHITE" />
          </xAxis>
          <yAxis>
-            <NumberAxis side="LEFT" />
+            <NumberAxis side="LEFT" tickLabelFill="WHITE" />
          </yAxis>
       </BarChart>
       <Label layoutX="69.0" layoutY="67.0" text="Cancellation report data" textFill="#5aed99" underline="true">
