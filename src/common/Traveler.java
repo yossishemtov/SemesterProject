@@ -2,6 +2,11 @@ package common;
 
 import java.io.Serializable;
 
+/**
+ * The Traveler class represents a traveler in the system.
+ * It contains attributes such as ID, first name, last name, email, phone number,
+ * group guide status, and login status.
+ */
 public class Traveler implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -13,7 +18,18 @@ public class Traveler implements Serializable {
     private Integer isGrupGuide;
     private Integer isLoggedIn; // This field corresponds to `isloggedin` in the DB
 
-    // Adjusted constructor to include isLoggedIn
+
+    /**
+     * Constructs a new Traveler object with the specified attributes.
+     *
+     * @param id          The unique identifier of the traveler.
+     * @param firstName   The first name of the traveler.
+     * @param lastName    The last name of the traveler.
+     * @param email       The email address of the traveler.
+     * @param phoneNum    The phone number of the traveler.
+     * @param isGroupGuide The status indicating whether the traveler is a group guide.
+     * @param isLoggedIn  The status indicating whether the traveler is logged in.
+     */
     public Traveler(Integer id, String firstName, String lastName, String email, String phoneNum, Integer isGroupGuide, Integer isLoggedIn) {
         this.id = id;
         this.firstName = firstName;

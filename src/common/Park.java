@@ -2,6 +2,11 @@ package common;
 
 import java.io.Serializable;
 
+/**
+ * The Park class represents a park entity.
+ * It contains attributes such as name, park number, maximum visitors allowed, current visitors,
+ * capacity, location, stay time, number of workers, manager ID, gap, and working time.
+ */
 public class Park  implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -18,6 +23,21 @@ public class Park  implements Serializable {
 	private Integer workingTime;
 	private Integer unorderedVisits;
 	
+	/**
+     * Constructs a new Park object with the specified parameters.
+     *
+     * @param name          The name of the park.
+     * @param parkNumber    The unique number assigned to the park.
+     * @param maxVisitors   The maximum number of visitors allowed in the park.
+     * @param capacity      The capacity of the park.
+     * @param currentVisitors The current number of visitors in the park.
+     * @param location      The location of the park.
+     * @param staytime      The duration of stay allowed in the park.
+     * @param workersAmount The number of workers in the park.
+     * @param gap           The gap parameter indicating the allowed difference in capacity.
+     * @param managerID     The ID of the park manager.
+     * @param workingTime   The working time of the park.
+     */
 	public Park(String name, Integer parkNumber, Integer maxVisitors, Integer capacity, Integer currentVisitors,
 			String location, Integer staytime, Integer workersAmount,Integer gap, Integer managerID, Integer workingTime) {
 		super();
