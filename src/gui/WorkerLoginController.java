@@ -26,6 +26,13 @@ import client.ClientController;
 import client.NavigationManager;
 import common.*;
 
+/**
+ * Controller class for managing the worker login functionality. This class
+ * handles user input validation for the username and password fields, and
+ * facilitates the login process by communicating with the server to authenticate
+ * the worker. It also provides navigation to different screens based on the
+ * worker's role and login status.
+ */
 public class WorkerLoginController implements Initializable{
 	@FXML
     private Button LoginBtn;
@@ -46,7 +53,17 @@ public class WorkerLoginController implements Initializable{
     private FontAwesomeIconView passIcon;
     
     
-
+    /**
+     * Initializes the worker login screen. It sets up listeners for the username
+     * and password text fields to provide visual feedback based on input validation.
+     * Specifically, it changes the color and icon of the text fields to indicate
+     * whether the input is valid or not.
+     * 
+     * @param location  The location used to resolve relative paths for the root
+     *                  object, or null if the location is not known.
+     * @param resources The resources used to localize the root object, or null if
+     *                  the root object was not localized.
+     */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
         // Listener for the username text field
@@ -95,7 +112,20 @@ public class WorkerLoginController implements Initializable{
     }
 
  
-	@FXML
+
+	/**
+	 * Handles the login button action for worker login. When triggered, this method
+	 * retrieves the worker's username and password from the input fields, validates
+	 * them, and communicates with the server to authenticate the worker. Depending on
+	 * the authentication result and the worker's role, it navigates to the corresponding
+	 * screen for the worker (e.g., Department Manager Screen, Park Manager Screen, Park
+	 * Worker Screen, or Service Worker Screen).
+	 * 
+	 * @param click The action event triggering the method, typically generated when
+	 *              the user clicks the login button.
+	 * @throws IOException If an error occurs during I/O operations while communicating
+	 *                     with the server or navigating to the next screen.
+	 */
 	public void WorkerLoginBtn(ActionEvent click) throws IOException {
 		// Retrieve worker username and password from input fields
 		String workerUsername = WorkerUsername.getText();
@@ -113,7 +143,7 @@ public class WorkerLoginController implements Initializable{
 			// Create a worker object to send to the server
 			GeneralParkWorker workerForServer = new GeneralParkWorker(null, null, null, null, null, workerUsername,
 					workerPassword, null);
-//			System.out.println("worker username: " + workerForServer.getUserName() + "worker password: " + workerForServer.getPassword());
+			
 			System.out.println("Worker username:"+workerUsername + " "+workerPassword );
 			// Send worker object to server and request worker details
 			ClientServerMessage messageForServer = new ClientServerMessage(workerForServer,
@@ -121,31 +151,22 @@ public class WorkerLoginController implements Initializable{
 			
 			ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
 			System.out.println("Worker username:");
-
-			ClientServerMessage<?> retrieveInformationIfLoggedIn=ClientController.data;
 			// Retrieve worker details from server
-			
-
+			ClientServerMessage<?> retrieveInformationIfLoggedIn=ClientController.data;
 			// Check if the server response is not null
 			if (retrieveInformationIfLoggedIn.getFlag() ) {
 				GeneralParkWorker workerFromServer = (GeneralParkWorker) ClientController.data.getDataTransfered();
 				// Update the current worker in UserManager
 				Usermanager.setCurrentWorker(workerFromServer);
 				System.out.println("Worker username: " + workerFromServer.getUserName()+ "worker password: " + workerFromServer.getPassword());
-			 
 				retrieveInformationIfLoggedIn = new ClientServerMessage<>(workerFromServer, Operation.GET_GENERALPARKWORKER_SIGNED);
 				ClientUI.clientControllerInstance.sendMessageToServer(retrieveInformationIfLoggedIn);
-				
 				//Checks if worker is not loggedin
-				
 				Boolean isLoggedIn = ClientController.data.getFlag();
-				
 				if(!isLoggedIn) {
-					
 					//Logging in the user
 					ClientServerMessage<?> requestToLoginTheWorker = new ClientServerMessage<>(workerFromServer, Operation.PATCH_GENERALPARKWORKER_SIGNEDIN);
 					ClientUI.clientControllerInstance.sendMessageToServer(requestToLoginTheWorker);
-					
 					// Navigate based on the worker's role
 					String role = workerFromServer.getRole();
 					switch (role) {
@@ -197,16 +218,22 @@ public class WorkerLoginController implements Initializable{
 		}
 	}
 
+	/**
+	 * Handles the back button action. When triggered, this method navigates the user
+	 * back to the home page by loading the "HomePageFrame.fxml" view. 
+	 * @param click The action event triggering the method, typically generated when
+	 *              the user clicks the back button.
+	 * @throws Exception If an error occurs while navigating back to the home page,
+	 *                   such as issues with loading the FXML file or other navigation errors.
+	 */
 	public void BackBtn(ActionEvent click) {
 		try {
 			NavigationManager.openPage("HomePageFrame.fxml", click, "Home Page", true, true);
 
 		} catch (Exception e) {
-			System.out.print("Something went wrong while clicking on the back button, check stack trace");
 			e.printStackTrace();
+			Alerts errorAlert = new Alerts(Alerts.AlertType.ERROR, "Error", "", "Failed while clicking on the back button");
+			errorAlert.showAndWait();
 		}
 	}
-
-
-
 }
