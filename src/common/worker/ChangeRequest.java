@@ -9,8 +9,13 @@ public class ChangeRequest implements Serializable {
     private String parkName;
     private Integer parkNumber;
     private Integer capacity;
-    private Integer gap; // Ensure this matches the type Double as declared
+    private Integer gap; 
     private Integer staytime;
+    private Integer oldGap; 
+
+    
+
+    
     private ApprovalStatus approved; // Using ApprovalStatus enum
 
     // Define the ApprovalStatus enum outside of any methods but inside the class
@@ -67,6 +72,7 @@ public class ChangeRequest implements Serializable {
         return id;
     }
 
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -97,6 +103,13 @@ public class ChangeRequest implements Serializable {
 
     public void setGap(Integer gap) {
         this.gap = gap;
+    }
+    public Integer getOldGap() {
+        return oldGap;
+    }
+
+    public void setOldGap(Integer gap) {
+        this.oldGap = gap;
     }
 
     public Integer getStaytime() {

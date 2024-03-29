@@ -1040,15 +1040,17 @@ public class DatabaseController {
 		// Calculate the new capacity based on the provided gap and maxVisitors
 		Integer newMaxVisitor = changeRequest.getCapacity() - changeRequest.getGap();
 		// Update only the fields that are affected by a change request
-		String query = "UPDATE `park` SET capacity = ?, stayTime = ? ,gap = ? , maxVisitors = ? WHERE parkNumber = ?";
+		String query = "UPDATE `park` SET capacity = ?, stayTime = ? ,gap = ? , maxVisitors = ? , unorderedvisits = unorderedvisits + ? WHERE parkNumber = ?";
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 			ps.setInt(1, changeRequest.getCapacity());
 			ps.setInt(2, changeRequest.getStaytime());
 			ps.setInt(3, changeRequest.getGap());
 			ps.setInt(4, newMaxVisitor);
-			ps.setInt(5, changeRequest.getParkNumber());
+			ps.setInt(5, changeRequest.getGap()-changeRequest.getOldGap());
 
+			
+			ps.setInt(6, changeRequest.getParkNumber());
 			// Print query for debugging
 			System.out.println("Executing update: " + ps);
 
@@ -1643,7 +1645,7 @@ public class DatabaseController {
 
 		// Query to fetch daily cancellations
 		String cancellationQuery = "SELECT DAY(date) AS dayOfMonth, COUNT(*) AS count " + "FROM `order` "
-				+ "WHERE parkNumber = ? AND YEAR(date) = ? AND MONTH(date) = ? " + "AND orderStatus = 'CANCELED' "
+				+ "WHERE parkNumber = ? AND YEAR(date) = ? AND MONTH(date) = ? " + "AND (orderStatus = 'CANCELED' OR orderStatus = 'CANCELEDBYSERVER')"
 				+ "GROUP BY DAY(date)";
 
 		String unfulfilledQuery = "SELECT DAY(date) AS dayOfMonth, COUNT(*) AS count " + "FROM `order` "
@@ -2275,7 +2277,11 @@ public class DatabaseController {
 				ordersAlreadyNotified.add(new OrderNotification(orderId, dateOfNotification, startNotification,
 						endNotification, notificationStatus));
 			}
-		} catch (SQLException e) {
+		}	
+		 catch (SQLIntegrityConstraintViolationException e) {
+            System.out.println(e.getMessage());
+		}
+		 catch (SQLException e) {
 			e.printStackTrace();
 			return ordersAlreadyNotified;
 		}
@@ -2283,6 +2289,7 @@ public class DatabaseController {
 		return ordersAlreadyNotified;
 
 	}
+
 
 	/**
 	 * Posts an order notification to the database.

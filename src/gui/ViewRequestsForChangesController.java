@@ -8,6 +8,7 @@ import client.ClientUI;
 import common.Alerts;
 import common.ClientServerMessage;
 import common.Operation;
+import common.Park;
 import common.Usermanager;
 import common.worker.ChangeRequest;
 import common.worker.GeneralParkWorker;
@@ -21,7 +22,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class ViewRequestsForChangesController implements Initializable {
@@ -40,6 +44,8 @@ public class ViewRequestsForChangesController implements Initializable {
     private Label SelectLabal;
     
     private  GeneralParkWorker CurWorker;
+    private  Integer oldGap;
+
 
     // List to hold and display change requests in the table view
     private ObservableList<ChangeRequest> changeRequestsData = FXCollections.observableArrayList();
@@ -54,6 +60,9 @@ public class ViewRequestsForChangesController implements Initializable {
         adjustUIForRole(CurWorker);
 
         fetchChangeRequestsWaitingForApproval(CurWorker);
+        
+        
+
     }
     
     /**
@@ -128,8 +137,19 @@ public class ViewRequestsForChangesController implements Initializable {
      */
     @FXML
     private void confirmRequestBtn(ActionEvent event) {
+    	ClientServerMessage<?> getParkInfoMsg = new ClientServerMessage(null, Operation.GET_PARKS_INFO);
+		ClientUI.clientControllerInstance.sendMessageToServer(getParkInfoMsg);
+		getParkInfoMsg = ClientUI.clientControllerInstance.getData();
+
+		List<Park> parks = (List<Park>) getParkInfoMsg.getDataTransfered();
+		Map<Integer, Park> parkNamesToNumbers = new HashMap<>();
+		for (Park park : parks) {
+			parkNamesToNumbers.put(park.getParkNumber(), park);
+		}
+		oldGap=parkNamesToNumbers.get(CurWorker.getWorksAtPark()).getGap();
     	ChangeRequest selectedRequest = parametersTable.getSelectionModel().getSelectedItem();
         if (selectedRequest != null) {
+        	selectedRequest.setOldGap(oldGap);
         	 ClientServerMessage<ChangeRequest> messageForServer = new ClientServerMessage<>(selectedRequest, Operation.PATCH_PARK_PARAMETERS);
              ClientUI.clientControllerInstance.sendMessageToServer(messageForServer);
              if (ClientController.data.getFlag()) {
