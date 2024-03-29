@@ -79,7 +79,7 @@ public class MessageHandlerFromClient {
 				// Handle the exception according to your needs
 			}
 			client.sendToClient(messageFromClient);
-			break;
+			break; 
 		case Operation.FIND_AVAILABLE_DATES: // emanuel
 			try {
 				Order orderToCheck = (Order) messageFromClient.getDataTransfered();

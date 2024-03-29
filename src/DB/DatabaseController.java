@@ -40,7 +40,7 @@ public class DatabaseController {
 		insertEmployees(userManagementSystemDB.getAllEmployees());
 		userManagementSystemDB.closeConnection();
 	}
-
+ 
 	 /**
      * Inserts a list of GeneralParkWorker objects into the database.
      * 

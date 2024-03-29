@@ -28,6 +28,16 @@ public class BackEndServer extends AbstractServer {
 	private NotifyThread notifyThread;
 	private Map<Long, ClientConnectionStatus> connectedClients;
 
+	/**
+    
+	*Constructs a new BackEndServer with the specified port, server controller instance,
+	*and database credentials. Activate three threads to initiate the backend server. 
+	*thread for notifications, thread for waitinglist cancellation and a main thread to handle client requests.*
+	*@param port the port number to listen on
+	*@param serverControllerInstance the instance of ServerController associated with this server
+	*@param userName the username for database connection
+	*@param password the password for database connection
+	*/
 	public BackEndServer(int port, ServerController serverControllerInstance, String userName, String password) {
 		super(port);
 

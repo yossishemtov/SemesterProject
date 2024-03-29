@@ -266,7 +266,7 @@ public class DepartmentManagerReportsController implements Initializable {
 	 */
 	@FXML
 	void CreateReportAction(ActionEvent event) {
-		Alerts infoalert;
+		Alerts infoalert; 
 		String selectedMonthString = monthCombobox.getSelectionModel().getSelectedItem();
 		String selectedReportType = ReportTypeCombobox.getSelectionModel().getSelectedItem();
 		String selectedparkString = parkNameComboBox.getSelectionModel().getSelectedItem();

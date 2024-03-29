@@ -169,7 +169,7 @@ public class ServerController {
 				// Start server
 				sv.listen();
 				circleStatus.setFill(Color.GREEN); // Assume circleStatus is a GUI element indicating server status
-				logTextArea.setText("Server started listening."); // logTextArea for logging text to GUI
+				//logTextArea.setText("Server started listening."); // logTextArea for logging text to GUI
 				System.out.println("Server started listening.");
 
 			} catch (java.net.BindException b) {
@@ -193,7 +193,7 @@ public class ServerController {
 		PortTxt.setText("5555");
 		DBUserNameTxt.setText("root"); // Assuming you might want to set the username to 'root' as well
 
-		// redirectSystemStreams(); // Redirect System.out and System.err
+		 redirectSystemStreams(); // Redirect System.out and System.err
 
 		HostCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getHost()));
 		IPCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getIp()));

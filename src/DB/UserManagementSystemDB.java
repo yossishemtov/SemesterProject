@@ -38,7 +38,7 @@ public class UserManagementSystemDB {
                         resultSet.getString("userName"),
                         resultSet.getString("password"),
                         resultSet.getInt("worksAtPark")
-                );
+                ); 
                 employees.add(worker);
             }
         } catch (SQLException e) {

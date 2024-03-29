@@ -65,7 +65,7 @@ public class UpdateParametersController implements Initializable {
 	 * Initializes and loads park information.
 	 */
 	private void init() {
-		loadInfo(); 
+		loadInfo();
 	}
 
 	/**
@@ -79,8 +79,11 @@ public class UpdateParametersController implements Initializable {
 			parkData = (Park) ClientController.data.getDataTransfered();
 			updateLabels(parkData);
 		} else {
-			displayAlert("Error to load park parameters.", "Not have park for this park number.",
-					Alert.AlertType.ERROR);
+			Alerts infoalert;
+
+			infoalert = new Alerts(Alerts.AlertType.ERROR, "ERROR", "", "Error to load park parameters.");
+			infoalert.showAndWait();
+
 		}
 	}
 
@@ -106,6 +109,8 @@ public class UpdateParametersController implements Initializable {
 	@FXML
 	public void SendRequestAction(ActionEvent event) {
 		if (validateInput()) {
+			Alerts infoalert;
+
 			try {
 				Integer newStayTime = Integer.valueOf(NewStayTime.getText());
 				Integer newCapacity = Integer.valueOf(CapacityField.getText());
@@ -119,12 +124,17 @@ public class UpdateParametersController implements Initializable {
 				ClientUI.clientControllerInstance.sendMessageToServer(requestForServer);
 
 				if (ClientController.data.getFlag()) {
-					displayAlert("A change request was successfully received", "", Alert.AlertType.INFORMATION);
+					infoalert = new Alerts(Alerts.AlertType.CONFIRMATION, "CONFIRMATION", "",
+							"A change request was successfully received.");
+					infoalert.showAndWait();
 				} else {
-					displayAlert("A change request was not successful", "", Alert.AlertType.ERROR);
+					infoalert = new Alerts(Alerts.AlertType.INFORMATION, "INFORMATION", "",
+							"A change request was not successful.");
+					infoalert.showAndWait();
 				}
 			} catch (NumberFormatException e) {
-				displayAlert("Input values must be numeric.", "", Alert.AlertType.WARNING);
+				infoalert = new Alerts(Alerts.AlertType.WARNING, "WARNING", "", "Input values must be numeric.");
+				infoalert.showAndWait();
 			}
 		}
 	}
@@ -136,21 +146,12 @@ public class UpdateParametersController implements Initializable {
 	 */
 	private boolean validateInput() {
 		if (NewStayTime.getText().isEmpty() || CapacityField.getText().isEmpty() || NewAllowedGap.getText().isEmpty()) {
-			displayAlert("All fields are required.", "", Alert.AlertType.WARNING);
+			Alerts infoalert;
+			infoalert = new Alerts(Alerts.AlertType.ERROR, "Error", "", "All fields are required.");
+			infoalert.showAndWait();
 			return false;
 		}
 		return true;
 	}
 
-	/**
-	 * Displays an alert dialog of a specified type with the provided message.
-	 * 
-	 * @param message The message to display in the alert dialog.
-	 * @param header  The header text for the alert. Can be empty for no header.
-	 * @param type    The type of alert to display.
-	 */
-	private void displayAlert(String message, String header, Alert.AlertType type) {
-		Alerts alert = new Alerts(type, "Validation Error", header, message);
-		alert.showAndWait();
-	}
 }
