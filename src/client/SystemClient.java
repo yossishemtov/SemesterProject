@@ -13,12 +13,23 @@ import common.Usermanager;
 import javafx.application.Platform;
 import ocsf.client.AbstractClient;
 
+/**
+ * A client class representing the system client communicating with the backend server.
+ */
 public class SystemClient extends AbstractClient{
 	
 	//A boolean to indicate waiting for a server response
 	public static boolean awaitResponse = false;
 	private ClientController<?> clientControllerInstance;
 
+	/**
+	 * Constructs a new SystemClient with the specified host, port, and client controller instance.
+	 *
+	 * @param host the hostname of the server
+	 * @param port the port number to connect to on the server
+	 * @param clientController the client controller instance associated with this client
+	 * @throws IOException if an I/O error occurs when opening the connection
+	 */
 	public SystemClient(String host, int port, ClientController clientController) throws IOException{
 		super(host, port);
 		this.clientControllerInstance = clientController;
@@ -31,6 +42,11 @@ public class SystemClient extends AbstractClient{
 	
 	//Handle message from the server
 	@Override
+	/**
+	 * Handles a message received from the server.
+	 *
+	 * @param messageFromServer the message received from the server
+	 */
 	public void handleMessageFromServer(Object messageFromServer) {
 	  
 	    // Log the class type and content of the message for debugging
@@ -66,10 +82,14 @@ public class SystemClient extends AbstractClient{
 	}
 
 	  
-	  
+	/**
+	 * Sends a message from the client controller to the server and waits for a response.
+	 *
+	 * @param messageToServer the message to send to the server
+	 */
 	  public void handleMessageFromClientController(ClientServerMessage<?> messageToServer)  
 	  {
-		   	System.out.println("handleMessageFromClientController");
+		   	
 		  
 		  awaitResponse = true;
 		  
@@ -95,6 +115,10 @@ public class SystemClient extends AbstractClient{
 		    }
 	  }
 	  
+	  /**
+	   * Terminates the client, closing the connection to the server and performing necessary cleanup.
+	   * If a worker or traveler is logged in, this method sends logout requests to the server before terminating.
+	   */
 	  public void quit() {
 		  
 		  
