@@ -617,9 +617,10 @@ public class DatabaseController {
 				Integer managerID = resultSet.getInt("managerId");
 				Integer workingTime = resultSet.getInt("workingTime");
 				Integer gap = resultSet.getInt("gap"); // Retrieve gap from resultSet
-
+				Integer unorderedvisits = resultSet.getInt("unorderedvisits");
 				park = new Park(name, parkNumber, maxVisitors, capacity, currentVisitors, location, staytime,
 						workersAmount, gap, managerID, workingTime);
+				park.setUnorderedVisits(unorderedvisits);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

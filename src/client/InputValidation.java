@@ -113,7 +113,7 @@ public class InputValidation {
 		
 		//Checks the type of order, if any of the three options available
 		
-		if (typeOfOrder.equals("FAMILY") || typeOfOrder.equals("SOLO") || typeOfOrder.equals("GROUPGUIDED")) {
+		if (typeOfOrder.equals("FAMILY") || typeOfOrder.equals("SOLO") || typeOfOrder.equals("GUIDEDGROUP")) {
 			return new Alerts(Alerts.AlertType.INFORMATION, "Valid type of order", "", "Valid type of order");
 		}else {
 			return new Alerts(Alerts.AlertType.ERROR, "Invalid TypeOfOrder", "", "Type of order is not valid");

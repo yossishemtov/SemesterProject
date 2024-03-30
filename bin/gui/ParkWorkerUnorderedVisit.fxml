@@ -58,7 +58,7 @@
             <HBox prefHeight="52.0" prefWidth="337.0">
                <children>
                   <Text fill="#5aed99" strokeType="OUTSIDE" strokeWidth="0.0" text="Type Of Order:" wrappingWidth="128.66845703125" />
-                  <SplitMenuButton fx:id="menuField" mnemonicParsing="false" onAction="#handleMenuItemAction" text="SOLO">
+                  <SplitMenuButton fx:id="menuField" mnemonicParsing="false" text="SOLO">
                     <items>
                       <MenuItem fx:id="familyMenuFeild" mnemonicParsing="false" onAction="#handleMenuItemAction" text="FAMILY" />
                       <MenuItem fx:id="soloMenuField" mnemonicParsing="false" onAction="#handleMenuItemAction" text="SOLO" />

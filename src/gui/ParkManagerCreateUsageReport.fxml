@@ -13,7 +13,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParkmanagerCreateUsageReportController">
    <children>
-      <GridPane fx:id="gridPaneUsageReport" layoutX="263.0" layoutY="119.0" prefHeight="202.0" prefWidth="483.0">
+      <GridPane fx:id="gridPaneUsageReport" layoutX="284.0" layoutY="119.0" prefHeight="202.0" prefWidth="483.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -33,12 +33,12 @@
             <RowConstraints maxHeight="83.0" minHeight="27.0" prefHeight="33.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Label fx:id="titlelLabal" layoutX="313.0" layoutY="44.0" prefHeight="28.0" prefWidth="276.0" text="Usage Report" textFill="#5aed99" underline="true">
+      <Label fx:id="titlelLabal" layoutX="334.0" layoutY="44.0" prefHeight="28.0" prefWidth="276.0" text="Usage Report" textFill="#5aed99" underline="true">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <JFXButton fx:id="ClosePagebth" layoutX="261.0" layoutY="536.0" onAction="#ClosePageAction" text="Close page">
+      <JFXButton fx:id="ClosePagebth" layoutX="282.0" layoutY="536.0" onAction="#ClosePageAction" text="Close page">
          <font>
             <Font size="14.0" />
          </font>
@@ -46,7 +46,7 @@
             <FontAwesomeIconView fill="RED" glyphName="CLOSE" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="SaveReportbth" layoutX="505.0" layoutY="536.0" onAction="#SaveReportAction" text="Save report">
+      <JFXButton fx:id="SaveReportbth" layoutX="526.0" layoutY="536.0" onAction="#SaveReportAction" text="Save report">
          <font>
             <Font size="14.0" />
          </font>
@@ -54,13 +54,13 @@
             <FontAwesomeIconView fill="#2cdd43" glyphName="SAVE" />
          </graphic>
       </JFXButton>
-      <JFXTextArea fx:id="CommentTextArea" focusColor="#5aed99" layoutX="319.0" layoutY="474.0" prefHeight="42.0" prefWidth="264.0" promptText="Add comments to the report" unFocusColor="WHITE">
+      <JFXTextArea fx:id="CommentTextArea" focusColor="#5aed99" layoutX="340.0" layoutY="474.0" prefHeight="42.0" prefWidth="264.0" promptText="Add comments to the report" unFocusColor="WHITE">
          <font>
             <Font size="14.0" />
          </font></JFXTextArea>
-      <Circle fill="#3dee5a" layoutX="112.0" layoutY="282.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" />
-      <Circle fill="RED" layoutX="112.0" layoutY="217.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" />
-      <Label layoutX="141.0" layoutY="207.0" text="Full capacity" textFill="WHITE" />
-      <Label layoutX="141.0" layoutY="273.0" text="Not full capacity" textFill="WHITE" />
+      <Circle fill="#3dee5a" layoutX="133.0" layoutY="282.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fill="RED" layoutX="133.0" layoutY="217.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" />
+      <Label layoutX="162.0" layoutY="207.0" text="Full capacity" textFill="WHITE" />
+      <Label layoutX="162.0" layoutY="273.0" text="Not full capacity" textFill="WHITE" />
    </children>
 </AnchorPane>

@@ -223,6 +223,13 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 							if(checkTypeOfOrder.getAlertType().toString().equals("INFORMATION")) {
 								chooseEntrencePlan(typeOfOrder);
 								
+								
+								//check if group guide
+								if(typeOfOrder.equals("GUIDEDGROUP")) {
+									if(!ifGroupGuideBoolean(travelerId)){
+										return;
+									}
+								}
 							
 								//Post unordered visit as a traveler in the system
 								
@@ -373,6 +380,32 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 		return allowedUnorderedVists;
 	}
 	
+	
+	public Boolean ifGroupGuideBoolean(Integer travelerId) {
+		//Get information about the traveler
+				Traveler checkTravelerInformation = new Traveler(travelerId, null, null, null, null, 0, 0);
+				ClientServerMessage checkIfTravelerExists = new ClientServerMessage(checkTravelerInformation ,Operation.GET_TRAVLER_INFO);
+				ClientUI.clientControllerInstance.sendMessageToServer(checkIfTravelerExists);
+				
+				//Receive the information of the traveler from the database
+				if(ClientUI.clientControllerInstance.getData().getDataTransfered() != null) {
+					Traveler visitorGroupGuide = (Traveler) ClientUI.clientControllerInstance.getData().getDataTransfered();
+
+					if(visitorGroupGuide.getIsGroupGuide() == 1) {
+						return true;
+					}else {
+						menuField.setText("SOLO");
+						(new Alerts(Alerts.AlertType.ERROR, "Traveler Not A group guide!", "", "Traveler Not A group guide!")).showAndWait();
+						return false;
+					}
+				}else {
+					//If returned null from the database
+					menuField.setText("SOLO");
+					(new Alerts(Alerts.AlertType.ERROR, "Group Guide doesn't exists!", "", "Group Guide doesn't exists!")).showAndWait();
+					return false;
+				}
+	}
+	
 	public void checkIfGroupGuide() {
 		
 		//Checking if travelerid is valid
@@ -386,20 +419,9 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 		
 		
 		if(alertID.getAlertType().toString().equals("INFORMATION")) {
-			
-		//Get information about the traveler
-		Traveler checkTravelerInformation = new Traveler(travelerId, null, null, null, null, 0, 0);
-		ClientServerMessage checkIfTravelerExists = new ClientServerMessage(checkTravelerInformation ,Operation.GET_TRAVLER_INFO);
-		ClientUI.clientControllerInstance.sendMessageToServer(checkIfTravelerExists);
-		
-		//Receive the information of the traveler from the database
-		
-		if(ClientUI.clientControllerInstance.getData().getDataTransfered() != null) {
-			
-			Traveler visitorGroupGuide = (Traveler) ClientUI.clientControllerInstance.getData().getDataTransfered();
-			
+						
 			//Checks if the traveler is groupguide
-			if(visitorGroupGuide.getIsGroupGuide() == 1) {
+			if(ifGroupGuideBoolean(travelerId)) {
 				
 				//Checks input validation of the amount of visitors
 				Integer amountOfVisitors = -5;
@@ -410,21 +432,13 @@ public class ParkWorkerUnorderedVisitController implements Initializable{
 				Alerts visitorsValidate = InputValidation.validateGroupGuideVisitors(amountOfVisitors.toString());
 				
 				if(visitorsValidate.getAlertType().toString().equals("INFORMATION")) {
+					//If all checks were successful
 					chooseEntrencePlan("GUIDEDGROUP");
 					
 				}else {
 					visitorsValidate.showAndWait();
 					menuField.setText("SOLO");
-				}
-				
-			}else {
-				alertID.showAndWait();
-				menuField.setText("SOLO");
-			}
-			
-		}else {
-			//If returned null from the database
-			(new Alerts(Alerts.AlertType.ERROR, "Group Guide doesn't exists!", "", "Group Guide doesn't exists!")).showAndWait();
+				}		
 		}
 			
 		}else {
