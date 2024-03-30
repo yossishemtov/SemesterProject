@@ -23,6 +23,10 @@ public class UserManagementSystemDB {
      */
     public ArrayList<GeneralParkWorker> getAllEmployees() {
         String query = "SELECT * FROM `GoNature_employees`";
+        if (connectionToDatabase==null)
+        {
+        	return null;
+        }
         ArrayList<GeneralParkWorker> employees = new ArrayList<>();
         
         try (PreparedStatement statement = connectionToDatabase.prepareStatement(query)) {

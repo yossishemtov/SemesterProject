@@ -18,7 +18,6 @@ import common.Park;
 import common.Usermanager;
 import common.Visit;
 import common.worker.GeneralParkWorker;
-import common.worker.ParkWorker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

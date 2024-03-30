@@ -2,6 +2,7 @@ package server;
 
 import java.io.*;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,17 +38,24 @@ public class BackEndServer extends AbstractServer {
      * @param serverControllerInstance An instance of ServerController associated with this server.
      * @param userName                 The username for the database connection.
      * @param password                 The password for the database connection.
+     * @throws SQLException 
      */
-    public BackEndServer(int port, ServerController serverControllerInstance, String userName, String password) {
+    public BackEndServer(int port, ServerController serverControllerInstance, String userName, String password) throws SQLException {
         super(port);
         BackEndServer.serverControllerInstance = serverControllerInstance;
         
-        // Connect to the User Management System database
+        // Attempt to connect to the User Management System database
         Connection UserManagementSystemConnection = new MySqlConnector(userName, password, "User_management_system").getDbConnection();
+        if (UserManagementSystemConnection == null) {
+            throw new SQLException("Failed to connect to the User Management System database.");
+        }
         UserManagementSystemDB UserManagementSystemDB = new UserManagementSystemDB(UserManagementSystemConnection);
         
-        // Connect to the project database
+        // Attempt to connect to the project database
         this.DbConnection = new MySqlConnector(userName, password, "project").getDbConnection();
+        if (this.DbConnection == null) {
+            throw new SQLException("Failed to connect to the project database.");
+        }
         DBController = new DatabaseController(DbConnection, UserManagementSystemDB);
         MessageHandlerFromClient.setDbController(DBController);
 
