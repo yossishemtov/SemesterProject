@@ -1614,6 +1614,10 @@ public class DatabaseController {
 			System.err.println("An error occurred with enum conversion: " + e.getMessage());
 			e.printStackTrace();
 		}
+		if (reports.isEmpty())
+		{
+			return null;
+		}
 
 		return reports;
 	}

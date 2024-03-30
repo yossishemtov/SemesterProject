@@ -110,7 +110,7 @@
                   <Line endX="100.0" layoutX="451.0" layoutY="197.0" startX="-100.0" stroke="#5aed99" />
                   <Line endX="100.0" layoutX="444.0" layoutY="392.0" startX="-100.0" stroke="#5aed99" />
                   <Line endX="100.0" layoutX="447.0" layoutY="436.0" startX="-100.0" stroke="#5aed99" />
-                  <Pane fx:id="PaneOrder" layoutX="-3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="pnOrder" stylesheets="@../styles/styles.css">
+                  <Pane fx:id="PaneOrder" layoutX="46.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="pnOrder" stylesheets="@../styles/styles.css">
                      <children>
                         <Label layoutX="387.0" layoutY="22.0" prefHeight="45.0" prefWidth="146.0" text="Order a Visit" textFill="#5aed99">
                            <font>
@@ -247,7 +247,7 @@
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <ImageView id="pricingButton" fx:id="Pricingbtn" fitHeight="80.0" fitWidth="41.0" layoutX="770.0" layoutY="482.0" pickOnBounds="true" preserveRatio="true" styleClass="pricingButton">
+                        <ImageView id="pricingButton" fx:id="Pricingbtn" fitHeight="80.0" fitWidth="41.0" layoutX="770.0" layoutY="482.0" onMouseClicked="#handlePricingButton" pickOnBounds="true" preserveRatio="true" styleClass="pricingButton">
                            <image>
                               <Image url="@../common/images/Pricingbtn.png" />
                            </image>

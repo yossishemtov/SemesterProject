@@ -7,7 +7,6 @@ import client.ClientController;
 import common.ClientServerMessage;
 import common.Operation;
 import common.Usermanager;
-import gui.UserInterfaceController;
 
 /**
  * The main class representing the client-side user interface of the application.

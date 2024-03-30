@@ -133,9 +133,8 @@ public class OrderAVisitController implements Initializable {
     
     @FXML
     private Button btnHome;
-    
     @FXML
-    private Button btnPrice;
+    private ImageView Pricingbtn;
     
     @FXML
     private Button Back;
