@@ -353,7 +353,7 @@ public class OrderAVisitController implements Initializable {
 	@FXML
 	void BackButton(ActionEvent event) throws IOException { //return one step
 		Stage stage = (Stage) Back.getScene().getWindow();
-		Parent root = FXMLLoader.load(getClass().getResource("/gui/HomePageFrame.fxml")); // תחליטו אתם לאן
+		Parent root = FXMLLoader.load(getClass().getResource("/gui/HomePageFrame.fxml"));  
 		stage.setScene(new Scene(root));
 	}
 	

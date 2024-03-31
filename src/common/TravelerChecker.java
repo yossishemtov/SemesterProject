@@ -42,7 +42,7 @@ public class TravelerChecker {
                     LocalDateTime currentDateTime = LocalDateTime.now();
 
                     if (currentDateTime.isAfter(orderDateTime))
-                        break;
+    	                continue;
 
                     String[] message = {
                             "Please Confirm Your Visit",
@@ -116,7 +116,7 @@ public class TravelerChecker {
 	                LocalDateTime currentDateTime = LocalDateTime.now();
 
 	                if (currentDateTime.isAfter(orderDateTime))
-	                    break;
+		                continue;
 	                String[] messageCancel = {
 	                        String.format("Dear Visitor,\n"
 	                                + "Your order to the %s Park on %s at %s has been canceled.\n\n"
@@ -156,7 +156,7 @@ public class TravelerChecker {
 	            LocalDateTime currentDateTime = LocalDateTime.now();
 
 	            if (currentDateTime.isAfter(orderDateTime))
-	                break;
+	                continue;
 
 	            String[] message = {
 	                    "We've reserved a spot for you in the park!",

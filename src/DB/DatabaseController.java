@@ -99,8 +99,7 @@ public class DatabaseController {
 		Order lastOrder = null;
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-			// ps.setInt(1, traveler.getId()); גרסא נכונה
-
+			// ps.setInt(1, traveler.getId()); 
 			ps.setInt(1, 123);
 			ResultSet rs = ps.executeQuery();
 

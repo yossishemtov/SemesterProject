@@ -213,7 +213,7 @@
                               <RowConstraints maxHeight="58.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <JFXTextField fx:id="txtName" focusColor="#b3ffb3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="152.0" promptText="Enter Fullname" styleClass="txtField" unFocusColor="WHITE">
+                              <JFXTextField fx:id="txtName" focusColor="#5aed99" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="152.0" promptText="Enter Fullname" styleClass="txtField" unFocusColor="WHITE">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>

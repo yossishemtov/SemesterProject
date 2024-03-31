@@ -80,7 +80,7 @@ public class NotifyThread implements Runnable {
 			ordersWithAlerts = ordersAlreadyNotified;
 			CancelOrderAndNotify();
 			deleteAlertsExpired();
-
+			findCanceledOrders();
 			try {
 				Thread.sleep(1 * minute);
 			} catch (InterruptedException e) {
@@ -114,7 +114,15 @@ public class NotifyThread implements Runnable {
 	    }
 	}
 	
-	
+	private void findCanceledOrders() {
+		ArrayList<Order> canceledOrders = DC.getOrdersByStatusInLastTwentyFourHours("CANCELED");
+		
+		for (Order order : canceledOrders) {
+            WaitingListControl.notifyPersonFromWaitingList(order);
+		}
+
+	}
+
 	
 	private void deleteAlertsExpired() {
 	    DC.deleteExpiredOrderAlerts();

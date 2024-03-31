@@ -674,7 +674,7 @@ SET foreign_key_checks = 0;
 (543, 234567898, 2, 12, 360.0, 'traveler543@example.com', '2024-05-23', '555-6958', '11:30', 'PENDING', 'GUIDEDGROUP', 'Yellow Stone'),
 (544, 234567896, 2, 5, 150.0, 'traveler544@example.com', '2024-08-10', '555-8782', '17:30', 'CANCELED', 'GUIDEDGROUP', 'Yellow Stone'),
 (545, 234567898, 2, 5, 150.0, 'traveler545@example.com', '2024-08-20', '555-1265', '13:00', 'CANCELED', 'FAMILY', 'Yellow Stone'),
-(546, 234567898, 1, 1, 30.0, 'traveler546@example.com', '2024-04-02', '555-9695', '09:00', 'CANCELED', 'SOLO', 'Mount Rainier'),
+(546, 234567898, 2, 3, 30.0, 'traveler546@example.com', '2024-04-02', '555-9695', '09:00', 'PENDING', 'FAMILY', 'Yosemite'),
 (547, 111122223, 3, 9, 270.0, 'traveler547@example.com', '2024-04-12', '555-7003', '13:00', 'PENDING', 'GUIDEDGROUP', 'Yosemite'),
 (548, 123456788, 3, 9, 270.0, 'traveler548@example.com', '2024-06-02', '555-5832', '11:00', 'CANCELED', 'GUIDEDGROUP', 'Yosemite'),
 (549, 987654321, 1, 1, 30.0, 'traveler549@example.com', '2024-10-05', '555-6469', '11:00', 'CANCELED', 'SOLO', 'Mount Rainier'),
@@ -1049,7 +1049,7 @@ SET foreign_key_checks = 0;
 (918, 111122223, 2, 1, 30.0, 'traveler918@example.com', '2024-10-18', '555-2177', '13:00', 'CANCELED', 'SOLO', 'Yellow Stone'),
 (919, 123456789, 1, 1, 30.0, 'traveler919@example.com', '2024-04-10', '555-7098', '09:00', 'CANCELED', 'SOLO', 'Mount Rainier'),
 (920, 234567892, 1, 1, 30.0, 'traveler920@example.com', '2024-09-04', '555-8377', '08:00', 'CANCELED', 'SOLO', 'Mount Rainier'),
-(921, 234567894, 3, 3, 90.0, 'traveler921@example.com', '2024-04-01', '555-9715', '12:30', 'PENDING', 'FAMILY', 'Yosemite'),
+(921, 234567894, 3, 1, 90.0, 'traveler921@example.com', '2024-04-01', '555-9715', '09:00', 'PENDING', 'SOLO', 'Yosemite'),
 (922, 232323232, 1, 1, 30.0, 'traveler922@example.com', '2024-01-05', '555-4592', '10:30', 'CANCELED', 'SOLO', 'Mount Rainier'),
 (923, 232323232, 1, 5, 150.0, 'traveler923@example.com', '2024-08-28', '555-7844', '11:30', 'PENDING', 'FAMILY', 'Mount Rainier'),
 (924, 123451234, 2, 13, 390.0, 'traveler924@example.com', '2024-05-05', '555-1211', '17:30', 'PENDING', 'GUIDEDGROUP', 'Yellow Stone'),
@@ -1262,7 +1262,7 @@ SET foreign_key_checks = 0;
 (1131, 232323232, 1, 1, 30.0, 'traveler1131@example.com', '2024-07-25', '555-1138', '16:30', 'PENDING', 'SOLO', 'Mount Rainier'),
 (1132, 232323232, 2, 3, 90.0, 'traveler1132@example.com', '2024-01-06', '555-4779', '11:30', 'NOTARRIVED', 'FAMILY', 'Yellow Stone'),
 (1133, 234567895, 1, 5, 150.0, 'traveler1133@example.com', '2024-05-10', '555-9096', '13:30', 'PENDING', 'GUIDEDGROUP', 'Mount Rainier'),
-(1134, 123123123, 3, 1, 30.0, 'traveler1134@example.com', '2024-04-02', '555-8213', '17:30', 'CANCELED', 'SOLO', 'Yosemite'),
+(1134, 123412345, 3, 1, 30.0, 'traveler1134@example.com', '2024-04-02', '555-8213', '17:30', 'CANCELED', 'SOLO', 'Yosemite'),
 (1135, 987654321, 3, 4, 120.0, 'traveler1135@example.com', '2024-08-05', '555-9623', '09:00', 'CANCELED', 'GUIDEDGROUP', 'Yosemite'),
 (1136, 123456777, 3, 3, 90.0, 'traveler1136@example.com', '2024-11-21', '555-4744', '15:00', 'PENDING', 'FAMILY', 'Yosemite'),
 (1137, 234567898, 1, 3, 90.0, 'traveler1137@example.com', '2024-11-13', '555-5996', '10:30', 'PENDING', 'FAMILY', 'Mount Rainier'),
@@ -1574,7 +1574,7 @@ SET foreign_key_checks = 0;
 (1443, 232323232, 1, 13, 390.0, 'traveler1443@example.com', '2024-02-05', '555-2823', '08:00', 'NOTARRIVED', 'GUIDEDGROUP', 'Mount Rainier'),
 (1444, 123456788, 3, 4, 120.0, 'traveler1444@example.com', '2024-08-08', '555-8358', '13:00', 'PENDING', 'FAMILY', 'Yosemite'),
 (1445, 111122223, 2, 1, 30.0, 'traveler1445@example.com', '2024-02-04', '555-7084', '14:30', 'PENDING', 'SOLO', 'Yellow Stone'),
-(1446, 121212121, 1, 2, 60.0, 'traveler1446@example.com', '2024-04-02', '555-1295', '09:30', 'CANCELED', 'FAMILY', 'Mount Rainier'),
+(1446, 111122223, 1, 5, 60.0, 'traveler1446@example.com', '2024-04-02', '555-1295', '08:00', 'PENDING', 'FAMILY', 'Mount Rainier'),
 (1447, 232323232, 2, 3, 90.0, 'traveler1447@example.com', '2024-11-19', '555-3059', '14:30', 'CANCELED', 'GUIDEDGROUP', 'Yellow Stone'),
 (1448, 987654321, 3, 4, 120.0, 'traveler1448@example.com', '2024-01-30', '555-3214', '11:00', 'COMPLETED', 'FAMILY', 'Yosemite'),
 (1449, 123123123, 1, 1, 30.0, 'traveler1449@example.com', '2024-06-24', '555-5114', '14:00', 'CANCELED', 'SOLO', 'Mount Rainier'),
@@ -1670,12 +1670,8 @@ CREATE TABLE waitinglist (
 
 
 INSERT INTO waitinglist VALUES
- (1501,123123123,1,5,50,'alice@example.com','2024-03-31','054-7376231','09:00:00','PENDING','FAMILY','Mount Rainier',5,1),
-( 1502,121212121,2,3,30,'bob@example.com','2024-04-02','052-7355231','14:00:00','CONFIRMED','FAMILY,'Yellowstone',6,2),
- (1503,123412341,1,1,85,'asd@walla.com','2024-04-02','1231231231','09:00:00','PENDING','SOLO','Mount Rainier',7,3),
- (1504,111122223,1,1,85,'asd@walla.com','2024-05-04','1231231231','09:00:00','PENDING','SOLO','Mount Rainier',8,4),
- (1505,123123123,1,2,170,'asd@walla.com','2024-06-21','1231231231','09:00:00','PENDING','FAMILY','Mount Rainier',9,5);
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+ (1501,123123123,1,5,50,'alice@example.com','2024-04-02','054-7376231','08:00:00','PENDING','FAMILY','Mount Rainier',1,1),
+( 1502,121212121,2,3,30,'bob@example.com','2024-04-02','052-7355231','09:00:00','PENDING','FAMILY','Yellowstone',2,1);
 SET foreign_key_checks = 1;
 
 
@@ -1728,7 +1724,7 @@ CREATE TABLE `park` (
 
 LOCK TABLES `park` WRITE;
 /*!40000 ALTER TABLE `park` DISABLE KEYS */;
-INSERT INTO `park` VALUES ('Mount Rainier',1,20,30,1,'Washington',4,2,1,8,10,10),('Yellowstone',2,30,40,1,'Utah',5,1,2,7,10,10),('Yosemite',3,20,30,1,'Wyoming',6,1,3,8,10,10);
+INSERT INTO `park` VALUES ('Mount Rainier',1,20,30,1,'Washington',4,2,1,8,10,10),('Yellowstone',2,30,40,1,'Utah',4,1,2,7,10,10),('Yosemite',3,10,30,1,'Wyoming',4,1,3,8,20,20);
 /*!40000 ALTER TABLE `park` ENABLE KEYS */;
 
 SET foreign_key_checks = 1;

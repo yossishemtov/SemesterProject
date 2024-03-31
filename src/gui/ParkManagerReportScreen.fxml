@@ -55,7 +55,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <JFXComboBox fx:id="monthCombobox" focusColor="#b3ffb3" prefHeight="25.0" prefWidth="160.0" unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <JFXComboBox fx:id="monthCombobox" focusColor="#5aed99" prefHeight="25.0" prefWidth="160.0" unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </children>
