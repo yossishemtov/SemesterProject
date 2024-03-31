@@ -76,20 +76,20 @@
                </font>
             </Label>
       
-            <JFXComboBox fx:id="ReportTypeCombobox" focusColor="#5aed99" prefHeight="25.0" prefWidth="139.0" unFocusColor="WHITE" GridPane.columnIndex="1" />
+            <JFXComboBox fx:id="ReportTypeCombobox" focusColor="#5aed99" prefHeight="25.0" prefWidth="167.0" unFocusColor="WHITE" GridPane.columnIndex="1" />
             <Label text="Choose a month" textFill="#5aed99" GridPane.rowIndex="1">
       
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <JFXComboBox fx:id="monthCombobox" focusColor="#5aed99" prefHeight="25.0" prefWidth="136.0" unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <JFXComboBox fx:id="monthCombobox" focusColor="#5aed99" prefHeight="25.0" prefWidth="170.0" unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label prefHeight="20.0" prefWidth="93.0" text="Choose park " textFill="#5aed99" GridPane.rowIndex="2">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <JFXComboBox fx:id="parkNameComboBox" focusColor="#5aed99" prefHeight="25.0" prefWidth="136.0" unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <JFXComboBox fx:id="parkNameComboBox" focusColor="#5aed99" prefHeight="25.0" prefWidth="173.0" unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>

@@ -14,7 +14,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.DepartmentManagerCancellationReportController">
    <children>
-      <Label fx:id="titlelLabal" layoutX="433.0" layoutY="27.0" prefHeight="28.0" prefWidth="450.0" textFill="#5aed99">
+      <Label fx:id="titlelLabal" layoutX="462.0" layoutY="29.0" prefHeight="28.0" prefWidth="450.0" textFill="#5aed99">
          <font>
             <Font size="18.0" />
          </font>
@@ -29,18 +29,18 @@
       </JFXButton>
       <BarChart fx:id="CancellationBarChart" layoutX="289.0" layoutY="67.0" prefHeight="234.0" prefWidth="739.0">
         <xAxis>
-          <CategoryAxis side="BOTTOM" />
+          <CategoryAxis side="BOTTOM" tickLabelFill="WHITE" />
         </xAxis>
         <yAxis>
-          <NumberAxis side="LEFT" />
+          <NumberAxis side="LEFT" tickLabelFill="WHITE" />
         </yAxis>
       </BarChart>
       <BarChart fx:id="UnfulfilledOrder" layoutX="289.0" layoutY="328.0" prefHeight="246.0" prefWidth="739.0">
          <xAxis>
-            <CategoryAxis side="BOTTOM" />
+            <CategoryAxis side="BOTTOM" tickLabelFill="WHITE" />
          </xAxis>
          <yAxis>
-            <NumberAxis side="LEFT" />
+            <NumberAxis side="LEFT" tickLabelFill="WHITE" />
          </yAxis>
       </BarChart>
       <Label layoutX="69.0" layoutY="67.0" text="Cancellation report data" textFill="#5aed99" underline="true">

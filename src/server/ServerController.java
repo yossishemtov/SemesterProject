@@ -43,6 +43,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
+/**
+ * Controller class for the server GUI. Manages server operations including
+ * starting and stopping the server, and displaying server logs.
+ */
 public class ServerController {
 
 	BackEndServer sv;
@@ -90,17 +94,34 @@ public class ServerController {
 	@FXML
 	private Circle circleStatus;
 
+	/**
+	 * Stops the server and closes connections when the stop button is clicked.
+	 * 
+	 * @param event The action event triggered by clicking the stop button.
+	 */
 	@FXML
 	void serveStopAction(ActionEvent event) {
 		closeConnection();
 	}
 
+	/**
+	 * Updates the connection status table with the current status of all client
+	 * connections.
+	 * 
+	 * @param statuses The collection of client connection statuses.
+	 */
 	public void updateConnectionStatusTable(Collection<ClientConnectionStatus> statuses) {
 		connStatusTable.getItems().setAll(statuses);
 		// Refresh the table to ensure UI is up-to-date
 		connStatusTable.refresh();
 	}
 
+	/**
+	 * Initializes the server GUI.
+	 * 
+	 * @param primaryStage The primary stage of the application.
+	 * @throws Exception if an error occurs during the initialization.
+	 */
 	public void start(Stage primaryStage) throws Exception {
 		try {
 			FXMLLoader serverGui = new FXMLLoader(getClass().getResource("ServerGUI.fxml"));
@@ -132,6 +153,13 @@ public class ServerController {
 		return PasswordTxt.getText();
 	}
 
+	/**
+	 * Validates the server login details input by the user, including port number,
+	 * database username, and password. Displays an error alert if any validation
+	 * checks fail.
+	 * 
+	 * @return true if all inputs are valid; false otherwise.
+	 */
 	private boolean isVaiildLogin() {
 		Integer port;
 		String dbUserName;
@@ -150,41 +178,66 @@ public class ServerController {
 
 	}
 
-	// mouse click on start server button
+	/**
+	 * Initiates the server startup process when the start button is clicked in the
+	 * UI. This method attempts to parse and validate the user-input port number,
+	 * database username, and password. It then attempts to start the server with
+	 * these parameters. If successful, the server begins listening for connections.
+	 * The UI is updated to reflect the server's status. Error handling is included
+	 * to alert the user of issues such as invalid port numbers, port already in
+	 * use, IO exceptions, or any other unexpected errors.
+	 *
+	 * @param event The ActionEvent triggered by clicking the start button, not used
+	 *              directly in the method but required by the @FXML annotation.
+	 * @throws NumberFormatException  If the port number is not a valid integer.
+	 * @throws java.net.BindException If the specified port is already in use.
+	 * @throws IOException            If an I/O error occurs when attempting to
+	 *                                start the server.
+	 * @throws Exception              Covers any other exceptions that may occur
+	 *                                during the server startup process, ensuring
+	 *                                that no error condition is left unhandled.
+	 */
 	@FXML
 	void serveStartAction(ActionEvent event) {
-		Integer port;
+		Integer port = 0;
 		String dbUserName;
 		String dbPass;
 
-		port = Integer.parseInt(getPort()); // Set port to 555
-		dbUserName = this.getuserNameOfDB();
-		dbPass = this.getPasswordOfDB();
+		try {
+			port = Integer.parseInt(getPort()); // Assume getPort() is a method that retrieves the port from the UI
+			dbUserName = getuserNameOfDB(); // Assume this method retrieves the DB username from the UI
+			dbPass = getPasswordOfDB(); // Assume this method retrieves the DB password from the UI
 
-		if (isVaiildLogin()) {
-			try {
+			if (isVaiildLogin()) { // Check for valid login details
+				sv = new BackEndServer(port, this, dbUserName, dbPass); // Attempt to start the server
 
-				sv = new BackEndServer(port, this, dbUserName, dbPass);
-
-				// Start server
+				// Start listening for connections
 				sv.listen();
-				circleStatus.setFill(Color.GREEN); // Assume circleStatus is a GUI element indicating server status
-				logTextArea.setText("Server started listening."); // logTextArea for logging text to GUI
+				circleStatus.setFill(Color.GREEN); // Update server status indicator
+				logTextArea.appendText("Server started listening.\n"); // Log success
+				logTextArea.appendText("Database connection successfully.\n");
 				System.out.println("Server started listening.");
-
-			} catch (java.net.BindException b) {
-				// This block catches the BindException specifically
-				Alerts somethingWentWrong = new Alerts(Alerts.AlertType.ERROR, "ERROR", "",
-						"Error: Port " + port + " is already in use. Please choose a different port.");
-				somethingWentWrong.showAndWait();
-				logTextArea.setText("Error: Port " + port + " is already in use. Please choose a different port.");
-				System.err.println("Error: Port " + port + " is already in use. Please choose a different port.");
-			} catch (IOException e) {
-				// Catch other IOExceptions here
-				logTextArea.setText("Server failed to start.");
-				System.err.println("Server failed to start.");
-				e.printStackTrace();
 			}
+		} catch (NumberFormatException e) {
+			Alerts invalidPortAlert = new Alerts(Alerts.AlertType.ERROR, "Invalid Port", "",
+					"Port number is invalid. Please enter a valid port number.");
+			invalidPortAlert.showAndWait();
+			logTextArea.setText("Invalid port number. Please enter a valid port number.");
+		} catch (java.net.BindException b) {
+			Alerts bindExceptionAlert = new Alerts(Alerts.AlertType.ERROR, "Port In Use", "",
+					"Error: Port " + port + " is already in use. Please choose a different port.");
+			bindExceptionAlert.showAndWait();
+			logTextArea.setText("Error: Port is already in use. Please choose a different port.");
+		} catch (IOException ioException) {
+			Alerts ioAlert = new Alerts(Alerts.AlertType.ERROR, "Server Error", "",
+					"Server failed to start due to an I/O error.");
+			ioAlert.showAndWait();
+			logTextArea.setText("Server failed to start due to an I/O error.");
+		} catch (Exception generalException) {
+			Alerts unexpectedErrorAlert = new Alerts(Alerts.AlertType.ERROR, "Unexpected Error", "",
+					"An unexpected error occurred: " + generalException.getMessage());
+			unexpectedErrorAlert.showAndWait();
+			logTextArea.setText("An unexpected error occurred. Please check the logs.");
 		}
 	}
 
@@ -201,13 +254,15 @@ public class ServerController {
 		StTimeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getStartTime()));
 		PortTxt.setText("5555");
 		DBUserNameTxt.setText("root");
-		PasswordTxt.setText("root");
+		PasswordTxt.setText("Joss102010");
 		ObservableList<ClientConnectionStatus> connectionStatuses = FXCollections.observableArrayList();
 		connStatusTable.setItems(connectionStatuses);
 
 	}
 
-	// Method to redirect output streams to the TextArea
+	/**
+	 * Redirects standard output and error streams to the text area in the GUI.
+	 */
 	private void redirectSystemStreams() {
 		OutputStream out = new OutputStream() {
 			@Override
@@ -230,15 +285,26 @@ public class ServerController {
 		System.setErr(new PrintStream(out, true));
 	}
 
-	// Method to append text to the TextArea in a thread-safe manner
+	/**
+	 * Appends text to the TextArea in the GUI. Ensures thread safety when updating
+	 * the GUI from different threads.
+	 * 
+	 * @param str The string to append to the TextArea.
+	 */
 	private void appendText(String str) {
 		Platform.runLater(() -> logTextArea.appendText(str));
 	}
 
+	/**
+	 * Closes the server connection and updates the GUI to reflect the server's
+	 * stopped status.
+	 */
 	public void closeConnection() {
 		try {
 			if (sv != null && sv.isListening()) {
 				circleStatus.setFill(Color.RED);
+				logTextArea.appendText("Server has stopped listening for connections.\n"); 
+
 				sv.close();
 			}
 		} catch (IOException e) {

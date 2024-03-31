@@ -21,31 +21,43 @@ import common.*;
 import common.worker.*;
 import common.worker.Report.ReportType;
 
+
 /**
- * This class is responsible for managing database operations related to orders.
+ * Manages database operations for the user management system.
+ * This controller handles the interaction between the user management
+ * system and the database, including inserting new employees into
+ * the database.
  */
 public class DatabaseController {
-	private Connection connectionToDatabase;
+    private Connection connectionToDatabase;
 
-	/**
-	 * Constructs a DatabaseController object with specified user credentials.
-	 * @param userManagementSystemDB 
-	 *
-	 * @param username the database username
-	 * @param password the database password
-	 */
-	public DatabaseController(Connection ConnectionToDB, UserManagementSystemDB userManagementSystemDB) {
+    /**
+     * Constructs a DatabaseController object. It initializes the database connection
+     * using provided user credentials and inserts existing employees from the 
+     * user management system into the database.
+     *
+     * @param connectionToDB The connection to the database.
+     * @param userManagementSystemDB An instance of UserManagementSystemDB that provides
+     *                               access to employee data.
+     */
+    public DatabaseController(Connection connectionToDB, UserManagementSystemDB userManagementSystemDB) {
+        connectionToDatabase = connectionToDB;
+        insertEmployees(userManagementSystemDB.getAllEmployees());
+        userManagementSystemDB.closeConnection();
+    }
 
-		connectionToDatabase = ConnectionToDB;
-		insertEmployees(userManagementSystemDB.getAllEmployees());
-		userManagementSystemDB.closeConnection();
-	}
-
-	 /**
-     * Inserts a list of GeneralParkWorker objects into the database.
+    /**
+     * Inserts a list of employees into the database. This method takes
+     * the list of employees retrieved from the user management system
+     * and persists them into the database.
      * 
-     * @param employees The list of GeneralParkWorker objects to be inserted.
-     * @return The number of inserted rows.
+     * Implementation note: This method's body should contain the logic
+     * to convert the list of employees into appropriate SQL INSERT statements
+     * and execute them using the established database connection. Error handling
+     * and transaction management should also be considered.
+     *
+     * @param employees general park worker employees Arraylist to insert to db
+     * @return int amount of insertion succeeded
      */
 	public int insertEmployees(ArrayList<GeneralParkWorker> employees) {
 	    int insertedRows = 0;
@@ -66,7 +78,6 @@ public class DatabaseController {
 	                
 	                insertedRows += statement.executeUpdate(); // Execute the insertion for each employee.
 	            } catch (SQLIntegrityConstraintViolationException e) {
-	                System.out.println("Duplicate entry for worker ID " + worker.getWorkerId() + ": " + e.getMessage());
 	                break;
 	            }
 	        }
@@ -81,15 +92,15 @@ public class DatabaseController {
 	/**
 	 * Finds the most recent traveler order based on his ID
 	 * 
-	 * @param travelerId
-	 * @return order
+	 * @param travelerId the traveler identify number
+	 * @return order most recent order
 	 */
 	public Order getTravelerRecentOrder(Integer travelerId) {
 		String query = "SELECT * FROM order WHERE travelerId = ? ORDER BY orderId DESC";
 		Order lastOrder = null;
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-			// ps.setInt(1, traveler.getId()); גרסא נכונה
+			
 
 			ps.setInt(1, 123);
 			ResultSet rs = ps.executeQuery();
@@ -116,47 +127,7 @@ public class DatabaseController {
 		return lastOrder;
 	}
 
-	/**
-	 * Finding order within given times
-	 * 
-	 * @param parameters parkNumber, date, visitTime
-	 * @return
-	 */
-	public ArrayList<Order> findOrdersWithinDates(ArrayList<?> parameters) {
-		ArrayList<Order> orders = new ArrayList<Order>();
-		String query = "SELECT * FROM `order` WHERE parkNumber = ? AND date = ? AND visitTime >= ? AND visitTime <= ?";
-
-		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-			ps.setString(1, (String) parameters.get(0));
-			ps.setDate(2, java.sql.Date.valueOf(LocalDate.parse((String) parameters.get(1))));
-			ps.setTime(3, java.sql.Time.valueOf(LocalTime.parse((String) parameters.get(2))));
-			ps.setTime(4, java.sql.Time.valueOf(LocalTime.parse((String) parameters.get(3))));
-
-			ResultSet rs = ps.executeQuery();
-
-			while (rs.next()) {
-				Integer orderId = rs.getInt("orderId");
-				Integer travelerId = rs.getInt("travelerId");
-				Integer parkNumber = rs.getInt("parkNumber");
-				Integer amountOfVisitors = rs.getInt("amountOfVisitors");
-				Float price = rs.getFloat("price");
-				String visitorEmail = rs.getString("visitorEmail");
-				LocalDate date = rs.getDate("date").toLocalDate();
-				String telephoneNumber = rs.getString("TelephoneNumber");
-				LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
-				String statusStr = rs.getString("orderStatus");
-				String typeOfOrderStr = rs.getString("typeOfOrder");
-				String parkName = rs.getString("parkName");
-
-				orders.add(new Order(orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date,
-						visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return orders;
-	}
+	
 
 	/**
 	 * getting all parks information
@@ -197,8 +168,8 @@ public class DatabaseController {
 	/**
 	 * finds park info by his name
 	 * 
-	 * @param parkName
-	 * @return park's info
+	 * @param parkName name of the park
+	 * @return Park object 
 	 */
 	public Park findParkByName(String parkName) {
 		Park park = null;
@@ -234,7 +205,7 @@ public class DatabaseController {
 	/**
 	 * Insert traveler to waiting list
 	 * 
-	 * @param waiting
+	 * @param waiting waitinglist object to insert
 	 * @return inserted successfully true, else false
 	 */
 	public Boolean insertWaitingList(WaitingList waiting) {
@@ -276,7 +247,7 @@ public class DatabaseController {
 	/**
 	 * Insert new traveler to traveler table
 	 * 
-	 * @param traveler
+	 * @param traveler to insert to db
 	 * @return true if inserted, false otherwise.
 	 */
 	public boolean insertNewTraveler(Traveler traveler) {
@@ -379,7 +350,7 @@ public class DatabaseController {
 	 * Checks if the order is valid based on traveler orders for the same date and
 	 * hour
 	 * 
-	 * @param order
+	 * @param order check if order exists
 	 * @return true if valid, else false
 	 */
 	public Boolean checkIfOrderisValid(Order order) {
@@ -632,7 +603,7 @@ public class DatabaseController {
 	/**
 	 * Get amount of unordered visits from a park
 	 *
-	 * @param parkid of a Park
+	 * @param parkNumber of a Park
 	 * @return Integer unorderedvisits allowed
 	 */
 	public Integer getUnorderedVists(int parkNumber) {
@@ -659,8 +630,8 @@ public class DatabaseController {
 	/**
 	 * Get order information and change its state to COMPLETED
 	 * 
-	 * @param Order object that contains a valid orderId
-	 * @return True if success or False if not
+	 * @param receivedOrder order object that contains a valid orderId
+	 * @return Boolean if success or False if not
 	 */
 	public Boolean patchOrderStatusToCompleted(Order receivedOrder) {
 		String query = "UPDATE `order` SET orderStatus = 'COMPLETED' WHERE orderId = ?";
@@ -681,8 +652,8 @@ public class DatabaseController {
 	/**
 	 * Change park current amount of visitors
 	 * 
-	 * @param Park object with new amount of visitors
-	 * @return True if success or False if not
+	 * @param parkToAppend park object with new amount of visitors
+	 * @return Boolean True if success or False if not
 	 */
 	public Boolean patchParkVisitorsNumber(Park parkToAppend) {
 		// Append the visitors to the park currentvisitors
@@ -707,7 +678,7 @@ public class DatabaseController {
 	/**
 	 * Get order information based on the orderId, park number and date provided
 	 * 
-	 * @param Order object that contains a valid orderId, parknumber and date
+	 * @param receivedOrderId order object that contains a valid orderId, parknumber and date
 	 * @return Order object containing all the information about the order
 	 */
 	public Order getOrderInformationByOrderIdAndParkNumber(Order receivedOrderId) {
@@ -944,9 +915,8 @@ public class DatabaseController {
 	 * 
 	 * Inserts a new reservation (order) into the database.
 	 * 
-	 * @param traveler The traveler making the reservation.
 	 * @param order    The details of the order being made.
-	 * @return true if insertion was successful, false otherwise.
+	 * @return Boolean true if insertion was successful, false otherwise.
 	 */
 	public Boolean insertTravelerOrder(Order order) {// Adjusting the query to match the database schema order provided
 		String query = "INSERT INTO `order` (orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date, TelephoneNumber, visitTime, orderStatus, typeOfOrder, parkName)"
@@ -1042,15 +1012,17 @@ public class DatabaseController {
 		// Calculate the new capacity based on the provided gap and maxVisitors
 		Integer newMaxVisitor = changeRequest.getCapacity() - changeRequest.getGap();
 		// Update only the fields that are affected by a change request
-		String query = "UPDATE `park` SET capacity = ?, stayTime = ? ,gap = ? , maxVisitors = ? WHERE parkNumber = ?";
+		String query = "UPDATE `park` SET capacity = ?, stayTime = ? ,gap = ? , maxVisitors = ? , unorderedvisits = unorderedvisits + ? WHERE parkNumber = ?";
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
 			ps.setInt(1, changeRequest.getCapacity());
 			ps.setInt(2, changeRequest.getStaytime());
 			ps.setInt(3, changeRequest.getGap());
 			ps.setInt(4, newMaxVisitor);
-			ps.setInt(5, changeRequest.getParkNumber());
+			ps.setInt(5, changeRequest.getGap()-changeRequest.getOldGap());
 
+			
+			ps.setInt(6, changeRequest.getParkNumber());
 			// Print query for debugging
 			System.out.println("Executing update: " + ps);
 
@@ -1070,8 +1042,8 @@ public class DatabaseController {
 	/**
 	 * Updates the status of generalparkworker to signedin
 	 * 
-	 * @param GeneralParkWorker to sign
-	 * @return true if the signedin was successful, false otherwise.
+	 * @param signedParkWorker a GeneralParkWorker to sign
+	 * @return Boolean true if the signedin was successful, false otherwise.
 	 */
 	public Boolean changeSingedInOfGeneralParkWorker(GeneralParkWorker signedParkWorker) {
 		String query = "UPDATE generalparkworker SET isloggedin = 1 WHERE workerid = ?";
@@ -1092,8 +1064,8 @@ public class DatabaseController {
 	/**
 	 * Updates the status of generalparkworker to signedout
 	 * 
-	 * @param GeneralParkWorker to sign
-	 * @return true if the signed out was successful, false otherwise.
+	 * @param signedParkWorker A GeneralParkWorker to sign
+	 * @return Boolean true if the signed out was successful, false otherwise.
 	 */
 	public Boolean changeSignedOutOfGeneralParkWorker(GeneralParkWorker signedParkWorker) {
 		String query = "UPDATE `generalparkworker` SET isloggedin = 0 WHERE workerid = ?";
@@ -1114,8 +1086,8 @@ public class DatabaseController {
 	/**
 	 * Gets the status of loggedin of generalparkworker
 	 * 
-	 * @param GeneralParkWorker
-	 * @return isloggedin of generalparkworker
+	 * @param signedParkWorker a GeneralParkWorker to receive its login status
+	 * @return Boolean login status of the worker
 	 */
 	public Boolean getSignedinStatusOfGeneralParkWorker(GeneralParkWorker signedParkWorker) {
 		// Return the status of isloggedin of generalparkworker
@@ -1148,8 +1120,8 @@ public class DatabaseController {
 	/**
 	 * Updates the status of Traveler to signedin
 	 * 
-	 * @param Traveler to signin
-	 * @return true if the signedin was successful, false otherwise.
+	 * @param signedTraveler A Traveler to signin
+	 * @return Boolean true if the signedin was successful, false otherwise.
 	 */
 	public Boolean changedSignedInOfTraveler(Traveler signedTraveler) {
 		String query = "UPDATE traveler SET isloggedin = 1 WHERE id = ?";
@@ -1169,8 +1141,8 @@ public class DatabaseController {
 	/**
 	 * Updates the status of Traveler to signout
 	 * 
-	 * @param Traveler to signout
-	 * @return true if the signedout was successful, false otherwise.
+	 * @param signedTraveler A Traveler to signout
+	 * @return Boolean true if the signedout was successful, false otherwise.
 	 */
 	public Boolean changedSignedOutOfTraveler(Traveler signedTraveler) {
 		String query = "UPDATE traveler SET isloggedin = 0 WHERE id = ?";
@@ -1190,7 +1162,7 @@ public class DatabaseController {
 	/**
 	 * Gets the status of loggedin of Traveler
 	 * 
-	 * @param GeneralParkWorker
+	 * @param signedTraveler A traveler to sign in
 	 * @return Boolean isloggedin of Traveler
 	 */
 	public Boolean getSignedinStatusOfTraveler(Traveler signedTraveler) {
@@ -1224,8 +1196,8 @@ public class DatabaseController {
 	/**
 	 * Get order information and change its state to INPARK
 	 * 
-	 * @param Order object that contains a valid orderId
-	 * @return True if success or False if not
+	 * @param receivedOrder A Order object that contains a valid orderId
+	 * @return Boolean True if success or False if not
 	 */
 	public Boolean patchOrderStatusToInpark(Order receivedOrder) {
 		String query = "UPDATE `order` SET orderStatus = 'INPARK' WHERE orderId = ?";
@@ -1247,8 +1219,8 @@ public class DatabaseController {
 	/**
 	 * Insert a visit based on provided Visit object
 	 * 
-	 * @param Visit object to insert
-	 * @return True if success or False if not
+	 * @param newVisitToAdd A Visit object to insert
+	 * @return Boolean True if success or False if not
 	 */
 	public Boolean addNewVisit(Visit newVisitToAdd) {
 		String query = "INSERT INTO `visit` (visitDate, enteringTime, exitingTime, parkNumber, orderNumber) VALUES (?, ?, ?, ?, ?)";
@@ -1614,6 +1586,10 @@ public class DatabaseController {
 			System.err.println("An error occurred with enum conversion: " + e.getMessage());
 			e.printStackTrace();
 		}
+		if (reports.isEmpty())
+		{
+			return null;
+		}
 
 		return reports;
 	}
@@ -1645,7 +1621,7 @@ public class DatabaseController {
 
 		// Query to fetch daily cancellations
 		String cancellationQuery = "SELECT DAY(date) AS dayOfMonth, COUNT(*) AS count " + "FROM `order` "
-				+ "WHERE parkNumber = ? AND YEAR(date) = ? AND MONTH(date) = ? " + "AND orderStatus = 'CANCELED' "
+				+ "WHERE parkNumber = ? AND YEAR(date) = ? AND MONTH(date) = ? " + "AND (orderStatus = 'CANCELED' OR orderStatus = 'CANCELEDBYSERVER')"
 				+ "GROUP BY DAY(date)";
 
 		String unfulfilledQuery = "SELECT DAY(date) AS dayOfMonth, COUNT(*) AS count " + "FROM `order` "
@@ -1906,6 +1882,7 @@ public class DatabaseController {
 	 * Return's all the orders that their status is orderStatus within 24hours from
 	 * now.
 	 * 
+	 * @param orderStatus String of the status of an order
 	 * @return ArrayList of orders.
 	 */
 	public ArrayList<Order> getOrdersByStatusInLastTwentyFourHours(String orderStatus) {
@@ -1950,6 +1927,7 @@ public class DatabaseController {
 		return orders;
 	}
 
+	
 	/**
 	 * Get's an existing order from the database based on its ID.
 	 * 
@@ -1958,7 +1936,7 @@ public class DatabaseController {
 	 */
 	public Order getOrderbyId(Integer orderId) {
 		Order order = null;
-		String deleteQuery = "SELECT FROM `order` WHERE orderId = ?";
+		String deleteQuery = "SELECT * FROM `order` WHERE orderId = ?";
 
 		try (PreparedStatement ps = connectionToDatabase.prepareStatement(deleteQuery)) {
 			ps.setInt(1, orderId);
@@ -1990,26 +1968,26 @@ public class DatabaseController {
 	/** 
 	  * This function return orders in waiting list that can replace the can canceled order. 
 	  *  
-	  * @param parameters ArrayList containing: parkId,maxVisitors in the park, 
+	  * @param order ArrayList containing: parkId,maxVisitors in the park, 
 	  *                   estimatedStayTime in the park, date of the canceled order, timeToCheck of the canceled order, 
 	  *                    
-	  * @return WaitingList object containing matching order. 
+	  * @return ArrayList object containing matching order. 
 	  */ 
-	 public ArrayList<WaitingList> findPlaceInWaiting(WaitingList waiting) { 
+	 public ArrayList<WaitingList> findPlaceInWaiting(Order order) { 
 	  ArrayList<WaitingList> waitingArray = new ArrayList<WaitingList>(); 
-	  Order order = null; 
+	  Order orderToCheck = null; 
 	  WaitingList result; 
-	  Integer parkNumber = waiting.getParkNumber(); 
+	  Integer parkNumber = order.getParkNumber(); 
 	  Park park = getParkDetails(parkNumber); 
-	  LocalDate dateToCancel = waiting.getDate(); 
-	  LocalTime visitTimeToCheck = waiting.getVisitTime(); 
-	  Integer amtOfVisitors = waiting.getAmountOfVisitors(); 
+	  LocalDate dateToCancel = order.getDate(); 
+	  LocalTime visitTimeToCheck = order.getVisitTime(); 
+	  Integer amtOfVisitors = order.getAmountOfVisitors(); 
 	  int estimatedStayTime = park.getStaytime(); 
 	   
 	  LocalTime startTime = visitTimeToCheck.minusHours(estimatedStayTime-1); 
 	  LocalTime endTime = visitTimeToCheck.plusHours(estimatedStayTime-1); 
 	 
-	  order = new Order(null, null, parkNumber, amtOfVisitors, null, null 
+	  orderToCheck = new Order(null, null, parkNumber, amtOfVisitors, null, null 
 	    ,dateToCancel, visitTimeToCheck, null, null, null, null); 
 	 
 	  try (PreparedStatement ps = connectionToDatabase.prepareStatement( 
@@ -2038,9 +2016,9 @@ public class DatabaseController {
 	                 String parkName = rs.getString("parkName"); 
 	                 Integer placeInList = rs.getInt("placeInList"); 
 	                  
-	                 order.setAmountOfVisitors(amtVisitorsWaiting); 
+	                 orderToCheck.setAmountOfVisitors(amtVisitorsWaiting); 
 	                  
-	                 if (findOrdersWithinDates(order,true)) { 
+	                 if (findOrdersWithinDates(orderToCheck,true)) { 
 	                     result = new WaitingList(orderId, travelerId, parkNum, amtVisitorsWaiting, price, visitorEmail, 
 	                             date, visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName, waitingListId, 
 	                             placeInList); 
@@ -2100,8 +2078,8 @@ public class DatabaseController {
 	/**
 	 * Updates the status of an existing waitinglist in the database.
 	 * 
-	 * @param containing the waitingListId and the new status.
-	 * @return true if the update was successful, false otherwise.
+	 * @param info containing the waitingListId and the new status.
+	 * @return Boolean true if the update was successful, false otherwise.
 	 */
 	public Boolean updateWaitingStatusArray(ArrayList<?> info) {
 		String query = "UPDATE `waitinglist` SET orderStatus = ? WHERE waitingListId = ?";
@@ -2128,8 +2106,8 @@ public class DatabaseController {
 	/**
 	 * Get's an existing waitinglist from the database based on its ID.
 	 * 
-	 * @param orderId The ID of the order to get.
-	 * @return Order information
+	 * @param waitingListId A Integer aitingListId The ID of the waitinglist to get.
+	 * @return WaitingList object information
 	 */
 	public WaitingList getWaitingbyId(Integer waitingListId) {
 		WaitingList waiting = null;
@@ -2208,9 +2186,8 @@ public class DatabaseController {
 	/**
 	 * Inserts a new reservation (order) into the database.
 	 * 
-	 * @param traveler The traveler making the reservation.
-	 * @param order    The details of the order being made.
-	 * @return true if insertion was successful, false otherwise.
+	 * @param waiting A waitinglist object to insert into db
+	 * @return Boolean true if insertion was successful, false otherwise.
 	 */
 	public Boolean insertWaitingOrder(WaitingList waiting) {// Adjusting the query to match the database schema order
 															// provided
@@ -2247,8 +2224,8 @@ public class DatabaseController {
 
 	/**
 	 * Return's all the orders that already been notified today
-	 * 
-	 * @return ArrayList of orders.
+	 * @param status String status of an order
+	 * @return ArrayList of order notifications.
 	 */
 	public ArrayList<OrderNotification> getTodayNotificationsWithStatus(String status) {
 
@@ -2276,7 +2253,11 @@ public class DatabaseController {
 				ordersAlreadyNotified.add(new OrderNotification(orderId, dateOfNotification, startNotification,
 						endNotification, notificationStatus));
 			}
-		} catch (SQLException e) {
+		}	
+		 catch (SQLIntegrityConstraintViolationException e) {
+            System.out.println(e.getMessage());
+		}
+		 catch (SQLException e) {
 			e.printStackTrace();
 			return ordersAlreadyNotified;
 		}
@@ -2284,6 +2265,7 @@ public class DatabaseController {
 		return ordersAlreadyNotified;
 
 	}
+
 
 	/**
 	 * Posts an order notification to the database.
@@ -2313,7 +2295,10 @@ public class DatabaseController {
 	 * Change the status of a notification based on the orderid and the status we
 	 * want to change to
 	 * 
-	 * @return Boolean if succeeded or not
+	 * @param orderId Integer orderId to change its status of notification
+	 * @param statusToChangeTo String the status to change for
+	 * 
+	 * @return Boolean True if succeeded False if not
 	 */
 	public Boolean changeStatusOfNotification(Integer orderId, String statusToChangeTo) {
 		String query = "UPDATE `orderNotifications` SET  " + "status = ? WHERE orderId = ?";
@@ -2443,8 +2428,8 @@ public class DatabaseController {
 	/**
 	 * Updates a traveler's record to mark them as a guide.
 	 *
-	 * @param travelerId the ID of the traveler to be updated.
-	 * @return true if the update is successful, false otherwise.
+	 * @param traveler object to update
+	 * @return Boolean true if the update is successful, false otherwise.
 	 */
 	public boolean ChangeTravelerToGuide(Traveler traveler) {
 
@@ -2506,8 +2491,9 @@ public class DatabaseController {
 	/**
 	 * Finding order within given times
 	 * 
-	 * @param parameters parkNumber, date, visitTime
-	 * @return
+	 * @param order the order to find dates for it
+	 * @param flag a flag to the determine if dates are available
+	 * @return Boolean if orders within dates were found
 	 */
 	public Boolean findOrdersWithinDates(Order order, Boolean flag) {
 		String query = "SELECT SUM(amountOfVisitors) AS SumVisitors FROM `order` WHERE parkNumber = ? AND date = ? AND visitTime >= ? AND visitTime <= ? "
@@ -2537,7 +2523,7 @@ public class DatabaseController {
 				if (numberOfVisitors + order.getAmountOfVisitors() <= park.getMaxVisitors() && flag) {
 					return true;
 				}
-				if (numberOfVisitors + order.getAmountOfVisitors() >= park.getMaxVisitors() && !flag) {
+				if (numberOfVisitors + order.getAmountOfVisitors() > park.getMaxVisitors() && !flag) {
 					return false;
 				}
 				if (flag) {

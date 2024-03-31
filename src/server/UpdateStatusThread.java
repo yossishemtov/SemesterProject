@@ -43,7 +43,7 @@ public class UpdateStatusThread implements Runnable {
 				sleepUntilCloseTo(nextTarget);
 				while (LocalTime.now().isBefore(nextTarget)) {
 					Thread.sleep(100);
-				}
+				} 
 				performActionForTime(nextTarget, timeForWaitingListUpdate, timeForOrderUpdate);
 			}
 
@@ -67,7 +67,6 @@ public class UpdateStatusThread implements Runnable {
 		if (now.isBefore(timeForWaitingListUpdate) || now.isAfter(timeForOrderUpdate)) {
 			return timeForWaitingListUpdate;
 		} else {
-			System.out.println("Thread timeForOrderUpdate.");
 			return timeForOrderUpdate;
 		}
 	}

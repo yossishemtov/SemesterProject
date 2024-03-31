@@ -2,10 +2,7 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXComboBox;
@@ -13,11 +10,11 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXListView;
 
 import client.ClientUI;
+import client.NavigationManager;
 import common.ClientServerMessage;
-import common.GetInstance;
 import common.Operation;
 import common.Order;
-import common.OrderChecker;
+import common.Usermanager;
 import common.WaitingChecker;
 import common.WaitingList;
 import javafx.concurrent.Task;
@@ -85,33 +82,8 @@ public class WaitingListController implements Initializable {
     private AnchorPane loadingPane;
 	
     private Order order;
-	private static ArrayList<Object> anotherDates = new ArrayList<>();
-	private static int setDateFromWaitList = 0;
 
-	/**
-     * Getter for the flag indicating whether to set the date from the wait list.
-     * @return 1 if the date should be set from the wait list, 0 otherwise.
-     */
-	public static int getSetDateFromWaitList() {
-		return setDateFromWaitList;
-	}
 
-	public static void setSetDateFromWaitList(int setDateFromWaitList) {
-		WaitingListController.setDateFromWaitList = setDateFromWaitList;
-	}
-
-	/**
-     * Getter for the list of alternative dates.
-     * @return The list of alternative dates.
-     */
-	public static ArrayList<Object> getAnotherDates() {
-		return anotherDates;
-	}
-
-	public static void setAnotherDates(ArrayList<Object> anotherDates) {
-		WaitingListController.anotherDates = anotherDates;
-	}
-	
 	/**
      * Initializes the waiting list view.
      */
@@ -182,18 +154,16 @@ public class WaitingListController implements Initializable {
     		WaitingSucc.setVisible(true);
 
     	}
-
 	}
 	
 
 	@FXML
 	void OkButton(ActionEvent event) throws IOException { 
 		Stage stage = (Stage) Okay.getScene().getWindow();
+		if(Usermanager.GetisNewTraveler())
+			NavigationManager.openPage("HomePageFrame.fxml", event, null, false, true);
 	    stage.close(); // Close the current stage
 
-	    // Enable the OrderAVisit pane
-	    OrderAVisitController orderAVisitController = GetInstance.getInstance().getOrderC();
-	    orderAVisitController.getPaneOrder().setDisable(false);
 	}
 
 
@@ -201,6 +171,7 @@ public class WaitingListController implements Initializable {
      * Gets the list of available alternative dates.
      * @return The list of available alternative dates.
      */
+	@SuppressWarnings("unchecked")
 	private void getAvailableDatesList() {
 		ClientServerMessage<?> findDates = new ClientServerMessage<>(order, Operation.FIND_AVAILABLE_DATES);
 		ClientUI.clientControllerInstance.sendMessageToServer(findDates);
@@ -215,15 +186,10 @@ public class WaitingListController implements Initializable {
      */
 	@FXML
 	private void SubmitOrderbtn() {
-		WaitingListController.setSetDateFromWaitList(1);
 		String newDateAndTime = DatesToPick.getSelectionModel().getSelectedItem();
 		String newDate = newDateAndTime.split(",")[0];
 		String newTime = newDateAndTime.split(",")[1].trim();
-		anotherDates.add(newDate);
-		anotherDates.add(newTime);
-		OrderAVisitController Ordercon = GetInstance.getInstance().getOrderC();
-		Ordercon.getPaneOrder().setDisable(false);
-		Ordercon.initialize(Ordercon.getLocation(), Ordercon.getResources());
+		OrderAVisitController.setDateTime(newDate, newTime);
 		Stage stage2 = (Stage) btnSubmit.getScene().getWindow();
 		stage2.close();
 

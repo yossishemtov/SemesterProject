@@ -53,11 +53,7 @@
                         <Image url="@../common/images/WaitingList.png" />
                     </image>
                 </ImageView>
-<<<<<<< HEAD
-                <ImageView fitHeight="68.0" fitWidth="77.0" layoutX="279.0" layoutY="232.0" pickOnBounds="true" preserveRatio="true">
-=======
                 <ImageView fitHeight="83.0" fitWidth="93.0" layoutX="281.0" layoutY="210.0" pickOnBounds="true" preserveRatio="true">
->>>>>>> shaib
                     <image>
                         <Image url="@../common/images/Reschedule.png" />
                     </image>
@@ -70,11 +66,8 @@
                         <Image url="@../common/images/FullCapacity.png" />
                     </image>
                 </ImageView>
-<<<<<<< HEAD
-            <Pane fx:id="WaitingSucc" layoutX="152.0" layoutY="70.0" prefHeight="461.0" prefWidth="607.0" styleClass="pnWaitingList" stylesheets="@../styles/styles.css">
-=======
-            <Pane fx:id="WaitingSucc" layoutX="208.0" layoutY="23.0" prefHeight="534.0" prefWidth="504.0" styleClass="pnWaitingList" stylesheets="@../styles/styles.css">
->>>>>>> shaib
+      
+                  <Pane fx:id="WaitingSucc" layoutX="208.0" layoutY="23.0" prefHeight="534.0" prefWidth="504.0" styleClass="pnWaitingList" stylesheets="@../styles/styles.css">
                <children>
                   <Label layoutX="124.0" layoutY="118.0" prefHeight="20.0" prefWidth="264.0" styleClass="labelBold" text="You've successfully entered waiting list" textFill="#5aed99">
                      <font>
@@ -112,15 +105,15 @@
                     </rowConstraints>
                      <children>
                         <Label text="Park : " textFill="#5aed99" />
-                        <Label fx:id="summaryPark" text="Park" textFill="WHITE" GridPane.columnIndex="1" />
+                        <Label fx:id="summaryPark" prefHeight="17.0" prefWidth="102.0" text="Park" textFill="WHITE" GridPane.columnIndex="1" />
                         <Label text="Date: " textFill="#5aed99" GridPane.rowIndex="1" />
-                        <Label fx:id="summaryDate" text="Date" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="summaryDate" prefHeight="17.0" prefWidth="94.0" text="Date" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label text="Time:" textFill="#5aed99" GridPane.rowIndex="2" />
-                        <Label fx:id="summaryTime" text="Time" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="summaryTime" prefHeight="17.0" prefWidth="88.0" text="Time" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label text="Visitors:" textFill="#5aed99" GridPane.rowIndex="3" />
-                        <Label fx:id="summaryVisitors" text="Visitors" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label fx:id="summaryVisitors" prefHeight="17.0" prefWidth="104.0" text="Visitors" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Label text="Total Price: " textFill="#5aed99" GridPane.rowIndex="4" />
-                        <Label fx:id="summaryPrice" text="Price" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label fx:id="summaryPrice" prefHeight="17.0" prefWidth="99.0" text="Price" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
                </children>

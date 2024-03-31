@@ -217,7 +217,7 @@ public class ParkmanagerReportController implements Initializable {
 		} else {
 			// Handle the case where the server response indicates failure or no data
 			Alerts infoAlert = new Alerts(Alerts.AlertType.INFORMATION, "Information", "",
-					"No reports were found or there was an error processing your request.");
+					"There are no existing reports to display.");
 			infoAlert.showAndWait();
 			return FXCollections.observableArrayList(); // Return an empty list
 		}

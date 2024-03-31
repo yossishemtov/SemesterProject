@@ -16,7 +16,7 @@ import common.OrderNotification;
 import common.WaitingList;
 
 
-/** 
+/**
  * NotifyThread class implements Runnable.
  * 
  * This class handle all the automated functionality:
@@ -36,12 +36,10 @@ public class NotifyThread implements Runnable {
 	}
 
 	private ArrayList<OrderNotification> ordersWithAlerts; // Array to store orders with alerts
-    private ArrayList<WaitingList> waitingArray;
 
 	public NotifyThread(DatabaseController DBController) {
 		DC = DBController;
         ordersWithAlerts = new ArrayList<>(); // Initialize the array
-        waitingArray = new ArrayList<>();
 	}
 
 	/**
@@ -76,16 +74,11 @@ public class NotifyThread implements Runnable {
 				//Posting the notification in the db
 				DC.postOrderNotification(createNotification);
 				
-				WaitingList waiting = new WaitingList(order.getOrderId(), order.getVisitorId(),
-						order.getParkNumber(), order.getAmountOfVisitors(), order.getPrice(),
-						order.getVisitorEmail(), order.getDate(), order.getVisitTime(), order.getOrderStatus(),
-						order.getTypeOfOrder(), order.getTelephoneNumber(), order.getParkName(), 0, 0);
-				waitingArray.add(waiting);
 				
 			}
 			
 			ordersWithAlerts = ordersAlreadyNotified;
-			CancelOrderAndNotify(waitingArray);
+			CancelOrderAndNotify();
 			deleteAlertsExpired();
 
 			try {
@@ -97,12 +90,11 @@ public class NotifyThread implements Runnable {
 	}
 
 	
-	private void CancelOrderAndNotify(ArrayList<WaitingList> waiting) {
+	private void CancelOrderAndNotify() {
 	    
 	    // Iterate through orders with alerts and cancel expired orders
 	    Iterator<OrderNotification> iterator = ordersWithAlerts.iterator();
 	    while (iterator.hasNext()) {
-	    	int i = 0;
 	    	OrderNotification notificationOfSpecificOrder = iterator.next();
 	        if (isAlertExpired(LocalTime.now(), notificationOfSpecificOrder.getEndNotification())) {
 	            // Cancel the order
@@ -115,13 +107,14 @@ public class NotifyThread implements Runnable {
 	            DC.updateOrderStatusArray(new ArrayList<String>(Arrays.asList("CANCELEDBYSERVER", String.valueOf(notificationOfSpecificOrder.getOrderId()))));
 
 	            // Remove the canceled order from orderNotifications
-	            WaitingListControl.notifyPersonFromWaitingList(waiting.get(i));
+	            WaitingListControl.notifyPersonFromWaitingList(DC.getOrderbyId(notificationOfSpecificOrder.getOrderId()));
 
-	            waiting.remove(0);
 	            iterator.remove();
 	        }
 	    }
 	}
+	
+	
 	
 	private void deleteAlertsExpired() {
 	    DC.deleteExpiredOrderAlerts();

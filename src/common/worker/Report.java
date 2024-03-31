@@ -3,91 +3,131 @@ package common.worker;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+/**
+ * Represents a detailed report related to park operations, including usage and
+ * visitor statistics. This class is designed to encapsulate all the information
+ * necessary for generating comprehensive reports on various aspects of park
+ * management and visitor engagement.
+ */
 public class Report implements Serializable {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public enum ReportType {
-        USAGE, VISITOR,
-    }
+	/**
+	 * Enum defining the possible types of reports that can be generated.
+	 */
+	public enum ReportType {
+		USAGE, // A report focused on the usage statistics of the park's facilities.
+		VISITOR // A report detailing visitor demographics, numbers, and trends.
+	}
 
-    private Integer reportID;
-    private ReportType reportType;
-    private int parkID;
-    private LocalDate date;
-    private int month; // New field
-    private String comment;
+	private Integer reportID; // Unique identifier for the report.
+	private ReportType reportType; // The type of report.
+	private int parkID; // The ID of the park to which this report is related.
+	private LocalDate date; // The date when the report was generated or relevant for.
+	private int month; // The month for which the report is relevant, providing temporal context.
+	private String comment; // Additional comments or notes associated with the report.
 
-    // Constructors
-    public Report(Integer reportID, ReportType reportType, int parkID, LocalDate date, int month, String comment) {
-        this.reportID = reportID;
-        this.reportType = reportType;
-        this.parkID = parkID;
-        this.date = date;
-        this.month = month; // Set the month
-        this.comment = comment;
-    }
+	/**
+	 * Constructs a new Report instance with the specified details.
+	 *
+	 * @param reportID   The unique identifier for the report.
+	 * @param reportType The type of report being generated.
+	 * @param parkID     The ID of the park to which the report is related.
+	 * @param date       The date relevant to the report's data.
+	 * @param month      The month relevant to the report's data.
+	 * @param comment    Any additional comments or notes associated with the
+	 *                   report.
+	 */
+	public Report(Integer reportID, ReportType reportType, int parkID, LocalDate date, int month, String comment) {
+		this.reportID = reportID;
+		this.reportType = reportType;
+		this.parkID = parkID;
+		this.date = date;
+		this.month = month;
+		this.comment = comment;
+	}
 
-    protected Report() {
-    }
+	/**
+	 * Protected no-argument constructor for frameworks that require it for
+	 * instantiation via reflection.
+	 */
+	protected Report() {
+	}
 
-    // Getters and Setters for all fields including the new month field
-    public Integer getReportID() {
-        return reportID;
-    }
+	// Getters and setters for all fields
 
-    public void setReportID(Integer reportID) {
-        this.reportID = reportID;
-    }
+	/**
+	 * Gets the unique report ID.
+	 *
+	 * @return The report's unique identifier.
+	 */
+	public Integer getReportID() {
+		return reportID;
+	}
 
-    public String getReportType() {
-        return reportType.name();
-    }
+	/**
+	 * Sets the unique report ID.
+	 *
+	 * @param reportID The unique identifier to set for the report.
+	 */
+	public void setReportID(Integer reportID) {
+		this.reportID = reportID;
+	}
 
-    public void setReportType(ReportType reportType) {
-        this.reportType = reportType;
-    }
+	/**
+	 * Gets the report type as a string.
+	 *
+	 * @return The name of the report type.
+	 */
+	public String getReportType() {
+		return reportType.name();
+	}
 
-    public int getParkID() {
-        return parkID;
-    }
+	/**
+	 * Sets the report type.
+	 *
+	 * @param reportType The type of report.
+	 */
+	public void setReportType(ReportType reportType) {
+		this.reportType = reportType;
+	}
 
-    public void setParkID(int parkID) {
-        this.parkID = parkID;
-    }
+	public int getParkID() {
+		return parkID;
+	}
 
-    public LocalDate getDate() {
-        return date;
-    }
+	public void setParkID(int parkID) {
+		this.parkID = parkID;
+	}
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
+	public LocalDate getDate() {
+		return date;
+	}
 
-    public int getMonth() { // Getter for month
-        return month;
-    }
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
 
-    public void setMonth(int month) { // Setter for month
-        this.month = month;
-    }
+	public int getMonth() {
+		return month;
+	}
 
-    public String getComment() {
-        return comment;
-    }
+	public void setMonth(int month) {
+		this.month = month;
+	}
 
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
+	public String getComment() {
+		return comment;
+	}
 
-    @Override
-    public String toString() {
-        return "Report{" +
-                "reportID=" + reportID +
-                ", reportType=" + reportType +
-                ", parkID=" + parkID +
-                ", date=" + date +
-                ", month=" + month + // Include month in toString
-                ", comment='" + comment + '\'' +
-                '}';
-    }
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	@Override
+	public String toString() {
+		return "Report{" + "reportID=" + reportID + ", reportType=" + reportType + ", parkID=" + parkID + ", date="
+				+ date + ", month=" + month + // Include month in toString
+				", comment='" + comment + '\'' + '}';
+	}
 }

@@ -16,7 +16,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <PieChart fx:id="visitorsChart" layoutX="308.0" layoutY="99.0" prefHeight="312.0" prefWidth="366.0" />
+      <PieChart fx:id="visitorsChart" layoutX="254.0" layoutY="102.0" prefHeight="312.0" prefWidth="366.0" />
       <JFXButton fx:id="CloseWindowBth" layoutX="370.0" layoutY="527.0" onAction="#CloseWindowAction" text="Close window">
          <font>
             <Font size="14.0" />

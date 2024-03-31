@@ -162,6 +162,8 @@ public class DepartmentManagerReportsController implements Initializable {
 				Alerts infoalert = new Alerts(Alert.AlertType.INFORMATION, "Information", "",
 						"Not have report to show.");
 				infoalert.showAndWait();
+				ReportsTableView.getItems().clear(); // Clear existing content
+				ReportsTableView.refresh(); // Explicitly refresh the table view
 			} else {
 				ReportsTableView.getItems().clear(); // Clear existing content
 				ReportsTableView.setItems(reports); // Set new items
@@ -245,11 +247,7 @@ public class DepartmentManagerReportsController implements Initializable {
 			ArrayList<Report> serverResponse = (ArrayList<Report>) ClientController.data.getDataTransfered();
 			return FXCollections.observableArrayList(serverResponse);
 		} else {
-			// Handle the case where the server response indicates failure or no data
-			Alerts infoAlert = new Alerts(Alerts.AlertType.INFORMATION, "Information", "",
-					"No reports were found or there was an error processing your request.");
-			infoAlert.showAndWait();
-			return FXCollections.observableArrayList(); // Return an empty list
+				return FXCollections.observableArrayList(); // Return an empty list
 		}
 	}
 
@@ -266,7 +264,7 @@ public class DepartmentManagerReportsController implements Initializable {
 	 */
 	@FXML
 	void CreateReportAction(ActionEvent event) {
-		Alerts infoalert;
+		Alerts infoalert; 
 		String selectedMonthString = monthCombobox.getSelectionModel().getSelectedItem();
 		String selectedReportType = ReportTypeCombobox.getSelectionModel().getSelectedItem();
 		String selectedparkString = parkNameComboBox.getSelectionModel().getSelectedItem();

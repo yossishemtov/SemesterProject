@@ -4,7 +4,6 @@ import common.*;
 import common.worker.CancellationReport;
 import common.worker.ChangeRequest;
 import common.worker.GeneralParkWorker;
-import common.worker.ParkWorker;
 import common.worker.Report;
 import common.worker.UsageReport;
 import common.worker.VisitReport;
@@ -143,6 +142,8 @@ public class MessageHandlerFromClient {
 			client.sendToClient(lastWaitingMsg);
 			break;
 
+			
+
 		case Operation.FIND_PLACE_IN_WAITING_LIST:
 			try {
 				List<Order> findPlace = (List<Order>) messageFromClient.getDataTransfered();
@@ -156,6 +157,16 @@ public class MessageHandlerFromClient {
 				// Handle the exception according to your needs
 			}
 			break;
+			
+		case Operation.GET_STATUS_HAS_SPOT:
+            ArrayList<WaitingList> waitingList = dbControllerInstance.getHasSpotOrders();
+
+            // Create a message to send to the client
+            ClientServerMessage<?> getSpotMsg = new ClientServerMessage<>(waitingList, Operation.GET_STATUS_HAS_SPOT);
+
+            // Send the message to the client
+            client.sendToClient(getSpotMsg);
+            break;
 
 		case Operation.GET_PARK_UNORDEREDVISITS:
 			// Get the umorderedvisits amount of a park
@@ -628,6 +639,7 @@ public class MessageHandlerFromClient {
 			UsageReport UsageReportToPost = (UsageReport) messageFromClient.getDataTransfered();
 			System.out.println("in opertion insert 11...");
 
+
 			if (dbControllerInstance.insertUsageReport(UsageReportToPost)) {
 				messageFromClient.setflagTrue();
 			} else {
@@ -867,9 +879,9 @@ public class MessageHandlerFromClient {
 		case Operation.PATCH_WAITING_STATUS:
 			try {
 				List<WaitingList> waitingToChange = (List<WaitingList>) messageFromClient.getDataTransfered();
-				ArrayList<WaitingList> waitingList = new ArrayList<>(waitingToChange);
+				ArrayList<WaitingList> waitingList1 = new ArrayList<>(waitingToChange);
 				// Create a message to send to the client
-				messageFromClient.setDataTransfered(dbControllerInstance.updateWaitingStatusArray(waitingList));
+				messageFromClient.setDataTransfered(dbControllerInstance.updateWaitingStatusArray(waitingList1));
 			} catch (Exception e) {
 				e.printStackTrace();
 				// Handle the exception according to your needs
@@ -878,6 +890,19 @@ public class MessageHandlerFromClient {
 			client.sendToClient(messageFromClient);
 			break;
 
+
+		case Operation.GET_STATUS_CANCELED_NOTIFICATION_BY_TRAVELERID:
+            Integer idToLookForCanceledNotifications = (Integer) messageFromClient.getDataTransfered();
+            ArrayList<Order> orderListTravelerByIdCanceled = dbControllerInstance
+                    .getCanceledNotificationsOrdersByID(idToLookForCanceledNotifications);
+
+            // Create a message to send to the client
+            ClientServerMessage<?> orderListTravelerByIdCanceledMessageToClient = new ClientServerMessage<>(
+                    orderListTravelerByIdCanceled, Operation.GET_STATUS_PENDING_NOTIFICATION_BY_TRAVELERID);
+
+            // Send the message to the client
+            client.sendToClient(orderListTravelerByIdCanceledMessageToClient);
+            break;
 		
 			
 		case Operation.DELETE_EXISTING_WAITING_LIST:

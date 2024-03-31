@@ -8,6 +8,9 @@ import java.util.ArrayList;
 
 import common.worker.GeneralParkWorker;
 
+/**
+ * Responsible to import employee information from external database
+ */
 public class UserManagementSystemDB {
 
     private Connection connectionToDatabase;
@@ -23,6 +26,10 @@ public class UserManagementSystemDB {
      */
     public ArrayList<GeneralParkWorker> getAllEmployees() {
         String query = "SELECT * FROM `GoNature_employees`";
+        if (connectionToDatabase==null)
+        {
+        	return null;
+        }
         ArrayList<GeneralParkWorker> employees = new ArrayList<>();
         
         try (PreparedStatement statement = connectionToDatabase.prepareStatement(query)) {
@@ -38,7 +45,7 @@ public class UserManagementSystemDB {
                         resultSet.getString("userName"),
                         resultSet.getString("password"),
                         resultSet.getInt("worksAtPark")
-                );
+                ); 
                 employees.add(worker);
             }
         } catch (SQLException e) {
