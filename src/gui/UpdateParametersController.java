@@ -150,6 +150,16 @@ public class UpdateParametersController implements Initializable {
 			infoalert = new Alerts(Alerts.AlertType.ERROR, "Error", "", "All fields are required.");
 			infoalert.showAndWait();
 			return false;
+
+		}
+		Integer newCapacity = Integer.valueOf(CapacityField.getText());
+		Integer newAllowedGap = Integer.valueOf(NewAllowedGap.getText());
+		if (newCapacity < newAllowedGap) {
+			Alerts error;
+			error = new Alerts(Alerts.AlertType.ERROR, "Error", "Capacity have to be biger then gap.", ".");
+			error.showAndWait();
+			return false;
+
 		}
 		return true;
 	}

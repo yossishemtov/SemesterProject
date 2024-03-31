@@ -19,7 +19,6 @@ import com.jfoenix.controls.JFXTextField;
 import client.ClientUI;
 import common.Alerts;
 import common.ClientServerMessage;
-import common.GetInstance;
 import common.Operation;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -133,8 +132,9 @@ public class OrderAVisitController implements Initializable {
     
     @FXML
     private Button btnHome;
+    
     @FXML
-    private ImageView Pricingbtn;
+    private Button btnPrice;
     
     @FXML
     private Button Back;
@@ -145,8 +145,6 @@ public class OrderAVisitController implements Initializable {
 	private boolean isNewOrder;
 	private boolean isOrderValid;
 	private Traveler traveler;
-	private URL location;
-	private ResourceBundle resources;
 	public static boolean isNewTraveler;
 	private ToggleGroup paymentToggleGroup;
 
@@ -156,40 +154,8 @@ public class OrderAVisitController implements Initializable {
 	public static final Pattern visitorAmountPattern = Pattern.compile("^[0-9]{0,3}$", Pattern.CASE_INSENSITIVE);
 	public static final Pattern phonePattern = Pattern.compile("^[0-9]{10}$", Pattern.CASE_INSENSITIVE);
 	public static final Pattern fullNamePattern = Pattern.compile("^[a-zA-Z ]+$", Pattern.CASE_INSENSITIVE);
+	private static OrderAVisitController instance;
 
-
-	
-	public Pane getPaneOrder() {
-		return PaneOrder;
-	}
-
-	public void setPaneOrder(Pane paneOrder) {
-		PaneOrder = paneOrder;
-	}
-	
-	public URL getLocation() {
-		return location;
-	}
-
-	public void setLocation(URL location) {
-		this.location = location;
-	}
-
-	public ResourceBundle getResources() {
-		return resources;
-	}
-
-	public void setResources(ResourceBundle resources) {
-		this.resources = resources;
-	}
-	
-	public static Order getOrder() {
-		return order;
-	}
-
-	public static void setOrder(Order order) {
-		OrderAVisitController.order = order;
-	}
 	
 	 /**
      * @param location The location used to resolve relative paths for the root object, or null if the location is not known.
@@ -199,7 +165,6 @@ public class OrderAVisitController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		Locale.setDefault(Locale.ENGLISH); //English-style formatting
-		GetInstance.getInstance().setOrderC(this);
 		ComboBoxCheck();
 		RadioBoxCheck();
 		/** Can't order for the past, and can order one year in advance.*/
@@ -211,6 +176,8 @@ public class OrderAVisitController implements Initializable {
 				setDisable(empty || (date.compareTo(nextYear) > 0 || date.compareTo(today) < 0));
 			}
 		});
+		
+		instance = this;
 		
 		// Add listener to PayNowBtn and PayParkBtn
 		paymentToggleGroup = new ToggleGroup();
@@ -237,13 +204,9 @@ public class OrderAVisitController implements Initializable {
 	        }
 	    });
 	    
-		if (WaitingListController.getSetDateFromWaitList() == 1) {
-			txtDate.setValue(LocalDate.parse((String) WaitingListController.getAnotherDates().get(0)));
-			TimeComboBox.setValue(LocalTime.parse((String) WaitingListController.getAnotherDates().get(1)));
-			WaitingListController.setSetDateFromWaitList(0);
-		}
 		
 		if(!(NewTraveler.GetisNewTraveler())) {
+			btnHome.setVisible(false);
 			Traveler traveler = NewTraveler.getCurrentTraveler();
 			String fullName = traveler.getFirstName() + " " + traveler.getLastName();
 			txtName.setText(fullName);
@@ -265,7 +228,14 @@ public class OrderAVisitController implements Initializable {
 		
 	}
 	
+	public static void setDateTime(String date, String  time) {
+		instance.setDateTime2(date,time);
+	}
 	
+	public void setDateTime2(String date, String  time) {
+		txtDate.setValue(LocalDate.parse(date));
+		TimeComboBox.setValue(LocalTime.parse(time));
+	}
 	
 	/**
      * Handles the action event when the submit order button is clicked.
@@ -291,6 +261,7 @@ public class OrderAVisitController implements Initializable {
 				
 				/**Insert new traveler to DB if needed*/
 				if(NewTraveler.GetisNewTraveler()) {
+					NewTraveler.setNewTraveler(false);
 					String[] travelerName = txtName.getText().split(" ");
 					String travelerFirstName = travelerName[0];
 					String travelerLastName = travelerName.length == 1 ? "" : travelerName[1];
@@ -306,7 +277,6 @@ public class OrderAVisitController implements Initializable {
 					
 			        if (!OrderChecker.isDateAvailable(order)) { // need to enter waiting list
 			        	new Alerts(AlertType.INFORMATION, "Park is full", "Park is full", "Reschedule or enter Waiting list").showAndWait();
-			        	PaneOrder.setDisable(true);
 			        	Stage newStage = new Stage();
 						FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/WaitingList.fxml"));
 						WaitingListController controller = new WaitingListController();
@@ -389,25 +359,32 @@ public class OrderAVisitController implements Initializable {
 	
     /**Handles the action event when the price button is clicked.*/
 	@FXML 
-    private void handlePricingButton(ActionEvent event) {
-		String imagePath = "src/common/images/Pricing.png";
+	private void handlePricingButton(ActionEvent event) {
+	    String imagePath = "/common/images/Pricing.png"; // Ensure the path starts with a slash
 
-        // Load the image and create an ImageView
-        Image image = new Image("file:" + imagePath);
-        ImageView imageView = new ImageView(image);
+	    // Load the image using getResource
+	    Image image;
+	    try {
+	        image = new Image(getClass().getResourceAsStream(imagePath));
+	        ImageView imageView = new ImageView(image);
 
-        // Create a Stage
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initStyle(StageStyle.UTILITY);
-        stage.setTitle("Pricing Guide");
+	        // Create a Stage
+	        Stage stage = new Stage();
+	        stage.initModality(Modality.APPLICATION_MODAL);
+	        stage.initStyle(StageStyle.UTILITY);
+	        stage.setTitle("Pricing Guide");
 
-        // Set the content (ImageView) to the Stage
-        stage.setScene(new javafx.scene.Scene(new javafx.scene.layout.StackPane(imageView)));
+	        // Set the content (ImageView) to the Stage
+	        stage.setScene(new javafx.scene.Scene(new javafx.scene.layout.StackPane(imageView)));
 
-        // Show the Stage
-        stage.show();
-    }
+	        // Show the Stage
+	        stage.show();
+	    } catch (NullPointerException e) {
+	        System.err.println("Error loading image from path: " + imagePath);
+	        e.printStackTrace();
+	    }
+	}
+
 	
 	/**
     * Checks if the order is valid based on traveler orders for the same date and hour
@@ -534,8 +511,6 @@ public class OrderAVisitController implements Initializable {
 		}
 		else if (!checkCurrentTime())
 			new Alerts(AlertType.ERROR, "Bad Input", "Bad Date Input", "Please select future date").showAndWait();
-		else if(TravelerId.length() != 9)
-			new Alerts(AlertType.ERROR, "Bad Input", "Bad ID Input", "ID must be 9 digits").showAndWait();
 		else if (Integer.parseInt(visitorsNumber) > 15 
 				&& Order.typeOfOrder.GUIDEDGROUP.toString().equals(OrderComboBox.getValue())) {
 			new Alerts(AlertType.ERROR, "Bad Input", "Invalid Visitor's Number",
@@ -550,8 +525,6 @@ public class OrderAVisitController implements Initializable {
         	new Alerts(AlertType.ERROR, "Group guide", "Group guide",
         			"You're not group guide, order as SOLO or FAMILY").showAndWait();
 		} 
-
-		
 		else if (!validInput("fullName", fullName)) {
 			new Alerts(AlertType.ERROR, "Bad Input", "Bad Input",
 					"Name must contain only letters").showAndWait();

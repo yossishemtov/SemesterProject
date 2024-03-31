@@ -126,47 +126,7 @@ public class DatabaseController {
 		return lastOrder;
 	}
 
-	/**
-	 * Finding order within given times
-	 * 
-	 * @param parameters parkNumber, date, visitTime
-	 * @return
-	 */
-	public ArrayList<Order> findOrdersWithinDates(ArrayList<?> parameters) {
-		ArrayList<Order> orders = new ArrayList<Order>();
-		String query = "SELECT * FROM `order` WHERE parkNumber = ? AND date = ? AND visitTime >= ? AND visitTime <= ?";
-
-		try (PreparedStatement ps = connectionToDatabase.prepareStatement(query)) {
-			ps.setString(1, (String) parameters.get(0));
-			ps.setDate(2, java.sql.Date.valueOf(LocalDate.parse((String) parameters.get(1))));
-			ps.setTime(3, java.sql.Time.valueOf(LocalTime.parse((String) parameters.get(2))));
-			ps.setTime(4, java.sql.Time.valueOf(LocalTime.parse((String) parameters.get(3))));
-
-			ResultSet rs = ps.executeQuery();
-
-			while (rs.next()) {
-				Integer orderId = rs.getInt("orderId");
-				Integer travelerId = rs.getInt("travelerId");
-				Integer parkNumber = rs.getInt("parkNumber");
-				Integer amountOfVisitors = rs.getInt("amountOfVisitors");
-				Float price = rs.getFloat("price");
-				String visitorEmail = rs.getString("visitorEmail");
-				LocalDate date = rs.getDate("date").toLocalDate();
-				String telephoneNumber = rs.getString("TelephoneNumber");
-				LocalTime visitTime = rs.getTime("visitTime").toLocalTime();
-				String statusStr = rs.getString("orderStatus");
-				String typeOfOrderStr = rs.getString("typeOfOrder");
-				String parkName = rs.getString("parkName");
-
-				orders.add(new Order(orderId, travelerId, parkNumber, amountOfVisitors, price, visitorEmail, date,
-						visitTime, statusStr, typeOfOrderStr, telephoneNumber, parkName));
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return orders;
-	}
+	
 
 	/**
 	 * getting all parks information

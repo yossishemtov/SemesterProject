@@ -162,6 +162,8 @@ public class DepartmentManagerReportsController implements Initializable {
 				Alerts infoalert = new Alerts(Alert.AlertType.INFORMATION, "Information", "",
 						"Not have report to show.");
 				infoalert.showAndWait();
+				ReportsTableView.getItems().clear(); // Clear existing content
+				ReportsTableView.refresh(); // Explicitly refresh the table view
 			} else {
 				ReportsTableView.getItems().clear(); // Clear existing content
 				ReportsTableView.setItems(reports); // Set new items
