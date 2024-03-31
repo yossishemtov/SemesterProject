@@ -1,8 +1,6 @@
-/.DS_Store
-/DB/
-/client/
-/common/
-/entities/
 /gui/
+/common/
 /server/
-/styles/
+/entities/
+/client/
+/DB/

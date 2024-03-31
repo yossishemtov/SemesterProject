@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+/**
+ * Represents a connection status to the server for live auditing in the screen
+ */
 public class ClientConnectionStatus implements Comparable<ClientConnectionStatus> {
     private String ip, host, status;
     private final String startTime;

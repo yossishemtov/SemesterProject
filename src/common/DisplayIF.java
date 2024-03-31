@@ -17,6 +17,7 @@ public interface DisplayIF
   /**
    * Method that when overriden is used to display objects onto
    * a UI.
+   * @param message a String to display in the most basic form on the screen
    */
   public abstract void display(String message);
 }

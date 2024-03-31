@@ -19,13 +19,28 @@ public class ChangeRequest implements Serializable {
 	private Integer gap;
 	private Integer staytime;
 	private Integer oldGap;
+	
+	/**
+	 * Enum for approval status
+	 */
 	private ApprovalStatus approved; // Enum for approval status
 
 	/**
 	 * Approval statuses for a change request.
 	 */
 	public enum ApprovalStatus {
-		REJECTED, APPROVAL, WAITING_FOR_APPROVAL;
+		/**
+	     * Indicates that the change request has been rejected.
+	     */
+		REJECTED,
+		/**
+	     * Indicates that the change request has been approved.
+	     */
+		APPROVAL, 
+		/**
+	     * Indicates that the change request is waiting for approval.
+	     */
+		WAITING_FOR_APPROVAL;
 
 		/**
 		 * Converts a string representation of an approval status to its corresponding

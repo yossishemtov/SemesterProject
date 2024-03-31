@@ -22,11 +22,11 @@ public class Visit implements Serializable {
      *
      * @param visitDate    The date of the visit.
      * @param enteringTime The time when the traveler enters the park.
-     * @param exitingTime  The time when the traveler exits the park.
+     * @param existingTime  The time when the traveler exits the park.
      * @param parkNumber   The number identifying the park.
      * @param orderId      The ID of the order associated with the visit.
      */
-	public Visit(LocalDate visitDate, LocalTime enteringTime, LocalTime existingTime,Integer parkNumber, Integer orderId) {
+	public Visit(LocalDate visitDate, LocalTime enteringTime, LocalTime existingTime, Integer parkNumber, Integer orderId) {
 		this.visitDate = visitDate;
 		this.enteringTime = enteringTime;
 		this.existingTime = existingTime;

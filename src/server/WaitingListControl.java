@@ -16,7 +16,7 @@ public class WaitingListControl {
 	/**
 	 * This method receives a canceled order and notifies the next order in the waiting list.
 	 * 
-	 * @param Order that has been canceled.
+	 * @param order An Order that has been canceled.
 	 */
 	public static void notifyPersonFromWaitingList(Order order) {
 	    ArrayList<WaitingList> toNotify = getOrderFromWaitingList(order);

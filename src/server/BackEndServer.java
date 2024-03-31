@@ -20,9 +20,30 @@ import entities.ClientConnectionStatus;
  */
 public class BackEndServer extends AbstractServer {
 
+	/**
+     * The default port number on which the server will listen for connections.
+     */
     final public static int DEFAULT_PORT = 5555;
+    
+    /**
+     * An instance of ServerController associated with this server.
+     * This variable holds a reference to the ServerController instance associated with the BackEndServer.
+     * It is typically used for updating UI components or handling server-related tasks.
+     */
     private static ServerController serverControllerInstance;
+    
+    /**
+     * An instance of DatabaseController used for interacting with the database.
+     * This variable provides access to the database controller, which is responsible for executing database queries and transactions.
+     * It is commonly used throughout the server codebase to perform database operations.
+     */
     public static DatabaseController DBController;
+    
+    /**
+     * The singleton instance of BackEndServer.
+     * This variable holds the singleton instance of the BackEndServer class.
+     * It allows other classes to access the single instance of the server, typically for performing server-related operations or accessing server state.
+     */
     public static BackEndServer backEndServerInstance;
     private Connection DbConnection;
     private UpdateStatusThread updateStatusThread;
@@ -38,7 +59,7 @@ public class BackEndServer extends AbstractServer {
      * @param serverControllerInstance An instance of ServerController associated with this server.
      * @param userName                 The username for the database connection.
      * @param password                 The password for the database connection.
-     * @throws SQLException 
+     * @throws SQLException if any sql error has occured
      */
     public BackEndServer(int port, ServerController serverControllerInstance, String userName, String password) throws SQLException {
         super(port);

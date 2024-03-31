@@ -15,6 +15,7 @@ public class MySqlConnector {
      *
      * @param username the username required to connect to the database
      * @param password the password required to connect to the database
+     * @param nameOfSchema the name of the schema in the db to connect to
      */
     public MySqlConnector(String username, String password,String nameOfSchema) {
         dbConnection = connectToDB(username, password,nameOfSchema);

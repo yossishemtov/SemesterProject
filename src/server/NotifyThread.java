@@ -37,6 +37,11 @@ public class NotifyThread implements Runnable {
 
 	private ArrayList<OrderNotification> ordersWithAlerts; // Array to store orders with alerts
 
+	
+	/**
+	 * A thread that notifies for incoming notifications for travelers
+	 * @param DBController Instance of the database controllers
+	 */
 	public NotifyThread(DatabaseController DBController) {
 		DC = DBController;
         ordersWithAlerts = new ArrayList<>(); // Initialize the array

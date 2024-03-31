@@ -30,14 +30,70 @@ public class Order implements Serializable {
      * Enum representing the status of an order.
      */
 	public enum status {
-		PENDING, NOTARRIVED, INPARK, CONFIRMED, CANCELED, COMPLETED, PENDING_EMAIL_SENT, HAS_SPOT, UNORDERED
+		/**
+	     * The order is in pending state.
+	     */
+	    PENDING,
+
+	    /**
+	     * The person of the order has not arrived yet.
+	     */
+	    NOTARRIVED,
+
+	    /**
+	     * The person related to the order  is in the park.
+	     */
+	    INPARK,
+
+	    /**
+	     * The order has been confirmed.
+	     */
+	    CONFIRMED,
+
+	    /**
+	     * The order has been canceled.
+	     */
+	    CANCELED,
+
+	    /**
+	     * The order has been completed.
+	     */
+	    COMPLETED,
+
+	    /**
+	     * There is a  pending email for the order.
+	     */
+	    PENDING_EMAIL_SENT,
+
+	    /**
+	     * The order has a spot reserved.
+	     */
+	    HAS_SPOT,
+
+	    /**
+	     * The order is of an unordered type.
+	     */
+	    UNORDERED
 	}
 
 	/**
      * Enum representing the type of an order.
      */
 	public enum typeOfOrder {
-		SOLO, FAMILY, GUIDEDGROUP
+		/**
+	     * The order is for a solo visitor.
+	     */
+	    SOLO,
+
+	    /**
+	     * The order is for a family.
+	     */
+	    FAMILY,
+
+	    /**
+	     * The order is for a guided group.
+	     */
+	    GUIDEDGROUP
 	}
 
 	

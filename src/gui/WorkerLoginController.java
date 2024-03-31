@@ -223,8 +223,6 @@ public class WorkerLoginController implements Initializable{
 	 * back to the home page by loading the "HomePageFrame.fxml" view. 
 	 * @param click The action event triggering the method, typically generated when
 	 *              the user clicks the back button.
-	 * @throws Exception If an error occurs while navigating back to the home page,
-	 *                   such as issues with loading the FXML file or other navigation errors.
 	 */
 	public void BackBtn(ActionEvent click) {
 		try {

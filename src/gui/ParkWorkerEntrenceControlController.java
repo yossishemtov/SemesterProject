@@ -91,8 +91,7 @@ public class ParkWorkerEntrenceControlController {
     /**
 	 * Handles the process of entering the park, send update requests to various parameters of the park in the db, such as current number of visitors
 	 * ,changes the status of an order, and entering the visitor to the park.
-	 * @param event (such as mouseclick)
-	 * @return 
+	 * @param click (such as mouseclick)
 	 */
     public void entrenceControlAction(ActionEvent click) {
     	System.out.print(orderToEnterOrExit);
@@ -161,8 +160,7 @@ public class ParkWorkerEntrenceControlController {
     /**
 	 * Handles the process of exiting the park, send update requests to various parameters of the park in the db, such as current number of visitors
 	 * ,changes the status of an order, and entering the visitor to the park.
-	 * @param event (such as mouseclick)
-	 * @return 
+	 * @param click (such as mouseclick)
 	 */
     public void exitControlAction(ActionEvent click) {
     	
@@ -216,8 +214,7 @@ public class ParkWorkerEntrenceControlController {
     /**
 	 * receive information about an orderId from the database and renders the information on the screen
 	 * 
-	 * @param orderId
-	 * @return renders the order information on the screen
+	 * @param orderNumberToParse the orderid to render on the screen
 	 */
     public void renderInformationAboutOrder(Integer orderNumberToParse) {
     	//Renders an order based on an ordernumber
