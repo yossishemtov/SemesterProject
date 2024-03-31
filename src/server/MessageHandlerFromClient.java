@@ -125,14 +125,11 @@ public class MessageHandlerFromClient {
 					messageFromClient.setflagFalse();
 
 				}
-				// Create a message to send to the client
-
-				// Send the message to the client
-				client.sendToClient(messageFromClient);
 			} catch (Exception e) {
 				e.printStackTrace();
 				// Handle the exception according to your needs
 			}
+			client.sendToClient(messageFromClient);
 			break;
 			
 		case Operation.GET_LAST_WAITINGLIST:
