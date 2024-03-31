@@ -550,11 +550,8 @@ public class OrderAVisitController implements Initializable {
         	new Alerts(AlertType.ERROR, "Group guide", "Group guide",
         			"You're not group guide, order as SOLO or FAMILY").showAndWait();
 		} 
-		else if(OrderComboBox.getValue()=="SOLO" && OrderComboBox.getValue()=="FAMILY"
-				&& Usermanager.getCurrentTraveler().getIsGroupGuide() == 1) {
-        	new Alerts(AlertType.ERROR, "Group guide", "Group guide",
-        			"You're a group guide, order as a Group guide").showAndWait();
-		} 
+
+		
 		else if (!validInput("fullName", fullName)) {
 			new Alerts(AlertType.ERROR, "Bad Input", "Bad Input",
 					"Name must contain only letters").showAndWait();

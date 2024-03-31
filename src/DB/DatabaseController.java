@@ -2558,7 +2558,7 @@ public class DatabaseController {
 				if (numberOfVisitors + order.getAmountOfVisitors() <= park.getMaxVisitors() && flag) {
 					return true;
 				}
-				if (numberOfVisitors + order.getAmountOfVisitors() >= park.getMaxVisitors() && !flag) {
+				if (numberOfVisitors + order.getAmountOfVisitors() > park.getMaxVisitors() && !flag) {
 					return false;
 				}
 				if (flag) {
