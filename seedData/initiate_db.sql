@@ -1669,7 +1669,12 @@ CREATE TABLE waitinglist (
 --
 
 
-INSERT INTO waitinglist VALUES (1,1214214,1,5,50,'alice@example.com','2024-07-04','054-7376231','09:00:00','PENDING','FAMILY','Mount Rainier',1,1),(2,2654456,2,3,30,'bob@example.com','2024-07-05','052-7355231','14:00:00','CONFIRMED','FAMILY\r','Yellowstone',2,1),(9,1214214,1,1,85,'asd@walla.com','2024-07-04','1231231231','09:00:00','PENDING','SOLO','Mount Rainier',3,1),(10,1214214,1,1,85,'asd@walla.com','2024-07-04','1231231231','09:00:00','PENDING','SOLO','Mount Rainier',4,2),(14,1214214,1,2,170,'asd@walla.com','2024-03-21','1231231231','09:00:00','PENDING','FAMILY','Mount Rainier',5,1);
+INSERT INTO waitinglist VALUES
+ (1501,123123123,1,5,50,'alice@example.com','2024-03-31','054-7376231','09:00:00','PENDING','FAMILY','Mount Rainier',5,1),
+( 1502,121212121,2,3,30,'bob@example.com','2024-04-02','052-7355231','14:00:00','CONFIRMED','FAMILY,'Yellowstone',6,2),
+ (1503,123412341,1,1,85,'asd@walla.com','2024-04-02','1231231231','09:00:00','PENDING','SOLO','Mount Rainier',7,3),
+ (1504,111122223,1,1,85,'asd@walla.com','2024-05-04','1231231231','09:00:00','PENDING','SOLO','Mount Rainier',8,4),
+ (1505,123123123,1,2,170,'asd@walla.com','2024-06-21','1231231231','09:00:00','PENDING','FAMILY','Mount Rainier',9,5);
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 SET foreign_key_checks = 1;
 

@@ -21,31 +21,42 @@ import common.*;
 import common.worker.*;
 import common.worker.Report.ReportType;
 
+
 /**
- * This class is responsible for managing database operations related to orders.
+ * Manages database operations for the user management system.
+ * This controller handles the interaction between the user management
+ * system and the database, including inserting new employees into
+ * the database.
  */
 public class DatabaseController {
-	private Connection connectionToDatabase;
+    private Connection connectionToDatabase;
 
-	/**
-	 * Constructs a DatabaseController object with specified user credentials.
-	 * @param userManagementSystemDB 
-	 *
-	 * @param username the database username
-	 * @param password the database password
-	 */
-	public DatabaseController(Connection ConnectionToDB, UserManagementSystemDB userManagementSystemDB) {
+    /**
+     * Constructs a DatabaseController object. It initializes the database connection
+     * using provided user credentials and inserts existing employees from the 
+     * user management system into the database.
+     *
+     * @param connectionToDB The connection to the database.
+     * @param userManagementSystemDB An instance of UserManagementSystemDB that provides
+     *                               access to employee data.
+     */
+    public DatabaseController(Connection connectionToDB, UserManagementSystemDB userManagementSystemDB) {
+        connectionToDatabase = connectionToDB;
+        insertEmployees(userManagementSystemDB.getAllEmployees());
+        userManagementSystemDB.closeConnection();
+    }
 
-		connectionToDatabase = ConnectionToDB;
-		insertEmployees(userManagementSystemDB.getAllEmployees());
-		userManagementSystemDB.closeConnection();
-	}
- 
-	 /**
-     * Inserts a list of GeneralParkWorker objects into the database.
+    /**
+     * Inserts a list of employees into the database. This method takes
+     * the list of employees retrieved from the user management system
+     * and persists them into the database.
      * 
-     * @param employees The list of GeneralParkWorker objects to be inserted.
-     * @return The number of inserted rows.
+     * Implementation note: This method's body should contain the logic
+     * to convert the list of employees into appropriate SQL INSERT statements
+     * and execute them using the established database connection. Error handling
+     * and transaction management should also be considered.
+     *
+     * @param employees The list of employees to be inserted into the database.
      */
 	public int insertEmployees(ArrayList<GeneralParkWorker> employees) {
 	    int insertedRows = 0;
@@ -66,7 +77,6 @@ public class DatabaseController {
 	                
 	                insertedRows += statement.executeUpdate(); // Execute the insertion for each employee.
 	            } catch (SQLIntegrityConstraintViolationException e) {
-	                System.out.println("Duplicate entry for worker ID " + worker.getWorkerId() + ": " + e.getMessage());
 	                break;
 	            }
 	        }

@@ -214,7 +214,8 @@ public class ServerController {
 				// Start listening for connections
 				sv.listen();
 				circleStatus.setFill(Color.GREEN); // Update server status indicator
-				logTextArea.setText("Server started listening."); // Log success
+				logTextArea.appendText("Server started listening.\n"); // Log success
+				logTextArea.appendText("Database connection successfully.\n");
 				System.out.println("Server started listening.");
 			}
 		} catch (NumberFormatException e) {
@@ -253,7 +254,7 @@ public class ServerController {
 		StTimeCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getStartTime()));
 		PortTxt.setText("5555");
 		DBUserNameTxt.setText("root");
-		PasswordTxt.setText("root");
+		PasswordTxt.setText("Joss102010");
 		ObservableList<ClientConnectionStatus> connectionStatuses = FXCollections.observableArrayList();
 		connStatusTable.setItems(connectionStatuses);
 
@@ -302,6 +303,8 @@ public class ServerController {
 		try {
 			if (sv != null && sv.isListening()) {
 				circleStatus.setFill(Color.RED);
+				logTextArea.appendText("Server has stopped listening for connections.\n"); 
+
 				sv.close();
 			}
 		} catch (IOException e) {

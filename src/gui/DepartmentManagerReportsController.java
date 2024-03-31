@@ -245,11 +245,7 @@ public class DepartmentManagerReportsController implements Initializable {
 			ArrayList<Report> serverResponse = (ArrayList<Report>) ClientController.data.getDataTransfered();
 			return FXCollections.observableArrayList(serverResponse);
 		} else {
-			// Handle the case where the server response indicates failure or no data
-			Alerts infoAlert = new Alerts(Alerts.AlertType.INFORMATION, "Information", "",
-					"No reports were found or there was an error processing your request.");
-			infoAlert.showAndWait();
-			return FXCollections.observableArrayList(); // Return an empty list
+				return FXCollections.observableArrayList(); // Return an empty list
 		}
 	}
 

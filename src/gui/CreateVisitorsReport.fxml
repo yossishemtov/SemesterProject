@@ -10,12 +10,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CreateVisitorsReportController">
    <children>
-      <Label fx:id="titlelLabal" layoutX="326.0" layoutY="36.0" prefHeight="49.0" prefWidth="296.0" text=" Visitor report" textFill="#5aed99" underline="true">
+      <Label fx:id="titlelLabal" layoutX="371.0" layoutY="50.0" prefHeight="49.0" prefWidth="296.0" text=" Visitor report" textFill="#5aed99" underline="true">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <PieChart fx:id="visitorsChart" layoutX="238.0" layoutY="101.0" prefHeight="289.0" prefWidth="366.0" />
+      <PieChart fx:id="visitorsChart" layoutX="283.0" layoutY="115.0" prefHeight="289.0" prefWidth="366.0" />
       <JFXButton fx:id="savereportbth" layoutX="544.0" layoutY="522.0" onAction="#saveVisitorReportAction" prefHeight="34.0" prefWidth="119.0" text="Save report">
          <font>
             <Font size="14.0" />
