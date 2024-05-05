@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="661.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.ServerController">
+   <children>
+  
+      <VBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="215.0" prefHeight="135.0" prefWidth="303.0">
+         <children>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="166.0" prefHeight="30.0" prefWidth="294.0">
+               <children>
+                  <Label prefHeight="19.0" prefWidth="59.0" text="Port:" textFill="#5aed99">
+                     <padding>
+                        <Insets right="15.0" />
+                     </padding>
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField fx:id="PortTxt" focusColor="#5aed99" prefHeight="25.0" prefWidth="82.0" promptText="0 - 65535" unFocusColor="WHITE" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="44.0" prefWidth="305.0">
+               <children>
+                  <Label prefHeight="19.0" prefWidth="100.0" text="DB user name:" textFill="#5aed99">
+                     <padding>
+                        <Insets right="15.0" />
+                     </padding>
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField fx:id="DBUserNameTxt" focusColor="#5aed99" promptText="aka rooot" unFocusColor="WHITE" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="35.0" prefWidth="100.0">
+               <children>
+                  <Label prefHeight="19.0" prefWidth="94.0" text="DB password:" textFill="#5aed99">
+                     <padding>
+                        <Insets right="15.0" />
+                     </padding>
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <JFXPasswordField fx:id="PasswordTxt" focusColor="#5aed99" promptText="Enter Password" unFocusColor="WHITE" />
+               </children>
+            </HBox>
+            <!-- Error labels styling can be set directly here if needed -->
+         </children>
+      </VBox>
+      <VBox fx:id="TableViewContainer" layoutX="321.0" layoutY="14.0" prefHeight="197.0" prefWidth="322.0">
+         <style>
+            -fx-background-color: #f4f4f4;
+         </style>
+         <children>
+            <TableView fx:id="connStatusTable" opacity="0.81" prefHeight="216.0" prefWidth="209.0">
+              <columns>
+                <TableColumn fx:id="IPCol" prefWidth="75.0" resizable="false" text="Ip" />
+                <TableColumn fx:id="HostCol" prefWidth="75.0" resizable="false" text="Host" />
+                <TableColumn fx:id="StatusCol" prefWidth="90.0" resizable="false" text="Status" />
+                <TableColumn fx:id="StTimeCol" prefWidth="84.0" resizable="false" text="Start Time" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+      <TextArea fx:id="logTextArea" layoutX="322.0" layoutY="248.0" prefHeight="157.0" prefWidth="322.0" />
+      <Label layoutX="435.0" layoutY="222.0" text="server console" textFill="WHITE">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="startserverBtn" layoutX="33.0" layoutY="363.0" onAction="#serveStartAction" text="Start Server" textFill="#b3ffb3">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton fx:id="StopserverBtn" layoutX="203.0" layoutY="363.0" onAction="#serveStopAction" text="Stop Server" textFill="#b3ffb3">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <ImageView fitHeight="157.0" fitWidth="156.0" layoutX="88.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../common/images/Go_Nature-removebg-preview.png" />
+         </image>
+      </ImageView>
+      <Circle fx:id="circleStatus" fill="#ff1f1f" layoutX="166.0" layoutY="383.0" radius="18.0" stroke="BLACK" strokeType="INSIDE" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ProfileController">
+   <children>
+      <Label fx:id="headerLabel" layoutX="408.0" layoutY="70.0" text="Welcome" textAlignment="CENTER" textFill="#5aed99" underline="true">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+  
+      <Line disable="true" endX="254.0" layoutX="457.0" layoutY="128.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
+      <Line disable="true" endX="254.0" layoutX="457.0" layoutY="170.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
+      <Line disable="true" endX="254.0" layoutX="457.0" layoutY="211.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
+      <Line disable="true" endX="254.0" layoutX="457.0" layoutY="253.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
+      <Line disable="true" endX="254.0" layoutX="457.0" layoutY="292.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
+      <Line disable="true" endX="254.0" layoutX="457.0" layoutY="336.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
+      <Line fx:id="line" disable="true" endX="254.0" layoutX="457.0" layoutY="378.0" startX="-269.0" stroke="#d9d9d9" strokeWidth="0.7" />
+      <GridPane layoutX="315.0" layoutY="125.0" prefHeight="255.0" prefWidth="416.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="203.0" minWidth="10.0" prefWidth="150.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="266.0" minWidth="10.0" prefWidth="266.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="First name:" textFill="#5aed99">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="profileNameLabel" text="Israel" textFill="WHITE" GridPane.columnIndex="1">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label style="-fx-text-fill: #5aed99;" text="Last Name:" GridPane.rowIndex="1">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="profileLastNameLabel" text="Israeli" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label text="ID:" textFill="#5aed99" GridPane.rowIndex="2">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="profileIDLabel" text="123456789" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label style="-fx-text-fill: #5aed99;" text="Account type:" GridPane.rowIndex="3">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="profileAccountTypeLabel" text="Park manager" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label style="-fx-text-fill: #5aed99;" text="Email:" GridPane.rowIndex="4">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="ProfileEmailLabel" text="IsraelIsraeli@gmail.com" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="parkLabel" style="-fx-text-fill: #5aed99;" text="Park:" GridPane.rowIndex="5">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="profileParkLabel" text="Linda park" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="5">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>

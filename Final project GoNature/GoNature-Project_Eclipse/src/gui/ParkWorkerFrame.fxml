@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1100.0" stylesheets="@../styles/mainScreensStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParkWorkerController">
+   <top>
+      <AnchorPane prefHeight="115.0" prefWidth="1100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="568.0" layoutY="48.0" text="Park Worker" textFill="#5aed99">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="157.0" fitWidth="156.0" layoutX="4.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../common/images/Go_Nature-removebg-preview.png" />
+               </image>
+            </ImageView>
+            <Line endX="689.0" endY="3.0" layoutX="410.0" layoutY="128.0" startX="-411.9999694824219" startY="3.0" stroke="#5aed99" strokeWidth="2.0" />
+         </children>
+      </AnchorPane>
+   </top>
+   <left>
+      <StackPane alignment="BOTTOM_LEFT" maxHeight="-Infinity" prefHeight="621.0" prefWidth="200.0" BorderPane.alignment="BOTTOM_LEFT">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <JFXButton fx:id="profileBtn" onAction="#loadProfileOfWorker" prefHeight="133.0" prefWidth="200.0" text="Profile">
+                     <graphic>
+                        <FontAwesomeIconView fill="#b3ffb3" glyphName="USER" styleClass="icon" />
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton fx:id="availableSpaceBtn" onAction="#availableSpaceBtnAction" prefHeight="142.0" prefWidth="200.0" text="Check Available Space">
+                     <graphic>
+                        <FontAwesomeIconView fill="#b3ffb3" styleClass="icon" />
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton fx:id="entrenceControlBtn" onAction="#entrenceControlAction" prefHeight="136.0" prefWidth="200.0" text="Entrence Control">
+                     <graphic>
+                        <FontAwesomeIconView fill="#b3ffb3" styleClass="icon" />
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton fx:id="unorderedVisitAction" onAction="#unorderedVisitAction" prefHeight="145.0" prefWidth="200.0" text="Unordered Visit">
+                     <graphic>
+                        <FontAwesomeIconView fill="#b3ffb3" styleClass="icon" />
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton fx:id="LogoutBtn" onAction="#backBtnAction" prefHeight="140.0" prefWidth="200.0" text="Logout">
+                     <graphic>
+                        <FontAwesomeIconView fill="#b3ffb3" glyphName="SIGN_OUT" styleClass="icon" />
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
+   </left>
+</BorderPane>

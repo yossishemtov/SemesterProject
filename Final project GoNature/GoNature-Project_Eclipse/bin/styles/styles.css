@@ -1,0 +1,167 @@
+
+/* styles.css */
+.root {
+	-fx-background-color: #282829; 
+}
+
+/* Styling for Buttons */
+.button {
+    -fx-background-color: #282829; 
+    -fx-border-color: #5aed99;
+    -fx-text-fill: #5aed99;
+    -fx-background-radius: 20.0px; 
+    -fx-border-radius: 20.0px;
+    -fx-padding: 10px 15px;
+    -fx-alignment: CENTER;  
+}
+
+/* Hover effect for Buttons */
+.button:hover {
+    -fx-background-color: #5aed99; 
+    -fx-border-color: #5aed99;
+    -fx-text-fill: #282829;
+    -fx-background-radius: 20.0px; 
+    -fx-border-radius: 20.0px;
+    -fx-padding: 10px 15px;
+    -fx-alignment: CENTER;  
+}
+
+
+.jfx-date-picker > .arrow-button > .jfx-svg-glyph{
+    -fx-background-color: #5aed99;
+}
+
+.jfx-date-picker .jfx-button {
+    -fx-background-color: transparent;
+    -fx-effect: null;
+}
+
+.text-field {
+    -fx-prompt-text-fill: #5aed99;
+    -fx-text-fill: white;
+}
+.text-area {
+    -fx-prompt-text-fill: #5aed99; 
+    -fx-text-fill: white; 
+}
+.combo-box {
+    -fx-prompt-text-fill: #5aed99;
+    -fx-text-fill: white;
+}
+.combo-box .list-cell:selected {
+    -fx-text-fill: white; /* Set the text color to white when an item is selected */
+}
+
+.menu-button {
+    -fx-prompt-text-fill: #5aed99;
+    -fx-text-fill: white;
+}
+
+#asterisk {
+    -fx-text-fill: red;
+}
+.pnOrder {
+    -fx-background-color: #282829;
+}
+
+.pnWaitingList {
+	-fx-background-color: #282829;
+}
+
+
+
+
+.table-view{
+    -fx-background-color: derive(#282829, 15%);
+    -fx-font-size: 12px; 
+    -fx-border-color: #5aed99;
+    -fx-border-width: 3px;
+}
+.table-view:focused{
+    -fx-background-color: derive(#282829, 25%);
+}
+.table-row-cell {
+    -fx-cell-size: 40px;
+}
+.table-view .column-header-background{
+    -fx-background-color: #282829;
+}
+.table-view .column-header-background .label{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+.table-view .column-header {
+    -fx-background-color: transparent;
+}
+.table-view .table-cell{
+    -fx-text-fill: white;
+}
+.table-row-cell:focused, .table-cell:focused{
+    -fx-text-fill: #282829;
+}
+.table-row-cell{
+    -fx-background-color: #282829;
+    -fx-border-color: transparent;
+    -fx-table-cell-border-color: transparent;
+}
+.table-column{
+    -fx-alignment: CENTER;  
+}
+.table-row-cell:even{
+    -fx-background-color: derive(#282829, 10%);
+}
+.table-row-cell:selected {
+    -fx-background-color: #5aed99;
+    -fx-text-fill: #282829;
+    -fx-background-insets: 0;
+}
+.table-row-cell:selected .table-cell{
+    -fx-text-fill: #282829;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #5aed99; 
+}
+
+.loginBorder {
+	-fx-background-color: #b3ffb3;
+}
+
+.pricingButton {
+    -fx-padding: 0px;
+    -fx-background-radius: 0px; 
+    -fx-border-width: 0px; /* Set border width to 0 */
+    -fx-border-color: transparent; /* Set border color to transparent */
+}
+
+.pricingButton:hover {
+    -fx-background-color: #282829; 
+    -fx-border-color: #5aed99;
+    -fx-text-fill: #5aed99;
+    -fx-background-radius: 20px; 
+    -fx-border-radius: 20px;
+    -fx-padding: 0px; /* Override padding for pricing button */
+}
+
+
+
+.button .icon {
+    -fx-fill: #5aed99; /* Default color for icons */
+}
+
+.button:hover .icon {
+    -fx-fill: #282829; /* Color to change to on hover */
+}
+
+.default-color0.chart-bar {
+    -fx-bar-fill: #72a672; /* Orange Red */
+}
+
+#logTextArea {
+    /* -fx-background-color: #282829; */
+    -fx-control-inner-background: derive(#282829, 35%);
+    -fx-font-size: 12px; 
+    -fx-border-color: #5aed99;
+    -fx-border-width: 3px;
+    -fx-text-fill: white;
+}
