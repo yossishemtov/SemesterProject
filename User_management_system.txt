@@ -1,0 +1,44 @@
+START TRANSACTION;
+CREATE DATABASE  IF NOT EXISTS `User_management_system` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `User_management_system`;
+
+
+DROP TABLE IF EXISTS `GoNature_employees`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `GoNature_employees` (
+  `workerId` int NOT NULL,
+  `firstName` varchar(255) DEFAULT NULL,
+  `lastName` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `role` varchar(255) DEFAULT NULL,
+  `userName` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `worksAtPark` int DEFAULT NULL,
+  `isloggedin` int DEFAULT '0',
+  PRIMARY KEY (`workerId`),
+  KEY `worksAtPark` (`worksAtPark`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `generalparkworker`
+--
+
+LOCK TABLES `GoNature_employees` WRITE;
+/*!40000 ALTER TABLE `GoNature_employees` DISABLE KEYS */;
+INSERT INTO `GoNature_employees` (`workerId`, `firstName`, `lastName`, `email`, `role`, `userName`, `password`, `worksAtPark`, `isloggedin`) VALUES
+(1, 'John', 'Doe', 'johndoe@example.com', 'Department Manager', 'joss', '123a', 1, 0),
+(2, 'Jane', 'Smith', 'janesmith@example.com', 'Park Manager', 'yoss', '123a', 2, 0),
+(3, 'Alex', 'Johnson', 'alexjohnson@example.com', 'Park Worker', 'itay', '123a', 3, 0),
+(4, 'Emily', 'Williams', 'emilywilliams@example.com', 'Service Worker', 'shai', '123a', 1, 0),
+(5, 'Chris', 'Brown', 'chrisbrown@example.com', 'Department Manager', 'moti', '123a', 2, 0),
+(6, 'Pat', 'Green', 'patgreen@example.com', 'Park Manager', 'emanuel', '123a', 3, 0),
+(7, 'Taylor', 'Adams', 'tayloradams@example.com', 'Park Worker', 'daniel', '123a', 1, 0),
+(8, 'Jordan', 'Miller', 'jordanmiller@example.com', 'Service Worker', 'moshe', '123a', 2, 0),
+(9, 'Casey', 'Wilson', 'caseywilson@example.com', 'Department Manager', 'alon', '123a', 3, 0),
+(10, 'Morgan', 'Moore', 'morganmoore@example.com', 'Park Manager', 'mori', '123a', 1, 0),
+(11, 'Jamie', 'Taylor', 'jamietaylor@example.com', 'Park Worker', 'taylor', '123a', 2, 0),
+(12, 'Drew', 'Anderson', 'drewanderson@example.com', 'Service Worker', 'david', '123a', 3, 0);
+/*!40000 ALTER TABLE `GoNature_employees` ENABLE KEYS */;
+UNLOCK TABLES;
